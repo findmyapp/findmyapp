@@ -48,9 +48,11 @@
 		<property name="classesToBeBound">
 			<list>
 				<value>com.accenture.findmyapp.entity.TestObject</value>
+				<value>com.accenture.findmyapp.entity.CalcObject</value>
 			</list>
 		</property>
 	</bean>
+	
 
 
 	<!-- Imports user-defined @Controller beans that process client requests -->
