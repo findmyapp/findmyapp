@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>
-	Hello, <c:out value="${testObject.getTest2()}"/>!
+	Hello, <c:out value="${person.getName()}"/>!
 </h1>
 </body>
 </html>

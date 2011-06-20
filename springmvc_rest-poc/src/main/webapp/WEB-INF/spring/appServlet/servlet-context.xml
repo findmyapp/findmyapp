@@ -49,6 +49,7 @@
 			<list>
 				<value>com.accenture.findmyapp.entity.TestObject</value>
 				<value>com.accenture.findmyapp.entity.CalcObject</value>
+				<value>com.accenture.findmyapp.entity.Person</value>
 			</list>
 		</property>
 	</bean>

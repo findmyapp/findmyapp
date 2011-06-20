@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CalcObject { 
 	private int n1;
 	private int n2;
-	private String operator;
+	private String operator; 
 	
 	public int getNumber1() {
 		return n1;
