@@ -11,7 +11,7 @@ public class UkaProgramRowMapper implements RowMapper<UkaProgram> {
 
 	public UkaProgram mapRow(ResultSet rs, int arg1) throws SQLException {
 		UkaProgram program = new UkaProgram();
-		program.setDay(rs.getDate("start"));
+		program.setDay(rs.getDate("day"));
 		return program;
 	}
 
