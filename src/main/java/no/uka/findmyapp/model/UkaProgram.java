@@ -3,18 +3,30 @@ package no.uka.findmyapp.model;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+import java.util.ArrayList;
 
 @JsonAutoDetect
 public class UkaProgram {
-
-	private Date day;
-
-	public Date getDay() {
-		return day;
+	private ArrayList<Event> eventList;
+	
+	public UkaProgram() {
+		eventList = new ArrayList<Event>();
+	}
+	public void addEvent(Event e) {
+		eventList.add(e);
+	}
+	public void removeEvent(Event e) {
+		eventList.remove(e);
+	}
+	public void removeEvent(int i) {
+		eventList.remove(i);
+	}
+	public int getEventSize() {
+		return eventList.size();
+	}
+	public Event getEvent(int i) {
+		return eventList.get(i);
 	}
 
-	public void setDay(Date day) {
-		this.day = day;
-	}
 	
 }

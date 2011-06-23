@@ -20,7 +20,7 @@ public class UkaProgramDataHandler {
 	public UkaProgram getUkaProgram(Date day) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		UkaProgram program = jdbcTemplate.queryForObject(
-				"SELECT id, day FROM program WHERE day=?",
+				"SELECT * FROM program WHERE date=?",
 				new UkaProgramRowMapper(), day);
 		return program;
 	}
