@@ -38,6 +38,11 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 		<!-- Roo dependencies -->
 		<dependency>
 			<groupId>org.springframework.roo</groupId>
