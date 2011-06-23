@@ -45,6 +45,7 @@ public class UkaProgramController {
 		return mav;
 	}
 	
+	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
 	private void handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
