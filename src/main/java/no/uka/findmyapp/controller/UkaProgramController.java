@@ -5,6 +5,7 @@ import java.util.Date;
 import no.uka.findmyapp.datasource.UkaProgramDataHandler;
 import no.uka.findmyapp.model.UkaProgram;
 
+import org.codehaus.jackson.JsonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class UkaProgramController {
 		
 		ModelAndView mav = new ModelAndView("home");
 		UkaProgram program = data.getUkaProgram(day);			
-		mav.addObject("program", program);
+		mav.addObject("date", program.getDay().getDate());
 
 		return mav;
 	}
