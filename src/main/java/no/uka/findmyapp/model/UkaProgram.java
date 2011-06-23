@@ -1,9 +1,8 @@
 package no.uka.findmyapp.model;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import java.util.ArrayList;
 
 @JsonAutoDetect
 public class UkaProgram {
