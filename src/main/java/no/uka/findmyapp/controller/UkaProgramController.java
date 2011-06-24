@@ -51,10 +51,9 @@ public class UkaProgramController {
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
 		logger.info("insertUkaProgramForDate ( " + date + " )");
 		
-		data.insertUkaProgram(date);
+		//data.insertUkaProgram(date);
 	}
 
-	@SuppressWarnings("unused")
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
