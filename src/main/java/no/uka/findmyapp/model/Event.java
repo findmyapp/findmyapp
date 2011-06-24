@@ -15,7 +15,7 @@ public class Event {
 	private String eventType;
 	private String location;
 	private String ticketPrice;
-	private Date day;
+	private Date date;
 	
 	public int getId() {
 		return id;
@@ -77,11 +77,11 @@ public class Event {
 	public void setTicketPrice(String ticketPrice) {
 		this.ticketPrice = ticketPrice;
 	}
-	public Date getDay() {
-		return day;
+	public Date getDate() {
+		return date;
 	}
-	public void setDay(Date day) {
-		this.day = day;
+	public void setDate(Date day) {
+		this.date = day;
 	}
 
 }

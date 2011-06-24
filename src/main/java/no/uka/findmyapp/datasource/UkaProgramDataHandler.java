@@ -1,12 +1,16 @@
 package no.uka.findmyapp.datasource;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.sql.DataSource;
 
-import no.uka.findmyapp.datasource.mapper.UkaProgramRowMapper;
+import no.uka.findmyapp.datasource.mapper.EventRowMapper;
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,13 +20,20 @@ public class UkaProgramDataHandler {
 
 	@Autowired
 	private DataSource ds;
+	
+	private static final Logger logger = LoggerFactory
+	.getLogger(UkaProgramDataHandler.class);
 
 	public UkaProgram getUkaProgram(Date day) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		UkaProgram program = jdbcTemplate.queryForObject(
-				"SELECT * FROM program WHERE date=?",
-				new UkaProgramRowMapper(), day);
-		return program;
+		Object args[] = new Object[1];
+		args[0] = day;
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM ukeprogram_event WHERE event_date=?", args,
+				new EventRowMapper());
+		
+		UkaProgram ukaProgram = new UkaProgram(eventList);
+		return ukaProgram;
 	}
 
 }

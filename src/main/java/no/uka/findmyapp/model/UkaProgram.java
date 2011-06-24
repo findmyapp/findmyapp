@@ -1,15 +1,19 @@
 package no.uka.findmyapp.model;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 @JsonAutoDetect
 public class UkaProgram {
-	private ArrayList<Event> eventList;
+	private List<Event> eventList;
 	
 	public UkaProgram() {
 		eventList = new ArrayList<Event>();
+	}
+	public UkaProgram(List<Event> eventList) {
+		this.eventList = eventList;
 	}
 	public void addEvent(Event e) {
 		eventList.add(e);

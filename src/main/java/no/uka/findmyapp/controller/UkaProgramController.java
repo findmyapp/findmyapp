@@ -40,7 +40,7 @@ public class UkaProgramController {
 		
 		ModelAndView mav = new ModelAndView("home");
 		UkaProgram program = data.getUkaProgram(day);			
-		mav.addObject("date", new Date(100));
+		mav.addObject("program", program);
 
 		return mav;
 	}
