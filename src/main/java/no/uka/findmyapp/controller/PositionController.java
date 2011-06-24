@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 /* Controller that handles HTTP requests for position
  * 
  * @author Cecilie Haugstvedt
- * @author Audun Sørheim
+ * @author Audun Sorheim
  * 
  */
 @Controller

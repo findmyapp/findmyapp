@@ -1,7 +1,7 @@
 package no.uka.findmyapp.model;
 /**
  * @author Cecilie Haugstvedt
- * @author Audun Sørheim
+ * @author Audun Sorheim
  */
 public class Position {
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author Cecilie Haugstvedt
- * @author Audun Sørheim
+ * @author Audun Sorheim
  */
 @Repository
 public class PositionDataHandler {

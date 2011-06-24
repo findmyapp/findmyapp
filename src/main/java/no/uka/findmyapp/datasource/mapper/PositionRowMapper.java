@@ -10,7 +10,7 @@ import no.uka.findmyapp.model.Position;
 /**
  * 
  * @author Cecilie Haugstvedt
- * @author Audun Sørheim
+ * @author Audun Sorheim
  */
 public class PositionRowMapper implements RowMapper<Position> {
 
