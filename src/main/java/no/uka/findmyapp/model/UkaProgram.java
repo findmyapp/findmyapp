@@ -30,6 +30,9 @@ public class UkaProgram {
 	public Event getEvent(int i) {
 		return eventList.get(i);
 	}
+	public List<Event> getEvents() {
+		return eventList;
+	}
 
 	
 }

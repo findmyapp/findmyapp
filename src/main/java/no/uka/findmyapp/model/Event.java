@@ -6,22 +6,92 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 @JsonAutoDetect
 public class Event {
 	private int id;
+	private Date showingTime;
+	private Date publishTime;
+	private String place;
+	private int billigId;
+	private int eventId;
+	private Date netsaleFrom;
+	private Date netsaleTo;
+	private boolean free;
+	private boolean canceled;
+	private int entranceId;
 	private String title;
 	private String lead;
-	private String description;
-	private String picture;
-	private String thumbnail;
-	private String url;
+	private String text;
 	private String eventType;
-	private String location;
-	private String ticketPrice;
-	private Date date;
+	private String image;
+	private String thumbnail;
+	private Boolean hiddenFromListing;
+	private String slug;
+	private int ageLimit;
+	private int detailPhotoId;
 	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public Date getShowingTime() {
+		return showingTime;
+	}
+	public void setShowingTime(Date showingTime) {
+		this.showingTime = showingTime;
+	}
+	public Date getPublishTime() {
+		return publishTime;
+	}
+	public void setPublishTime(Date publishTime) {
+		this.publishTime = publishTime;
+	}
+	public String getPlace() {
+		return place;
+	}
+	public void setPlace(String place) {
+		this.place = place;
+	}
+	public int getBilligId() {
+		return billigId;
+	}
+	public void setBilligId(int billigId) {
+		this.billigId = billigId;
+	}
+	public int getEventId() {
+		return eventId;
+	}
+	public void setEventId(int eventId) {
+		this.eventId = eventId;
+	}
+	public Date getNetsaleFrom() {
+		return netsaleFrom;
+	}
+	public void setNetsaleFrom(Date netsaleFrom) {
+		this.netsaleFrom = netsaleFrom;
+	}
+	public Date getNetsaleTo() {
+		return netsaleTo;
+	}
+	public void setNetsaleTo(Date netsaleTo) {
+		this.netsaleTo = netsaleTo;
+	}
+	public boolean isFree() {
+		return free;
+	}
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+	public boolean isCanceled() {
+		return canceled;
+	}
+	public void setCanceled(boolean canceled) {
+		this.canceled = canceled;
+	}
+	public int getEntranceId() {
+		return entranceId;
+	}
+	public void setEntranceId(int entranceId) {
+		this.entranceId = entranceId;
 	}
 	public String getTitle() {
 		return title;
@@ -35,29 +105,11 @@ public class Event {
 	public void setLead(String lead) {
 		this.lead = lead;
 	}
-	public String getDescription() {
-		return description;
+	public String getText() {
+		return text;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getPicture() {
-		return picture;
-	}
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-	public String getThumbnail() {
-		return thumbnail;
-	}
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setText(String text) {
+		this.text = text;
 	}
 	public String getEventType() {
 		return eventType;
@@ -65,23 +117,41 @@ public class Event {
 	public void setEventType(String eventType) {
 		this.eventType = eventType;
 	}
-	public String getLocation() {
-		return location;
+	public String getImage() {
+		return image;
 	}
-	public void setLocation(String location) {
-		this.location = location;
+	public void setImage(String image) {
+		this.image = image;
 	}
-	public String getTicketPrice() {
-		return ticketPrice;
+	public String getThumbnail() {
+		return thumbnail;
 	}
-	public void setTicketPrice(String ticketPrice) {
-		this.ticketPrice = ticketPrice;
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
-	public Date getDate() {
-		return date;
+	public Boolean getHiddenFromListing() {
+		return hiddenFromListing;
 	}
-	public void setDate(Date day) {
-		this.date = day;
+	public void setHiddenFromListing(Boolean hiddenFromListing) {
+		this.hiddenFromListing = hiddenFromListing;
+	}
+	public String getSlug() {
+		return slug;
+	}
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+	public int getAgeLimit() {
+		return ageLimit;
+	}
+	public void setAgeLimit(int ageLimit) {
+		this.ageLimit = ageLimit;
+	}
+	public int getDetailPhotoId() {
+		return detailPhotoId;
+	}
+	public void setDetailPhotoId(int detailPhotoId) {
+		this.detailPhotoId = detailPhotoId;
 	}
 
 }

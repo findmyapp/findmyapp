@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>
-	Returnerer UKA-program for dato: ${date}
+	Returnerer UKA-program for dato: ${program}
 </h1>
 </body>
 </html>
