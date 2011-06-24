@@ -1,11 +1,14 @@
 package no.uka.findmyapp.controller;
 
+import java.io.IOException;
 import java.util.Date;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.UkaProgram;
 
-import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.JsonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 @Controller
 public class UkaProgramController {
@@ -38,11 +43,9 @@ public class UkaProgramController {
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date day) {
 		logger.info("getUkaProgramForDate ( " + day + " )");
 		
-		ModelAndView mav = new ModelAndView("home");
 		UkaProgram program = data.getUkaProgram(day);			
-		mav.addObject("program", program);
-
-		return mav;
+		Gson g = new Gson();
+		return new ModelAndView("home", "program", g.toJson(program));
 	}
 	
 	@SuppressWarnings("unused")

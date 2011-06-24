@@ -7,32 +7,32 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 @JsonAutoDetect
 public class UkaProgram {
-	private List<Event> eventList;
+	private List<Event> events;
+	private int eventSize;
 	
 	public UkaProgram() {
-		eventList = new ArrayList<Event>();
+		events = new ArrayList<Event>();
 	}
 	public UkaProgram(List<Event> eventList) {
-		this.eventList = eventList;
+		this.events = eventList;
+		eventSize = eventList.size();
 	}
 	public void addEvent(Event e) {
-		eventList.add(e);
+		events.add(e);
 	}
 	public void removeEvent(Event e) {
-		eventList.remove(e);
+		events.remove(e);
 	}
 	public void removeEvent(int i) {
-		eventList.remove(i);
+		events.remove(i);
 	}
 	public int getEventSize() {
-		return eventList.size();
+		return events.size();
 	}
 	public Event getEvent(int i) {
-		return eventList.get(i);
+		return events.get(i);
 	}
 	public List<Event> getEvents() {
-		return eventList;
+		return events;
 	}
-
-	
 }
