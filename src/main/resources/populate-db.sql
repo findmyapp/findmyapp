@@ -20,7 +20,7 @@ CREATE table event_showing_real(
 );
 INSERT into event_showing_real values(
 	11,
-	'2011-10-01 00:00:00',
+	'2011-10-03 00:00:00',
 	'2011-10-01 00:00:00',
 	'Samfundet',
 	0,

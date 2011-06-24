@@ -39,17 +39,29 @@ public class UkaProgramController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/2011/dato", method = RequestMethod.GET)
+	@RequestMapping(value = "/program/{aar}/dato", method = RequestMethod.GET)
 	// We do not use aar
-	// 	@RequestMapping(value = "/program/{day}", method = RequestMethod.GET)
 	public ModelAndView getUkaProgramForDate(
-			@RequestParam @DateTimeFormat(iso = ISO.DATE) Date dato) {
-		logger.info("getUkaProgramForDate ( " + dato + " )");
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date dato,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date fra,
+	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date til){
+		UkaProgram program;
+		if (dato==null) {
+			// Use fra til
+			logger.info("getUkaProgramForFra ( " + fra + " ) og Til ( " + til + " )");
+			program = data.getUkaProgram(fra, til);	
+		}
+		else {
+			// Use dato
+			logger.info("getUkaProgramForDate ( " + dato + " )");
+			program = data.getUkaProgram(dato);			
+		}
 		
-		UkaProgram program = data.getUkaProgram(dato);			
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
 	}
+	
+
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
