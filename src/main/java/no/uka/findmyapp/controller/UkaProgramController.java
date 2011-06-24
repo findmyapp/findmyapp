@@ -34,7 +34,7 @@ public class UkaProgramController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UkaProgramController.class);
-	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -47,11 +47,21 @@ public class UkaProgramController {
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
 	}
-	
+
+	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
+	public void insertUkaProgramForDate(
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
+		logger.info("insertUkaProgramForDate ( " + date + " )");
+		
+		//data.insertUkaProgram(date);
+	}
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
-	private void handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
-		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
+	private void handleEmptyResultDataAccessException(
+			EmptyResultDataAccessException ex) {
+		logger.info("handleEmptyResultDataAccessException ( "
+				+ ex.getLocalizedMessage() + " )");
 	}
 }
