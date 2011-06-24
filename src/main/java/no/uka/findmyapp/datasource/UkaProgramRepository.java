@@ -29,7 +29,7 @@ public class UkaProgramRepository {
 		Object args[] = new Object[1];
 		args[0] = day;
 		List<Event> eventList = jdbcTemplate.query(
-				"SELECT * FROM ukeprogram_event WHERE event_date=?", args,
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time=?", args,
 				new EventRowMapper());
 		
 		UkaProgram ukaProgram = new UkaProgram(eventList);
