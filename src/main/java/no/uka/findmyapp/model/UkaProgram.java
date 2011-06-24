@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonTypeName;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
-@JsonAutoDetect
 public class UkaProgram {
 	private List<Event> eventList;
 	

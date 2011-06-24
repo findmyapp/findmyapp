@@ -45,10 +45,10 @@
 		</dependency>
 		<!-- Roo dependencies -->
 		<dependency>
-			<groupId>org.springframework.roo</groupId>
-			<artifactId>org.springframework.roo.annotations</artifactId>
-			<version>${org.springframework.roo-version}</version>
-			<scope>provided</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Joda-Time -->

@@ -29,7 +29,7 @@ public class UkaProgramController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UkaProgramController.class);
-	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -37,18 +37,30 @@ public class UkaProgramController {
 	public ModelAndView getUkaProgramForDate(
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date day) {
 		logger.info("getUkaProgramForDate ( " + day + " )");
-		
+
 		ModelAndView mav = new ModelAndView("home");
 		UkaProgram program = data.getUkaProgram(day);			
+
 		mav.addObject("program", program);
 
 		return mav;
 	}
-	
+
+	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
+	public void insertUkaProgramForDate(
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
+		logger.info("insertUkaProgramForDate ( " + date + " )");
+		
+		data.insertUkaProgram(date);
+	}
+
+	@SuppressWarnings("unused")
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
-	private void handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
-		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
+	private void handleEmptyResultDataAccessException(
+			EmptyResultDataAccessException ex) {
+		logger.info("handleEmptyResultDataAccessException ( "
+				+ ex.getLocalizedMessage() + " )");
 	}
 }
