@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,12 +39,14 @@ public class UkaProgramController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/{day}", method = RequestMethod.GET)
+	@RequestMapping(value = "/program/2011/dato", method = RequestMethod.GET)
+	// We do not use aar
+	// 	@RequestMapping(value = "/program/{day}", method = RequestMethod.GET)
 	public ModelAndView getUkaProgramForDate(
-			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date day) {
-		logger.info("getUkaProgramForDate ( " + day + " )");
+			@RequestParam @DateTimeFormat(iso = ISO.DATE) Date dato) {
+		logger.info("getUkaProgramForDate ( " + dato + " )");
 		
-		UkaProgram program = data.getUkaProgram(day);			
+		UkaProgram program = data.getUkaProgram(dato);			
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
 	}

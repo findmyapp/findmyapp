@@ -13,16 +13,19 @@ public class UkaProgram {
 	}
 	public UkaProgram(List<Event> eventList) {
 		this.events = eventList;
-		eventSize = eventList.size();
+		eventSize = events.size();
 	}
 	public void addEvent(Event e) {
 		events.add(e);
+		eventSize = events.size();
 	}
 	public void removeEvent(Event e) {
 		events.remove(e);
+		eventSize = events.size();
 	}
 	public void removeEvent(int i) {
 		events.remove(i);
+		eventSize = events.size();
 	}
 	public int getEventSize() {
 		return events.size();
