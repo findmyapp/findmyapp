@@ -2,7 +2,7 @@ package no.uka.findmyapp.controller;
 
 import java.util.Date;
 
-import no.uka.findmyapp.datasource.UkaProgramDataHandler;
+import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.UkaProgram;
 
 import org.codehaus.jackson.JsonFactory;
@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class UkaProgramController {
 
 	@Autowired
-	private UkaProgramDataHandler data;
+	private UkaProgramRepository data;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UkaProgramController.class);
