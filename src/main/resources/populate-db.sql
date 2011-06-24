@@ -19,7 +19,7 @@ CREATE table event_showing_real(
 	entrance_id integer
 );
 INSERT into event_showing_real values(
-	1,
+	11,
 	'2011-10-01 00:00:00',
 	'2011-10-01 00:00:00',
 	'Samfundet',
@@ -32,7 +32,7 @@ INSERT into event_showing_real values(
 	2222
 );
 INSERT into event_showing_real values(
-	2,
+	21,
 	'2011-10-01 00:00:00',
 	'2011-10-07 00:00:00',
 	'Dodens dal',
