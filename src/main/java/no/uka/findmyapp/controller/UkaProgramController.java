@@ -39,12 +39,32 @@ public class UkaProgramController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/{aar}/dato", method = RequestMethod.GET)
-	// We do not use aar
+	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
+	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date dato,
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date fra,
-	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date til){
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
+	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to){
+		UkaProgram program;
+		if (date==null) {
+			// Use fra til
+			logger.info("getUkaProgramForFrom ( " + from + " ) and to ( " + to + " )");
+			program = data.getUkaProgram(from, to);	
+		}
+		else {
+			// Use dato
+			logger.info("getUkaProgramForDate ( " + date + " )");
+			program = data.getUkaProgram(date);			
+		}
+		
+		Gson g = new Gson();
+		return new ModelAndView("home", "program", g.toJson(program));
+	}
+	
+	/* THIS ONE IS NEW: UNDER CONSTRUCTION
+	@RequestMapping(value = "/program/{aar}/steder", method = RequestMethod.GET)
+	// We do not use aar
+	public ModelAndView getUkaProgramSteder(){
 		UkaProgram program;
 		if (dato==null) {
 			// Use fra til
@@ -60,7 +80,7 @@ public class UkaProgramController {
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
 	}
-	
+	*/
 
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
