@@ -42,10 +42,10 @@ public class PositionDataHandler {
 	 */
 	public List<Sample> getAllTestPoints() {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		Room pos = jdbcTemplate.queryForObject(
+		List<Sample> pos = jdbcTemplate.queryForObject(
 				"SELECT r.id, r.name FROM room r, sample sa, signal si WHERE r.id = sa.room_id AND sa.id = ?",
-				new SampleRowMapper(), sample.roomID);
-		
+				new SampleRowMapper(), 0);
+		return pos;
 	}
 
 }

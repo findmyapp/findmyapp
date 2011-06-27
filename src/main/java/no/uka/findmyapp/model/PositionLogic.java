@@ -27,10 +27,10 @@ public class PositionLogic {
 	public Room getCurrentPosition(Sample sample) {
 		
 		List<Sample> samples = data.getAllTestPoints();
-		double minDistance = samples.get(0).getDistance(sample.getBssidList());
+		double minDistance = samples.get(0).getDistance(sample.getSignalList());
 		Room bestPosition = new Room(samples.get(0).getRoomID());
 		for(Sample p: samples){
-			double d = p.getDistance(sample.getBssidList());
+			double d = p.getDistance(sample.getSignalList());
 			if (d < minDistance){
 				minDistance = d;
 				bestPosition = new Room(p.getRoomID());
