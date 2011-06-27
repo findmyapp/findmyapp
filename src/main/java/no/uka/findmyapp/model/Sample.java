@@ -28,7 +28,7 @@ public class Sample {
 	/** 
 	 * 
 	 * @param bssid
-	 * @return the signal in the sample´s signallist with this bssid or null if no such signal exists.
+	 * @return the signal in the samples signallist with this bssid or null if no such signal exists.
 	 */
 	public Signal getSignal(String bssid){
 		
