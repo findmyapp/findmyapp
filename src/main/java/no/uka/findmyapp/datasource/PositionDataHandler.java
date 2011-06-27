@@ -5,7 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
-import no.uka.findmyapp.model.Position;
+import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.TestPoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ public class PositionDataHandler {
 	 * @param SSID
 	 * @return position associated with this SSID
 	 */
-	public Position getPosition(String SSID) {
+	public Room getPosition(String SSID) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		Position pos = jdbcTemplate.queryForObject(
+		Room pos = jdbcTemplate.queryForObject(
 				"SELECT id, name FROM position WHERE ssid=?",
 				new PositionRowMapper(), SSID);
 		return pos;
