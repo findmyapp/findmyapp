@@ -31,5 +31,15 @@ public class TestPoint {
 	public void setBssidList(List<BSSID> bssidList) {
 		this.bssidList = bssidList;
 	}
+	
+	/**
+	 * 
+	 * @param bssidList 
+	 * @return the Euclidean distance between bssidList and the list of bssids associated with this test points
+	 */
+	public double getDistance(List<BSSID> bssidList){
+		return 0;
+		
+	}
 
 }

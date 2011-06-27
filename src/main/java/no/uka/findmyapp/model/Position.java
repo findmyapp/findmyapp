@@ -9,6 +9,15 @@ public class Position {
 	public String roomName;
 	public String roomID;
 	
+	public Position() {
+		super();
+	}
+	
+	public Position(String roomName, String roomID) {
+		super();
+		this.roomName = roomName;
+		this.roomID = roomID;
+	}
 	public String getRoomName() {
 		return roomName;
 	}
