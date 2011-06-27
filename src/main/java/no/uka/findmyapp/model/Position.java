@@ -1,30 +1,26 @@
 package no.uka.findmyapp.model;
+
 /**
  * @author Cecilie Haugstvedt
  * @author Audun Sorheim
  */
 public class Position {
 
-	public String name;
-	public String strength;
+	public String roomName;
+	public String roomID;
 	
-	public String getName() {
-		return name;
+	public String getRoomName() {
+		return roomName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
-	public String getStrength() {
-		return strength;
+	public String getRoomID() {
+		return roomID;
 	}
-	public void setStrength(String strength) {
-		this.strength = strength;
+	public void setRoomID(String roomID) {
+		this.roomID = roomID;
 	}
-	public String getSSID() {
-		return SSID;
-	}
-	public void setSSID(String sSID) {
-		SSID = sSID;
-	}
-	public String SSID;
+	
+	
 }

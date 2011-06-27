@@ -1,5 +1,7 @@
 package no.uka.findmyapp.datasource;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
@@ -30,6 +32,15 @@ public class PositionDataHandler {
 				"SELECT id, name FROM position WHERE ssid=?",
 				new PositionRowMapper(), SSID);
 		return pos;
+	}
+	
+	/**
+	 * 
+	 * @return A list of all positions in the database
+	 */
+	public List<Position> getAllPositions() {
+		return null;
+		
 	}
 
 }

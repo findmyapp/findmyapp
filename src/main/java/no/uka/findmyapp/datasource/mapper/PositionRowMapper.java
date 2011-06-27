@@ -20,8 +20,7 @@ public class PositionRowMapper implements RowMapper<Position> {
 	 */
 	public Position mapRow(ResultSet rs, int arg1) throws SQLException {
 		Position pos = new Position();
-		pos.setName(rs.getString("name"));
-		pos.setSSID(rs.getString("ssid"));
+		pos.setRoomName(rs.getString("name"));
 		return pos;
 	}
 }
