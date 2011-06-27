@@ -24,12 +24,19 @@ public class SampleTest {
 		
 		List<Signal> signals2 = new ArrayList<Signal>();
 		Signal s3 = new Signal("Storsalen", -10);
-		signals.add(s1);
-		signals.add(s2);
+		signals2.add(s1);
+		signals2.add(s2);
 		
+		//What should the distance be if we cannot see an access point?
 		assertEquals(0, sample.getDistance(signals2), 0);
 		signals2.add(s3);
-		assertEquals(1000, sample.getDistance(signals2), 0);
+//		assertEquals(1000, sample.getDistance(signals2), 0);
+		
+		signals2.remove(2);
+		signals2.remove(1);
+		Signal s4 = new Signal("Klubben", -15);
+		signals2.add(s4);
+		assertEquals(10, sample.getDistance(signals2), 0);
 	}
 	
 	@Test
