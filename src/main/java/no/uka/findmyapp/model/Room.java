@@ -7,20 +7,20 @@ package no.uka.findmyapp.model;
 public class Room {
 
 	public String roomName;
-	public String roomID;
+	public int roomID;
 	
 	public Room() {
 		super();
 	}
 	
 	
-	public Room(String roomID) {
+	public Room(int roomID) {
 		super();
 		this.roomID = roomID;
 	}
 
 
-	public Room(String roomName, String roomID) {
+	public Room(String roomName, int roomID) {
 		super();
 		this.roomName = roomName;
 		this.roomID = roomID;
@@ -31,10 +31,10 @@ public class Room {
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
 	}
-	public String getRoomID() {
+	public int getRoomID() {
 		return roomID;
 	}
-	public void setRoomID(String roomID) {
+	public void setRoomID(int roomID) {
 		this.roomID = roomID;
 	}
 	

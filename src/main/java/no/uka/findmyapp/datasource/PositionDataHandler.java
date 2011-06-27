@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
+import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 
@@ -27,11 +28,11 @@ public class PositionDataHandler {
 	 * @param SSID
 	 * @return position associated with this SSID
 	 */
-	public Room getPosition(String SSID) {
+	public Room getPosition(Sample sample) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		Room pos = jdbcTemplate.queryForObject(
-				"SELECT id, name FROM position WHERE ssid=?",
-				new PositionRowMapper(), SSID);
+				"SELECT r.id, r.name FROM room r, sample sa, signal si WHERE r.id = sa.room_id AND sa.id = ?",
+				new PositionRowMapper(), sample.roomID);
 		return pos;
 	}
 	
@@ -40,7 +41,10 @@ public class PositionDataHandler {
 	 * @return A list of all test points in the database
 	 */
 	public List<Sample> getAllTestPoints() {
-		return null;
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		Room pos = jdbcTemplate.queryForObject(
+				"SELECT r.id, r.name FROM room r, sample sa, signal si WHERE r.id = sa.room_id AND sa.id = ?",
+				new SampleRowMapper(), sample.roomID);
 		
 	}
 
