@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/WEB-INF/spring/root-context.xml",
-		"/WEB-INF/spring/appServlet/controllers.xml" })
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = { "/WEB-INF/spring/root-context.xml",
+//		"/WEB-INF/spring/appServlet/controllers.xml" })
 public class UkaProgramTest {
 
-	@Autowired
-	UkaProgramController controller;
+//	@Autowired
+//	UkaProgramController controller;
 
 	@Test
 	public void testSomethingLikeThis(){
