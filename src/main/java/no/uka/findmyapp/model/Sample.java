@@ -61,7 +61,7 @@ public class Sample {
 			}
 		}
 		
-		return java.lang.Math.sqrt(d*d);
+		return java.lang.Math.sqrt(d);
 		
 	}
 
