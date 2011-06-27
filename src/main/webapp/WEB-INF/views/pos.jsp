@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>
-	Posisjon: ${position.name }
+	Posisjon: ${position.roomName}
 </h1>
 </body>
 </html>
