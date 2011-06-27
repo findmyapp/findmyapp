@@ -7,14 +7,14 @@ package no.uka.findmyapp.model;
  */
 public class BSSID {
 
-	public String mac;
-	public int level;
+	public String bssid; ///BSSID
+	public int level; //strength of signal
 	
-	public String getMac() {
-		return mac;
+	public String getBssid() {
+		return bssid;
 	}
-	public void setMac(String mac) {
-		this.mac = mac;
+	public void setBssid(String bssid) {
+		this.bssid = bssid;
 	}
 	public int getLevel() {
 		return level;
