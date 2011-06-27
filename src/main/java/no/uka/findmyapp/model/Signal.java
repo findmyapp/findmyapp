@@ -5,10 +5,10 @@ package no.uka.findmyapp.model;
  * @author Cecilie Haugstvedt
  *
  */
-public class BSSID {
+public class Signal {
 
 	public String bssid; ///BSSID
-	public int level; //strength of signal
+	public int signalStrength; //strength of signal
 	
 	public String getBssid() {
 		return bssid;
@@ -17,10 +17,10 @@ public class BSSID {
 		this.bssid = bssid;
 	}
 	public int getLevel() {
-		return level;
+		return signalStrength;
 	}
 	public void setLevel(int level) {
-		this.level = level;
+		this.signalStrength = level;
 	}
 	
 	

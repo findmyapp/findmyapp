@@ -10,8 +10,7 @@ import java.util.List;
 public class TestPoint {
 	
 	public String roomID;
-	public String roomName;
-	public List<BSSID> bssidList;
+	public List<Signal> bssidList;
 	
 	public String getRoomID() {
 		return roomID;
@@ -19,16 +18,10 @@ public class TestPoint {
 	public void setRoomID(String roomID) {
 		this.roomID = roomID;
 	}
-	public String getRoomName() {
-		return roomName;
-	}
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
-	public List<BSSID> getBssidList() {
+	public List<Signal> getBssidList() {
 		return bssidList;
 	}
-	public void setBssidList(List<BSSID> bssidList) {
+	public void setBssidList(List<Signal> bssidList) {
 		this.bssidList = bssidList;
 	}
 	
@@ -38,7 +31,7 @@ public class TestPoint {
 	 * @param bssidList in defined order
 	 * @return the Euclidean distance between bssidList and the list of bssids associated with this test points
 	 */
-	public double getDistance(List<BSSID> bssidList){
+	public double getDistance(List<Signal> bssidList){
 		
 		double d = 0;
 		for (int i = 0; i < bssidList.size(); i++){

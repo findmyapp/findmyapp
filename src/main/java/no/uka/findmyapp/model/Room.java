@@ -4,16 +4,23 @@ package no.uka.findmyapp.model;
  * @author Cecilie Haugstvedt
  * @author Audun Sorheim
  */
-public class Position {
+public class Room {
 
 	public String roomName;
 	public String roomID;
 	
-	public Position() {
+	public Room() {
 		super();
 	}
 	
-	public Position(String roomName, String roomID) {
+	
+	public Room(String roomID) {
+		super();
+		this.roomID = roomID;
+	}
+
+
+	public Room(String roomName, String roomID) {
 		super();
 		this.roomName = roomName;
 		this.roomID = roomID;

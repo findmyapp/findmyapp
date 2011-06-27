@@ -1,7 +1,7 @@
 package no.uka.findmyapp.controller;
 
 import no.uka.findmyapp.datasource.PositionDataHandler;
-import no.uka.findmyapp.model.Position;
+import no.uka.findmyapp.model.Room;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class PositionController {
 		logger.info("getPosition ( " + ssid + " )");
 
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
-		Position pos = data.getPosition(ssid);
+		Room pos = data.getPosition(ssid);
 		mav.addObject("position", pos); // model name, model object 
 
 		return mav;
