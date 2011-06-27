@@ -26,7 +26,7 @@ public class PositionLogic {
 	 */
 	public Room getCurrentPosition(Sample sample) {
 		
-		List<Sample> samples = data.getAllTestPoints();
+		List<Sample> samples = data.getAllSamples();
 		double minDistance = samples.get(0).getDistance(sample.getSignalList());
 		Room bestPosition = new Room(samples.get(0).getRoomID());
 		for(Sample p: samples){
