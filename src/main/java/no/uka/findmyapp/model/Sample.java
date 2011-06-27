@@ -21,7 +21,7 @@ public class Sample {
 	public List<Signal> getSignalList() {
 		return signalList;
 	}
-	public void setBssidList(List<Signal> signalList) {
+	public void setSignalList(List<Signal> signalList) {
 		this.signalList = signalList;
 	}
 	
