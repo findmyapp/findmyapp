@@ -45,7 +45,7 @@ public class SampleTest {
 		// Distance between identical lists should be 0 
 		assertEquals(0, sample.getDistance(signals2), 0);
 		
-		//What should the distance be if we cannot see an access point?
+		//What should the distance be if the signal lists do not contain the same access points?
 		Signal s3 = new Signal("Storsalen", -10);
 		signals2.add(s3);
 //		assertEquals(1000, sample.getDistance(signals2), 0);

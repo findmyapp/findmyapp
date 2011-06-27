@@ -43,13 +43,14 @@ public class Sample {
 	
 	/** Calculates the Euclidean distance betwwen the signal list of this sample and the signal list given in as a parameter. 
 	 * 
-	 * @param signalList 
+	 * @param signalList list of signals detected by user
 	 * @return Euclidean distance 
 	 */
 	public double getDistance(List<Signal> signalList){
 		
 		double d = 0;
 		
+		//TODO: have to iterate over list from database instead
 		for (Signal s: signalList){
 			Signal sig = this.getSignal(s.getBssid());
 			if (sig != null){
