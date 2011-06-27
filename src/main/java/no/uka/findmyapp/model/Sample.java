@@ -7,7 +7,7 @@ import java.util.List;
  * @author Cecilie Haugstvedt
  *
  */
-public class TestPoint {
+public class Sample {
 	
 	public String roomID;
 	public List<Signal> bssidList;

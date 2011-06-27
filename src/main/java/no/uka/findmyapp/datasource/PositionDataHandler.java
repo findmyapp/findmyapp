@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
 import no.uka.findmyapp.model.Room;
-import no.uka.findmyapp.model.TestPoint;
+import no.uka.findmyapp.model.Sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,7 +39,7 @@ public class PositionDataHandler {
 	 * 
 	 * @return A list of all test points in the database
 	 */
-	public List<TestPoint> getAllTestPoints() {
+	public List<Sample> getAllTestPoints() {
 		return null;
 		
 	}
