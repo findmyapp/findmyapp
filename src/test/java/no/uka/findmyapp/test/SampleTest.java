@@ -1,5 +1,7 @@
 package no.uka.findmyapp.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,11 @@ public class SampleTest {
 	public void testGetSignal(){
 		Sample sample = new Sample();
 		List<Signal> signals = new ArrayList<Signal>();
-		signals.add(new Signal("Strossa", -20));
+		Signal s1 = new Signal("Strossa", -20);
+		signals.add(s1);
 		signals.add(new Signal("Klubben", -5));
+		sample.setRoomID(4);
+		sample.setSignalList(signals);
+		assertEquals("", s1, sample.getSignal("Strossa"));
 	}
 }
