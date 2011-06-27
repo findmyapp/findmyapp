@@ -25,20 +25,42 @@ public class Sample {
 		this.signalList = signalList;
 	}
 	
-	/** Calculates the Euclidean distance to the BSSID-list associated with this
-	 * test point. Assumes that the lists of BSSIDs are in the same order
+	/** 
 	 * 
-	 * @param bssidList in defined order
-	 * @return the Euclidean distance between bssidList and the list of bssids associated with this test points
+	 * @param bssid
+	 * @return the signal in the sample´s signallist with this bssid or null if no such signal exists.
+	 */
+	public Signal getSignal(String bssid){
+		
+		for (Signal s: signalList){
+			if (s.getBssid().equals(bssid)) {
+				return s;
+			}
+		}
+		return null;
+		
+	}
+	
+	/** Calculates the Euclidean distance betwwen the signal list of this sample and the signal list given in as a parameter. 
+	 * 
+	 * @param signalList 
+	 * @return Euclidean distance 
 	 */
 	public double getDistance(List<Signal> signalList){
 		
 		double d = 0;
-		for (int i = 0; i < signalList.size(); i++){
-			double diff = this.signalList.get(i).getLevel() - signalList.get(i).getLevel();
-			diff = diff*diff;
-			d += diff;
+		
+		for (Signal s: signalList){
+			Signal sig = this.getSignal(s.getBssid());
+			if (sig != null){
+				double diff = s.getLevel() - sig.getLevel();
+				diff = diff*diff;
+				d += diff;
+			} else {
+				d += 1000; // max difference when signal not visible
+			}
 		}
+		
 		return java.lang.Math.sqrt(d*d);
 		
 	}
