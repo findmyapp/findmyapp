@@ -2,6 +2,7 @@ package no.uka.findmyapp.controller;
 
 import no.uka.findmyapp.datasource.PositionDataHandler;
 import no.uka.findmyapp.model.Room;
+import no.uka.findmyapp.model.Sample;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,13 +33,12 @@ public class PositionController {
 			.getLogger(PositionController.class);
 	
 	//maps the URL with SSID asking for position to page showing name associated with that SSID
-	@RequestMapping(value = "/position/{ssid}", method = RequestMethod.GET)
-	public ModelAndView getPosition(
-			@PathVariable String ssid) {
-		logger.info("getPosition ( " + ssid + " )");
+	@RequestMapping(value = "/position", method = RequestMethod.GET)
+	public ModelAndView getPosition(Sample sample) {
+		logger.info("getPosition ( " + sample + " )");
 
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
-		Room pos = data.getPosition(ssid);
+		Room pos = data.getPosition(sample.getBssidList().get(0).getBssid());
 		mav.addObject("position", pos); // model name, model object 
 
 		return mav;
