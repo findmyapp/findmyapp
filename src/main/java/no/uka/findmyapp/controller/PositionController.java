@@ -1,6 +1,7 @@
 package no.uka.findmyapp.controller;
 
 import no.uka.findmyapp.datasource.PositionDataHandler;
+import no.uka.findmyapp.model.PositionLogic;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 
@@ -27,18 +28,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class PositionController {
 
 	@Autowired
-	private PositionDataHandler data;
+	private PositionLogic positionLogic;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PositionController.class);
 	
 	//maps the URL with SSID asking for position to page showing name associated with that SSID
+	// Example URL: http://localhost:8080/findmyapp/position?bssidList[0].bssid=strossa
 	@RequestMapping(value = "/position", method = RequestMethod.GET)
 	public ModelAndView getPosition(Sample sample) {
 		logger.info("getPosition ( " + sample + " )");
 
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
-		Room pos = data.getPosition(sample.getBssidList().get(0).getBssid());
+		
+		Room pos = positionLogic.getCurrentPosition(sample);
 		mav.addObject("position", pos); // model name, model object 
 
 		return mav;

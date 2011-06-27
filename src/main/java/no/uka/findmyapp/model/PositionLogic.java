@@ -5,12 +5,15 @@ import java.util.List;
 import no.uka.findmyapp.datasource.PositionDataHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /** Class with logic for calculating a users position.
  * 
  * @author Cecilie Haugstvedt
  * 
  */
+// TODO: remove @Repository, and make sure the bean is still registered
+@Repository
 public class PositionLogic {
 	
 	@Autowired
@@ -21,13 +24,13 @@ public class PositionLogic {
 	 * @param bssidList List of visible BSSIDs with level
 	 * @return current position
 	 */
-	public Room getCurrentPosition(List<Signal> bssidList) {
+	public Room getCurrentPosition(Sample sample) {
 		
 		List<Sample> samples = data.getAllTestPoints();
-		double minDistance = samples.get(0).getDistance(bssidList);
+		double minDistance = samples.get(0).getDistance(sample.getBssidList());
 		Room bestPosition = new Room(samples.get(0).getRoomID());
 		for(Sample p: samples){
-			double d = p.getDistance(bssidList);
+			double d = p.getDistance(sample.getBssidList());
 			if (d < minDistance){
 				minDistance = d;
 				bestPosition = new Room(p.getRoomID());
