@@ -5,6 +5,7 @@ INSERT into program(day) values('2010-02-05');
 CREATE table position(id integer IDENTITY PRIMARY KEY, name varchar(20), ssid varchar(20));
 INSERT into position(name, ssid) values('Strossa', 'strossa');
 INSERT into position(name, ssid) values('Storsalen', 'storsalen');
+
 CREATE table event_showing_real(
 	id integer IDENTITY PRIMARY KEY,
 	showing_time timestamp,
