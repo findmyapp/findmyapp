@@ -32,13 +32,21 @@ public class TestPoint {
 		this.bssidList = bssidList;
 	}
 	
-	/**
+	/** Calculates the Euclidean distance to the BSSID-list associated with this
+	 * test point. Assumes that the lists of BSSIDs are in the same order
 	 * 
-	 * @param bssidList 
+	 * @param bssidList in defined order
 	 * @return the Euclidean distance between bssidList and the list of bssids associated with this test points
 	 */
 	public double getDistance(List<BSSID> bssidList){
-		return 0;
+		
+		double d = 0;
+		for (int i = 0; i < bssidList.size(); i++){
+			double diff = this.bssidList.get(i).getLevel() - bssidList.get(i).getLevel();
+			diff = diff*diff;
+			d += diff;
+		}
+		return java.lang.Math.sqrt(d*d);
 		
 	}
 
