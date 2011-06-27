@@ -10,6 +10,11 @@ public class Signal {
 	public String bssid; ///BSSID
 	public int signalStrength; //strength of signal
 	
+	public Signal(String bssid, int signalStrength) {
+		super();
+		this.bssid = bssid;
+		this.signalStrength = signalStrength;
+	}
 	public String getBssid() {
 		return bssid;
 	}
