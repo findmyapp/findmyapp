@@ -5,6 +5,27 @@ INSERT into program(day) values('2010-02-05');
 CREATE table position(id integer IDENTITY PRIMARY KEY, name varchar(20), ssid varchar(20));
 INSERT into position(name, ssid) values('Strossa', 'strossa');
 INSERT into position(name, ssid) values('Storsalen', 'storsalen');
+
+CREATE table room(id integer IDENTITY PRIMARY KEY, name varchar(20));
+
+CREATE table sample(id integer IDENTITY PRIMARY KEY, room_id integer,
+ FOREIGN KEY (room_id) REFERENCES room(id));
+
+CREATE table signal(id integer IDENTITY PRIMARY KEY, bssid varchar(20), signalstrength integer, sample_id integer,
+ FOREIGN KEY (sample_id) REFERENCES sample(id));
+ 
+-- INSERT into room
+INSERT into room(name) values('Strossa');
+INSERT into room(name) values('Storsalen');
+-- INSERT into sample
+INSERT into sample(room_id) values(0);
+INSERT into sample(room_id) values(1);
+-- INSERT into signal
+INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -30, 0);
+INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -75, 0);
+INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -80, 1);
+INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -20, 1);
+
 CREATE table event_showing_real(
 	id integer IDENTITY PRIMARY KEY,
 	showing_time timestamp,
