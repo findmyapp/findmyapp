@@ -1,11 +1,10 @@
 package no.uka.findmyapp.service;
 
-public class EditDistance {
+public class EditDistanceService {
 	/*
-	 * Metodene finner minste redigeringsdistanse fra str og qry.
-	 * SplitDistance splitter qry på mellomrom, og legger sammen redigeringsavstander
-	 * for hver substring i qry. Parameteret fromStart avgjør om qry må matches fra starten av str,
-	 * og toEnd om inserts etter slutten av qry skal tas hensyn til
+	 * Edit distance finds the number of delete, add and substitute operations needed to convert qry
+	 * to str. splitDistance does the sum of editdistance for each word in qry. fromStart and toEnd
+	 * decides if qry has to match str from the start or/and to the end respectively
 	 */
 	public static int splitDistance(String str, String qry) {
 		int n = 0;
@@ -33,7 +32,6 @@ public class EditDistance {
 				dTable[i][j] = dTable[i-1][j-1] + substCost(qry.charAt(i), str.charAt(j));
 				dTable[i][j] = Math.min(dTable[i][j], dTable[i-1][j] + 1);
 				dTable[i][j] = Math.min(dTable[i][j], dTable[i][j-1] + 1);
-				System.out.println("["+i+","+j+"] " + dTable[i][j]);
 			}
 		}
 		

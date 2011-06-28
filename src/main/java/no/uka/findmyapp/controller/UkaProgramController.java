@@ -1,6 +1,7 @@
 package no.uka.findmyapp.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.UkaProgram;
@@ -35,26 +36,41 @@ public class UkaProgramController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/{aar}/dato", method = RequestMethod.GET)
-	// We do not use aar
+	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
+	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date dato,
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date fra,
-	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date til){
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
+	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to){
 		UkaProgram program;
-		if (dato==null) {
+		if (date==null) {
 			// Use fra til
-			logger.info("getUkaProgramForFra ( " + fra + " ) og Til ( " + til + " )");
-			program = data.getUkaProgram(fra, til);	
+			logger.info("getUkaProgramForFrom ( " + from + " ) and to ( " + to + " )");
+			program = data.getUkaProgram(from, to);	
 		}
 		else {
 			// Use dato
-			logger.info("getUkaProgramForDate ( " + dato + " )");
-			program = data.getUkaProgram(dato);			
+			logger.info("getUkaProgramForDate ( " + date + " )");
+			program = data.getUkaProgram(date);			
 		}
 		
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
+	}
+	
+	// THIS ONE IS NEW: UNDER CONSTRUCTION
+	@RequestMapping(value = "/program/{aar}/places", method = RequestMethod.GET)
+	// We do not use aar
+	public ModelAndView getUkaProgramPlaces(){
+		List<String> places;
+		//places = new List<String>();
+		
+		logger.info("getUkaProgramPlaces");
+		
+		places = data.getUkaPlaces();
+		
+		Gson g = new Gson();
+		return new ModelAndView("places", "places", g.toJson(places));
 	}
 	
 

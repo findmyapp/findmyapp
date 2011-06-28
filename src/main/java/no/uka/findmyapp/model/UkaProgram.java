@@ -7,6 +7,7 @@ public class UkaProgram {
 	private List<Event> events;
 	private int eventSize;
 	
+	
 	public UkaProgram() {
 		events = new ArrayList<Event>();
 		eventSize = 0;
