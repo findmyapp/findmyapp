@@ -53,6 +53,7 @@ public class PositionDataRepository {
 		
 		for (Map<String, Object> row : rows) {
 			Sample sample = new Sample();
+			sample.setId((Integer) row.get("id"));
 			sample.setRoomId((Integer) row.get("room_id"));
 			sample.setSignalList(getSignalsFromSample(sample.getId()));
 			samples.add(sample);
@@ -78,6 +79,7 @@ public class PositionDataRepository {
 			Signal signal = new Signal();
 			signal.setBssid((String) row.get("bssid"));
 			signal.setSignalStrength((Integer) row.get("signalstrength"));
+			System.out.println(signal.getSignalStrength());
 			signals.add(signal);
 		}
 		return signals;

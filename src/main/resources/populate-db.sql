@@ -11,20 +11,19 @@ CREATE table room(id integer IDENTITY PRIMARY KEY, name varchar(20));
 CREATE table sample(id integer IDENTITY PRIMARY KEY, room_id integer,
  FOREIGN KEY (room_id) REFERENCES room(id));
 
-CREATE table signal(id integer IDENTITY PRIMARY KEY, bssid varchar(20), signalstrength integer, sample_id integer,
- FOREIGN KEY (sample_id) REFERENCES sample(id));
+CREATE table signal(id integer IDENTITY PRIMARY KEY, bssid varchar(255), signalstrength integer, sample_id integer);
  
 -- INSERT into room
 INSERT into room(name) values('Strossa');
 INSERT into room(name) values('Storsalen');
 -- INSERT into sample
-INSERT into sample(room_id) values(0);
-INSERT into sample(room_id) values(1);
+INSERT into sample(id, room_id) values(0, 0);
+INSERT into sample(id, room_id) values(1, 1);
 -- INSERT into signal
-INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -30, 0);
-INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -75, 0);
-INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -80, 1);
-INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -20, 1);
+INSERT into signal(id, bssid, signalstrength, sample_id) values(0,'strossa', -30, 0);
+INSERT into signal(id, bssid, signalstrength, sample_id) values(1,'storsalen', -75, 0);
+INSERT into signal(id, bssid, signalstrength, sample_id) values(2,'strossa', -80, 1);
+INSERT into signal(id, bssid, signalstrength, sample_id) values(3,'storsalen', -20, 1);
 
 CREATE table event_showing_real(
 	id integer IDENTITY PRIMARY KEY,
