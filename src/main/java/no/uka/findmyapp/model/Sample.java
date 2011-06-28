@@ -32,50 +32,40 @@ public class Sample {
 	public int getRoomId() {
 		return roomId;
 	}
+
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
+	
 	public List<Signal> getSignalList() {
 		return signalList;
 	}
+
 	public void setSignalList(List<Signal> signalList) {
 		this.signalList = signalList;
 	}
 	
-	/** 
-	 * 
-	 * @param Bssid
-	 * @return the signal in the samples signallist with this Bssid or null if no such signal exists.
-	 */
-	public Signal getSignal(String Bssid){
-		
-		for (Signal s: signalList){
-			if (s.getBssid().equals(Bssid)) {
-				return s;
-			}
-		}
-		return null;
-		
-	}
 	
-	/** Calculates the EuclIdean distance betwwen the signal list of this sample and the signal list given in as a parameter. 
+	/** Calculates the Euclidean distance between the signal list of this sample (taken from the DB) and the signal list given in as a parameter. 
 	 * 
-	 * @param signalList 
-	 * @return EuclIdean distance 
+	 * @param signalList list of signals detected by user
+	 * @return Euclidean distance 
 	 */
 	public double getDistance(List<Signal> signalList){
 		
 		double d = 0;
-		
-		for (Signal s : signalList){
-			Signal sig = this.getSignal(s.getBssid());
-			if (sig != null){
-				double diff = s.getSignalStrength() - sig.getSignalStrength();
-				diff = diff*diff;
-				d += diff;
-			} else {
-				d += 1000; // max difference when signal not visible
-			}
+		List<Signal> databaseSignalList = this.signalList;
+		for (Signal s: databaseSignalList){ 
+			double signalStrength = -120; // use signal strength of -120dB if no signal from access point
+			for (Signal sig: signalList){
+				if (sig.getBssid().equals(s.getBssid())) {
+					signalStrength = sig.getSignalStrength();
+					break; //will jump out of inner for-loop
+				} 
+			} 
+			double diff = s.getSignalStrength() - signalStrength;
+			diff = diff*diff;
+			d += diff;	
 		}
 		
 		return Math.sqrt(d);
