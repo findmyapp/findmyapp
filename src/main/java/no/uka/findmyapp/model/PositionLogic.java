@@ -19,11 +19,6 @@ public class PositionLogic {
 	@Autowired
 	private PositionDataHandler data;
 	
-	/**
-	 * 
-	 * @param bssidList List of visible BSSIDs with level
-	 * @return current position
-	 */
 	public Room getCurrentPosition(Sample sample) {
 		
 		List<Sample> samples = data.getAllSamples();
