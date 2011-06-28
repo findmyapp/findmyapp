@@ -13,7 +13,7 @@ import no.uka.findmyapp.model.Room;
 /**
  * 
  * @author Cecilie Haugstvedt
- * @author Audun Sorheim
+ * @author Audun Sørheim
  */
 public class PositionRowMapper implements RowMapper<Room> {
 
