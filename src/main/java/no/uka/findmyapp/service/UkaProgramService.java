@@ -11,12 +11,13 @@ public class UkaProgramService {
 	private static final int maxED = 5;//maximum item edit distance to include from titleSearch
 	
 	public static UkaProgram titleSearch(String qry) {
-		//add all events in repo to prg
 		
-		//search for match:
 		if (qry.replace(" ", "").length() < 4) {//too short query return empty
 			return new UkaProgram();
 		}
+		//todo: add all events in repo to prg
+		
+		//search for match:
 		ArrayList<Event> prg = new ArrayList<Event>(); //for test
 		ArrayList<Event> retPrg = new ArrayList<Event>();
 		int index[] = new int[maxED]; //index for sorting

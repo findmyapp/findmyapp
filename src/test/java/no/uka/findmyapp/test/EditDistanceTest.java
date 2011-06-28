@@ -20,7 +20,7 @@ public class EditDistanceTest {
 		rsp = EditDistanceService.editDistance(str, qry, false, false);
 		assertEquals(0, rsp);
 		
-		qry = "cd ab efg";
+		qry = "cd ab   efg";
 		rsp = EditDistanceService.splitDistance(str, qry);
 		assertEquals(1, rsp);
 	}
