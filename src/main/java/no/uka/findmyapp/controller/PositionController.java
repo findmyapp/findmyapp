@@ -1,5 +1,9 @@
 package no.uka.findmyapp.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
@@ -27,7 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
-@RequestMapping(value = "/position")
 public class PositionController {
 
 	@Autowired
@@ -37,21 +40,22 @@ public class PositionController {
 			.getLogger(PositionController.class);
 	
 	//maps the URL with SSID asking for position to page showing name associated with that SSID
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public ModelAndView getPosition(@RequestBody Sample sample) {
-		logger.info("getPosition ( " + sample + " )");
+	@RequestMapping(value = "/position/", method = RequestMethod.POST)
+	public ModelAndView getPosition(@RequestBody Signal[] signals) {
+		logger.info("getPosition ( " + signals.length + " )");
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
 
-		Room room = service.getCurrentPosition(sample);
+		List<Signal> signalList = Arrays.asList(signals);
+		Room room = service.getCurrentPosition(signalList);
 		logger.info("getCurrentPosition ( " + room + " )");
-		mav.addObject("position", room); // model name, model object 
+		mav.addObject("room", room); // model name, model object 
 
 		return mav;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/sample")
-	public Sample getSample() {
+	@RequestMapping(value = "/position/sample")
+	public List<Signal> getSample() {
 		Signal signal = new Signal();
 		signal.setBssid("Strossa");
 		signal.setSignalStrength(5);
@@ -65,7 +69,7 @@ public class PositionController {
 		sample.getSignalList().add(signal);
 		sample.getSignalList().add(signal1);
 		sample.getSignalList().add(signal2);
-		return sample;
+		return sample.getSignalList();
 	}
 	
 	@SuppressWarnings("unused")

@@ -2,8 +2,12 @@ package no.uka.findmyapp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import no.uka.findmyapp.controller.PositionController;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.slf4j.LoggerFactory;
 
 /** Class for test points
  * 
@@ -12,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
  */
 @JsonAutoDetect
 public class Sample {
-	
+
 	private int Id;
 	private int roomId;
 	private List<Signal> signalList;
@@ -48,27 +52,25 @@ public class Sample {
 	
 	/** Calculates the Euclidean distance between the signal list of this sample (taken from the DB) and the signal list given in as a parameter. 
 	 * 
-	 * @param signalList list of signals detected by user
+	 * @param signals list of signals detected by user
 	 * @return Euclidean distance 
 	 */
-	public double getDistance(List<Signal> signalList){
-		
-		double d = 0;
-		List<Signal> databaseSignalList = this.signalList;
-		for (Signal s: databaseSignalList){ 
+	public double getDistance(List<Signal> signals){
+		double delta = 0;
+		for (Signal storedSignal : getSignalList()){ 
 			double signalStrength = -120; // use signal strength of -120dB if no signal from access point
-			for (Signal sig: signalList){
-				if (sig.getBssid().equals(s.getBssid())) {
-					signalStrength = sig.getSignalStrength();
+			for (Signal inputSignal : signals){
+				if (inputSignal.getBssid().equals(storedSignal.getBssid())) {
+					signalStrength = inputSignal.getSignalStrength();
 					break; //will jump out of inner for-loop
 				} 
 			} 
-			double diff = s.getSignalStrength() - signalStrength;
-			diff = diff*diff;
-			d += diff;	
+			double diff = storedSignal.getSignalStrength() - signalStrength;
+			diff *= diff;
+			delta += diff;	
 		}
 		
-		return Math.sqrt(d);
+		return Math.sqrt(delta);
 		
 	}
 

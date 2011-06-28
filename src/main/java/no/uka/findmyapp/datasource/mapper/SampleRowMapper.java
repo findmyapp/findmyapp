@@ -10,9 +10,9 @@ import org.springframework.jdbc.core.RowMapper;
 public class SampleRowMapper implements RowMapper<Sample> {
 
 	public Sample mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Sample signal = new Sample();
-		signal.setRoomId(rs.getInt("room_id"));
-		return signal;
+		Sample sample = new Sample();
+		sample.setRoomId(rs.getInt("room_id"));
+		return sample;
 	}
 
 }
