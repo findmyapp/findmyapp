@@ -1,14 +1,11 @@
 package no.uka.findmyapp.controller;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.UkaProgram;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,26 +58,21 @@ public class UkaProgramController {
 		return new ModelAndView("home", "program", g.toJson(program));
 	}
 	
-	/* THIS ONE IS NEW: UNDER CONSTRUCTION
-	@RequestMapping(value = "/program/{aar}/steder", method = RequestMethod.GET)
+	// THIS ONE IS NEW: UNDER CONSTRUCTION
+	@RequestMapping(value = "/program/{aar}/places", method = RequestMethod.GET)
 	// We do not use aar
-	public ModelAndView getUkaProgramSteder(){
-		UkaProgram program;
-		if (dato==null) {
-			// Use fra til
-			logger.info("getUkaProgramForFra ( " + fra + " ) og Til ( " + til + " )");
-			program = data.getUkaProgram(fra, til);	
-		}
-		else {
-			// Use dato
-			logger.info("getUkaProgramForDate ( " + dato + " )");
-			program = data.getUkaProgram(dato);			
-		}
+	public ModelAndView getUkaProgramPlaces(){
+		List<String> places;
+		//places = new List<String>();
+		
+		logger.info("getUkaProgramPlaces");
+		
+		places = data.getUkaPlaces();
 		
 		Gson g = new Gson();
-		return new ModelAndView("home", "program", g.toJson(program));
+		return new ModelAndView("places", "places", g.toJson(places));
 	}
-	*/
+	
 
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)

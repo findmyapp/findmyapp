@@ -42,5 +42,12 @@ public class UkaProgramRepository {
 		  UkaProgram ukaProgram = new UkaProgram(eventList);
 		  return ukaProgram;
 		 }
+	
+	public List<String> getUkaPlaces(){
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<String> places;
+		places = jdbcTemplate.queryForList("SELECT DISTINCT place FROM event_showing_real", String.class);
+		return places;
+	}
 
 }
