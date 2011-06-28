@@ -12,6 +12,16 @@ public class Sample {
 	public int roomID;
 	public List<Signal> signalList;
 	
+	public Sample() {
+		super();
+	}
+
+	public Sample(int roomID, List<Signal> signalList) {
+		super();
+		this.roomID = roomID;
+		this.signalList = signalList;
+	}
+	
 	public int getRoomID() {
 		return roomID;
 	}
@@ -41,7 +51,7 @@ public class Sample {
 		
 	}
 	
-	/** Calculates the Euclidean distance betwwen the signal list of this sample and the signal list given in as a parameter. 
+	/** Calculates the Euclidean distance between the signal list of this sample taken from the DB and the signal list given in as a parameter. 
 	 * 
 	 * @param signalList list of signals detected by user
 	 * @return Euclidean distance 
@@ -49,17 +59,18 @@ public class Sample {
 	public double getDistance(List<Signal> signalList){
 		
 		double d = 0;
-		
-		//TODO: have to iterate over list from database instead
-		for (Signal s: signalList){
-			Signal sig = this.getSignal(s.getBssid());
-			if (sig != null){
-				double diff = s.getLevel() - sig.getLevel();
-				diff = diff*diff;
-				d += diff;
-			} else {
-				d += 1000; // max difference when signal not visible
-			}
+		List<Signal> databaseSignalList = this.signalList;
+		for (Signal s: databaseSignalList){ 
+			double signalStrength = -120; // use signal strength of -120dB if no signal from access point
+			for (Signal sig: signalList){
+				if (sig.getBssid().equals(s.getBssid())) {
+					signalStrength = sig.getLevel();
+					break; //will jump out of inner for-loop
+				} 
+			} 
+			double diff = s.getLevel() - signalStrength;
+			diff = diff*diff;
+			d += diff;	
 		}
 		
 		return java.lang.Math.sqrt(d);
