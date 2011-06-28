@@ -1,10 +1,7 @@
 package no.uka.findmyapp.service;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-
 import java.util.List;
 
-import no.uka.findmyapp.controller.PositionController;
 import no.uka.findmyapp.datasource.PositionDataRepository;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
