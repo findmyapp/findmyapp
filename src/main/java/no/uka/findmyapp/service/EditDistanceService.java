@@ -1,11 +1,8 @@
 package no.uka.findmyapp.service;
 
-public class EditDistance {
+public class EditDistanceService {
 	/*
-	 * Metodene finner minste redigeringsdistanse fra str og qry.
-	 * SplitDistance splitter qry på mellomrom, og legger sammen redigeringsavstander
-	 * for hver substring i qry. Parameteret fromStart avgjør om qry må matches fra starten av str,
-	 * og toEnd om inserts etter slutten av qry skal tas hensyn til
+	 * 
 	 */
 	public static int splitDistance(String str, String qry) {
 		int n = 0;

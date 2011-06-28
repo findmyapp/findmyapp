@@ -23,7 +23,7 @@ public class UkaProgramService {
 		
 		int ED;
 		for (int i = prg.size(); i >= 0; --i) {
-			ED = EditDistance.splitDistance(prg.get(i).getTitle(), qry);
+			ED = EditDistanceService.splitDistance(prg.get(i).getTitle(), qry);
 			if (ED < maxED) {
 				retPrg.add(index[ED], prg.get(i));
 				for (int j = ED; j < maxED; j++) {
