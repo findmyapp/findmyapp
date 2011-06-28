@@ -1,36 +1,46 @@
 package no.uka.findmyapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 /** Class for test points
  * 
  * @author Cecilie Haugstvedt
  *
  */
+@JsonAutoDetect
 public class Sample {
 	
-	public int roomID;
-	public List<Signal> signalList;
+	private int Id;
+	private int roomId;
+	private List<Signal> signalList;
 	
 	public Sample() {
-		super();
-	}
-
-	public Sample(int roomID, List<Signal> signalList) {
-		super();
-		this.roomID = roomID;
-		this.signalList = signalList;
+		signalList = new ArrayList<Signal>();
 	}
 	
-	public int getRoomID() {
-		return roomID;
+	public int getId() {
+		return Id;
 	}
-	public void setRoomID(int roomID) {
-		this.roomID = roomID;
+
+	public void setId(int Id) {
+		this.Id = Id;
 	}
+
+	public int getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
+	
 	public List<Signal> getSignalList() {
 		return signalList;
 	}
+
 	public void setSignalList(List<Signal> signalList) {
 		this.signalList = signalList;
 	}
@@ -49,16 +59,16 @@ public class Sample {
 			double signalStrength = -120; // use signal strength of -120dB if no signal from access point
 			for (Signal sig: signalList){
 				if (sig.getBssid().equals(s.getBssid())) {
-					signalStrength = sig.getLevel();
+					signalStrength = sig.getSignalStrength();
 					break; //will jump out of inner for-loop
 				} 
 			} 
-			double diff = s.getLevel() - signalStrength;
+			double diff = s.getSignalStrength() - signalStrength;
 			diff = diff*diff;
 			d += diff;	
 		}
 		
-		return java.lang.Math.sqrt(d);
+		return Math.sqrt(d);
 		
 	}
 
