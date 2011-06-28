@@ -43,6 +43,17 @@ public class UkaProgramRepository {
 		  return ukaProgram;
 		 }
 	
+	public UkaProgram getUkaProgram(){
+		  JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+	    	  List<Event> eventList = jdbcTemplate.query(
+		    "SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
+		    new EventRowMapper());
+		  
+		  UkaProgram ukaProgram = new UkaProgram(eventList);
+		  return ukaProgram;
+	}
+	
+	
 	public List<String> getUkaPlaces(){
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<String> places;
