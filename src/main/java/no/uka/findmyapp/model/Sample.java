@@ -35,23 +35,8 @@ public class Sample {
 		this.signalList = signalList;
 	}
 	
-	/** 
-	 * 
-	 * @param bssid
-	 * @return the signal in the samples signallist with this bssid or null if no such signal exists.
-	 */
-	public Signal getSignal(String bssid){
-		
-		for (Signal s: signalList){
-			if (s.getBssid().equals(bssid)) {
-				return s;
-			}
-		}
-		return null;
-		
-	}
 	
-	/** Calculates the Euclidean distance between the signal list of this sample taken from the DB and the signal list given in as a parameter. 
+	/** Calculates the Euclidean distance between the signal list of this sample (taken from the DB) and the signal list given in as a parameter. 
 	 * 
 	 * @param signalList list of signals detected by user
 	 * @return Euclidean distance 
