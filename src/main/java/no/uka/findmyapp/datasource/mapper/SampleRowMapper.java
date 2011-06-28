@@ -11,6 +11,7 @@ public class SampleRowMapper implements RowMapper<Sample> {
 
 	public Sample mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Sample sample = new Sample();
+		sample.setId(rs.getInt("id"));
 		sample.setRoomId(rs.getInt("room_id"));
 		return sample;
 	}
