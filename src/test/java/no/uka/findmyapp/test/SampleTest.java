@@ -26,7 +26,7 @@ public class SampleTest {
 		signals = new ArrayList<Signal>();
 		signals.add(s1);
 		signals.add(s2);
-		sample.setRoomID(4);
+		sample.setRoomId(4);
 		sample.setSignalList(signals); 
     }
  

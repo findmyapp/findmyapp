@@ -1,22 +1,39 @@
 package no.uka.findmyapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 /** Class for test points
  * 
  * @author Cecilie Haugstvedt
  *
  */
+@JsonAutoDetect
 public class Sample {
 	
-	public int roomID;
-	public List<Signal> signalList;
+	private int Id;
+	private int roomId;
+	private List<Signal> signalList;
 	
-	public int getRoomID() {
-		return roomID;
+	public Sample() {
+		signalList = new ArrayList<Signal>();
 	}
-	public void setRoomID(int roomID) {
-		this.roomID = roomID;
+	
+	public int getId() {
+		return Id;
+	}
+
+	public void setId(int Id) {
+		this.Id = Id;
+	}
+
+	public int getRoomId() {
+		return roomId;
+	}
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 	public List<Signal> getSignalList() {
 		return signalList;
@@ -27,13 +44,13 @@ public class Sample {
 	
 	/** 
 	 * 
-	 * @param bssid
-	 * @return the signal in the samples signallist with this bssid or null if no such signal exists.
+	 * @param Bssid
+	 * @return the signal in the samples signallist with this Bssid or null if no such signal exists.
 	 */
-	public Signal getSignal(String bssid){
+	public Signal getSignal(String Bssid){
 		
 		for (Signal s: signalList){
-			if (s.getBssid().equals(bssid)) {
+			if (s.getBssid().equals(Bssid)) {
 				return s;
 			}
 		}
@@ -41,19 +58,19 @@ public class Sample {
 		
 	}
 	
-	/** Calculates the Euclidean distance betwwen the signal list of this sample and the signal list given in as a parameter. 
+	/** Calculates the EuclIdean distance betwwen the signal list of this sample and the signal list given in as a parameter. 
 	 * 
 	 * @param signalList 
-	 * @return Euclidean distance 
+	 * @return EuclIdean distance 
 	 */
 	public double getDistance(List<Signal> signalList){
 		
 		double d = 0;
 		
-		for (Signal s: signalList){
+		for (Signal s : signalList){
 			Signal sig = this.getSignal(s.getBssid());
 			if (sig != null){
-				double diff = s.getLevel() - sig.getLevel();
+				double diff = s.getSignalStrength() - sig.getSignalStrength();
 				diff = diff*diff;
 				d += diff;
 			} else {
@@ -61,7 +78,7 @@ public class Sample {
 			}
 		}
 		
-		return java.lang.Math.sqrt(d);
+		return Math.sqrt(d);
 		
 	}
 
