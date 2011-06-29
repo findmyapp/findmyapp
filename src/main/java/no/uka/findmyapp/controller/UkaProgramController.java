@@ -3,7 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.Date;
 import java.util.List;
 
-import no.uka.findmyapp.datasource.UkaProgramRepository;
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.service.UkaProgramService;
 
@@ -29,9 +29,6 @@ import com.google.gson.Gson;
 public class UkaProgramController {
 
 	@Autowired
-	private UkaProgramRepository data; //Remove later
-
-	@Autowired
 	private UkaProgramService ukaProgramService;
 
 
@@ -47,39 +44,25 @@ public class UkaProgramController {
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
-			@RequestParam(required=false) Boolean all){
+			@RequestParam(required=false) Boolean all,
+			@RequestParam(required=false) String place){
 		UkaProgram program = new UkaProgram();
 		
-		if (date!=null) {			
-			// Use dato
-			logger.info("getUkaProgramForDate ( " + date + " )");
-			program = data.getUkaProgram(date);		
 
-		}else if(from != null && to != null) {
-			// Use fra til
-			logger.info("getUkaProgramForFrom ( " + from + " ) and to ( " + to + " )");
-			program = data.getUkaProgram(from, to);	
-
-		}else if(all != null && all) {
-			logger.info("getUkaProgram");
+			logger.info("getUkaProgram - new");
+			program = ukaProgramService.getUkaProgram(date, from, to, all, place);	
 			
-			program = ukaProgramService.getUkaProgram();	
-			
-		}else{
-			logger.info("unhandled exception 624358123478623784. Should return 400");
-			return null;
-		}
-
-		Gson g = new Gson();
-		return new ModelAndView("home", "program", g.toJson(program));
+			Gson g = new Gson();
+			return new ModelAndView("home", "program", g.toJson(program));
+	
 	}
 
-	@RequestMapping(value = "/program/{aar}/places", method = RequestMethod.GET)
-	// We do not use aar
+	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
+	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(){
 		List<String> places;
 		logger.info("getUkaProgramPlaces");
-		places = data.getUkaPlaces();
+		places = ukaProgramService.getUkaPlaces();
 
 		Gson g = new Gson();
 		return new ModelAndView("places", "places", g.toJson(places));
@@ -95,6 +78,30 @@ public class UkaProgramController {
 		//data.insertUkaProgram(date);
 	}
 
+	
+	
+	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getUkaEventById(
+			@PathVariable int id){
+		Event event;
+		logger.info("getUkaEventById");
+		event = ukaProgramService.getUkaEventById(id);
+
+		Gson g = new Gson();
+		return new ModelAndView("event", "event", g.toJson(event));
+	}
+
+	
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler
+	public void handleIllegalArgumentException(
+			IllegalArgumentException ex) {
+		logger.info("handleIllegalArgumentException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
@@ -103,5 +110,5 @@ public class UkaProgramController {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
-
 }
+

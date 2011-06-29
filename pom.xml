@@ -161,14 +161,14 @@
 			<artifactId>hsqldb</artifactId>
 			<version>2.2.4</version>
 		</dependency>
-		
+
 		<!-- GSON -->
 		<dependency>
-    		<groupId>com.google.code.gson</groupId>
-    		<artifactId>gson</artifactId>
-    		<version>1.7.1</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
 		</dependency>
-		
+
 
 	</dependencies>
 
@@ -195,6 +195,13 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<!-- REST testing -->
+		<pluginRepository>
+			<id>eviwarePluginRepository</id>
+			<url>http://www.eviware.com/repository/maven2/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -209,7 +216,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warName>findmyapp</warName>
+					<warName>${project.name}</warName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -239,6 +246,24 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<version>1.0-beta-1</version>
+				<configuration>
+					<warFile>${project.build.directory}/${project.name}.war</warFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>eviware</groupId>
+				<artifactId>maven-soapui-plugin</artifactId>
+				<version>4.0.0</version>
+				<configuration>
+					<projectFile>${basedir}/src/test/soapui/findmyapp-soapui-project.xml</projectFile>
+					<outputFolder>${project.build.directory}/soapui-logs</outputFolder>
+					<soapuiProperties>
+						<property>
+							<name>soapui.logroot</name>
+							<value>${project.build.directory}/soapui-logs/</value>
+						</property>
+					</soapuiProperties>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
