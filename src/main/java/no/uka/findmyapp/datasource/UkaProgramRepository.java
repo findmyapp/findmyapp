@@ -20,40 +20,35 @@ public class UkaProgramRepository {
 
 	@Autowired
 	private DataSource ds;
-	
+
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
 
 
 	public UkaProgram getUkaProgram(Date day) {
-		  Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
-		  return getUkaProgram(day, endDate);
-		 }
-		 
-	public UkaProgram getUkaProgram(Date startDate, Date endDate) {
-		  JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		  Object args[] = new Object[2];
-		  args[0] = startDate;
-		  args[1] = endDate;
-		  List<Event> eventList = jdbcTemplate.query(
-		    "SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
-		    new EventRowMapper(),startDate, endDate  );
-		  
-		  UkaProgram ukaProgram = new UkaProgram(eventList);
-		  return ukaProgram;
-		 }
-	
-	public UkaProgram getUkaProgram(){
-		  JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-	    	  List<Event> eventList = jdbcTemplate.query(
-		    "SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
-		    new EventRowMapper());
-		  
-		  UkaProgram ukaProgram = new UkaProgram(eventList);
-		  return ukaProgram;
+		Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
+		return getUkaProgram(day, endDate);
 	}
-	
-	
+
+	public UkaProgram getUkaProgram(Date startDate, Date endDate) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
+				new EventRowMapper(),startDate, endDate  );
+
+		UkaProgram ukaProgram = new UkaProgram(eventList);
+		return ukaProgram;
+	}
+
+	public List<Event> getUkaProgram(){
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
+				new EventRowMapper());
+		return eventList;
+	}
+
+
 	public List<String> getUkaPlaces(){
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<String> places;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,14 @@ import com.google.gson.Gson;
 public class UkaProgramController {
 
 	@Autowired
-	private UkaProgramRepository data;
+	private UkaProgramRepository data; //Remove later
+
+	@Autowired
+	private UkaProgramService ukaProgramService;
+
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(UkaProgramController.class);
+	.getLogger(UkaProgramController.class);
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -41,55 +46,52 @@ public class UkaProgramController {
 	public ModelAndView getUkaProgramForDate(
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
-	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
-	    	@RequestParam(required=false) Boolean all){
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
+			@RequestParam(required=false) Boolean all){
 		UkaProgram program = new UkaProgram();
+		
 		if (date!=null) {			
 			// Use dato
 			logger.info("getUkaProgramForDate ( " + date + " )");
 			program = data.getUkaProgram(date);		
-			
-		}
-		else if(from != null && to != null) {
+
+		}else if(from != null && to != null) {
 			// Use fra til
 			logger.info("getUkaProgramForFrom ( " + from + " ) and to ( " + to + " )");
 			program = data.getUkaProgram(from, to);	
-					
-		}
-		else if(all != null && all) {
-			logger.info("getUkaProgram");
-			program = data.getUkaProgram();	
-		} else{
 
-		logger.info("unhandled exception 624358123478623784. Should return 400");
-		return null;
+		}else if(all != null && all) {
+			logger.info("getUkaProgram");
+			
+			program = ukaProgramService.getUkaProgram();	
+			
+		}else{
+			logger.info("unhandled exception 624358123478623784. Should return 400");
+			return null;
 		}
-		
+
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
 	}
-	
+
 	@RequestMapping(value = "/program/{aar}/places", method = RequestMethod.GET)
 	// We do not use aar
 	public ModelAndView getUkaProgramPlaces(){
 		List<String> places;
-		//places = new List<String>();
-		
 		logger.info("getUkaProgramPlaces");
-		
 		places = data.getUkaPlaces();
-		
+
 		Gson g = new Gson();
 		return new ModelAndView("places", "places", g.toJson(places));
 	}
-	
+
 
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
 		logger.info("insertUkaProgramForDate ( " + date + " )");
-		
+
 		//data.insertUkaProgram(date);
 	}
 
