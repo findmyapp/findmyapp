@@ -1,1 +1,1 @@
-{"arduino":${arduino}}
+{"Temperature":${temperature}} 

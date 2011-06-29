@@ -5,10 +5,9 @@ import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import no.uka.findmyapp.controller.sensor.ArduinoController;
 import no.uka.findmyapp.datasource.AppStoreRepository;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
-import no.uka.findmyapp.model.Arduino;
+
 import no.uka.findmyapp.model.AppStore.App;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;

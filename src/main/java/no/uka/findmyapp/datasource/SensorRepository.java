@@ -1,12 +1,16 @@
 package no.uka.findmyapp.datasource;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
-import no.uka.findmyapp.model.Arduino;
+import no.uka.findmyapp.datasource.mapper.SensorTemperatureRowMapper;
+import no.uka.findmyapp.model.Temperature;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,18 +21,47 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class SensorRepository {
+	
 	@Autowired
 	private DataSource ds;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(SensorRepository.class);
 	
-	public Arduino getSensorData(){//Dummy metode for koding av Controller
-		Arduino ad = new Arduino();
-		ad.setSensor("Her skal sensor stå");
-		ad.setLocation("Her skal location stå");
-		ad.setValue(0);
+	/**
+	 * Method to receive sensor data stored in database.
+	 * 
+	 * @return
+	 */
+	public List<Temperature> getTemperatureData(String location){
 		
-		return ad;
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		  
+		
+		List<Temperature> temperatureList = jdbcTemplate.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ?", new SensorTemperatureRowMapper(), location);
+		logger.info("received temperature list");
+		
+		
+		return temperatureList;
+	}
+	
+	/**
+	 * Method to save sensor data received from Arduino.
+	 * 
+	 * @return
+	 */
+	public Temperature setTemperatureData(String location, float value){ 
+		
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		  
+		jdbcTemplate.execute("INSERT INTO SENSOR_TEMPERATURE (location, value) VALUES ('" + location + "', "+value+")");
+		
+		Temperature temperature = new Temperature();
+		temperature.setLocation(location);
+		temperature.setValue(value);
+		
+		logger.info("Data logged: " + temperature.toString());
+		
+		return temperature;
 	}
 }
