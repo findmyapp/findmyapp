@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 public class UkaProgramController {
@@ -52,7 +53,9 @@ public class UkaProgramController {
 			logger.info("getUkaProgram - new");
 			program = ukaProgramService.getUkaProgram(date, from, to, all, place);	
 			
-			Gson g = new Gson();
+			GsonBuilder builder = new GsonBuilder();
+			builder.setDateFormat("yyyy-MM-dd HH:mm");
+			Gson g = builder.create();
 			return new ModelAndView("home", "program", g.toJson(program));
 	
 	}
@@ -65,7 +68,9 @@ public class UkaProgramController {
 			logger.info("searchForUkaProgramByName");
 			program = ukaProgramService.titleSearch(eventName);	
 			
-			Gson g = new Gson();
+			GsonBuilder builder = new GsonBuilder();
+			builder.setDateFormat("yyyy-MM-dd HH:mm");
+			Gson g = builder.create();
 			return new ModelAndView("home", "program", g.toJson(program));
 	}
 
@@ -77,7 +82,9 @@ public class UkaProgramController {
 		logger.info("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces();
 
-		Gson g = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd HH:mm");
+		Gson g = builder.create();
 		return new ModelAndView("places", "places", g.toJson(places));
 	}
 
@@ -101,7 +108,9 @@ public class UkaProgramController {
 		logger.info("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(id);
 
-		Gson g = new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd HH:mm");
+		Gson g = builder.create();
 		return new ModelAndView("event", "event", g.toJson(event));
 	}
 
