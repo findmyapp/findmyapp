@@ -3,7 +3,7 @@ package no.uka.findmyapp.model.AppStore;
 import java.net.URI;
 import java.util.List;
 
-public class UkaApp {
+public class Application {
 	private String name;
 	private URI androidMarketUri;
 	private URI thumbImage;
