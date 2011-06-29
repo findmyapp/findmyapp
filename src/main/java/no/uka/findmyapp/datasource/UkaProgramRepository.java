@@ -28,7 +28,7 @@ public class UkaProgramRepository {
 	public UkaProgram getUkaProgram(Date day) {
 		  Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
 		  return getUkaProgram(day, endDate);
-		 }
+	}
 		 
 	public UkaProgram getUkaProgram(Date startDate, Date endDate) {
 		  JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);

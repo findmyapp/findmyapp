@@ -7,6 +7,10 @@ public class User {
 	
 	public User() {}
 	
+	public User(String facebookId) {
+		this.facebookUserId = facebookId; 
+	}
+	
 	public User(String facebookId, String localId) {
 		this.facebookUserId = facebookId; 
 		this.localUserId = localId; 
