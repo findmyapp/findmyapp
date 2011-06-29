@@ -55,4 +55,8 @@ public class PositionService {
 		
 		return (bestPosition != -1 ? data.getRoom(bestPosition) : null);
 	}
+	
+	public boolean registerSample(Sample sample) {
+		return data.registerSample(sample);
+	}
 }

@@ -2,28 +2,31 @@ CREATE table program(id integer IDENTITY PRIMARY KEY, day date);
 INSERT into program(day) values('2010-01-01');
 INSERT into program(day) values('2010-02-05');
 
-CREATE table position(id integer IDENTITY PRIMARY KEY, name varchar(20), ssid varchar(20));
-INSERT into position(name, ssid) values('Strossa', 'strossa');
-INSERT into position(name, ssid) values('Storsalen', 'storsalen');
-
 CREATE table room(id integer IDENTITY PRIMARY KEY, name varchar(20));
+
+CREATE table accesspoint(id varchar(255) PRIMARY KEY);
 
 CREATE table sample(id integer IDENTITY PRIMARY KEY, room_id integer,
  FOREIGN KEY (room_id) REFERENCES room(id));
 
-CREATE table signal(id integer IDENTITY PRIMARY KEY, bssid varchar(255), signalstrength integer, sample_id integer);
+CREATE table signal(id integer IDENTITY PRIMARY KEY, bssid varchar(255), signalstrength integer, sample_id integer,
+ FOREIGN KEY (sample_id) REFERENCES sample(id),
+ FOREIGN KEY (bssid) REFERENCES accesspoint(id));
  
 -- INSERT into room
 INSERT into room(name) values('Strossa');
 INSERT into room(name) values('Storsalen');
+-- INSERT into accesspoint
+INSERT into accesspoint(id) values('strossa');
+INSERT into accesspoint(id) values('storsalen');
 -- INSERT into sample
-INSERT into sample(id, room_id) values(0, 0);
-INSERT into sample(id, room_id) values(1, 1);
+INSERT into sample(room_id) values(0);
+INSERT into sample(room_id) values(1);
 -- INSERT into signal
-INSERT into signal(id, bssid, signalstrength, sample_id) values(0,'strossa', -30, 0);
-INSERT into signal(id, bssid, signalstrength, sample_id) values(1,'storsalen', -75, 0);
-INSERT into signal(id, bssid, signalstrength, sample_id) values(2,'strossa', -80, 1);
-INSERT into signal(id, bssid, signalstrength, sample_id) values(3,'storsalen', -20, 1);
+INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -30, 0);
+INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -75, 0);
+INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -80, 1);
+INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -20, 1);
 
 CREATE table event_showing_real(
 	id integer IDENTITY PRIMARY KEY,
@@ -40,13 +43,13 @@ CREATE table event_showing_real(
 );
 INSERT into event_showing_real values(
 	11,
-	'2011-10-03 00:00:00',
-	'2011-10-01 00:00:00',
+	'2011-10-03 13:37:00',
+	'2011-10-01 11:37:00',
 	'Samfundet',
 	0,
 	1,
-	'2011-10-01 00:00:00',
-	'2011-10-21 00:00:00',
+	'2011-10-01 11:37:00',
+	'2011-10-21 11:37:00',
 	false,
 	false,
 	2222
@@ -57,7 +60,7 @@ INSERT into event_showing_real values(
 	'2011-10-07 00:00:00',
 	'Dodens dal',
 	0,
-	1,
+	2,
 	'2011-10-01 00:00:00',
 	'2011-10-07 00:00:00',
 	false,

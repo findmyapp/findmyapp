@@ -24,17 +24,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 public class UkaProgramController {
 
 	@Autowired
 	private UkaProgramService ukaProgramService;
-
+	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramController.class);
-
+	
+	public UkaProgramController() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd HH:mm");
+		gson = builder.create();
+	}
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -52,10 +59,21 @@ public class UkaProgramController {
 			logger.info("getUkaProgram - new");
 			program = ukaProgramService.getUkaProgram(date, from, to, all, place);	
 			
-			Gson g = new Gson();
-			return new ModelAndView("home", "program", g.toJson(program));
+			return new ModelAndView("home", "program", gson.toJson(program));
 	
 	}
+	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getUkaProgramForDate(
+			@RequestParam(required=false) String eventName){
+		UkaProgram program = new UkaProgram();
+		
+			logger.info("searchForUkaProgramByName");
+			program = ukaProgramService.titleSearch(eventName);	
+			
+			return new ModelAndView("home", "program", gson.toJson(program));
+	}
+
 
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	// We do not use ukaYear
@@ -64,8 +82,7 @@ public class UkaProgramController {
 		logger.info("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces();
 
-		Gson g = new Gson();
-		return new ModelAndView("places", "places", g.toJson(places));
+		return new ModelAndView("places", "places", gson.toJson(places));
 	}
 
 
@@ -88,8 +105,7 @@ public class UkaProgramController {
 		logger.info("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(id);
 
-		Gson g = new Gson();
-		return new ModelAndView("event", "event", g.toJson(event));
+		return new ModelAndView("event", "event", gson.toJson(event));
 	}
 
 	

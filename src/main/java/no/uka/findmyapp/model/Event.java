@@ -1,18 +1,19 @@
 package no.uka.findmyapp.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 @JsonAutoDetect
 public class Event {
 	private int id;
-	private Date showingTime;
-	private Date publishTime;
+	private Timestamp showingTime;
+	private Timestamp publishTime;
 	private String place;
 	private int billigId;
 	private int eventId;
-	private Date netsaleFrom;
-	private Date netsaleTo;
+	private Timestamp netsaleFrom;
+	private Timestamp netsaleTo;
 	private boolean free;
 	private boolean canceled;
 	private int entranceId;
@@ -33,16 +34,16 @@ public class Event {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getShowingTime() {
+	public Timestamp getShowingTime() {
 		return showingTime;
 	}
-	public void setShowingTime(Date showingTime) {
+	public void setShowingTime(Timestamp showingTime) {
 		this.showingTime = showingTime;
 	}
-	public Date getPublishTime() {
+	public Timestamp getPublishTime() {
 		return publishTime;
 	}
-	public void setPublishTime(Date publishTime) {
+	public void setPublishTime(Timestamp publishTime) {
 		this.publishTime = publishTime;
 	}
 	public String getPlace() {
@@ -63,16 +64,16 @@ public class Event {
 	public void setEventId(int eventId) {
 		this.eventId = eventId;
 	}
-	public Date getNetsaleFrom() {
+	public Timestamp getNetsaleFrom() {
 		return netsaleFrom;
 	}
-	public void setNetsaleFrom(Date netsaleFrom) {
+	public void setNetsaleFrom(Timestamp netsaleFrom) {
 		this.netsaleFrom = netsaleFrom;
 	}
-	public Date getNetsaleTo() {
+	public Timestamp getNetsaleTo() {
 		return netsaleTo;
 	}
-	public void setNetsaleTo(Date netsaleTo) {
+	public void setNetsaleTo(Timestamp netsaleTo) {
 		this.netsaleTo = netsaleTo;
 	}
 	public boolean isFree() {
