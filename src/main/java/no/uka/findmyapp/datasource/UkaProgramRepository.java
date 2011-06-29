@@ -20,37 +20,51 @@ public class UkaProgramRepository {
 
 	@Autowired
 	private DataSource ds;
-	
+
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
 
-
-	public UkaProgram getUkaProgram(Date day) {
-		  Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
-		  return getUkaProgram(day, endDate);
+	public List<Event> getUkaProgram(Date day) {
+		Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
+		return getUkaProgram(day, endDate);
 	}
-		 
-	public UkaProgram getUkaProgram(Date startDate, Date endDate) {
-		  JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		  Object args[] = new Object[2];
-		  args[0] = startDate;
-		  args[1] = endDate;
-		  List<Event> eventList = jdbcTemplate.query(
-		    "SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
-		    new EventRowMapper(),startDate, endDate  );
-		  
-		  UkaProgram ukaProgram = new UkaProgram(eventList);
-		  return ukaProgram;
-		 }
+
+	public List<Event> getUkaProgram(Date day, String place) {
+		Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
+		return getUkaProgram(day, endDate, place);
+	}
 	
-	public UkaProgram getUkaProgram(){
-		  JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-	    	  List<Event> eventList = jdbcTemplate.query(
-		    "SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
-		    new EventRowMapper());
-		  
-		  UkaProgram ukaProgram = new UkaProgram(eventList);
-		  return ukaProgram;
+	public List<Event> getUkaProgram(Date startDate, Date endDate) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
+				new EventRowMapper(),startDate, endDate  );
+
+		return eventList;
+	}
+	public List<Event> getUkaProgram(Date startDate, Date endDate, String place) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=? AND place =?",
+				new EventRowMapper(),startDate, endDate , place );
+
+		return eventList;
+	}
+
+	public List<Event> getUkaProgram(){
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
+				new EventRowMapper());
+		return eventList;
+	}
+
+	public List<Event> getUkaProgram(String place){
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<Event> eventList = jdbcTemplate.query(
+				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND place = ?",
+				new EventRowMapper(), place);
+		return eventList;
 	}
 	
 	
@@ -60,5 +74,13 @@ public class UkaProgramRepository {
 		places = jdbcTemplate.queryForList("SELECT DISTINCT place FROM event_showing_real", String.class);
 		return places;
 	}
-
+	
+	public Event getUkaEventById(int id){
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		Event event;
+		logger.info("logH 1");
+		event = jdbcTemplate.queryForObject ("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND s.id=?", new EventRowMapper(),id);
+		logger.info("logH 2");
+		return event;
+	}
 }

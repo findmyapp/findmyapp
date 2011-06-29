@@ -53,7 +53,18 @@ public class PositionController {
 		return mav;
 	}
 	
-	@ResponseBody
+	@RequestMapping(value = "/registerSample/", method = RequestMethod.POST)
+	public ModelAndView registerSample(@RequestBody Sample sample) {
+		ModelAndView mav = new ModelAndView("regsample");
+		boolean regSample = service.registerSample(sample);
+		logger.info("registerSample ( " + regSample + " )");
+		mav.addObject("regSample", regSample); // model name, model object
+		
+		return mav;
+	}
+		
+	
+	/*@ResponseBody
 	@RequestMapping(value = "/position/sample")
 	public List<Signal> getSample() {
 		Signal signal = new Signal();
@@ -70,7 +81,7 @@ public class PositionController {
 		sample.getSignalList().add(signal1);
 		sample.getSignalList().add(signal2);
 		return sample.getSignalList();
-	}
+	}*/
 	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

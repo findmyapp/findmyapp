@@ -3,4 +3,5 @@ target/
 .settings
 .project
 .settings/
+global-groovy.log
 credentials.properties

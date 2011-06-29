@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 @JsonAutoDetect
 public class Sample {
-
+	
 	private int Id;
 	private int roomId;
 	private List<Signal> signalList;
