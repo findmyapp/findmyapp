@@ -6,14 +6,14 @@ public class AppStoreList {
 	private ListType listType;
 	private int requestCount;
 	private int listCount;
-	private List<UkaApp> appList;
+	private List<App> appList;
 	private Platform platform;
 	
 	public AppStoreList() {
 		
 	}
 	
-	public AppStoreList(List<UkaApp> appList) {
+	public AppStoreList(List<App> appList) {
 		this.setAppList(appList);
 	}
 	
@@ -35,10 +35,10 @@ public class AppStoreList {
 	public void setListCount(int listCount) {
 		this.listCount = listCount;
 	}
-	public List<UkaApp> getAppList() {
+	public List<App> getAppList() {
 		return appList;
 	}
-	public void setAppList(List<UkaApp> appList) {
+	public void setAppList(List<App> appList) {
 		this.appList = appList;
 	}
 	public Platform getPlatform() {

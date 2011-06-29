@@ -9,10 +9,10 @@ import no.uka.findmyapp.controller.sensor.ArduinoController;
 import no.uka.findmyapp.datasource.AppStoreRepository;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.Arduino;
+import no.uka.findmyapp.model.AppStore.App;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;
 import no.uka.findmyapp.model.AppStore.Platform;
-import no.uka.findmyapp.model.AppStore.UkaApp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class AppStoreController {
 	
 		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
 		
-		List<UkaApp> appList = new LinkedList<UkaApp>();
+		List<App> appList = new LinkedList<App>();
 		
 		appList.add(generateDemoApp());
 		
@@ -80,8 +80,8 @@ public class AppStoreController {
 		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
 	}
 	
-	private UkaApp generateDemoApp() throws URISyntaxException {
-		UkaApp ukaApp = new UkaApp();
+	private App generateDemoApp() throws URISyntaxException {
+		App ukaApp = new App();
 		ukaApp.setName("demoApp");
 		ukaApp.setAndroidMarketUri(new URI("https://market.android.com/details?id=com.playcreek.DeathWorm&feature=featured-apps"));
 		

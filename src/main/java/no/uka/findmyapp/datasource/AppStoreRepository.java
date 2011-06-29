@@ -11,10 +11,10 @@ import javax.sql.DataSource;
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.Sample;
+import no.uka.findmyapp.model.AppStore.App;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;
 import no.uka.findmyapp.model.AppStore.Platform;
-import no.uka.findmyapp.model.AppStore.UkaApp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,12 +64,12 @@ public class AppStoreRepository {
 		return appStoreList;
 	}
 	
-	public UkaApp addUkaApp() {
+	public App addUkaApp() {
 		//TODO
 		return null;
 	}
 	
-	public UkaApp updateUkaApp() {
+	public App updateUkaApp() {
 		//TODO
 		return null;
 	}
