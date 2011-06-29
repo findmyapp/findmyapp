@@ -43,9 +43,17 @@ public class SampleTest {
 		dbSignals3.add(s8);
 		dbSignals3.add(s9);
 		
-		dbSample1 = new Sample(1,dbSignals1);
-		dbSample2 = new Sample(2,dbSignals2);
-		dbSample3 = new Sample(3,dbSignals3);
+		dbSample1 = new Sample();
+		dbSample1.setRoomId(1);
+		dbSample1.setSignalList(dbSignals1);
+		
+		dbSample2 = new Sample();
+		dbSample2.setRoomId(2);
+		dbSample2.setSignalList(dbSignals2);
+		
+		dbSample3 = new Sample();
+		dbSample3.setRoomId(3);
+		dbSample3.setSignalList(dbSignals3);
 
     }
  

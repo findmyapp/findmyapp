@@ -1,14 +1,12 @@
 package no.uka.findmyapp.controller;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
-import no.uka.findmyapp.datasource.UkaProgramRepository;
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.service.UkaProgramService;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,46 +29,79 @@ import com.google.gson.Gson;
 public class UkaProgramController {
 
 	@Autowired
-	private UkaProgramRepository data;
+	private UkaProgramService ukaProgramService;
+
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(UkaProgramController.class);
+	.getLogger(UkaProgramController.class);
 
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/{aar}/dato", method = RequestMethod.GET)
-	// We do not use aar
+	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
+	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date dato,
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date fra,
-	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date til){
-		UkaProgram program;
-		if (dato==null) {
-			// Use fra til
-			logger.info("getUkaProgramForFra ( " + fra + " ) og Til ( " + til + " )");
-			program = data.getUkaProgram(fra, til);	
-		}
-		else {
-			// Use dato
-			logger.info("getUkaProgramForDate ( " + dato + " )");
-			program = data.getUkaProgram(dato);			
-		}
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
+			@RequestParam(required=false) Boolean all,
+			@RequestParam(required=false) String place){
+		UkaProgram program = new UkaProgram();
 		
-		Gson g = new Gson();
-		return new ModelAndView("home", "program", g.toJson(program));
-	}
+
+			logger.info("getUkaProgram - new");
+			program = ukaProgramService.getUkaProgram(date, from, to, all, place);	
+			
+			Gson g = new Gson();
+			return new ModelAndView("home", "program", g.toJson(program));
 	
+	}
+
+	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getUkaProgramPlaces(){
+		List<String> places;
+		logger.info("getUkaProgramPlaces");
+		places = ukaProgramService.getUkaPlaces();
+
+		Gson g = new Gson();
+		return new ModelAndView("places", "places", g.toJson(places));
+	}
+
 
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
 		logger.info("insertUkaProgramForDate ( " + date + " )");
-		
+
 		//data.insertUkaProgram(date);
 	}
 
+	
+	
+	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getUkaEventById(
+			@PathVariable int id){
+		Event event;
+		logger.info("getUkaEventById");
+		event = ukaProgramService.getUkaEventById(id);
+
+		Gson g = new Gson();
+		return new ModelAndView("event", "event", g.toJson(event));
+	}
+
+	
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler
+	public void handleIllegalArgumentException(
+			IllegalArgumentException ex) {
+		logger.info("handleIllegalArgumentException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
@@ -80,3 +111,4 @@ public class UkaProgramController {
 				+ ex.getLocalizedMessage() + " )");
 	}
 }
+
