@@ -56,6 +56,19 @@ public class UkaProgramController {
 			return new ModelAndView("home", "program", g.toJson(program));
 	
 	}
+	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getUkaProgramForDate(
+			@RequestParam(required=false) String eventName){
+		UkaProgram program = new UkaProgram();
+		
+			logger.info("searchForUkaProgramByName");
+			program = ukaProgramService.titleSearch(eventName);	
+			
+			Gson g = new Gson();
+			return new ModelAndView("home", "program", g.toJson(program));
+	}
+
 
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	// We do not use ukaYear

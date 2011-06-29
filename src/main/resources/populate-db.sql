@@ -57,7 +57,7 @@ INSERT into event_showing_real values(
 	'2011-10-07 00:00:00',
 	'Dodens dal',
 	0,
-	1,
+	2,
 	'2011-10-01 00:00:00',
 	'2011-10-07 00:00:00',
 	false,
