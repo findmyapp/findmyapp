@@ -31,11 +31,17 @@ public class UkaProgramController {
 
 	@Autowired
 	private UkaProgramService ukaProgramService;
-
+	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramController.class);
-
+	
+	public UkaProgramController() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd HH:mm");
+		gson = builder.create();
+	}
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -53,10 +59,7 @@ public class UkaProgramController {
 			logger.info("getUkaProgram - new");
 			program = ukaProgramService.getUkaProgram(date, from, to, all, place);	
 			
-			GsonBuilder builder = new GsonBuilder();
-			builder.setDateFormat("yyyy-MM-dd HH:mm");
-			Gson g = builder.create();
-			return new ModelAndView("home", "program", g.toJson(program));
+			return new ModelAndView("home", "program", gson.toJson(program));
 	
 	}
 	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
@@ -68,10 +71,7 @@ public class UkaProgramController {
 			logger.info("searchForUkaProgramByName");
 			program = ukaProgramService.titleSearch(eventName);	
 			
-			GsonBuilder builder = new GsonBuilder();
-			builder.setDateFormat("yyyy-MM-dd HH:mm");
-			Gson g = builder.create();
-			return new ModelAndView("home", "program", g.toJson(program));
+			return new ModelAndView("home", "program", gson.toJson(program));
 	}
 
 
@@ -82,10 +82,7 @@ public class UkaProgramController {
 		logger.info("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces();
 
-		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd HH:mm");
-		Gson g = builder.create();
-		return new ModelAndView("places", "places", g.toJson(places));
+		return new ModelAndView("places", "places", gson.toJson(places));
 	}
 
 
@@ -108,10 +105,7 @@ public class UkaProgramController {
 		logger.info("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(id);
 
-		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd HH:mm");
-		Gson g = builder.create();
-		return new ModelAndView("event", "event", g.toJson(event));
+		return new ModelAndView("event", "event", gson.toJson(event));
 	}
 
 	
