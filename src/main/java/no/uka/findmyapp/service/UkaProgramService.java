@@ -77,7 +77,7 @@ public class UkaProgramService {
 				program = new UkaProgram(eventList);
 
 			}else{
-				throw new IllegalArgumentException("Requesten må inneholde fra og tildato, en bestemt dato eller flag for alle events");
+				throw new IllegalArgumentException("Requesten mÃ¥ inneholde fra og tildato, en bestemt dato eller flag for alle events");
 			}
 		}
 
