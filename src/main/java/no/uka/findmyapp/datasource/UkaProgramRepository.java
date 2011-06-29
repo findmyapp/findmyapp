@@ -25,19 +25,18 @@ public class UkaProgramRepository {
 	.getLogger(UkaProgramRepository.class);
 
 
-	public UkaProgram getUkaProgram(Date day) {
+	public List<Event> getUkaProgram(Date day) {
 		Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
 		return getUkaProgram(day, endDate);
 	}
 
-	public UkaProgram getUkaProgram(Date startDate, Date endDate) {
+	public List<Event> getUkaProgram(Date startDate, Date endDate) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Event> eventList = jdbcTemplate.query(
 				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
 				new EventRowMapper(),startDate, endDate  );
 
-		UkaProgram ukaProgram = new UkaProgram(eventList);
-		return ukaProgram;
+		return eventList;
 	}
 
 	public List<Event> getUkaProgram(){

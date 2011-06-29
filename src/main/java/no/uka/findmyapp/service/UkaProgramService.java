@@ -1,5 +1,6 @@
 package no.uka.findmyapp.service;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
@@ -49,5 +50,26 @@ public class UkaProgramService {
 		eventList = data.getUkaProgram();
 		UkaProgram ukaProgram = new UkaProgram(eventList);
 		return ukaProgram;
+	}
+	public UkaProgram getUkaProgram(Date date){
+
+		List<Event> eventList;
+		eventList = data.getUkaProgram(date);
+		UkaProgram ukaProgram = new UkaProgram(eventList);
+		return ukaProgram;
+	}
+	public UkaProgram getUkaProgram(Date to, Date from){
+
+		List<Event> eventList;
+		eventList = data.getUkaProgram(to,  from);
+		UkaProgram ukaProgram = new UkaProgram(eventList);
+		return ukaProgram;
+	}
+	public List<String> getUkaPlaces(){
+
+		List<String> places;
+		places = data.getUkaPlaces();
+
+		return places;
 	}
 }

@@ -29,9 +29,6 @@ import com.google.gson.Gson;
 public class UkaProgramController {
 
 	@Autowired
-	private UkaProgramRepository data; //Remove later
-
-	@Autowired
 	private UkaProgramService ukaProgramService;
 
 
@@ -51,14 +48,14 @@ public class UkaProgramController {
 		UkaProgram program = new UkaProgram();
 		
 		if (date!=null) {			
-			// Use dato
+			// Use date
 			logger.info("getUkaProgramForDate ( " + date + " )");
-			program = data.getUkaProgram(date);		
+			program = ukaProgramService.getUkaProgram(date);		
 
 		}else if(from != null && to != null) {
-			// Use fra til
+			// Use from to
 			logger.info("getUkaProgramForFrom ( " + from + " ) and to ( " + to + " )");
-			program = data.getUkaProgram(from, to);	
+			program = ukaProgramService.getUkaProgram(from, to);	
 
 		}else if(all != null && all) {
 			logger.info("getUkaProgram");
@@ -74,12 +71,12 @@ public class UkaProgramController {
 		return new ModelAndView("home", "program", g.toJson(program));
 	}
 
-	@RequestMapping(value = "/program/{aar}/places", method = RequestMethod.GET)
-	// We do not use aar
+	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
+	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(){
 		List<String> places;
 		logger.info("getUkaProgramPlaces");
-		places = data.getUkaPlaces();
+		places = ukaProgramService.getUkaPlaces();
 
 		Gson g = new Gson();
 		return new ModelAndView("places", "places", g.toJson(places));
