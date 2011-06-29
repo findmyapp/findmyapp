@@ -1,14 +1,11 @@
 package no.uka.findmyapp.controller;
 
-import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.UkaProgram;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,26 +36,51 @@ public class UkaProgramController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/{aar}/dato", method = RequestMethod.GET)
-	// We do not use aar
+	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
+	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date dato,
-			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date fra,
-	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date til){
-		UkaProgram program;
-		if (dato==null) {
-			// Use fra til
-			logger.info("getUkaProgramForFra ( " + fra + " ) og Til ( " + til + " )");
-			program = data.getUkaProgram(fra, til);	
-		}
-		else {
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
+	        @RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
+	    	@RequestParam(required=false) Boolean all){
+		UkaProgram program = new UkaProgram();
+		if (date!=null) {			
 			// Use dato
-			logger.info("getUkaProgramForDate ( " + dato + " )");
-			program = data.getUkaProgram(dato);			
+			logger.info("getUkaProgramForDate ( " + date + " )");
+			program = data.getUkaProgram(date);		
+			
+		}
+		else if(from != null && to != null) {
+			// Use fra til
+			logger.info("getUkaProgramForFrom ( " + from + " ) and to ( " + to + " )");
+			program = data.getUkaProgram(from, to);	
+					
+		}
+		else if(all != null && all) {
+			logger.info("getUkaProgram");
+			program = data.getUkaProgram();	
+		} else{
+
+		logger.info("unhandled exception 624358123478623784. Should return 400");
+		return null;
 		}
 		
 		Gson g = new Gson();
 		return new ModelAndView("home", "program", g.toJson(program));
+	}
+	
+	@RequestMapping(value = "/program/{aar}/places", method = RequestMethod.GET)
+	// We do not use aar
+	public ModelAndView getUkaProgramPlaces(){
+		List<String> places;
+		//places = new List<String>();
+		
+		logger.info("getUkaProgramPlaces");
+		
+		places = data.getUkaPlaces();
+		
+		Gson g = new Gson();
+		return new ModelAndView("places", "places", g.toJson(places));
 	}
 	
 
@@ -79,4 +101,5 @@ public class UkaProgramController {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
+
 }

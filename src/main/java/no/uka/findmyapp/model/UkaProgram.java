@@ -1,11 +1,12 @@
 package no.uka.findmyapp.model;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UkaProgram {
 	private List<Event> events;
 	private int eventSize;
+	
 	
 	public UkaProgram() {
 		events = new ArrayList<Event>();
