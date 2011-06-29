@@ -57,7 +57,13 @@ public class AppStoreController {
 		appList.add(generateDemoApp());
 		
 		//TODO check values, throw exception
+		/*
 		AppStoreList appStoreList = data.getAppStoreList(count, ListType.valueOf(listType.toUpperCase()), Platform.valueOf(platform.toUpperCase()));
+		*/
+		
+		data.getAppStoreList();
+		
+		AppStoreList appStoreList = new AppStoreList();
 		appStoreList.setListCount(count);
 		appStoreList.setListType(ListType.valueOf(listType.toUpperCase()));
 		appStoreList.setPlatform(Platform.valueOf(platform.toUpperCase()));

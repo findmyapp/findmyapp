@@ -1,5 +1,6 @@
 package no.uka.findmyapp.datasource;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,6 @@ import javax.sql.DataSource;
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.Sample;
-import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;
 import no.uka.findmyapp.model.AppStore.Platform;
@@ -28,12 +28,15 @@ public class AppStoreRepository {
 	private DataSource ds;
 	
 	private static final Logger logger = LoggerFactory
-	.getLogger(UkaProgramRepository.class);
+	.getLogger(AppStoreRepository.class);
 
 	public AppStoreList getAppStoreList(int count, ListType listType, Platform platform) {
 		
 		//TODO
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		
+		int i = jdbcTemplate.queryForInt("SELECT user_id FROM user_table");
+		logger.info(i + "");
 		/*
 		  Object args[] = new Object[2];
 		  args[0] = startDate;
@@ -51,6 +54,12 @@ public class AppStoreRepository {
 	
 	
 	public AppStoreList getAppStoreList() {
+
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		
+		Object o = jdbcTemplate.queryForInt("SELECT user_id FROM user_table");
+		logger.info(o.toString());
+		
 		AppStoreList appStoreList = new AppStoreList();
 		return appStoreList;
 	}
