@@ -11,7 +11,7 @@ public class AppRowMapper implements RowMapper<App> {
 	
 	public App mapRow(ResultSet rs, int rowNum) throws SQLException {
 		App app = new App();
-		app.setAndroidMarketUri(rs.getString("marketIdentifier"));
+		app.setAndroidMarketUri(rs.getString("market_identifier"));
 		app.setName(rs.getString("name"));
 		
 		return app;
