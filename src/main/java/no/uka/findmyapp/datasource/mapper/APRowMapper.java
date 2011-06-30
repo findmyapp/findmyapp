@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class APRowMapper implements RowMapper<String> {
 
-	@Override
 	public String mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return rs.getString("id");
 	}
