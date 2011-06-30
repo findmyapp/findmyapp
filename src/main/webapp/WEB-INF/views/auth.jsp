@@ -1,1 +1,1 @@
-bruker_id: ${userdata}
+${userdata}
