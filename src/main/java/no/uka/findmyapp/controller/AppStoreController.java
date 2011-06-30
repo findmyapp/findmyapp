@@ -69,6 +69,7 @@ public class AppStoreController {
 	
 		logger.info("AppStore App details requsted: " + appId);
 		
+		
 		App app = appStoreService.getAppDetails(appId);
 		
 		return new ModelAndView("appstore", "appstore", gson.toJson(app));
