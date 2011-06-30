@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 @Controller
 public class EchoController {
 	
+	BREKKER BYGGET :D
+	
 	@Autowired
 	private Gson gson;
 	
