@@ -1,6 +1,5 @@
 package no.uka.findmyapp.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,7 +51,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/registerSample/", method = RequestMethod.POST)
+	@RequestMapping(value = "/position/sample/", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("regsample");
 		boolean regSample = service.registerSample(sample);
@@ -62,7 +60,6 @@ public class PositionController {
 		
 		return mav;
 	}
-		
 	
 	/*@ResponseBody
 	@RequestMapping(value = "/position/sample")

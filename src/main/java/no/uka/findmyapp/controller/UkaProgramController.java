@@ -31,16 +31,11 @@ public class UkaProgramController {
 
 	@Autowired
 	private UkaProgramService ukaProgramService;
+	@Autowired
 	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramController.class);
-	
-	public UkaProgramController() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd HH:mm");
-		gson = builder.create();
-	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -62,6 +57,7 @@ public class UkaProgramController {
 			return new ModelAndView("home", "program", gson.toJson(program));
 	
 	}
+	
 	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
@@ -74,7 +70,6 @@ public class UkaProgramController {
 			return new ModelAndView("home", "program", gson.toJson(program));
 	}
 
-
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(){
@@ -85,8 +80,6 @@ public class UkaProgramController {
 		return new ModelAndView("places", "places", gson.toJson(places));
 	}
 
-
-
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
@@ -95,8 +88,6 @@ public class UkaProgramController {
 		//data.insertUkaProgram(date);
 	}
 
-	
-	
 	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
@@ -108,8 +99,6 @@ public class UkaProgramController {
 		return new ModelAndView("event", "event", gson.toJson(event));
 	}
 
-	
-	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler
 	public void handleIllegalArgumentException(

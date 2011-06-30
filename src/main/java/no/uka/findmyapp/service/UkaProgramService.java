@@ -100,4 +100,8 @@ public class UkaProgramService {
 		}
 		return program;
 	}
+	
+	public void setUkaProgramRepository(UkaProgramRepository repository) {
+		this.data = repository;
+	}
 }
