@@ -30,16 +30,11 @@ public class AppStoreController {
 
 	@Autowired
 	private AppStoreService appStoreService;
+	@Autowired
 	private Gson gson;
 	
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
-
-	public AppStoreController() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd HH:mm");
-		gson = builder.create();
-	}
 	
 	/**
 	* Returns a list of avaliable apps
