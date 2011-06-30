@@ -32,114 +32,124 @@ public class SensorController {
 	private  SensorRepository data; 
 	@Autowired
 	private SensorService service;
-	
+
 	//@Autowired
 	//private SensorService sensorservice;
-	
+
 	List <Temperature> temperatureList;
 	List<Noise> noiseList;
 	List<Humidity> humidityList;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
+
+	@RequestMapping(value="location/{locationName}/temperature/pull",method = RequestMethod.GET)
+	public ModelAndView getTemperatureData(
+			@PathVariable String locationName){
+
+		logger.info("Temperature data request received for location: " + locationName);
+
+
+		logger.info("Trying to fetch temperature data");
+		temperatureList = data.getTemperatureData(locationName);
+		logger.info("Got temperature data");
+
+		Gson g = new Gson(); 
+		return new ModelAndView("sensor","sensor",g.toJson(temperatureList));
+	}
 	
-	@RequestMapping(value="location/{locationName}/pull",method = RequestMethod.GET)
-	public ModelAndView getSensorData(
-			@PathVariable String locationName,
-			@RequestParam(required=true) String sensor) 
-			//@RequestParam(required=false) boolean stats,// historisk oversikt over data
-			//@RequestParam(required=false) boolean soundprofile,//lydprofil, feks: stille, konsert, mingling
-			//@RequestParam(required=false) Boolean all)
-	{
-		logger.info("Data request received for location: " + locationName+". Type: " + sensor);
-		
-		if (sensor.equals("temperature")){
-			logger.info("Trying to fetch temperature data");
-			temperatureList = data.getTemperatureData(locationName);
-			logger.info("Got temperature data");
-			
-			Gson g = new Gson(); 
-			return new ModelAndView("sensor","sensor",g.toJson(temperatureList));
-		}
-		else if(sensor.equals("noise")){
-			logger.info("Trying to fetch noise data");
-			noiseList = data.getNoiseData(locationName);
-			logger.info("Got noise data");
-			
-			Gson g = new Gson(); 
-			return new ModelAndView("sensor","sensor",g.toJson(noiseList));
-		}
-		else if(sensor.equals("humidity")){
-			logger.info("Trying to fetch humidity data");
-			humidityList = data.getHumidityData(locationName);
-			logger.info("Got humidity data");
-			
-			Gson g = new Gson(); 
-			return new ModelAndView("sensor","sensor",g.toJson(humidityList));
-		}
-		else{
-			logger.info("unhandled exception 624358123478623784. Should return 400");
-			return null;
-		}
-}
+
+	@RequestMapping(value="location/{locationName}/noise/pull",method = RequestMethod.GET)
+	public ModelAndView getNoiseData(
+			@PathVariable String locationName){
+
+		logger.info("Noise data request received for location: " + locationName);
+		logger.info("Trying to fetch noise data");
+		noiseList = data.getNoiseData(locationName);
+		logger.info("Got noise data");
+
+		Gson g = new Gson(); 
+		return new ModelAndView("sensor","sensor",g.toJson(noiseList));
+	}
 	
 	
+	@RequestMapping(value="location/{locationName}/humidity/pull",method = RequestMethod.GET)
+	public ModelAndView getHumidityData(
+			@PathVariable String locationName){
+
+		logger.info("Humidity data request received for location: " + locationName);
+		logger.info("Trying to fetch humidity data");
+		humidityList = data.getHumidityData(locationName);
+		logger.info("Got humidity data");
+
+		Gson g = new Gson(); 
+		return new ModelAndView("sensor","sensor",g.toJson(humidityList));
+	}
+
+	//logger.info("unhandled exception 624358123478623784. Should return 400");
+	//return null;
+
+
+
+
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */
+	
+	
 	@RequestMapping(value = "/location/{locationName}/temperature/push", method = RequestMethod.GET)
 	public ModelAndView setTemperatureData(
 			@PathVariable String locationName,
-			@RequestParam(required=false) Float value) {
-		
-		
-		
-			logger.info("Data logged for location: " + locationName + ". Sensortype: " + sensor + ", Value: "+ value  );
-			
-			Temperature temperature = data.setTemperatureData(locationName, value);
+			@RequestParam float value) {
 
-			
-			Gson g = new Gson();
-			return new ModelAndView("sensor", "sensor", g.toJson(temperature));
-			
+
+		logger.info("Temperature data logged for location: " + locationName  + ", Value: "+ value  );
+
+		Temperature temperature = data.setTemperatureData(locationName, value);
+
+
+		Gson g = new Gson();
+		return new ModelAndView("sensor", "sensor", g.toJson(temperature));
+
 	}
-		@RequestMapping(value = "/location/{locationName}/noise/push", method = RequestMethod.GET)
-		public ModelAndView setNoiseData(
-				@PathVariable String locationName,
-				@RequestParam(required=false) Integer raw_average,
-				@RequestParam(required=false) Integer raw_max,
-				@RequestParam(required=false) Integer raw_min){
-		
-			float decibel = service.toDecibel(raw_average); 
-			logger.info("Data logged for location: " + locationName + ". Sensortype: " + sensor + ", Decibel: "+ decibel );
-			
-			Noise noise = data.setNoiseData(locationName,raw_average, raw_max, raw_min, decibel );
-
-			
-			Gson g = new Gson();
-			return new ModelAndView("sensor", "sensor", g.toJson(noise));
-		}
-		
-		@RequestMapping(value = "/location/{locationName}/humidity/push", method = RequestMethod.GET)
-		public ModelAndView setHumidityData(
-				@PathVariable String locationName,
-				@RequestParam(required=false) Float value){
-		
-			logger.info("Data logged for location: " + locationName + ". Sensortype: " + sensor + ", Value: "+ value  );
-			
-			Humidity humidity = data.setHumidityData(locationName, value);
-
-			
-			Gson g = new Gson();
-			return new ModelAndView("sensor", "sensor", g.toJson(humidity));
-		
-		
-			logger.info("unhandled exception 624358123478623784. Should return 400");
-			return null;
-		
-		
-		}
 	
 	
+	@RequestMapping(value = "/location/{locationName}/noise/push", method = RequestMethod.GET)
+	public ModelAndView setNoiseData(
+			@PathVariable String locationName,
+			@RequestParam int raw_average,
+			@RequestParam int raw_max,
+			@RequestParam int raw_min){
+
+		float decibel = service.toDecibel(raw_average); 
+		logger.info("Noise data logged for location: " + locationName + ", Decibel: "+ decibel );
+
+		Noise noise = data.setNoiseData(locationName,raw_average, raw_max, raw_min, decibel );
+
+
+		Gson g = new Gson();
+		return new ModelAndView("sensor", "sensor", g.toJson(noise));
+	}
+	
+	
+	@RequestMapping(value = "/location/{locationName}/humidity/push", method = RequestMethod.GET)
+	public ModelAndView setHumidityData(
+			@PathVariable String locationName,
+			@RequestParam float value){
+
+		logger.info("Humidity data logged for location: " + locationName + ", Value: "+ value  );
+
+		Humidity humidity = data.setHumidityData(locationName, value);
+
+
+		Gson g = new Gson();
+		return new ModelAndView("sensor", "sensor", g.toJson(humidity));
+
+
+		//logger.info("unhandled exception 624358123478623784. Should return 400");
+		//return null;
+	}
+
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
@@ -147,4 +157,4 @@ public class SensorController {
 		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
 	}
 }	
-	
+
