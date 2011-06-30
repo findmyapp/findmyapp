@@ -1,18 +1,17 @@
 package no.uka.findmyapp.controller.sensor;
 
-import java.util.Date;
+
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
 import no.uka.findmyapp.model.Temperature;
-import no.uka.findmyapp.service.SensorService;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
