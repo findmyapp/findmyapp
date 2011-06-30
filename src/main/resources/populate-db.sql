@@ -83,14 +83,66 @@ INSERT into event_showing_real values(
 	2222
 );
 INSERT into event_showing_real values(
+	12,
+	'2011-10-03 21:00:00',
+	'2011-10-01 11:37:00',
+	'Lykke',
+	0,
+	4,
+	'2011-10-01 11:37:00',
+	'2011-10-21 11:37:00',
+	'true',
+	'false',
+	2222
+);
+INSERT into event_showing_real values(
 	21,
-	'2011-10-01 00:00:00',
+	'2011-10-10 11:00:00',
 	'2011-10-07 00:00:00',
-	'Dodens dal',
+	'Dødens dal',
 	0,
 	2,
 	'2011-10-01 00:00:00',
 	'2011-10-07 00:00:00',
+	'false',
+	'false',
+	2222
+);
+INSERT into event_showing_real values(
+	22,
+	'2011-10-10 18:00:00',
+	'2011-10-07 00:00:00',
+	'Rundt Dødens dal',
+	0,
+	5,
+	'2011-10-01 00:00:00',
+	'2011-10-10 00:00:00',
+	'true',
+	'false',
+	2222
+);
+INSERT into event_showing_real values(
+	31,
+	'2011-10-15 20:00:00',
+	'2011-10-01 11:37:00',
+	'Bodegaen',
+	0,
+	3,
+	'2011-10-01 11:37:00',
+	'2011-10-21 11:37:00',
+	'false',
+	'false',
+	2222
+);
+INSERT into event_showing_real values(
+	32,
+	'2011-10-15 17:00:00',
+	'2011-10-01 11:37:00',
+	'Dødens Dal',
+	0,
+	6,
+	'2011-10-01 11:37:00',
+	'2011-10-21 11:37:00',
 	'false',
 	'false',
 	2222
@@ -111,12 +163,12 @@ CREATE table events_event(
 );
 INSERT into events_event values(
 	1,
-	'Konsert 1',
-	'Lead 1',
-	'Dette er et arrangement!',
+	'Åpning UKA 2011',
+	'Offisiell åpning og avduking av UKEnavn',
+	'Dette er et arrangement! Som du absolutt ikke trenger å være med på.. relativt kjedelig og navnet får du vite av andre dagen etter..',
 	'Konsert',
 	'bilde1.jpg',
-	'thumb1.jpg',
+	'http://localhost/thumb2.jpg',
 	'false',
 	'slug',
 	'23',
@@ -125,11 +177,63 @@ INSERT into events_event values(
 INSERT into events_event values(
 	2,
 	'Oktoberfest',
-	'Lead 2',
-	'Dette blir fest!',
+	'Festen har flyttet fra Munchen til Trondheim og det her det skjer!',
+	'Dette blir fest! Ta på lederhosen og kos deg med Das Boot!',
 	'fest!',
 	'bilde1.jpg',
-	'thumb1.jpg',
+	'http://localhost/thumb3.jpg',
+	'false',
+	'slug',
+	'23',
+	2222
+);
+INSERT into events_event values(
+	3,
+	'90-tallsfest',
+	'På tide å ta frem klærne fra gotiden!',
+	'Dette blir fest! Trondheim fyller opp det meste de finner av rusk og rask og flytter dem ned i Bodegaen slik at de mange studentene fra Gløshaugen skal få prøve seg på dansegulvet :) Garantert masse dyrt øl og vill fest! Fellesnach på Sesam...',
+	'fest!',
+	'bilde1.jpg',
+	'http://localhost/thumb1.jpg',
+	'false',
+	'slug',
+	'23',
+	2222
+);
+INSERT into events_event values(
+	4,
+	'Velkomstkonsert',
+	'UKA 2011 smeller i gang med gratis velkomstkonsert!',
+	'Ser frem til en koselig kveld med venner og kjente på Samfundet. UKA er igang og alle er glade!',
+	'Konsert',
+	'bilde1.jpg',
+	'http://localhost/thumb2.jpg',
+	'false',
+	'slug',
+	'23',
+	2222
+);
+INSERT into events_event values(
+	5,
+	'Opplukk av fulle folk rundt teltet',
+	'Oktoberfest er ikke kjent for å være et arrangement for de edrue, og også i år trengs opprydding.',
+	'Enten du rydder opp dge selv eller venner.. Eller kanskje du plukker opp en alt for full jente og hjeper henne hjem i trygghet. Still opp. De kommer til å bli mange som trenger hjelp :P',
+	'Konsert',
+	'bilde1.jpg',
+	'http://localhost/thumb2.jpg',
+	'false',
+	'slug',
+	'23',
+	2222
+);
+INSERT into events_event values(
+	6,
+	'Aqua',
+	'Noen skjønner det er på tide å gi seg, mens andre skjønner det ikke...',
+	'Aqua fikk tydeligvis ikke nok av Trondheim for 2 år siden og i år er de tilbake igjen. Hopp og sprett og tjo og hei! Dette blir morro!',
+	'Konsert',
+	'bilde1.jpg',
+	'http://localhost/thumb1.jpg',
 	'false',
 	'slug',
 	'23',
