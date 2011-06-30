@@ -9,8 +9,10 @@ public class UserRowMapper implements RowMapper<User> {
 
 	public User mapRow(ResultSet rs, int arg1) throws SQLException {
 		User user = new User(); 
-		user.setFacebookUserId(rs.getString("facebookUserId"));
-		user.setLocalUserId(rs.getString("localUserId")); 
+		user.setLocalUserId(rs.getString("user_id"));
+		user.setFacebookUserId(rs.getString("facebook_id"));
+		user.setUserRegistered(rs.getTimestamp("registered_date"));
+		user.setLastLogon(rs.getTimestamp("last_logon"));
 		
 		return user; 
 	}
