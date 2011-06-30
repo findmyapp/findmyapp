@@ -8,14 +8,6 @@ package no.uka.findmyapp.model;
 public class Signal {
 
 	public int id;
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String bssid;
 	public int signalStrength;
 	
@@ -26,14 +18,22 @@ public class Signal {
 		this.signalStrength = signalStrength;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getBssid() {
 		return bssid;
 	}
-	
+
 	public void setBssid(String bssid) {
 		this.bssid = bssid;
 	}
-
+	
 	public int getSignalStrength() {
 		return signalStrength;
 	}

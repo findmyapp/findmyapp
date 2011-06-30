@@ -39,10 +39,8 @@ public class PositionService {
 	public Room getCurrentPosition(List<Signal> signals) {
 
 		List<Sample> samples = data.getAllSamples();
-		logger.info("getAllSamplesNumber ( " + samples.size() + " )");
 
 		double minDistance = samples.get(0).getDistance(signals);
-		logger.info("signallist size: " + signals.size());
 		
 		int bestPosition = samples.get(0).getRoomId();
 		for (Sample sam : samples) {
@@ -51,9 +49,7 @@ public class PositionService {
 				minDistance = distance;
 				bestPosition = sam.getRoomId();
 			}
-		}
-		logger.info("getAllSamplesBestPostition ( " + bestPosition + " )");
-		
+		}		
 		return (bestPosition != -1 ? data.getRoom(bestPosition) : null);
 	}
 	
