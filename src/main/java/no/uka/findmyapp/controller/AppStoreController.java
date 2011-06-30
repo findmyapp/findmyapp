@@ -1,11 +1,13 @@
 package no.uka.findmyapp.controller;
 
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
-import no.uka.findmyapp.model.AppStore.App;
-import no.uka.findmyapp.model.AppStore.AppStoreList;
-import no.uka.findmyapp.model.AppStore.ListType;
-import no.uka.findmyapp.model.AppStore.Platform;
+import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppStoreList;
+import no.uka.findmyapp.model.appstore.ListType;
+import no.uka.findmyapp.model.appstore.Platform;
 import no.uka.findmyapp.service.AppStoreService;
 
 import org.slf4j.Logger;
@@ -30,16 +32,11 @@ public class AppStoreController {
 
 	@Autowired
 	private AppStoreService appStoreService;
+	@Autowired
 	private Gson gson;
 	
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
-
-	public AppStoreController() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd HH:mm");
-		gson = builder.create();
-	}
 	
 	/**
 	* Returns a list of avaliable apps
@@ -77,15 +74,29 @@ public class AppStoreController {
 		return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
+
 	/**
 	* Returns a list of avaliable apps
 	 * @throws URISyntaxException 
 	*/
 	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
 	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
-	 
+
+		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				ListType.TOP, 
+				Platform.ANDROID);
+		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				ListType.TOP, 
+				Platform.IOS);
+		
+		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
+		fullList.add(androidList);
+		fullList.add(iosList);
+		
 		//TODO check values, throw exception
-		return new ModelAndView("appstoreweb", "appstoreweb", "test");
+		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 	
 	@SuppressWarnings("unused")

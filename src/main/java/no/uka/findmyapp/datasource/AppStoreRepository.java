@@ -12,10 +12,10 @@ import no.uka.findmyapp.datasource.mapper.AppRowMapper;
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.Sample;
-import no.uka.findmyapp.model.AppStore.App;
-import no.uka.findmyapp.model.AppStore.AppStoreList;
-import no.uka.findmyapp.model.AppStore.ListType;
-import no.uka.findmyapp.model.AppStore.Platform;
+import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppStoreList;
+import no.uka.findmyapp.model.appstore.ListType;
+import no.uka.findmyapp.model.appstore.Platform;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
