@@ -82,6 +82,7 @@ public class AppStoreController {
 	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
 	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
 
+		/*
 		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
 				10, 
 				ListType.TOP, 
@@ -96,7 +97,9 @@ public class AppStoreController {
 		fullList.add(iosList);
 		
 		//TODO check values, throw exception
-		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+		 * 
+		 */
+		return new ModelAndView("appstoreweb", "appstoreweb", "haha");
 	}
 	
 	@SuppressWarnings("unused")

@@ -7,7 +7,7 @@ List<AppStoreList> fullList = (List<AppStoreList>) request.getAttribute("appstor
 AppStoreList iosList = fullList.get(1);
 AppStoreList androidList = fullList.get(0);
 
-out.println(iosList.getListCount());
+//out.println(iosList.getListCount());
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
