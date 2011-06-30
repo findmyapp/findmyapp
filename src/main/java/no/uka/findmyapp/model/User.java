@@ -1,9 +1,13 @@
 package no.uka.findmyapp.model;
 
+import java.sql.Timestamp;
+
 public class User {
 		
 	private String facebookUserId; 
 	private String localUserId; 
+	private Timestamp userRegistered; 
+	private Timestamp lastLogon; 
 	
 	public User() {}
 	
@@ -11,9 +15,11 @@ public class User {
 		this.facebookUserId = facebookId; 
 	}
 	
-	public User(String facebookId, String localId) {
+	public User(String facebookId, String localId, Timestamp registerTimestamp, Timestamp lastLogon) {
 		this.facebookUserId = facebookId; 
 		this.localUserId = localId; 
+		this.userRegistered = registerTimestamp; 
+		this.lastLogon = lastLogon; 
 	}
 	
 	public String getFacebookUserId() {
@@ -31,4 +37,21 @@ public class User {
 	public void setLocalUserId(String localUserId) {
 		this.localUserId = localUserId;
 	}
+	
+	public Timestamp getUserRegisteredTimestamp() {
+		return userRegistered;
+	}
+
+	public void setUserRegistered(Timestamp ts) {
+		this.userRegistered = ts;
+	}
+
+	public Timestamp getLastLogon() {
+		return lastLogon;
+	}
+
+	public void setLastLogon(Timestamp lastLogon) {
+		this.lastLogon = lastLogon;
+	}
+
 }

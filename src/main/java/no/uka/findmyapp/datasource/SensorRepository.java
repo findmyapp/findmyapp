@@ -4,7 +4,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import no.uka.findmyapp.datasource.mapper.SensorHumidityRowMapper;
+import no.uka.findmyapp.datasource.mapper.SensorNoiseRowMapper;
 import no.uka.findmyapp.datasource.mapper.SensorTemperatureRowMapper;
+import no.uka.findmyapp.model.Humidity;
+import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Temperature;
 
 import org.slf4j.Logger;
@@ -29,10 +33,11 @@ public class SensorRepository {
 	.getLogger(SensorRepository.class);
 	
 	/**
-	 * Method to receive sensor data stored in database.
+	 * Methods to receive sensor data stored in database.
 	 * 
 	 * @return
 	 */
+	
 	public List<Temperature> getTemperatureData(String location){
 		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
@@ -45,8 +50,31 @@ public class SensorRepository {
 		return temperatureList;
 	}
 	
+	public List<Noise> getNoiseData(String location){
+		
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		  
+		
+		List<Noise> noiseList = jdbcTemplate.query("SELECT * FROM SENSOR_NOISE WHERE location = ?", new SensorNoiseRowMapper(), location);
+		logger.info("received noise list");
+		
+		
+		return noiseList;
+	}
+	public List<Humidity> getHumidityData(String location){
+		
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		  
+		
+		List<Humidity> humidityList = jdbcTemplate.query("SELECT * FROM SENSOR_HUMIDITY WHERE location = ?", new SensorHumidityRowMapper(), location);
+		logger.info("received humidity list");
+		
+		
+		return humidityList;
+	}
+	
 	/**
-	 * Method to save sensor data received from Arduino.
+	 * Methods to save sensor data received from Arduino.
 	 * 
 	 * @return
 	 */
@@ -63,5 +91,38 @@ public class SensorRepository {
 		logger.info("Data logged: " + temperature.toString());
 		
 		return temperature;
+	}
+	
+	public Noise setNoiseData(String location, int raw_average, int raw_max, int raw_min, float decibel){ 
+		
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		  
+		jdbcTemplate.execute("INSERT INTO SENSOR_NOISE (location, raw_average, raw_max, raw_min, decibel) VALUES ('" + location + "', "+raw_average+","+raw_max+","+raw_min+","+decibel+")");
+		
+		Noise noise = new Noise();
+		noise.setLocation(location);
+		noise.setDecibel(decibel);
+		noise.setRawAverage(raw_average);
+		noise.setRawMax(raw_max);
+		noise.setRawMin(raw_min);
+		
+		logger.info("Data logged: " + noise.toString());
+		
+		return noise;
+	}
+
+	public Humidity setHumidityData(String location, float value){ 
+	
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+	  
+		jdbcTemplate.execute("INSERT INTO SENSOR_HUMIDITY (location, value) VALUES ('" + location + "', "+value+")");
+	
+		Humidity humidity= new Humidity();
+		humidity.setLocation(location);
+		humidity.setValue(value);
+		
+		logger.info("Data logged: " + humidity.toString());
+	
+		return humidity;
 	}
 }

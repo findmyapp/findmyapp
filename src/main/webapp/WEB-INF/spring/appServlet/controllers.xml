@@ -9,5 +9,7 @@
 
 	<!-- Scans within the base package of the application for @Components to configure as beans -->
 	<context:component-scan base-package="no.uka.findmyapp" />
+	
+	<mvc:resources mapping="/appstoreweb-pictures/*" location="/appstoreweb-pictures/"/>
 	 
 </beans>

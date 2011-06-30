@@ -33,6 +33,9 @@ public class FacebookAuthenticationController
 	@Autowired
 	private FacebookAuthenticationDataHandler data; 
 	
+	@Autowired
+	private Gson g; 
+	
 	private static final Logger logger = LoggerFactory.getLogger(FacebookAuthenticationController.class);
 	
 	/**
@@ -41,28 +44,27 @@ public class FacebookAuthenticationController
 	@RequestMapping(value = "/auth", method = RequestMethod.GET)
 	
 	public ModelAndView getUserId(@RequestParam(value="accessToken", required=true) String accessToken) {
-	/*  
-	 	json for debug purpose
-		String userdata = "{ \"id\": \"772612305\", \"name\": \"Torstein M. Barkve\", \"first_name\": \"Torstein\", \"last_name\": \"M. Barkve\", \"link\": \"http://www.facebook.com/profile.php?id=772612305\", \"birthday\": \"05/10/1990\", \"education\": [ {\"school\": { \"id\": \"109956045693499\", \"name\": \"St. Svithun Videreg\u00e5ende Skole\" },  \"type\": \"High School\" }, { \"school\": { \"id\": \"109449622407837\", \"name\": \"Oslo University College\" }, \"year\": { \"id\": \"136328419721520\", \"name\": \"2009\" }, \"concentration\": [ {    \"id\": \"135775433156356\", \"name\": \"Anvendt datateknologi\" } ], \"type\": \"College\" } ], \"gender\": \"male\", \"timezone\": 2, \"locale\": \"nn_NO\", \"verified\": true, \"updated_time\": \"2011-06-06T12:18:15+0000\" }";
-		if(accessToken.equals("debug")) {
-			return new ModelAndView("auth", "userid", jsonTemp); 
-		}
-	*/
+		logger.info("Browsing /auth?accessToken=" + accessToken);
 		
 		String facebookUrl = FACEBOOK_USER_DATA_URL + accessToken; 
 		String userdata = this.getUserdataFromFacebook(facebookUrl);
-	
-	/*	if(userdata.equals("Exception")) {
+	/*
+		if(userdata.equals("Exception") || userdata.equals("MalformedUrl")) {
 			return new ModelAndView("auth", "userdata", userdata);
 		}
 		else {
-			//data
+			this.registerUserInDatabase(userdata);
 		}
-	*/
 		
-		//User user = data.getUser("123");
+		return new ModelAndView("auth", "userdata", g.toJson(user)); 
+		*/
+		return new ModelAndView(); 
+	}
+	
+	private boolean registerUserInDatabase(String userdata) {
 		
-		return new ModelAndView("auth", "userdata", userdata); 
+		
+		return false; 
 	}
 	
 	private String getUserdataFromFacebook(String urlWithaccessToken) {
