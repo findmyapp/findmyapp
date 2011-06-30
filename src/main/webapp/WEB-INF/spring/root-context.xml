@@ -11,12 +11,12 @@
 	</jdbc:embedded-database>
 	-->
 	
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>/WEB-INF/spring/credentials.properties</value>
-		</property>
-	</bean>
+<!-- 	<bean id="propertyConfigurer" -->
+<!-- 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+<!-- 		<property name="location"> -->
+<!-- 			<value>/WEB-INF/spring/credentials.properties</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
