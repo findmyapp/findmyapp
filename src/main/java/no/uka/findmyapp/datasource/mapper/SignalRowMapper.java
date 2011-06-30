@@ -11,9 +11,8 @@ public class SignalRowMapper implements RowMapper<Signal> {
 
 	public Signal mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Signal signal = new Signal();
-		signal.setBssid(rs.getString("bssid"));
-		signal.setSignalStrength(rs.getInt("signalstrength"));
+		signal.setBssid(rs.getString("position_accesspoint_bssid"));
+		signal.setSignalStrength(rs.getInt("signal_strength"));
 		return signal;
 	}
-
 }

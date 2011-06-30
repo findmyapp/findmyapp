@@ -13,6 +13,7 @@ import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.RoomRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
+import no.uka.findmyapp.model.Accesspoint;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Repository;
 public class PositionDataRepository {
 
 	@Autowired
-	private DataSource ds;
+	private JdbcTemplate jdbcTemplate;
 
 	/**
 	 * 
@@ -38,11 +39,11 @@ public class PositionDataRepository {
 	 * @return position associated with this SSID
 	 */
 	public Room getPosition(Sample sample) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		
 		Room pos = jdbcTemplate
 				.queryForObject(
-						"SELECT r.id, r.name FROM room r, sample sa, signal si " +
-						"WHERE r.id = sa.room_id AND sa.id = ?",
+						"SELECT r.position_room_id, r.name FROM POSITION_ROOM r, POSITION_SAMPLE sa, POSITION_SIGNAL si " +
+						"WHERE r.id = sa.position_room_id AND sa.position_sample_id = ?",
 						new PositionRowMapper(), sample.getRoomId());
 		return pos;
 	}
@@ -50,8 +51,8 @@ public class PositionDataRepository {
 	public boolean registerRoom(String roomName) {
 		try {
 			final String fRoomName = roomName;
-			JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-			jdbcTemplate.update("INSERT into room(name) values (?)", 
+			
+			jdbcTemplate.update("INSERT into POSITION_ROOM(name) values (?)", 
 				new PreparedStatementSetter() {
 			      public void setValues(PreparedStatement ps) throws SQLException {
 			        ps.setString(1, fRoomName);
@@ -73,10 +74,8 @@ public class PositionDataRepository {
 		try {
 			// Insert the signals to the given sample into the database
 			final Sample fSample = sample;
-			JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 			for (final Signal signal : fSample.getSignalList()) {
-				System.out.println("Signal registrert: BSSID - "+signal.getBssid()+", SampleID - "+fSample.getId());
-				jdbcTemplate.update("INSERT into signal(bssid, signalstrength, sample_id) values (?, ?, ?)", 
+				jdbcTemplate.update("INSERT into POSITION_SIGNAL(position_accesspoint_bssid, signal_strength, position_sample_id) values (?, ?, ?)", 
 					new PreparedStatementSetter() {
 				      public void setValues(PreparedStatement ps) throws SQLException {
 				        ps.setString(1, signal.getBssid());
@@ -88,23 +87,28 @@ public class PositionDataRepository {
 			}
 			/* If the sample do not have signals from all bssid's, insert signals 
 			 * from the one's missing with signalstrength -120 */
-			List<String> accesspoints = jdbcTemplate.query("SELECT * FROM accesspoint",
+			List<Accesspoint> accesspoints = jdbcTemplate.query("SELECT * FROM POSITION_ACCESSPOINT",
 					new APRowMapper());
-			System.out.println("NumOfAccesspoints: "+accesspoints.size());
-			for (final String AP : accesspoints) {
+			for (final Accesspoint AP : accesspoints) {
+				boolean apMissing = true;
 				for(int i = 0; i < fSample.getSignalList().size(); i++) {
-					if(AP.equalsIgnoreCase(sample.getSignalList().get(i).getBssid())) break;
+					if(AP.getBssid().equalsIgnoreCase(sample.getSignalList().get(i).getBssid())) {
+						apMissing = false; 
+						break;
+					}
 					else continue;
 				}
-				jdbcTemplate.update("INSERT into signal(bssid, signalstrength, sample_id) values (?, ?, ?)", 
-					new PreparedStatementSetter() {
-				      public void setValues(PreparedStatement ps) throws SQLException {
-				        ps.setString(1, AP);
-				        ps.setInt(2, -120);
-				        ps.setInt(3, fSample.getId());
-				      }
-				    }
-				);
+				if(apMissing) {
+					jdbcTemplate.update("INSERT into POSITION_SIGNAL(position_accesspoint_bssid, signal_strength, position_sample_id) values (?, ?, ?)", 
+						new PreparedStatementSetter() {
+					      public void setValues(PreparedStatement ps) throws SQLException {
+					        ps.setString(1, AP.getBssid());
+					        ps.setInt(2, -120);
+					        ps.setInt(3, fSample.getId());
+					      }
+					    }
+					);
+				}
 			}
 			return true;
 		}
@@ -119,11 +123,8 @@ public class PositionDataRepository {
 	public boolean registerSample(Sample sample) {
 		try {
 			// Insert the current room into the database, but only if it do not already exist
-			JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 			for(final Signal signal : sample.getSignalList()) {
-				jdbcTemplate.update("MERGE INTO accesspoint USING (VALUES(CAST(? AS VARCHAR(255)))) AS vals(bssid) ON accesspoint.id = vals.bssid " +
-						"WHEN MATCHED THEN UPDATE SET accesspoint.id = vals.bssid " +
-						"WHEN NOT MATCHED THEN INSERT VALUES vals.bssid",
+				jdbcTemplate.update("INSERT IGNORE INTO POSITION_ACCESSPOINT(bssid) VALUES(?)",
 					new PreparedStatementSetter() {
 				      public void setValues(PreparedStatement ps) throws SQLException {
 				        ps.setString(1, signal.getBssid());
@@ -131,17 +132,28 @@ public class PositionDataRepository {
 				    }
 				);	
 			}
+			final Sample fSample = sample;
+			int numCurrentRooms = jdbcTemplate.queryForInt("SELECT COUNT(position_room_id) FROM POSITION_ROOM WHERE name = ?", sample.getRoomName());
+			if(numCurrentRooms == 0) {
+				jdbcTemplate.update("INSERT INTO POSITION_ROOM(name) VALUES(?)",
+					new PreparedStatementSetter() {
+				      public void setValues(PreparedStatement ps) throws SQLException {
+				        ps.setString(1, fSample.getRoomName());
+				      }
+				    }
+				);	
+			}
+			final int roomId = getRoomByName(fSample.getRoomName()).getRoomId();
 			// Insert the sample into the database
-			final Sample fSample = sample;			
-			jdbcTemplate.update("INSERT into sample(room_id) values (?)", 
+			jdbcTemplate.update("INSERT into POSITION_SAMPLE(position_room_id) values (?)", 
 				new PreparedStatementSetter() {
 			      public void setValues(PreparedStatement ps) throws SQLException {
-			        ps.setInt(1, fSample.getRoomId());
+			        ps.setInt(1, roomId);
 			      }
 			    }
 			);
-			int rowCount = jdbcTemplate.queryForInt("SELECT COUNT(id) FROM sample");
-			sample.setId(rowCount-1);
+			int rowCount = jdbcTemplate.queryForInt("SELECT COUNT(position_sample_id) FROM POSITION_SAMPLE");
+			sample.setId(rowCount);
 			// Insert the signals of the sample into the database
 			registerSignalsOfSample(sample);
 			return true;
@@ -157,8 +169,8 @@ public class PositionDataRepository {
 	 * @return A list of all test points in the database
 	 */
 	public List<Sample> getAllSamples() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		List<Sample> samples = jdbcTemplate.query("SELECT * FROM sample",
+		
+		List<Sample> samples = jdbcTemplate.query("SELECT * FROM POSITION_SAMPLE",
 				new SampleRowMapper());
 
 		for (Sample sample : samples) {
@@ -168,17 +180,25 @@ public class PositionDataRepository {
 	}
 
 	public Room getRoom(int roomId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		
 		Room room = jdbcTemplate.queryForObject(
-				"SELECT * FROM room WHERE id=?", new RoomRowMapper(), roomId);
+				"SELECT * FROM POSITION_ROOM WHERE position_room_id=?", new RoomRowMapper(), roomId);
+		return room;
+	}
+	
+	private Room getRoomByName(String roomName) {
+		
+		Room room = jdbcTemplate.queryForObject(
+				"SELECT * FROM POSITION_ROOM WHERE name=?", new RoomRowMapper(), roomName);
 		return room;
 	}
 
 	private List<Signal> getSignalsFromSample(int sampleId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		
 		List<Signal> signals = jdbcTemplate.query(
-				"SELECT * FROM signal WHERE sample_id=?",
+				"SELECT * FROM POSITION_SIGNAL WHERE position_sample_id=?",
 				new SignalRowMapper(), sampleId);
+		
 		return signals;
 	}
 

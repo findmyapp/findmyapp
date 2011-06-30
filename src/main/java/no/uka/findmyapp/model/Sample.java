@@ -19,8 +19,9 @@ public class Sample {
 	
 	private int Id;
 	private int roomId;
+	private String roomName;
 	private List<Signal> signalList;
-	
+		
 	public Sample() {
 		signalList = new ArrayList<Signal>();
 	}
@@ -39,6 +40,14 @@ public class Sample {
 
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
+	}
+	
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
 	
 	public List<Signal> getSignalList() {
