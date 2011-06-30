@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 public class AppStoreController {
@@ -41,7 +42,12 @@ public class AppStoreController {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
 
-
+	public AppStoreController() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd HH:mm");
+		gson = builder.create();
+	}
+	
 	/**
 	* Returns a list of avaliable apps
 	 * @throws URISyntaxException 
