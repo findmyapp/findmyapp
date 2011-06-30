@@ -1,6 +1,8 @@
 package no.uka.findmyapp.controller;
 
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
