@@ -108,6 +108,7 @@ public class AppStoreController {
 	
 	private App generateDemoApp() throws URISyntaxException {
 		App ukaApp = new App();
+		
 		ukaApp.setName("demoApp");
 		//ukaApp.setAndroidMarketUri(new URI("https://market.android.com/details?id=com.playcreek.DeathWorm&feature=featured-apps"));
 		
