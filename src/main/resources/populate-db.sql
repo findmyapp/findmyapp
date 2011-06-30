@@ -8,9 +8,8 @@ CREATE  TABLE `POSITION_ROOM` (
   PRIMARY KEY (`position_room_id`) );
 
 CREATE  TABLE `POSITION_ACCESSPOINT` (
-  `position_accesspoint_id` INT NOT NULL AUTO_INCREMENT ,
   `bssid` VARCHAR(255) NULL ,
-  PRIMARY KEY (`position_accesspoint_id`) );
+  PRIMARY KEY (`bssid`) );
   
 CREATE  TABLE `POSITION_SAMPLE` (
   `position_sample_id` INT NOT NULL AUTO_INCREMENT ,
@@ -25,7 +24,7 @@ CREATE  TABLE `POSITION_SAMPLE` (
 
 CREATE  TABLE `POSITION_SIGNAL` (
   `position_signal_id` INT NOT NULL AUTO_INCREMENT,
-  `position_accesspoint_id` INT(11) NULL ,
+  `position_accesspoint_bssid` VARCHAR(255) NULL ,
   `signal_strength` INT NULL ,
   `position_sample_id` INT NULL ,
   PRIMARY KEY (`position_signal_id`) ,
@@ -36,8 +35,8 @@ CREATE  TABLE `POSITION_SIGNAL` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `position_accesspoint_fk`
-  	FOREIGN KEY (`position_accesspoint_id`)
-    REFERENCES `POSITION_ACCESSPOINT` (`position_accesspoint_id` )
+  	FOREIGN KEY (`position_accesspoint_bssid`)
+    REFERENCES `POSITION_ACCESSPOINT` (`bssid` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -51,10 +50,10 @@ INSERT into POSITION_ACCESSPOINT(bssid) values('storsalen');
 INSERT into POSITION_SAMPLE(position_room_id) values(1);
 INSERT into POSITION_SAMPLE(position_room_id) values(2);
 -- INSERT into signal
-INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(1, -30, 1);
-INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(2, -75, 1);
-INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(1, -80, 2);
-INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(2, -20, 2);
+INSERT into POSITION_SIGNAL(position_accesspoint_bssid, signal_strength, position_sample_id) values('strossa', -30, 1);
+INSERT into POSITION_SIGNAL(position_accesspoint_bssid, signal_strength, position_sample_id) values('storsalen', -75, 1);
+INSERT into POSITION_SIGNAL(position_accesspoint_bssid, signal_strength, position_sample_id) values('strossa', -80, 2);
+INSERT into POSITION_SIGNAL(position_accesspoint_bssid, signal_strength, position_sample_id) values('storsalen', -20, 2);
 
 CREATE table event_showing_real(
 	id int,

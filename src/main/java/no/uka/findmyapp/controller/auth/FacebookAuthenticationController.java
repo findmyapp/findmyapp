@@ -50,18 +50,19 @@ public class FacebookAuthenticationController
 	*/
 		
 		String facebookUrl = FACEBOOK_USER_DATA_URL + accessToken; 
-		//String userdata = this.getUserdataFromFacebook(facebookUrl);
+		String userdata = this.getUserdataFromFacebook(facebookUrl);
 	
-/*		if(userdata.equals("Exception")) {
+	/*	if(userdata.equals("Exception")) {
 			return new ModelAndView("auth", "userdata", userdata);
 		}
 		else {
 			//data
 		}
-		*/
-		User user = data.getUser("123");
+	*/
 		
-		return new ModelAndView("auth", "userdata", user); 
+		//User user = data.getUser("123");
+		
+		return new ModelAndView("auth", "userdata", userdata); 
 	}
 	
 	private String getUserdataFromFacebook(String urlWithaccessToken) {
