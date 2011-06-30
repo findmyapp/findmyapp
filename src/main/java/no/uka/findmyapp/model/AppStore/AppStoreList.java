@@ -1,4 +1,4 @@
-package no.uka.findmyapp.model.AppStore;
+package no.uka.findmyapp.model.appstore;
 
 import java.util.List;
 

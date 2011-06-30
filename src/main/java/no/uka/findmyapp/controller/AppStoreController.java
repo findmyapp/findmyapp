@@ -2,10 +2,10 @@ package no.uka.findmyapp.controller;
 
 import java.net.URISyntaxException;
 
-import no.uka.findmyapp.model.AppStore.App;
-import no.uka.findmyapp.model.AppStore.AppStoreList;
-import no.uka.findmyapp.model.AppStore.ListType;
-import no.uka.findmyapp.model.AppStore.Platform;
+import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppStoreList;
+import no.uka.findmyapp.model.appstore.ListType;
+import no.uka.findmyapp.model.appstore.Platform;
 import no.uka.findmyapp.service.AppStoreService;
 
 import org.slf4j.Logger;

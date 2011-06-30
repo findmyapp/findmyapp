@@ -1,4 +1,4 @@
-package no.uka.findmyapp.model.AppStore;
+package no.uka.findmyapp.model.appstore;
 
 public enum Platform {
 	IOS(1), ANDROID(2);

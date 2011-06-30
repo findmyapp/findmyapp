@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.uka.findmyapp.datasource.AppStoreRepository;
-import no.uka.findmyapp.model.AppStore.App;
-import no.uka.findmyapp.model.AppStore.AppStoreList;
-import no.uka.findmyapp.model.AppStore.ListType;
-import no.uka.findmyapp.model.AppStore.Platform;
+import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppStoreList;
+import no.uka.findmyapp.model.appstore.ListType;
+import no.uka.findmyapp.model.appstore.Platform;
 
 @Service
 public class AppStoreService {
