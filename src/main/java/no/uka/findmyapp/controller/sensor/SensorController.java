@@ -1,9 +1,10 @@
-/**package no.uka.findmyapp.controller.sensor;
+package no.uka.findmyapp.controller.sensor;
 
 import java.util.Date;
+import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
-import no.uka.findmyapp.model.Arduino;
+import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.service.SensorService;
 
 import org.slf4j.Logger;
@@ -28,33 +29,35 @@ import com.google.gson.Gson;
 public class SensorController {
 
 	@Autowired
-	private  SensorRepository data; //Remove later?? Kopierte dette fra UkaProgram, der stod det remove later.
-
-	@Autowired
-	private SensorService sensorservice;
+	private  SensorRepository data; 
+	
+	//@Autowired
+	//private SensorService sensorservice;
+	
+	List <Temperature> temperatureList;
 	
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 	
 	@RequestMapping(value="location/{locationName}/pull",method = RequestMethod.GET)
 	public ModelAndView getSensorData(
 			@PathVariable String locationName,
-			@RequestParam("sensor") String sensor,//sensortype
-			@RequestParam(required=false) boolean stats,// historisk oversikt over data
-			@RequestParam(required=false) boolean soundprofile,//lydprofil, feks: stille, konsert, mingling
-			@RequestParam(required=false) Boolean all)
+			@RequestParam(required=true) String sensor) 
+			//@RequestParam(required=false) boolean stats,// historisk oversikt over data
+			//@RequestParam(required=false) boolean soundprofile,//lydprofil, feks: stille, konsert, mingling
+			//@RequestParam(required=false) Boolean all)
 	{
-		logger.info("SKRIV HER");//Skjønte ikke helt hva som skulle skrives i loggeren
-		Arduino arduino = new Arduino();
+		logger.info("Data request received for location: " + locationName+". Type: " + sensor);
 		
-		//Sjekker hva slags sensor vi er intressert i, bare å legge til flere typer etterhvert(Vet ikke hva feilen er)
-		if (sensor = "termometer"){
-			
+		if (sensor.equals("temperature")){
+			logger.info("Trying to fetch temperature data fra db");
+			temperatureList = data.getTemperatureData(locationName);
+			logger.info("Got temperature data fra db");
 		}
-		else if(sensor = "desibel" ){
-			
+		else if(sensor.equals("noise")){
+			return null;
 		}
-		else if(sensor = "humitity"){
-			
+		else if(sensor.equals("humidity")){
+			return null;
 		}
 		else{
 			logger.info("unhandled exception 624358123478623784. Should return 400");
@@ -63,18 +66,36 @@ public class SensorController {
 		
 		
 		
-		Gson g = new Gson(); //Bare kopiert det under, håper det gir mening!
-		return new ModelAndView("sensor","arduino",g.toJson(arduino));
+		Gson g = new Gson(); 
+		return new ModelAndView("sensor","temperature",g.toJson(temperatureList));
+	}
+	
+	
+	/**
+	 * Simply selects the sensor view to return a confirmation.
+	 */
+	@RequestMapping(value = "/location/{locationName}/push", method = RequestMethod.GET)
+	public ModelAndView setSensorData(
+			@PathVariable String locationName,
+			@RequestParam("sensor") String sensor,
+			@RequestParam("value") float value) {
+		
+		logger.info("Data logged for location: " + locationName + ". Sensortype: " + sensor + ", Value: "+ value  );
+		
+		Temperature temperature = data.setTemperatureData(locationName, value);
+
+		
+		Gson g = new Gson();
+		return new ModelAndView("sensor", "temperature", g.toJson(temperature));
+		
+		
 	}
 	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	
 	@ExceptionHandler
 		private void handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
 		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
 	}
 }	
 	
-
-*/
