@@ -1,1 +1,1 @@
-{"Temperature":${temperature}} 
+{"Sensor":${sensor}} 
