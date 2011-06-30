@@ -2,31 +2,60 @@ CREATE table program(id integer IDENTITY PRIMARY KEY, day date);
 INSERT into program(day) values('2010-01-01');
 INSERT into program(day) values('2010-02-05');
 
-CREATE table room(id integer IDENTITY PRIMARY KEY, name varchar(20));
+CREATE  TABLE `POSITION_ROOM` (
+  `position_room_id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(20) NULL ,
+  PRIMARY KEY (`position_room_id`) );
 
-CREATE table accesspoint(id varchar(255) PRIMARY KEY);
+CREATE  TABLE `POSITION_ACCESSPOINT` (
+  `position_accesspoint_id` INT NOT NULL AUTO_INCREMENT ,
+  `bssid` VARCHAR(255) NULL ,
+  PRIMARY KEY (`position_accesspoint_id`) );
+  
+CREATE  TABLE `POSITION_SAMPLE` (
+  `position_sample_id` INT NOT NULL AUTO_INCREMENT ,
+  `position_room_id` INT NULL ,
+  PRIMARY KEY (`position_sample_id`) ,
+  INDEX `position_room_id_fk` (`position_room_id` ASC) ,
+  CONSTRAINT `position_room_id_fk`
+    FOREIGN KEY (`position_room_id` )
+    REFERENCES `POSITION_ROOM` (`position_room_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
-CREATE table sample(id integer IDENTITY PRIMARY KEY, room_id integer,
- FOREIGN KEY (room_id) REFERENCES room(id));
+CREATE  TABLE `POSITION_SIGNAL` (
+  `position_signal_id` INT NOT NULL AUTO_INCREMENT ,
+  `bssid` VARCHAR(255) NULL ,
+  `signal_strength` INT NULL ,
+  `position_sample_id` INT NULL ,
+  PRIMARY KEY (`position_signal_id`) ,
+  INDEX `position_sample_fk` (`position_sample_id` ASC) ,
+  CONSTRAINT `position_sample_fk`
+    FOREIGN KEY (`position_sample_id` )
+    REFERENCES `findmydb`.`POSITION_SAMPLE` (`position_sample_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    FOREIGN KEY (`bssid` )
+  CONSTRAINT `position_accesspoint_fk`
+  	FOREIGN KEY (`bssid`)
+    REFERENCES `POSITION_ACCESSPOINT` (`bssid` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
-CREATE table signal(id integer IDENTITY PRIMARY KEY, bssid varchar(255), signalstrength integer, sample_id integer,
- FOREIGN KEY (sample_id) REFERENCES sample(id),
- FOREIGN KEY (bssid) REFERENCES accesspoint(id));
- 
 -- INSERT into room
-INSERT into room(name) values('Strossa');
-INSERT into room(name) values('Storsalen');
+INSERT into POSITION_ROOM(name) values('Strossa');
+INSERT into POSITION_ROOM(name) values('Storsalen');
 -- INSERT into accesspoint
-INSERT into accesspoint(id) values('strossa');
-INSERT into accesspoint(id) values('storsalen');
+INSERT into POSITION_ACCESSPOINT(bssid) values('strossa');
+INSERT into POSITION_ACCESSPOINT(bssid) values('storsalen');
 -- INSERT into sample
-INSERT into sample(room_id) values(0);
-INSERT into sample(room_id) values(1);
+INSERT into POSITION_SAMPLE(position_room_id) values(0);
+INSERT into POSITION_SAMPLE(position_room_id) values(1);
 -- INSERT into signal
-INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -30, 0);
-INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -75, 0);
-INSERT into signal(bssid, signalstrength, sample_id) values('strossa', -80, 1);
-INSERT into signal(bssid, signalstrength, sample_id) values('storsalen', -20, 1);
+INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('strossa', -30, 0);
+INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('storsalen', -75, 0);
+INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('strossa', -80, 1);
+INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('storsalen', -20, 1);
 
 CREATE table event_showing_real(
 	id integer IDENTITY PRIMARY KEY,
