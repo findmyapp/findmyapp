@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- * Enn så lenge en dummyklasse for å kunne bygge controlleren
+ * Enn saa lenge en dummyklasse for aa kunne bygge controlleren
  * 
  * @author John Modin
  * 
