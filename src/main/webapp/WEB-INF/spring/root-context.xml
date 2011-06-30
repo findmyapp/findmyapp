@@ -10,23 +10,6 @@
 		</property>
 	</bean> 
 
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- 
-	<jdbc:embedded-database id="dataSource">
-	<jdbccript location="classpathopulate-db.sql" />
-	</jdbc:embedded-database>
-	-->
-	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"  destroy-method="close">
-	
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>/WEB-INF/spring/credentials.properties</value>
-		</property>
-	</bean>
-
-
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName">
 			<value>${jdbc.driver}</value>
