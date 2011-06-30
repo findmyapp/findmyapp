@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import no.uka.findmyapp.datasource.mapper.AppRowMapper;
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.Sample;
@@ -27,29 +28,31 @@ public class AppStoreRepository {
 	@Autowired
 	private DataSource ds;
 	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreRepository.class);
 
-	public AppStoreList getAppStoreList(int count, ListType listType, Platform platform) {
-		
+	public List<App> getAppList(int count, ListType listType, Platform platform) {
 		//TODO
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		List<App> appList = jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? LIMIT 0,?",
+				new AppRowMapper(), platform.getValue(), count);
 		
-		int i = jdbcTemplate.queryForInt("SELECT user_id FROM user_table");
-		logger.info(i + "");
+		logger.info(appList + "");
+		return appList;
+	}
+	
+	public App getAppDetails(int appId) {
 		/*
-		  Object args[] = new Object[2];
-		  args[0] = startDate;
-		  args[1] = endDate;
-		  List<UkaApp> eventList = jdbcTemplate.query(
-		    "SELECT * FROM uka_app AS ua, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
-		    new EventRowMapper(),startDate, endDate  );
-		  
-		  UkaProgram ukaProgram = new UkaProgram(eventList);
-		  return ukaProgram;
-		  */
-		AppStoreList appStoreList = new AppStoreList(null);
-		return appStoreList;
+		List<App> appList = jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_app_id=?",
+				new AppRowMapper(), appId);
+		*/
+		App app = jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_app_id=?",
+				new AppRowMapper(), appId);
+		
+		logger.info(app.toString());
+		return app;
 	}
 	
 	
