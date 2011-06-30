@@ -79,7 +79,8 @@ public class SensorController {
 			@PathVariable String locationName,
 			@RequestParam("sensor") String sensor,
 			@RequestParam("value") float value) {
-		
+		//jeg brekker
+		int tall = 9/0;dsfdsfsd
 		logger.info("Data logged for location: " + locationName + ". Sensortype: " + sensor + ", Value: "+ value  );
 		
 		Temperature temperature = data.setTemperatureData(locationName, value);
