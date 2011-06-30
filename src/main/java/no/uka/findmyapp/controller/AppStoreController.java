@@ -1,19 +1,12 @@
 package no.uka.findmyapp.controller;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import no.uka.findmyapp.datasource.AppStoreRepository;
-import no.uka.findmyapp.datasource.UkaProgramRepository;
 
 import no.uka.findmyapp.model.AppStore.App;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;
 import no.uka.findmyapp.model.AppStore.Platform;
 import no.uka.findmyapp.service.AppStoreService;
-import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 public class AppStoreController {
@@ -41,7 +35,12 @@ public class AppStoreController {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
 
-
+	public AppStoreController() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd HH:mm");
+		gson = builder.create();
+	}
+	
 	/**
 	* Returns a list of avaliable apps
 	 * @throws URISyntaxException 
@@ -76,6 +75,17 @@ public class AppStoreController {
 		App app = appStoreService.getAppDetails(appId);
 		
 		return new ModelAndView("appstore", "appstore", gson.toJson(app));
+	}
+	
+	/**
+	* Returns a list of avaliable apps
+	 * @throws URISyntaxException 
+	*/
+	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
+	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
+	 
+		//TODO check values, throw exception
+		return new ModelAndView("appstoreweb", "appstoreweb", "test");
 	}
 	
 	@SuppressWarnings("unused")

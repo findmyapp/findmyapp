@@ -20,7 +20,7 @@ public class FacebookAuthenticationDataHandler {
 	public User getUser(String userId) {
 		String sql = "SELECT * FROM USER WHERE user_id=" + userId;
 		JdbcTemplate jdbc = new JdbcTemplate(ds); 
-		User user = jdbc.queryForObject(sql, new UserRowMapper());
+		User user = jdbc.queryForObject(sql, new UserRowMapper()); 
 		logger.info(user.toString());
 		
 		return user; 

@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>
-	Registrering av sample: ${registerSample.regSample}
+	Registrering av sample: ${regSample}
 </h1>
 </body>
 </html>
