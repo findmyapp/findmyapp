@@ -12,6 +12,8 @@ import no.uka.findmyapp.model.AppStore.App;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;
 import no.uka.findmyapp.model.AppStore.Platform;
+import no.uka.findmyapp.service.AppStoreService;
+import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,45 +33,49 @@ import com.google.gson.Gson;
 
 @Controller
 public class AppStoreController {
-	
+
 	@Autowired
-	private AppStoreRepository data;
+	private AppStoreService appStoreService;
+	private Gson gson;
 	
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
 
 
 	/**
-	* Simply returns a list bla bla
+	* Returns a list of avaliable apps
 	 * @throws URISyntaxException 
 	*/
 	@RequestMapping(value = "/appstore/{platform}", method = RequestMethod.GET)
-	public ModelAndView getAppStoreForPlatform(
+	public ModelAndView getAppStoreListForPlatform(
 		@PathVariable String platform,
 		@RequestParam(required=true) String listType,
 		@RequestParam(required=true) int count) throws URISyntaxException {
-	
-		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
-		
-		List<App> appList = new LinkedList<App>();
-		
-		appList.add(generateDemoApp());
-		
+	 
 		//TODO check values, throw exception
-		/*
-		AppStoreList appStoreList = data.getAppStoreList(count, ListType.valueOf(listType.toUpperCase()), Platform.valueOf(platform.toUpperCase()));
-		*/
 		
-		data.getAppStoreList();
+		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
+		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
+				count, 
+				ListType.valueOf(listType.toUpperCase()), 
+				Platform.valueOf(platform.toUpperCase()));
 		
-		AppStoreList appStoreList = new AppStoreList();
-		appStoreList.setListCount(count);
-		appStoreList.setListType(ListType.valueOf(listType.toUpperCase()));
-		appStoreList.setPlatform(Platform.valueOf(platform.toUpperCase()));
-		appStoreList.setRequestCount(count);
+		return new ModelAndView("appstore", "appstore", gson.toJson(appStoreList));
+	}
+	
+	/**
+	* Returns detailed info about an app
+	 * @throws URISyntaxException 
+	*/
+	@RequestMapping(value = "/appstore/app/{appId}", method = RequestMethod.GET)
+	public ModelAndView getDetailedAppInfoFromId(
+			@PathVariable int appId) throws URISyntaxException {
+	
+		logger.info("AppStore App details requsted: " + appId);
 		
-		Gson g = new Gson();
-		return new ModelAndView("appstore", "appstore", g.toJson(appStoreList));
+		App app = appStoreService.getAppDetails(appId);
+		
+		return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
 	@SuppressWarnings("unused")
@@ -82,7 +88,7 @@ public class AppStoreController {
 	private App generateDemoApp() throws URISyntaxException {
 		App ukaApp = new App();
 		ukaApp.setName("demoApp");
-		ukaApp.setAndroidMarketUri(new URI("https://market.android.com/details?id=com.playcreek.DeathWorm&feature=featured-apps"));
+		//ukaApp.setAndroidMarketUri(new URI("https://market.android.com/details?id=com.playcreek.DeathWorm&feature=featured-apps"));
 		
 		return ukaApp;
 	}

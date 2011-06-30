@@ -24,7 +24,6 @@ public class UkaProgramRepository {
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
 
-
 	public List<Event> getUkaProgram(Date day) {
 		Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
 		return getUkaProgram(day, endDate);
@@ -34,7 +33,6 @@ public class UkaProgramRepository {
 		Date endDate = new Date(day.getTime()+86400000);// endDate =  (day+24h)
 		return getUkaProgram(day, endDate, place);
 	}
-	
 	
 	public List<Event> getUkaProgram(Date startDate, Date endDate) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);

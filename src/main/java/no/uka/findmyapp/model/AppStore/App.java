@@ -5,7 +5,7 @@ import java.util.List;
 
 public class App {
 	private String name;
-	private URI androidMarketUri;
+	private String androidMarketUri;
 	private URI thumbImage;
 	private List<URI> imageList;
 	
@@ -15,10 +15,10 @@ public class App {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public URI getAndroidMarketUri() {
+	public String getAndroidMarketUri() {
 		return androidMarketUri;
 	}
-	public void setAndroidMarketUri(URI androidMarketUri) {
+	public void setAndroidMarketUri(String androidMarketUri) {
 		this.androidMarketUri = androidMarketUri;
 	}
 	public URI getThumbImage() {
@@ -32,6 +32,12 @@ public class App {
 	}
 	public void setImageList(List<URI> imageList) {
 		this.imageList = imageList;
+	}
+	@Override
+	public String toString() {
+		return "App [name=" + name + ", androidMarketUri=" + androidMarketUri
+				+ ", thumbImage=" + thumbImage + ", imageList=" + imageList
+				+ "]";
 	}
 	
 }
