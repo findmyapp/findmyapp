@@ -84,8 +84,10 @@ public class AppStoreController {
 	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
 	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
 	 
+		App app = appStoreService.getAppDetails(1);
+		
 		//TODO check values, throw exception
-		return new ModelAndView("appstoreweb", "appstoreweb", "test");
+		return new ModelAndView("appstoreweb", "appstoreweb", app.getName());
 	}
 	
 	@SuppressWarnings("unused")
