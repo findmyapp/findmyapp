@@ -46,7 +46,7 @@ public class AppStoreRepository {
 		List<App> appList = jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_app_id=?",
 				new AppRowMapper(), appId);
 		*/
-		App app = jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_app_id=?",
+		App app = jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_application_id=?",
 				new AppRowMapper(), appId);
 		
 		logger.info(app.toString());

@@ -77,6 +77,17 @@ public class AppStoreController {
 		return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
+	/**
+	* Returns a list of avaliable apps
+	 * @throws URISyntaxException 
+	*/
+	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
+	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
+	 
+		//TODO check values, throw exception
+		return new ModelAndView("appstoreweb", "appstoreweb", "test");
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
