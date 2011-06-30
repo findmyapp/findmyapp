@@ -31,16 +31,11 @@ public class UkaProgramController {
 
 	@Autowired
 	private UkaProgramService ukaProgramService;
+	@Autowired
 	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramController.class);
-	
-	public UkaProgramController() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setDateFormat("yyyy-MM-dd HH:mm");
-		gson = builder.create();
-	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
