@@ -62,9 +62,9 @@ public class AppStoreController {
 	
 	/**
 	* Returns detailed info about an app
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException /get.json
 	*/
-	@RequestMapping(value = "/appstore/app/{appId}/get.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/appstore/app/{appId}", method = RequestMethod.GET)
 	public String  getDetailedAppInfoFromId(
 			@PathVariable int appId, Model model) throws URISyntaxException {
 	
