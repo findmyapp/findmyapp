@@ -1,19 +1,12 @@
 package no.uka.findmyapp.controller;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import no.uka.findmyapp.datasource.AppStoreRepository;
-import no.uka.findmyapp.datasource.UkaProgramRepository;
 
 import no.uka.findmyapp.model.AppStore.App;
 import no.uka.findmyapp.model.AppStore.AppStoreList;
 import no.uka.findmyapp.model.AppStore.ListType;
 import no.uka.findmyapp.model.AppStore.Platform;
 import no.uka.findmyapp.service.AppStoreService;
-import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
