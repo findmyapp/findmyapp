@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,16 +64,16 @@ public class AppStoreController {
 	* Returns detailed info about an app
 	 * @throws URISyntaxException 
 	*/
-	@RequestMapping(value = "/appstore/app/{appId}", method = RequestMethod.GET)
-	public ModelAndView getDetailedAppInfoFromId(
-			@PathVariable int appId) throws URISyntaxException {
+	@RequestMapping(value = "/appstore/app/{appId}/get.json", method = RequestMethod.GET)
+	public String  getDetailedAppInfoFromId(
+			@PathVariable int appId, Model model) throws URISyntaxException {
 	
 		logger.info("AppStore App details requsted: " + appId);
 		
-		
 		App app = appStoreService.getAppDetails(appId);
-		
-		return new ModelAndView("appstore", "appstore", gson.toJson(app));
+		model.addAttribute("appstore", gson.toJson(app));
+		return "appstore";
+		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
 

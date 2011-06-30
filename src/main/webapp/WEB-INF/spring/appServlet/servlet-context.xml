@@ -19,6 +19,11 @@
 		<property name="mediaTypes">
 			<map>
 				<entry key="html" value="text/html" />
+				<entry key="json" value="application/x-json"/>
+                <entry key="json" value="text/json"/>
+                <entry key="json" value="text/x-json"/>
+                <entry key="json" value="application/json"/>
+				
 			</map>
 		</property>
 		<property name="viewResolvers">
