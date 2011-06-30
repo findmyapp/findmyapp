@@ -1,6 +1,6 @@
-CREATE table program(id integer IDENTITY PRIMARY KEY, day date);
-INSERT into program(day) values('2010-01-01');
-INSERT into program(day) values('2010-02-05');
+CREATE table program(id int AUTO_INCREMENT, day date, PRIMARY KEY(id));
+INSERT into program(dday) values('2010-01-01');
+INSERT into program(dday) values('2010-02-05');
 
 CREATE  TABLE `POSITION_ROOM` (
   `position_room_id` INT NOT NULL AUTO_INCREMENT ,
@@ -24,8 +24,8 @@ CREATE  TABLE `POSITION_SAMPLE` (
     ON UPDATE NO ACTION);
 
 CREATE  TABLE `POSITION_SIGNAL` (
-  `position_signal_id` INT NOT NULL AUTO_INCREMENT ,
-  `bssid` VARCHAR(255) NULL ,
+  `position_signal_id` INT NOT NULL AUTO_INCREMENT,
+  `position_accesspoint_id` INT(11) NULL ,
   `signal_strength` INT NULL ,
   `position_sample_id` INT NULL ,
   PRIMARY KEY (`position_signal_id`) ,
@@ -35,10 +35,9 @@ CREATE  TABLE `POSITION_SIGNAL` (
     REFERENCES `findmydb`.`POSITION_SAMPLE` (`position_sample_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-    FOREIGN KEY (`bssid` )
   CONSTRAINT `position_accesspoint_fk`
-  	FOREIGN KEY (`bssid`)
-    REFERENCES `POSITION_ACCESSPOINT` (`bssid` )
+  	FOREIGN KEY (`position_accesspoint_id`)
+    REFERENCES `POSITION_ACCESSPOINT` (`position_accesspoint_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -49,26 +48,27 @@ INSERT into POSITION_ROOM(name) values('Storsalen');
 INSERT into POSITION_ACCESSPOINT(bssid) values('strossa');
 INSERT into POSITION_ACCESSPOINT(bssid) values('storsalen');
 -- INSERT into sample
-INSERT into POSITION_SAMPLE(position_room_id) values(0);
 INSERT into POSITION_SAMPLE(position_room_id) values(1);
+INSERT into POSITION_SAMPLE(position_room_id) values(2);
 -- INSERT into signal
-INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('strossa', -30, 0);
-INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('storsalen', -75, 0);
-INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('strossa', -80, 1);
-INSERT into POSITION_SIGNAL(bssid, signal_strength, sample_id) values('storsalen', -20, 1);
+INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(1, -30, 1);
+INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(2, -75, 1);
+INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(1, -80, 2);
+INSERT into POSITION_SIGNAL(position_accesspoint_id, signal_strength, position_sample_id) values(2, -20, 2);
 
 CREATE table event_showing_real(
-	id integer IDENTITY PRIMARY KEY,
+	id int,
 	showing_time timestamp,
 	publish_time timestamp,
 	place varchar(30),
-	billig_id integer,
-	event_id integer,
+	billig_id int,
+	event_id int,
 	netsale_from timestamp,
 	netsale_to timestamp,
-	free boolean,
-	canceled boolean,
-	entrance_id integer
+	free ENUM('true', 'false'),
+	canceled ENUM('true', 'false'),
+	entrance_id int,
+	PRIMARY KEY(id)
 );
 INSERT into event_showing_real values(
 	11,
@@ -79,8 +79,8 @@ INSERT into event_showing_real values(
 	1,
 	'2011-10-01 11:37:00',
 	'2011-10-21 11:37:00',
-	false,
-	false,
+	'false',
+	'false',
 	2222
 );
 INSERT into event_showing_real values(
@@ -92,22 +92,23 @@ INSERT into event_showing_real values(
 	2,
 	'2011-10-01 00:00:00',
 	'2011-10-07 00:00:00',
-	false,
-	false,
+	'false',
+	'false',
 	2222
 );
 CREATE table events_event(
-	id integer IDENTITY PRIMARY KEY,
+	id int,
 	title varchar(255),
 	lead varchar(255),
 	text varchar(255),
 	event_type varchar(30),
 	image varchar(100),
 	thumbnail varchar(100),
-	hidden_from_listing boolean,
+	hidden_from_listing ENUM('true', 'false'),
 	slug varchar(50),
 	age_limit smallint,
-	detail_photo_id integer
+	detail_photo_id int, 
+  PRIMARY KEY(id)
 );
 INSERT into events_event values(
 	1,
@@ -117,7 +118,7 @@ INSERT into events_event values(
 	'Konsert',
 	'bilde1.jpg',
 	'thumb1.jpg',
-	false,
+	'false',
 	'slug',
 	'23',
 	2222
@@ -130,7 +131,7 @@ INSERT into events_event values(
 	'fest!',
 	'bilde1.jpg',
 	'thumb1.jpg',
-	false,
+	'false',
 	'slug',
 	'23',
 	2222
