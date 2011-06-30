@@ -51,7 +51,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/sample/", method = RequestMethod.POST)
+	@RequestMapping(value = "/position/sample/", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("regsample");
 		boolean regSample = service.registerSample(sample);

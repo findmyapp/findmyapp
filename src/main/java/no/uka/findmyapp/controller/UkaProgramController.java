@@ -62,6 +62,7 @@ public class UkaProgramController {
 			return new ModelAndView("home", "program", gson.toJson(program));
 	
 	}
+	
 	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
@@ -74,7 +75,6 @@ public class UkaProgramController {
 			return new ModelAndView("home", "program", gson.toJson(program));
 	}
 
-
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(){
@@ -85,8 +85,6 @@ public class UkaProgramController {
 		return new ModelAndView("places", "places", gson.toJson(places));
 	}
 
-
-
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
@@ -95,8 +93,6 @@ public class UkaProgramController {
 		//data.insertUkaProgram(date);
 	}
 
-	
-	
 	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
@@ -108,8 +104,6 @@ public class UkaProgramController {
 		return new ModelAndView("event", "event", gson.toJson(event));
 	}
 
-	
-	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler
 	public void handleIllegalArgumentException(
