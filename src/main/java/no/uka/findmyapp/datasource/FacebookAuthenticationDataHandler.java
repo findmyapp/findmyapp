@@ -36,7 +36,7 @@ public class FacebookAuthenticationDataHandler {
 		logger.info("test");
 		Timestamp now = new Timestamp(new Date().getTime()); 
 		String sql = "INSERT INTO USER (facebook_id, registered_date) " +
-					 "VALUES (" + fbp.getId() + ", " + now.toString() + ")";
+					 "VALUES (" + fbp.getId() + ", '" + now.toString() + "')";
 		
 		logger.info("FacebookAuthenticationDataHandler:43: sql = " + sql);
 		
