@@ -296,6 +296,7 @@
 				<configuration>
 					<projectFile>${basedir}/src/test/soapui/findmyapp-soapui-project.xml</projectFile>
 					<outputFolder>${project.build.directory}/soapui-logs</outputFolder>
+					<host>localhost</host>
 					<soapuiProperties>
 						<property>
 							<name>soapui.logroot</name>
