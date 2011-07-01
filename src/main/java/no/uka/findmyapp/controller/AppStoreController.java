@@ -44,10 +44,10 @@ public class AppStoreController {
 	 * @throws URISyntaxException 
 	*/
 	@RequestMapping(value = "/appstore/{platform}", method = RequestMethod.GET)
-	public ModelAndView getAppStoreListForPlatform(
+	public String getAppStoreListForPlatform(
 		@PathVariable String platform,
 		@RequestParam(required=true) String listType,
-		@RequestParam(required=true) int count) throws URISyntaxException {
+		@RequestParam(required=true) int count, Model model) throws URISyntaxException {
 	 
 		//TODO check values, throw exception
 		
@@ -57,7 +57,10 @@ public class AppStoreController {
 				ListType.valueOf(listType.toUpperCase()), 
 				Platform.valueOf(platform.toUpperCase()));
 		
-		return new ModelAndView("appstore", "appstore", gson.toJson(appStoreList));
+		
+
+		model.addAttribute("appstore", gson.toJson(appStoreList));
+		return "appstore";
 	}
 	
 	/**
