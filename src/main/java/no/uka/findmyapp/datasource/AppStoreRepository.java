@@ -14,8 +14,6 @@ import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
-import no.uka.findmyapp.model.appstore.ListType;
-import no.uka.findmyapp.model.appstore.Platform;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +30,10 @@ public class AppStoreRepository {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreRepository.class);
 
-	public List<App> getAppList(int count, ListType listType, Platform platform) {
+	public List<App> getAppList(int count, int listType, int platform) {
 		//TODO
 		List<App> appList = jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? LIMIT 0,?",
-				new AppRowMapper(), platform.getValue(), count);
+				new AppRowMapper(), platform, count);
 		
 		logger.info(appList + "");
 		return appList;

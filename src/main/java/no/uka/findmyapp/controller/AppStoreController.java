@@ -6,8 +6,7 @@ import java.util.List;
 
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
-import no.uka.findmyapp.model.appstore.ListType;
-import no.uka.findmyapp.model.appstore.Platform;
+
 import no.uka.findmyapp.service.AppStoreService;
 
 import org.slf4j.Logger;
@@ -45,8 +44,8 @@ public class AppStoreController {
 	*/
 	@RequestMapping(value = "/appstore/{platform}", method = RequestMethod.GET)
 	public String getAppStoreListForPlatform(
-		@PathVariable String platform,
-		@RequestParam(required=true) String listType,
+		@PathVariable int platform,
+		@RequestParam(required=true) int listType,
 		@RequestParam(required=true) int count, Model model) throws URISyntaxException {
 	 
 		//TODO check values, throw exception
@@ -54,11 +53,9 @@ public class AppStoreController {
 		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
 		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
 				count, 
-				ListType.valueOf(listType.toUpperCase()), 
-				Platform.valueOf(platform.toUpperCase()));
+				listType, 
+				platform);
 		
-		
-
 		model.addAttribute("appstore", gson.toJson(appStoreList));
 		return "appstore";
 	}
@@ -89,12 +86,12 @@ public class AppStoreController {
 
 		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
 				10, 
-				ListType.TOP, 
-				Platform.ANDROID);
+				1, 
+				2);
 		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
 				10, 
-				ListType.TOP, 
-				Platform.IOS);
+				1, 
+				1);
 		
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);

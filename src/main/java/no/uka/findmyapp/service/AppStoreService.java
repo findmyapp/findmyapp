@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import no.uka.findmyapp.datasource.AppStoreRepository;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
-import no.uka.findmyapp.model.appstore.ListType;
-import no.uka.findmyapp.model.appstore.Platform;
 
 @Service
 public class AppStoreService {
@@ -21,7 +19,7 @@ public class AppStoreService {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreService.class);
 	
-	public AppStoreList getAppStoreListForPlatform(int count, ListType listType, Platform platform) {
+	public AppStoreList getAppStoreListForPlatform(int count, int listType, int platform) {
 		List<App> appList = data.getAppList(count, listType, platform);
 		
 		AppStoreList appStoreList = new AppStoreList();

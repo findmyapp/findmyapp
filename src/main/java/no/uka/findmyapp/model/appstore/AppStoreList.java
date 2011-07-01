@@ -3,11 +3,11 @@ package no.uka.findmyapp.model.appstore;
 import java.util.List;
 
 public class AppStoreList {
-	private ListType listType;
+	private int listType;
 	private int requestCount;
 	private int listCount;
 	private List<App> appList;
-	private Platform platform;
+	private int platform;
 	
 	public AppStoreList() {
 		
@@ -17,10 +17,10 @@ public class AppStoreList {
 		this.setAppList(appList);
 	}
 	
-	public ListType getListType() {
+	public int getListType() {
 		return listType;
 	}
-	public void setListType(ListType listType) {
+	public void setListType(int listType) {
 		this.listType = listType;
 	}
 	public int getRequestCount() {
@@ -41,10 +41,10 @@ public class AppStoreList {
 	public void setAppList(List<App> appList) {
 		this.appList = appList;
 	}
-	public Platform getPlatform() {
+	public int getPlatform() {
 		return platform;
 	}
-	public void setPlatform(Platform platform) {
+	public void setPlatform(int platform) {
 		this.platform = platform;
 	}
 }
