@@ -205,7 +205,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			          		String tableString = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
 			        		"<tr>" +
 			        			"<td width=\"71\" rowspan=\"3\">" +
-			        				"<a href=\"http://market.android.com/details?id=" + myApp.getAndroidMarketUri() + "\">" +
+			        				"<a href=\"http://market.android.com/" + myApp.getAndroidMarketUri() + "\">" +
 			        				"<img src=\"../../appstoreweb-pictures/appicon-template.png\" width=\"71\" height=\"69\" /></a>" +
 			        			"</td>" +
 			        			"<td class=\"utvikler\">Utvikler</td>" +
