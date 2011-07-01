@@ -4,11 +4,20 @@ import java.net.URI;
 import java.util.List;
 
 public class App {
+	private int id;
 	private String name;
 	private String androidMarketUri;
 	private URI thumbImage;
 	private List<URI> imageList;
 	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
