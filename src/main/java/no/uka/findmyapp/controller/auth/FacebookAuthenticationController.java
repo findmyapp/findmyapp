@@ -1,6 +1,7 @@
 package no.uka.findmyapp.controller.auth;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL; 
@@ -8,6 +9,7 @@ import java.net.URLConnection;
 
 import no.uka.findmyapp.datasource.FacebookAuthenticationDataHandler;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.facebook.FacebookUserProfile;
 //import no.uka.findmyapp.model.;
 
 import org.slf4j.Logger;
@@ -34,69 +36,61 @@ public class FacebookAuthenticationController
 	private FacebookAuthenticationDataHandler data; 
 	
 	@Autowired
-	private Gson g; 
+	private Gson gson; 
 	
 	private static final Logger logger = LoggerFactory.getLogger(FacebookAuthenticationController.class);
 	
-	/**
-	 * Velger 
-	 */
 	@RequestMapping(value = "/auth", method = RequestMethod.GET)
-	
 	public ModelAndView getUserId(@RequestParam(value="accessToken", required=true) String accessToken) {
 		logger.info("Browsing /auth?accessToken=" + accessToken);
-		
-		String facebookUrl = FACEBOOK_USER_DATA_URL + accessToken; 
-		String userdata = this.getUserdataFromFacebook(facebookUrl);
-	/*
-		if(userdata.equals("Exception") || userdata.equals("MalformedUrl")) {
-			return new ModelAndView("auth", "userdata", userdata);
-		}
-		else {
-			this.registerUserInDatabase(userdata);
-		}
-		
-		return new ModelAndView("auth", "userdata", g.toJson(user)); 
-		*/
-		return new ModelAndView(); 
-	}
-	
-	private boolean registerUserInDatabase(String userdata) {
-		
-		
-		return false; 
-	}
-	
-	private String getUserdataFromFacebook(String urlWithaccessToken) {
-		URL url;
-		String returnValue; 
-
+		String facebookUrl = FACEBOOK_USER_DATA_URL + accessToken;
+		FacebookUserProfile fbp = new FacebookUserProfile(); // default null
+		 
 		try {
-			url = new URL(urlWithaccessToken);
-			URLConnection connection = url.openConnection();
+			String userdata = this.getUserdataFromFacebook(facebookUrl);
+			logger.info("userdata: " + userdata);
+			fbp = this.parseFacebookProfile(userdata);
+			logger.info("fbp.toString(): " + gson.toJson(fbp));
+			this.saveUserProfile(fbp);
 			
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		
-			StringBuilder content = new StringBuilder();
-			String line;
-			
-			while((line = bufferedReader.readLine()) != null) {
-				content.append(line + "\n");
-			}
-			bufferedReader.close();
-			returnValue = content.toString(); 
+			logger.info("Creating view"); 
+			return new ModelAndView("auth", "userdata", userdata);
 		} 
-		catch (MalformedURLException e) {
-			returnValue = "MalformedUrl";
-			//returnValue = e.getMessage();
-		} 
-		catch (Exception e) {
-			// Check for error 400, if it's a authentification error - facebook has provided
-			// a json object containing the error message. 
-			// returnValue = e.getMessage(); 
-			returnValue = "Exception";
+		catch(Exception e) {
+			logger.error("FacebookAuthenticationController:58 " + e.toString());
 		}
-		return returnValue;
+
+		return new ModelAndView("auth", "userdata", gson.toJson("Error")); 
+	}
+	
+	private boolean saveUserProfile(FacebookUserProfile fbp) {
+		if(data.userExists(fbp.getId())) {
+		//if(data.userExists(1234)) {
+			return false; 
+		}
+		data.saveUser(fbp);
+		return true; 
+	}
+	
+	private FacebookUserProfile parseFacebookProfile(String fbdata) {
+		FacebookUserProfile fbup = new FacebookUserProfile(); 
+		return gson.fromJson(fbdata, FacebookUserProfile.class);
+	}
+	
+	private String getUserdataFromFacebook(String urlWithaccessToken) throws IOException {
+		URL url = new URL(urlWithaccessToken);
+		URLConnection connection = url.openConnection();
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuilder content = new StringBuilder();
+
+		String line; 
+		while((line = bufferedReader.readLine()) != null) {
+			content.append(line + "\n");
+		}
+		bufferedReader.close();
+		logger.info("FacebookAuticationController:89: " + content.toString());
+		
+		return content.toString(); 
 	}
 
 	
