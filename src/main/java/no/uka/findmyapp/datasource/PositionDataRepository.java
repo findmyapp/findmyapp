@@ -67,6 +67,17 @@ public class PositionDataRepository {
 		}
 	}
 	
+	public int totalNumOfAccesspoints() {
+		try {
+			int totalNumOfAccesspoints = jdbcTemplate.queryForInt("SELECT COUNT(bssid) FROM POSITION_ACCESSPOINT");
+			return totalNumOfAccesspoints;
+		}
+		catch(Exception e) {
+			System.out.println("Could not get totalNumOfAccesspoints: "+e);
+			return -1;
+		}
+	}
+	
 	/** Registers all given signals, and assigns -120 signalstrength to unregistered bssid's.
 	 * @return True if the signals of the given sample are successfully inserted into the database
 	 */ 
@@ -87,7 +98,7 @@ public class PositionDataRepository {
 			}
 			/* If the sample do not have signals from all bssid's, insert signals 
 			 * from the one's missing with signalstrength -120 */
-			List<Accesspoint> accesspoints = jdbcTemplate.query("SELECT * FROM POSITION_ACCESSPOINT",
+			/*List<Accesspoint> accesspoints = jdbcTemplate.query("SELECT * FROM POSITION_ACCESSPOINT",
 					new APRowMapper());
 			for (final Accesspoint AP : accesspoints) {
 				boolean apMissing = true;
@@ -109,7 +120,7 @@ public class PositionDataRepository {
 					    }
 					);
 				}
-			}
+			}*/
 			return true;
 		}
 		catch(Exception e) {

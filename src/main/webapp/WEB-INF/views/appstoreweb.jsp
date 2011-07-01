@@ -7,7 +7,7 @@ List<AppStoreList> fullList = (List<AppStoreList>) request.getAttribute("appstor
 AppStoreList iosList = fullList.get(1);
 AppStoreList androidList = fullList.get(0);
 
-out.println(iosList.getListCount());
+//out.println(iosList.getListCount());
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -205,7 +205,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			          		String tableString = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
 			        		"<tr>" +
 			        			"<td width=\"71\" rowspan=\"3\">" +
-			        				"<a href=\"http://market.android.com/details?id=" + myApp.getAndroidMarketUri() + "\">" +
+			        				"<a href=\"http://market.android.com/" + myApp.getAndroidMarketUri() + "\">" +
 			        				"<img src=\"../../appstoreweb-pictures/appicon-template.png\" width=\"71\" height=\"69\" /></a>" +
 			        			"</td>" +
 			        			"<td class=\"utvikler\">Utvikler</td>" +
@@ -231,6 +231,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			</table>
 	      <p></p>
 	      <p id="devcorner">Developers corner</p>
+	      <p id="devcorner"><a href="market://details?id=no.uka.findmyapp.appstoreAndroid">Last ned findmyapp</a></p>
+	      
+	      
 	    </div>
     <!-- end .content -->
     </div>

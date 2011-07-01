@@ -1,1 +1,1 @@
-{"appstore":${appstore}}
+${appstore}
