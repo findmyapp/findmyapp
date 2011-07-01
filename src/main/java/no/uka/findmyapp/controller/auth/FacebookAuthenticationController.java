@@ -60,7 +60,7 @@ public class FacebookAuthenticationController
 			logger.error("FacebookAuthenticationController:58 " + e.toString());
 		}
 
-		return new ModelAndView("auth", "userdata", gson.toJson("Error")); 
+		return new ModelAndView("auth", "userdata", "{\"exception\":\"400\"}"); 
 	}
 	
 	private boolean saveUserProfile(FacebookUserProfile fbp) {
