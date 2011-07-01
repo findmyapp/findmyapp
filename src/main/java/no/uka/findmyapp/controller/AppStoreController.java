@@ -57,7 +57,7 @@ public class AppStoreController {
 				platform);
 		
 		ModelAndView mav = new ModelAndView("AppStoreList");
-		mav.addObject("", gson.toJson(appStoreList));
+		mav.addObject("appstore", gson.toJson(appStoreList));
 		
 		return mav;
 	}
