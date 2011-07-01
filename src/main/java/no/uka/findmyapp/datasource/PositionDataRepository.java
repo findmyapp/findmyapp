@@ -69,7 +69,7 @@ public class PositionDataRepository {
 	
 	public int totalNumOfAccesspoints() {
 		try {
-			int totalNumOfAccesspoints = jdbcTemplate.queryForInt("SELECT COUNT(position_accesspoint_id) FROM POSITION_ACCESSPOINT");
+			int totalNumOfAccesspoints = jdbcTemplate.queryForInt("SELECT COUNT(bssid) FROM POSITION_ACCESSPOINT");
 			return totalNumOfAccesspoints;
 		}
 		catch(Exception e) {
