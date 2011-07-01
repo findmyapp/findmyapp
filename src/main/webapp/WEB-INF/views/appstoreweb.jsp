@@ -231,7 +231,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			</table>
 	      <p></p>
 	      <p id="devcorner">Developers corner</p>
-	      <p id="devcorner"><a href="market://details?no.uka.findmyapp.appstoreAndroid">Last ned findmyapp</a></p>
+	      <p id="devcorner"><a href="market://details?id=no.uka.findmyapp.appstoreAndroid">Last ned findmyapp</a></p>
 	      
 	      
 	    </div>
