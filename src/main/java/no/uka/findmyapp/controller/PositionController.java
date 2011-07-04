@@ -15,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,7 +65,7 @@ public class PositionController {
 	}
 	
 	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.POST)
-	public ModelAndView registerUserPosition(@PathVariable Integer userId, @RequestParam Integer locationId) {
+	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestBody int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserPosition(userId, locationId);
 		logger.info("registerUserPosition ( " + regUserPos + " )");
@@ -72,26 +73,13 @@ public class PositionController {
 		return mav;
 	}
 	
-	
-	
-	/*@ResponseBody
-	@RequestMapping(value = "/position/sample")
-	public List<Signal> getSample() {
-		Signal signal = new Signal();
-		signal.setBssid("Strossa");
-		signal.setSignalStrength(5);
-		Signal signal1 = new Signal();
-		signal1.setBssid("Storsalen");
-		signal1.setSignalStrength(7);
-		Signal signal2 = new Signal();
-		signal2.setBssid("Lyche");
-		signal2.setSignalStrength(8);
-		Sample sample = new Sample();
-		sample.getSignalList().add(signal);
-		sample.getSignalList().add(signal1);
-		sample.getSignalList().add(signal2);
-		return sample.getSignalList();
-	}*/
+	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.GET)  
+	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
+		ModelMap mm = new ModelMap();
+		Room room = service.getUserPosition(userId);
+		mm.addAttribute(room);
+		return mm; 
+	}  
 	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

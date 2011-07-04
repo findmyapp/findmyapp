@@ -204,13 +204,16 @@ public class PositionDataRepository {
 			final int fRoomId = roomId;
 			final Timestamp now = new Timestamp(new Date().getTime()); 
 			jdbcTemplate
-			.update("INSERT IGNORE INTO USER_POSITION(user_id, position_room_id, registered_time) VALUES(?, ?, ?)",
+			.update("INSERT INTO POSITION_USER_POSITION(user_id, position_room_id, registered_time) VALUES(?, ?, ?) " +
+					"ON DUPLICATE KEY UPDATE position_room_id = ?, registered_time = ?;",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
 							ps.setInt(1, fUserId);
 							ps.setInt(2, fRoomId);
 							ps.setTimestamp(3, now);
+							ps.setInt(4, fRoomId);
+							ps.setTimestamp(5, now);
 						}
 					});
 			return true;
