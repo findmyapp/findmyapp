@@ -7,10 +7,19 @@ package no.uka.findmyapp.model;
  */
 public class Signal {
 
-	public int id;
-	public String bssid;
-	public int signalStrength;
+	private int id;
+	private String bssid;
+	private int signalStrength;
+	private int sampleId;
 	
+	public int getSampleId() {
+		return sampleId;
+	}
+
+	public void setSampleId(int sampleId) {
+		this.sampleId = sampleId;
+	}
+
 	public Signal () {}
 	
 	public Signal(String bssid, int signalStrength) {
