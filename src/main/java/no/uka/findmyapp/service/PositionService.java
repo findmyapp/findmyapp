@@ -6,20 +6,18 @@ import no.uka.findmyapp.datasource.PositionDataRepository;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-/**
- * Class with logic for calculating a users position.
+/*
  * 
  * @author Cecilie Haugstvedt
  * 
  */
-// TODO: remove @Repository, and make sure the bean is still registered
 @Service
 public class PositionService {
 
@@ -94,7 +92,9 @@ public class PositionService {
 		return Math.sqrt(delta);
 		
 	}
-	
-	public void getAllPositions() {
+
+	public List<UserPosition> getPositionOfAllUsers() {
+		return data.getPositionOfAllUsers();
 	}
+	
 }

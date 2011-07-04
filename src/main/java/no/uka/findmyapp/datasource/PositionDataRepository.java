@@ -14,11 +14,11 @@ import no.uka.findmyapp.datasource.mapper.RoomRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
-import no.uka.findmyapp.datasource.mapper.UserRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
-import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -262,6 +262,10 @@ public class PositionDataRepository {
 				new SignalRowMapper(), sampleId);
 
 		return signals;
+	}
+
+	public List<UserPosition> getPositionOfAllUsers() {
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION up INNER JOIN POSITION_ROOM room ON up.position_room_id = room.position_room_id", new UserPositionRowMapper());
 	}
 
 }

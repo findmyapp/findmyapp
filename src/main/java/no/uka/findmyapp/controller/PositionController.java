@@ -64,7 +64,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "user/{id}", method = RequestMethod.POST)
 	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestBody int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserPosition(userId, locationId);
@@ -73,7 +73,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.GET)  
+	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)  
 	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
 		ModelMap mm = new ModelMap();
 		Room room = service.getUserPosition(userId);
@@ -81,9 +81,9 @@ public class PositionController {
 		return mm; 
 	}  
 
-	@RequestMapping(value = "all", method = RequestMethod.GET)
+	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public void getAll(ModelMap model) {
-		model.addAttribute("hei");
+		model.addAttribute(service.getPositionOfAllUsers());
 	}
 		
 	@SuppressWarnings("unused")
