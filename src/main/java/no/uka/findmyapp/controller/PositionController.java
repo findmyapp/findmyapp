@@ -15,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
+@RequestMapping("/position")
 public class PositionController {
 
 	@Autowired
@@ -40,7 +42,7 @@ public class PositionController {
 			.getLogger(PositionController.class);
 	
 	//maps the URL with SSID asking for position to page showing name associated with that SSID
-	@RequestMapping(value = "/position/", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView getPosition(@RequestBody Signal[] signals) {
 		logger.info("getPosition ( " + signals.length + " )");
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
@@ -53,7 +55,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/position/sample/", method = RequestMethod.POST)
+	@RequestMapping(value = "sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("registerPositionSample");
 		boolean regSample = service.registerSample(sample);
@@ -72,7 +74,11 @@ public class PositionController {
 		return mav;
 	}
 	
-	
+
+	@RequestMapping(value = "all", method = RequestMethod.GET)
+	public void getAll(ModelMap model) {
+		model.addAttribute("hei");
+	}
 	
 	/*@ResponseBody
 	@RequestMapping(value = "/position/sample")

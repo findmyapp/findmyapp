@@ -94,4 +94,7 @@ public class PositionService {
 		return Math.sqrt(delta);
 		
 	}
+	
+	public void getAllPositions() {
+	}
 }
