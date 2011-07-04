@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
+@RequestMapping("/position")
 public class PositionController {
 
 	@Autowired
@@ -41,7 +41,7 @@ public class PositionController {
 			.getLogger(PositionController.class);
 	
 	//maps the URL with SSID asking for position to page showing name associated with that SSID
-	@RequestMapping(value = "/position/", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView getPosition(@RequestBody Signal[] signals) {
 		logger.info("getPosition ( " + signals.length + " )");
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
@@ -54,7 +54,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/position/sample/", method = RequestMethod.POST)
+	@RequestMapping(value = "sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("registerPositionSample");
 		boolean regSample = service.registerSample(sample);
@@ -80,7 +80,12 @@ public class PositionController {
 		mm.addAttribute(room);
 		return mm; 
 	}  
-	
+
+	@RequestMapping(value = "all", method = RequestMethod.GET)
+	public void getAll(ModelMap model) {
+		model.addAttribute("hei");
+	}
+		
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)
