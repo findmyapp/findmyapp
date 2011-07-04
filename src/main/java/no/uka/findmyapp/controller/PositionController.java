@@ -74,11 +74,10 @@ public class PositionController {
 	}
 	
 	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)  
-	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
-		ModelMap mm = new ModelMap();
+	public void getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
 		Room room = service.getUserPosition(userId);
-		mm.addAttribute(room);
-		return mm; 
+		logger.debug("Found room " + room);
+		model.addAttribute(room);
 	}  
 
 	@RequestMapping(value = "users", method = RequestMethod.GET)
