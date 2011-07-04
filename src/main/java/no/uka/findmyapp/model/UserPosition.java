@@ -2,22 +2,23 @@ package no.uka.findmyapp.model;
 
 public class UserPosition {
 
-		private String userId;
-		private Room room;
+		private String user;
+		private String room;
 		
-		public String getUserId() {
-			return userId;
+		public String getUser() {
+			return user;
+		}
+		
+		public void setUser(String user) {
+			this.user = user;
 		}
 
-		public void setUserId(String userId) {
-			this.userId = userId;
-		}
-		
-		public Room getRoom() {
+		public String getRoom() {
 			return room;
 		}
-		
-		public void setRoom(Room room) {
+
+		public void setRoom(String room) {
 			this.room = room;
 		}
+		
 }

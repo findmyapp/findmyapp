@@ -265,7 +265,7 @@ public class PositionDataRepository {
 	}
 
 	public List<UserPosition> getPositionOfAllUsers() {
-		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION up INNER JOIN POSITION_ROOM room ON up.position_room_id = room.position_room_id", new UserPositionRowMapper());
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
 }
