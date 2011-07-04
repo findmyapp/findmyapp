@@ -38,13 +38,14 @@ public class PositionService {
 	 */
 	public Room getCurrentPosition(List<Signal> signals) {
 
-		List<Sample> samples = data.getAllSamples();
+		List<Sample> samples = data.getSamples();
 
 		double minDistance = samples.get(0).getDistance(signals);
 		
 		int bestPosition = samples.get(0).getRoomId();
+		System.out.println("NumOfSamples: "+samples.size());		
 		for (Sample sam : samples) {
-			double distance = sam.getDistance(signals);
+			double distance = getEuclideanDistance(sam, signals);
 			if (distance < minDistance) {
 				minDistance = distance;
 				bestPosition = sam.getRoomId();
@@ -55,5 +56,34 @@ public class PositionService {
 	
 	public boolean registerSample(Sample sample) {
 		return data.registerSample(sample);
+	}
+	
+	/** Calculates the Euclidean distance between the signal list of this sample (taken from the DB) and the signal list given in as a parameter. 
+	 *  
+	 *  Sample comes from data source, signal comes from service input
+	 * 
+	 * @param signals list of signals detected by user
+	 * @return Euclidean distance 
+	 */
+	public double getEuclideanDistance(Sample sample, List<Signal> signals){
+		double delta = 0;
+		for (Signal storedSignal : sample.getSignalList()){ 
+			double signalStrength = -120; // use signal strength of -120dB if no signal from access point
+			for (Signal inputSignal : signals){
+				if (inputSignal.getBssid().equals(storedSignal.getBssid())) {
+					signalStrength = inputSignal.getSignalStrength();
+					break; //will jump out of inner for-loop
+				} 
+			}
+			double diff = storedSignal.getSignalStrength() - signalStrength;
+			diff *= diff;
+			delta += diff;	
+		}
+		int numberOfTotalAccessPoints = data.totalNumOfAccesspoints();
+		int notDiscoveredAccessPoints = numberOfTotalAccessPoints - sample.getSignalList().size();
+		System.out.println(numberOfTotalAccessPoints+"(numOfAPs) - "+sample.getSignalList().size()+"(registeredAps) = "+notDiscoveredAccessPoints);
+		delta += ((-120^2) * notDiscoveredAccessPoints);
+		return Math.sqrt(delta);
+		
 	}
 }
