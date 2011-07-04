@@ -40,6 +40,20 @@ CREATE  TABLE `POSITION_SIGNAL` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
+CREATE  TABLE `POSITION_INFO` (
+  `position_info_id` INT NOT NULL AUTO_INCREMENT ,
+  `position_room_id` INT NULL ,
+  `title` VARCHAR(255) NULL ,
+  `lead` VARCHAR(255) NULL ,
+  `text` VARCHAR(255) NULL ,
+  PRIMARY KEY (`position_info_id`) ,
+  INDEX `position_room_id_fk` (`position_room_id` ASC) ,
+  CONSTRAINT `position_room_id_fk`
+    FOREIGN KEY (`position_room_id` )
+    REFERENCES `POSITION_ROOM` (`position_room_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
 -- INSERT into room
 INSERT into POSITION_ROOM(name) values('Strossa');
 INSERT into POSITION_ROOM(name) values('Storsalen');
