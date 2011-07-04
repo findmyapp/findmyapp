@@ -2,7 +2,9 @@ package no.uka.findmyapp.datasource;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +14,14 @@ import no.uka.findmyapp.datasource.mapper.RoomRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.User;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -30,6 +36,8 @@ public class PositionDataRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	private static final Logger logger = LoggerFactory
+	.getLogger(SensorRepository.class);
 
 	/**
 	 * 
@@ -59,7 +67,7 @@ public class PositionDataRepository {
 					});
 			return true;
 		} catch (Exception e) {
-			System.out.println("Could not register given room: " + e);
+			logger.error("Could not register given room: " + e);
 			return false;
 		}
 	}
@@ -70,7 +78,7 @@ public class PositionDataRepository {
 					.queryForInt("SELECT COUNT(bssid) FROM POSITION_ACCESSPOINT");
 			return totalNumOfAccesspoints;
 		} catch (Exception e) {
-			System.out.println("Could not get totalNumOfAccesspoints: " + e);
+			logger.error("Could not get totalNumOfAccesspoints: " + e);
 			return -1;
 		}
 	}
@@ -84,6 +92,7 @@ public class PositionDataRepository {
 	 */
 	private boolean registerSignalsOfSample(Sample sample) {
 		try {
+			logger.info("Registrerer signaler for sample " +sample.getId()+ "..");
 			// Insert the signals to the given sample into the database
 			final Sample fSample = sample;
 			for (final Signal signal : fSample.getSignalList()) {
@@ -100,7 +109,7 @@ public class PositionDataRepository {
 			}
 			return true;
 		} catch (Exception e) {
-			System.out.println("Could not register signals in database: " + e);
+			logger.error("Could not register signals in database: " + e);
 			return false;
 		}
 	}
@@ -148,14 +157,15 @@ public class PositionDataRepository {
 							ps.setInt(1, roomId);
 						}
 					});
-			int rowCount = jdbcTemplate
-					.queryForInt("SELECT COUNT(position_sample_id) FROM POSITION_SAMPLE");
-			sample.setId(rowCount);
+			int lastSampleId = jdbcTemplate
+					.queryForInt("SELECT position_sample_id FROM POSITION_SAMPLE ORDER BY position_sample_id DESC LIMIT 1");
+			logger.info("Siste sampleId: "+lastSampleId);
+			sample.setId(lastSampleId);
 			// Insert the signals of the sample into the database
 			registerSignalsOfSample(sample);
 			return true;
 		} catch (Exception e) {
-			System.out.println("Could not register given sample: " + e);
+			logger.error("Could not register given sample: " + e);
 			return false;
 		}
 	}
@@ -186,6 +196,44 @@ public class PositionDataRepository {
 						new SampleSignalRowMapper(samples));
 
 		return new ArrayList<Sample>(samples.values());
+	}
+	
+	public boolean registerUserPosition(int userId, int roomId) {
+		try {
+			final int fUserId = userId;
+			final int fRoomId = roomId;
+			final Timestamp now = new Timestamp(new Date().getTime()); 
+			jdbcTemplate
+			.update("INSERT IGNORE INTO USER_POSITION(user_id, position_room_id, registered_time) VALUES(?, ?, ?)",
+					new PreparedStatementSetter() {
+						public void setValues(PreparedStatement ps)
+								throws SQLException {
+							ps.setInt(1, fUserId);
+							ps.setInt(2, fRoomId);
+							ps.setTimestamp(3, now);
+						}
+					});
+			return true;
+		}
+		catch(Exception e) {
+			logger.error("Could not register user position: "+e);
+			return false;
+		}
+	}
+	
+	public Room getUserPosition(int userId) {
+		try {
+			Room room = jdbcTemplate.queryForObject(
+					"SELECT room.position_room_id, room.name " +
+					"FROM POSITION_ROOM room, POSITION_USER_POSITION up " +
+					"WHERE room.position_room_id=up.position_room_id AND up.user_id = ?",
+					new RoomRowMapper(), userId);
+			return room;
+		}
+		catch(Exception e) {
+			logger.error("Could not get user position: "+e);
+			return null;
+		}
 	}
 
 	public Room getRoom(int roomId) {
