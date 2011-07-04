@@ -26,8 +26,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SensorRepository {
 	
+
 	@Autowired
-	private DataSource ds;
+	JdbcTemplate jdbcTemplate;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(SensorRepository.class);
@@ -40,8 +41,7 @@ public class SensorRepository {
 	
 	public List<Temperature> getTemperatureData(String location){
 		
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		  
+		
 		
 		List<Temperature> temperatureList = jdbcTemplate.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ?", new SensorTemperatureRowMapper(), location);
 		logger.info("received temperature list");
@@ -52,7 +52,7 @@ public class SensorRepository {
 	
 	public List<Noise> getNoiseData(String location){
 		
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+		
 		  
 		
 		List<Noise> noiseList = jdbcTemplate.query("SELECT * FROM SENSOR_NOISE WHERE location = ?", new SensorNoiseRowMapper(), location);
@@ -63,7 +63,7 @@ public class SensorRepository {
 	}
 	public List<Humidity> getHumidityData(String location){
 		
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+	
 		  
 		
 		List<Humidity> humidityList = jdbcTemplate.query("SELECT * FROM SENSOR_HUMIDITY WHERE location = ?", new SensorHumidityRowMapper(), location);
@@ -80,7 +80,7 @@ public class SensorRepository {
 	 */
 	public Temperature setTemperatureData(String location, float value){ 
 		
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+	
 		  
 		jdbcTemplate.execute("INSERT INTO SENSOR_TEMPERATURE (location, value) VALUES ('" + location + "', "+value+")");
 		
@@ -95,7 +95,7 @@ public class SensorRepository {
 	
 	public Noise setNoiseData(String location, int raw_average, int raw_max, int raw_min, float decibel){ 
 		
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+
 		  
 		jdbcTemplate.execute("INSERT INTO SENSOR_NOISE (location, raw_average, raw_max, raw_min, decibel) VALUES ('" + location + "', "+raw_average+","+raw_max+","+raw_min+","+decibel+")");
 		
@@ -113,7 +113,7 @@ public class SensorRepository {
 
 	public Humidity setHumidityData(String location, float value){ 
 	
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+
 	  
 		jdbcTemplate.execute("INSERT INTO SENSOR_HUMIDITY (location, value) VALUES ('" + location + "', "+value+")");
 	
