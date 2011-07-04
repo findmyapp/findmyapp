@@ -58,6 +58,14 @@ public class PositionService {
 		return data.registerSample(sample);
 	}
 	
+	public boolean registerUserPosition(int user_id, int room_id) {
+		return data.registerUserPosition(user_id, room_id);
+	}
+	
+	public Room getUserPosition(int user_id) {
+		return data.getUserPosition(user_id);
+	}
+	
 	/** Calculates the Euclidean distance between the signal list of this sample (taken from the DB) and the signal list given in as a parameter. 
 	 *  
 	 *  Sample comes from data source, signal comes from service input
