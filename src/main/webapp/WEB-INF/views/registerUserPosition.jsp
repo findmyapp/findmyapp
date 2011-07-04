@@ -2,11 +2,11 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Sample-registrering</title>
+	<title>Brukerposisjon registrering</title>
 </head>
 <body>
 <h1>
-	Registrering av sample: ${regSample}
+	Registrering av brukerposisjon: ${regUserPos}
 </h1>
 </body>
 </html>

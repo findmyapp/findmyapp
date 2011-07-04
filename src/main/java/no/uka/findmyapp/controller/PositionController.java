@@ -74,7 +74,6 @@ public class PositionController {
 		return mav;
 	}
 	
-
 	@RequestMapping(value = "all", method = RequestMethod.GET)
 	public void getAll(ModelMap model) {
 		model.addAttribute("hei");

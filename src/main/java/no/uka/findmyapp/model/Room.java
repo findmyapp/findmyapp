@@ -6,8 +6,8 @@ package no.uka.findmyapp.model;
  */
 public class Room {
 
-	public String roomName;
-	public int roomId;
+	private String roomName;
+	private int roomId;
 	
 	public Room() {}
 	
