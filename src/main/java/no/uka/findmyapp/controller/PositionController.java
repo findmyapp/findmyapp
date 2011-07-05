@@ -35,7 +35,7 @@ import com.google.gson.Gson;
  * 
  */
 @Controller
-@RequestMapping("/position")
+@RequestMapping("/position/")
 public class PositionController {
 
 	@Autowired
@@ -84,7 +84,7 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.GET)  
+	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)  
 	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
 		ModelMap mm = new ModelMap();
 		Location location = service.getUserPosition(userId);
