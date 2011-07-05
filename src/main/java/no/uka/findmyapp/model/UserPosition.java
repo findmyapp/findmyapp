@@ -3,7 +3,7 @@ package no.uka.findmyapp.model;
 public class UserPosition {
 
 		private String user;
-		private String room;
+		private String location;
 		
 		public String getUser() {
 			return user;
@@ -13,12 +13,12 @@ public class UserPosition {
 			this.user = user;
 		}
 
-		public String getRoom() {
-			return room;
+		public String getLocation() {
+			return location;
 		}
 
-		public void setRoom(String room) {
-			this.room = room;
+		public void setLocation(String location) {
+			this.location = location;
 		}
 		
 }

@@ -122,7 +122,7 @@ public class PositionDataRepository {
 	 */
 	public boolean registerSample(Sample sample) {
 		try {
-			// Insert the current room into the database, but only if it do not
+			// Insert the current location into the database, but only if it do not
 			// already exist
 			for (final Signal signal : sample.getSignalList()) {
 				jdbcTemplate
@@ -135,11 +135,11 @@ public class PositionDataRepository {
 								});
 			}
 			final Sample fSample = sample;
-			int numCurrentRooms = jdbcTemplate
+			int numCurrentLocations = jdbcTemplate
 					.queryForInt(
 							"SELECT COUNT(position_location_id) FROM POSITION_LOCATION WHERE name = ?",
 							sample.getLocationName());
-			if (numCurrentRooms == 0) {
+			if (numCurrentLocations == 0) {
 				jdbcTemplate.update(
 						"INSERT INTO POSITION_LOCATION(name) VALUES(?)",
 						new PreparedStatementSetter() {
@@ -243,7 +243,7 @@ public class PositionDataRepository {
 	public Location getLocation(int locationId) {
 
 		Location location = jdbcTemplate.queryForObject(
-				"SELECT * FROM POSITION_ROOM WHERE position_room_id=?",
+				"SELECT * FROM POSITION_LOCATION WHERE position_location_id=?",
 				new LocationRowMapper(), locationId);
 		return location;
 	}
@@ -251,7 +251,7 @@ public class PositionDataRepository {
 	private Location getLocationByName(String locationName) {
 
 		Location location = jdbcTemplate.queryForObject(
-				"SELECT * FROM POSITION_ROOM WHERE name=?",
+				"SELECT * FROM POSITION_LOCATION WHERE name=?",
 				new LocationRowMapper(), locationName);
 		return location;
 	}
@@ -269,16 +269,27 @@ public class PositionDataRepository {
 		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
-	public List<Fact> getAllFacts(String roomName) {
+	public List<Fact> getAllFacts(String locationName) {
 		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
 
 		jdbcTemplate.query(
-				"SELECT fact.position_room_id, fact.text" +
-				"FROM POSITION_LOCATION_FACT AS fact, POSITION_LOCATION AS location " +
-				"WHERE fact.position_room_id = location.position_room_id" +
-				"AND location.room_name = ?", 
-				new FactRowMapper(facts), roomName);
+				"SELECT fact.position_location_id, fact.text " +
+				"FROM POSITION_LOCATION_FACT fact, POSITION_LOCATION location " +
+				"WHERE fact.position_location_id = location.position_location_id " +
+				"AND location.name = ?", 
+				new FactRowMapper(facts), locationName);
 
 		return new ArrayList<Fact>(facts.values());
+	}
+
+	public List<Location> getAllLocations() {
+		try{
+			List<Location> locations = jdbcTemplate.query("SELECT * FROM POSITION_LOCATION", new LocationRowMapper());
+			return locations;
+		}
+		catch(Exception e) {
+			logger.error("Could not get all locations: "+e);
+			return null;
+		}
 	}
 }

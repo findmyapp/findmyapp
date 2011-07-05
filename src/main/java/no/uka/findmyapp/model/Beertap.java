@@ -3,14 +3,19 @@ package no.uka.findmyapp.model;
 import java.sql.Timestamp;
 
 
-
-public class Humidity {
-	
+public class Beertap {
 	private int id;
 	private String location;
 	private float value;
+	private int tapnr;
 	private Timestamp time;
 	
+	public int getTapnr(){
+		return tapnr;
+	}
+	public void setTapnr(int tapnr){
+		this.tapnr = tapnr;
+	}
 	
 	public String getLocation() {
 		return location;
@@ -36,5 +41,4 @@ public class Humidity {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 }
