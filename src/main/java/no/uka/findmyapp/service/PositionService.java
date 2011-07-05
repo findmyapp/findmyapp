@@ -110,12 +110,4 @@ public class PositionService {
 		return data.getPositionOfAllUsers();
 	}
 	
-	public List<Fact> getAllFacts(String locationName) {
-		return data.getAllFacts(locationName);
-	}
-
-	public List<Location> getAllLocations() {
-		return data.getAllLocations();
-	}
-	
 }

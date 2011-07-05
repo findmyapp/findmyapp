@@ -54,10 +54,7 @@ public class PositionController {
 	public ModelAndView getPosition(@RequestBody Signal[] signals)
 			throws LocationNotFoundException {
 		logger.info("getPosition ( " + signals.length + " )");
-		ModelAndView mav = new ModelAndView("pos"); // pos.jsp is the name of
-													// the page displaying the
-													// result
-
+		ModelAndView mav = new ModelAndView("pos"); 
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentPosition(signalList);
 		logger.info("getCurrentPosition ( " + location + " )");
@@ -96,26 +93,6 @@ public class PositionController {
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public void getAll(ModelMap model) {
 		model.addAttribute(service.getPositionOfAllUsers());
-	}
-
-	@RequestMapping(value = "/fact/{name}", method = RequestMethod.GET)
-	public ModelMap getAllFacts(@PathVariable("name") String locationName) {
-		logger.info("getAllFacts ( " + locationName + " )");
-		ModelMap model = new ModelMap();
-		List<Fact> facts = service.getAllFacts(locationName);
-		model.addAttribute(facts);
-		return model;
-
-	}
-	
-	@RequestMapping(value = "position/locations", method = RequestMethod.GET)
-	public ModelMap getAllLocations() {
-		logger.info("getAllLocations");
-		ModelMap model = new ModelMap();
-		List<Location> locations = service.getAllLocations();
-		model.addAttribute(locations);
-		return model;
-
 	}
 
 	@SuppressWarnings("unused")
