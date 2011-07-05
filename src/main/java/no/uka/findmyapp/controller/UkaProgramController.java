@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Controller
 public class UkaProgramController {
@@ -47,7 +46,7 @@ public class UkaProgramController {
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
 			@RequestParam(required=false) Boolean all,
-			@RequestParam(required=false) String place){
+			@RequestParam(required=false) String place){ 
 		UkaProgram program = new UkaProgram();
 		
 
@@ -66,7 +65,7 @@ public class UkaProgramController {
 		
 			logger.info("searchForUkaProgramByName");
 			program = ukaProgramService.titleSearch(eventName);	
-			
+	
 			return new ModelAndView("home", "program", gson.toJson(program));
 	}
 

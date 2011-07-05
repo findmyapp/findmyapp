@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.service.PositionService;
@@ -39,12 +40,16 @@ public class PositionController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PositionController.class);
-	
-	//maps the URL with SSID asking for position to page showing name associated with that SSID
+
+	// maps the URL with SSID asking for position to page showing name
+	// associated with that SSID
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView getPosition(@RequestBody Signal[] signals) {
+	public ModelAndView getPosition(@RequestBody Signal[] signals)
+			throws LocationNotFoundException {
 		logger.info("getPosition ( " + signals.length + " )");
-		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
+		ModelAndView mav = new ModelAndView("pos"); // pos.jsp is the name of
+													// the page displaying the
+													// result
 
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentPosition(signalList);
@@ -53,18 +58,18 @@ public class PositionController {
 
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("registerPositionSample");
 		boolean regSample = service.registerSample(sample);
 		logger.info("registerSample ( " + regSample + " )");
 		mav.addObject("regSample", regSample); // model name, model object
-		
+
 		return mav;
 	}
 	
-	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "user/{id}", method = RequestMethod.POST)
 	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestBody int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserPosition(userId, locationId);
@@ -81,11 +86,11 @@ public class PositionController {
 		return mm; 
 	}  
 
-	@RequestMapping(value = "all", method = RequestMethod.GET)
+	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public void getAll(ModelMap model) {
-		model.addAttribute("hei");
+		model.addAttribute(service.getPositionOfAllUsers());
 	}
-		
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)
@@ -94,7 +99,7 @@ public class PositionController {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
-	
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(IncorrectResultSizeDataAccessException.class)
@@ -103,4 +108,13 @@ public class PositionController {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
+
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(LocationNotFoundException.class)
+	private void handleLocationNotFoundException(LocationNotFoundException ex) {
+		logger.info("handleLocationNotFoundException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+
 }

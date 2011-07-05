@@ -17,7 +17,6 @@ public class SampleSignalRowMapper implements RowMapper<Signal> {
 		this.samples = samples;
 	}
 	
-	@Override
 	public Signal mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Signal signal = new Signal();
 		signal.setBssid(rs.getString("position_accesspoint_bssid"));

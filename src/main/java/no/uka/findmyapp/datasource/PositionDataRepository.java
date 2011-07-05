@@ -16,9 +16,10 @@ import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
-import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,7 @@ public class PositionDataRepository {
 		}
 	}
 
-	public int totalNumOfAccesspoints() {
+	public int getTotalNumOfAccesspoints() {
 		try {
 			int totalNumOfAccesspoints = jdbcTemplate
 					.queryForInt("SELECT COUNT(bssid) FROM POSITION_ACCESSPOINT");
@@ -261,6 +262,10 @@ public class PositionDataRepository {
 				new SignalRowMapper(), sampleId);
 
 		return signals;
+	}
+
+	public List<UserPosition> getPositionOfAllUsers() {
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
 }

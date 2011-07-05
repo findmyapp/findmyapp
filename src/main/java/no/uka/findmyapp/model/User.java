@@ -3,11 +3,12 @@ package no.uka.findmyapp.model;
 import java.sql.Timestamp;
 
 public class User {
-		
+
 	private String facebookUserId; 
 	private String localUserId; 
 	private Timestamp userRegistered; 
-	private Timestamp lastLogon; 
+	private Timestamp lastLogon;
+	private Location lastKnownPosition;
 	
 	public User() {}
 	
@@ -52,6 +53,14 @@ public class User {
 
 	public void setLastLogon(Timestamp lastLogon) {
 		this.lastLogon = lastLogon;
+	}
+
+	public Location getLastKnownPosition() {
+		return lastKnownPosition;
+	}
+
+	public void setLastKnownPosition(Location lastKnownPosition) {
+		this.lastKnownPosition = lastKnownPosition;
 	}
 
 }
