@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class Beertap {
 	private int id;
-	private String location;
+	private int location;
 	private float value;
 	private int tapnr;
 	private Timestamp time;
@@ -17,10 +17,10 @@ public class Beertap {
 		this.tapnr = tapnr;
 	}
 	
-	public String getLocation() {
+	public int getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
+	public void setLocation(int location) {
 		this.location = location;
 	}
 	public float getValue() {

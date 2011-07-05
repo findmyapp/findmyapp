@@ -60,7 +60,7 @@ public class UkaProgramController {
 	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
-			@RequestParam(required=false) String eventName){
+			@RequestParam(required=true) String eventName){
 		UkaProgram program = new UkaProgram();
 		
 			logger.info("searchForUkaProgramByName");
