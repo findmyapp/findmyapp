@@ -91,6 +91,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 
 #devcorner {
 	font-size: xx-large;
+	align: 
 }
 
 /* ~~ this container surrounds all other divs giving them their percentage-based width ~~ */
@@ -149,19 +150,6 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 </style></head>
 
 <body bgcolor="#FFFFFF">
-
-<div class="container">
-	<div class="header" align="center"><!-- end .header -->
-		<table width="940" border="0" >
-			<tr>
-				<td width="465" align="right" id="logo"><img src="../../appstoreweb-pictures/uka11logo.png" width="227" height="44" /></td>
-				<td width="465" id="header"><strong>apps</strong></td>
-			</tr>
-		</table>
-	<!-- end .header -->
-	</div>
-	<div class="content">
-		<div align="center">
 			<table width="583" border="0" cellpadding="5" cellspacing="2">
 				<tr>
 			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/ios-logo.png" width="82" height="49" margin-top="50px"/></p>
@@ -224,24 +212,13 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 					</td>
 	        	</tr>
 		        <tr>
-					<td height="50" align="center" valign="bottom"><b>Lag app selv!</b></td>
-					<td></td>
-					<td align="center" valign="bottom"><b>Lag app selv!</b></td>
-		        </tr>
+		          <td height="50" align="center" valign="bottom"><b>Lag app selv!</b></td>
+		          <td></td>
+		          <td align="center" valign="bottom"><b>Lag app selv!</b></td>
+	          </tr>
+		        <tr>
+					<td height="50" colspan="3" align="center" valign="bottom"><p id="devcorner" align="center"><a href="market://details?id=no.uka.findmyapp.appstoreAndroid">Last ned findmyapp</a></p></td>
+				</tr>
 			</table>
-	      <p></p>
-	      <p id="devcorner">Developers corner</p>
-	      <p id="devcorner"><a href="market://details?id=no.uka.findmyapp.appstoreAndroid">Last ned findmyapp</a></p>
-	      
-	      
-	    </div>
-    <!-- end .content -->
-    </div>
- 	<div class="footer">
-	    <p></p>
-    <!-- end .footer -->
-	</div>
-<!-- end .container -->
-</div>
 </body>
 </html>
