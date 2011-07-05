@@ -1,4 +1,4 @@
-package no.uka.findmyapp.service;
+package no.uka.findmyapp.service.helper;
 
 import javax.inject.Singleton;
 
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Singleton
-public class EditDistanceService {
+public class EditDistanceHelper {
 	/*
 	 * Edit distance finds the number of delete, add and substitute operations needed to convert qry
 	 * to str. splitDistance does the sum of editdistance for each word in qry. fromStart and toEnd
 	 * decides if qry has to match str from the start or/and to the end respectively
 	 */
-	public static int splitDistance(String str, String qry) {
+	public int splitDistance(String str, String qry) {
 		int n = 0;
 		String qrys[] = qry.split(" ");
 		for (int i = 0; i < qrys.length; i++) {
@@ -22,7 +22,7 @@ public class EditDistanceService {
 		}
 		return n;
 	}
-	public static int editDistance(String str, String qry, Boolean fromStart, Boolean toEnd) {
+	public int editDistance(String str, String qry, Boolean fromStart, Boolean toEnd) {
 		int dTable[][] = new int[qry.length()][str.length()]; 
 		for (int i = 0; i < qry.length(); i++) {
 			dTable[i][0] = i;
@@ -52,7 +52,7 @@ public class EditDistanceService {
 		return min;
 	}
 	
-	private static int substCost(char a, char b) {
+	private int substCost(char a, char b) {
 		if (a == b) {
 			return 0;
 		}
