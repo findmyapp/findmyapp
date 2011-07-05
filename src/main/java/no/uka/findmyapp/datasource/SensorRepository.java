@@ -1,6 +1,7 @@
 package no.uka.findmyapp.datasource;
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.mapper.SensorBeertapRowMapper;
@@ -42,21 +43,21 @@ public class SensorRepository {
 		return temperatureList;
 	}
 	
-	public List<Temperature> getTemperatureData(Timestamp from, String location){
+	public List<Temperature> getTemperatureData(Date from, String location){
 		
 		List<Temperature> temperatureList = jdbcTemplate.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ? AND date>=?", new SensorTemperatureRowMapper(), location, from);
 		logger.info("received temperature list");
 		return temperatureList;
 	}
 	
-	public List<Temperature> getTemperatureDataTo(Timestamp to, String location){
+	public List<Temperature> getTemperatureDataTo(Date to, String location){
 		
 		List<Temperature> temperatureList = jdbcTemplate.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ? AND date<=?", new SensorTemperatureRowMapper(), location, to);
 		logger.info("received temperature list");
 		return temperatureList;
 	}
 	
-	public List<Temperature> getTemperatureData(Timestamp from, Timestamp to, String location) {
+	public List<Temperature> getTemperatureData(Date from, Date to, String location) {
 		List<Temperature> temperatureList = jdbcTemplate.query(
 				"SELECT * FROM WHERE AND date>=? AND date<=? AND location=?", new SensorTemperatureRowMapper(), from, to, location );
 		logger.info("received temperature list from " +from+ "to"+to);
@@ -70,12 +71,52 @@ public class SensorRepository {
 		return noiseList;
 	}
 	
+	public List<Noise> getNoiseData(Date from, String location){
+		
+		List<Noise> noiseList = jdbcTemplate.query("SELECT * FROM SENSOR_NOISE WHERE location = ? AND date <=?", new SensorNoiseRowMapper(), location, from);
+		logger.info("received noise list");
+		return noiseList;
+	}
+	public List<Noise> getNoiseDataTo(Date to, String location){
+		
+		List<Noise> noiseList = jdbcTemplate.query("SELECT * FROM SENSOR_NOISE WHERE location =? AND date >=?", new SensorNoiseRowMapper(), location, to);
+		logger.info("received noise list");
+		return noiseList;
+	}
+	public List<Noise> getNoiseData(Date from, Date to, String location){
+		
+		List<Noise> noiseList = jdbcTemplate.query("SELECT * FROM SENSOR_NOISE WHERE location = ? AND date <=? AND date >=?", new SensorNoiseRowMapper(), location, from, to);
+		logger.info("received noise list");
+		return noiseList;
+	}
+	
 	public List<Humidity> getHumidityData(String location){
 		
 		List<Humidity> humidityList = jdbcTemplate.query("SELECT * FROM SENSOR_HUMIDITY WHERE location = ?", new SensorHumidityRowMapper(), location);
 		logger.info("received humidity list");
 		return humidityList;
 	}
+	
+	public List<Humidity> getHumidityData(Date from, String location){
+		
+		List<Humidity> humidityList = jdbcTemplate.query("SELECT * FROM SENSOR_HUMIDITY WHERE location = ?", new SensorHumidityRowMapper(), location, from);
+		logger.info("received humidity list");
+		return humidityList;
+	}
+	
+	public List<Humidity> getHumidityDataTo(Date to, String location){
+		
+		List<Humidity> humidityList = jdbcTemplate.query("SELECT * FROM SENSOR_HUMIDITY WHERE location = ?", new SensorHumidityRowMapper(), location, to);
+		logger.info("received humidity list");
+		return humidityList;
+	}
+
+	public List<Humidity> getHumidityData(Date from, Date to, String location){
+	
+	List<Humidity> humidityList = jdbcTemplate.query("SELECT * FROM SENSOR_HUMIDITY WHERE location = ?", new SensorHumidityRowMapper(), location, from, to);
+	logger.info("received humidity list");
+	return humidityList;
+}
 	
 	public List<Beertap> getBeertapData(String location,int tapnr){
 		

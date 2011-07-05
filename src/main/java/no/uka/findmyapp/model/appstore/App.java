@@ -1,6 +1,7 @@
 package no.uka.findmyapp.model.appstore;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class App {
@@ -9,9 +10,29 @@ public class App {
 	private String androidMarketUri;
 	private URI thumbImage;
 	private List<URI> imageList;
+	private Timestamp publishDate;
+	private int timesDownloaded;
+	private double ranking;
 	
 	
-	
+	public Timestamp getPublishDate() {
+		return publishDate;
+	}
+	public void setPublishDate(Timestamp publishDate) {
+		this.publishDate = publishDate;
+	}
+	public int getTimesDownloaded() {
+		return timesDownloaded;
+	}
+	public void setTimesDownloaded(int timesDownloaded) {
+		this.timesDownloaded = timesDownloaded;
+	}
+	public double getRanking() {
+		return ranking;
+	}
+	public void setRanking(double ranking) {
+		this.ranking = ranking;
+	}
 	public int getId() {
 		return id;
 	}

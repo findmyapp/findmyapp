@@ -14,7 +14,7 @@ public class SensorNoiseRowMapper implements RowMapper<Noise> {
 	public Noise mapRow(ResultSet rs, int arg1) throws SQLException {
 		Noise noise =  new Noise();
 		noise.setId(rs.getInt("sensor_noise_id"));
-		noise.setTime(rs.getTimestamp("date"));
+		noise.setDate(rs.getDate("date"));
 		noise.setLocation(rs.getString("location"));
 		noise.setDecibel(rs.getFloat("decibel"));
 		noise.setRawAverage(rs.getInt("raw_average"));

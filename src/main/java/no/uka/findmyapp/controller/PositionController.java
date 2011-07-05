@@ -99,10 +99,12 @@ public class PositionController {
 	}
 
 	@RequestMapping(value = "/fact/{name}", method = RequestMethod.GET)
-	public ModelAndView getAllFacts(@PathVariable("name") String locationName) {
+	public ModelMap getAllFacts(@PathVariable("name") String locationName) {
 		logger.info("getAllFacts ( " + locationName + " )");
+		ModelMap model = new ModelMap();
 		List<Fact> facts = service.getAllFacts(locationName);
-		return new ModelAndView("facts", "facts", gson.toJson(facts));
+		model.addAttribute(facts);
+		return model;
 
 	}
 	

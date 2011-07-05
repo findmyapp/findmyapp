@@ -1,7 +1,8 @@
 package no.uka.findmyapp.controller.sensor;
 
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
@@ -15,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +37,8 @@ public class SensorController {
 	private  SensorRepository data; 
 	@Autowired
 	private SensorService service;
+	@Autowired
+	private Gson gson;
 
 	//@Autowired
 	//private SensorService sensorservice;
@@ -45,11 +50,11 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	@RequestMapping(value="location/{locationName}/temperature/pull", method = RequestMethod.GET)
+	@RequestMapping(value="location/{locationName}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable String locationName,
-			@RequestParam (required = false) Timestamp from,
-			@RequestParam (required = false) Timestamp to){
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to){
 
 		logger.info("Temperature data request received for location: " + locationName);
 
@@ -58,8 +63,7 @@ public class SensorController {
 		temperatureList = service.getTemperatureData(from, to, locationName);
 		logger.info("Got temperature data");
 
-		Gson g = new Gson(); 
-		return new ModelAndView("sensor","sensor",g.toJson(temperatureList));
+		return new ModelAndView("sensor","sensor",gson.toJson(temperatureList));
 	}
 	
 
@@ -86,8 +90,8 @@ public class SensorController {
 		humidityList = data.getHumidityData(locationName);
 		logger.info("Got humidity data");
 
-		Gson g = new Gson(); 
-		return new ModelAndView("sensor","sensor",g.toJson(humidityList));
+		
+		return new ModelAndView("sensor","sensor",gson.toJson(humidityList));
 	}
 
 	@RequestMapping(value="location/{locationName}/beertap/pull",method = RequestMethod.GET)
@@ -100,8 +104,8 @@ public class SensorController {
 		beertapList = data.getBeertapData(locationName,tapnr);
 		logger.info("Got beertap data");
 
-		Gson g = new Gson(); 
-		return new ModelAndView("sensor","sensor",g.toJson(humidityList));
+		 
+		return new ModelAndView("sensor","sensor",gson.toJson(humidityList));
 	}
 
 
@@ -123,13 +127,13 @@ public class SensorController {
 		Temperature temperature = data.setTemperatureData(locationName, value);
 
 
-		Gson g = new Gson();
-		return new ModelAndView("sensor", "sensor", g.toJson(temperature));
+		
+		return new ModelAndView("sensor", "sensor", gson.toJson(temperature));
 
 	}
 	
 	
-	@RequestMapping(value = "/location/{locationName}/noise", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/{locationName}/noise/push", method = RequestMethod.GET)
 	public ModelAndView setNoiseData(
 			@PathVariable String locationName,
 			@RequestParam int raw_average,
@@ -142,8 +146,8 @@ public class SensorController {
 		Noise noise = data.setNoiseData(locationName,raw_average, raw_max, raw_min, decibel );
 
 
-		Gson g = new Gson();
-		return new ModelAndView("sensor", "sensor", g.toJson(noise));
+		
+		return new ModelAndView("sensor", "sensor", gson.toJson(noise));
 	}
 	
 	
@@ -157,8 +161,8 @@ public class SensorController {
 		Humidity humidity = data.setHumidityData(locationName, value);
 
 
-		Gson g = new Gson();
-		return new ModelAndView("sensor", "sensor", g.toJson(humidity));
+	
+		return new ModelAndView("sensor", "sensor", gson.toJson(humidity));
 
 
 	}
@@ -170,8 +174,8 @@ public class SensorController {
 			@RequestParam int tapnr){
 		logger.info("Beertap data logged for location: " + locationName + ", Value: "+ value +",tap nr: "+tapnr  );
 		Beertap beertap = data.setBeertapData(locationName, value, tapnr);
-		Gson g = new Gson();
-		return new ModelAndView("sensor", "sensor", g.toJson(beertap));
+		
+		return new ModelAndView("sensor", "sensor", gson.toJson(beertap));
 
 
 	}
