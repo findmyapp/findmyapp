@@ -45,7 +45,7 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	@RequestMapping(value="location/{locationName}/temperature/pull",method = RequestMethod.GET)
+	@RequestMapping(value="location/{locationName}/temperature/pull", method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable String locationName,
 			@RequestParam (required = false) Timestamp from,
@@ -129,7 +129,7 @@ public class SensorController {
 	}
 	
 	
-	@RequestMapping(value = "/location/{locationName}/noise/push", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/{locationName}/noise", method = RequestMethod.GET)
 	public ModelAndView setNoiseData(
 			@PathVariable String locationName,
 			@RequestParam int raw_average,
