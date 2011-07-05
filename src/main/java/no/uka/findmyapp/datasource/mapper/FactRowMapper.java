@@ -21,7 +21,7 @@ private Map<Integer, Fact> facts;
 	public Fact mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Fact fact = new Fact();
 		fact.setFactId(rs.getInt("position_location_fact_id"));
-		fact.setRoomId(rs.getInt("position_room_id"));
+		fact.setLocationId(rs.getInt("position_location_id"));
 		fact.setText(rs.getString("text"));
 		
 		if (!facts.containsKey(fact.getFactId())) {

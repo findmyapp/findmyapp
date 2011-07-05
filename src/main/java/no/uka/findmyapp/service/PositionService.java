@@ -60,12 +60,12 @@ public class PositionService {
 		return data.registerSample(sample);
 	}
 
-	public boolean registerUserPosition(int user_id, int room_id) {
-		return data.registerUserPosition(user_id, room_id);
+	public boolean registerUserPosition(int userId, int locationId) {
+		return data.registerUserPosition(userId, locationId);
 	}
 	
-	public Location getUserPosition(int user_id) {
-		return data.getUserPosition(user_id);
+	public Location getUserPosition(int userId) {
+		return data.getUserPosition(userId);
 	}
 
 	/**
@@ -110,8 +110,8 @@ public class PositionService {
 		return data.getPositionOfAllUsers();
 	}
 	
-	public List<Fact> getAllFacts(String roomName) {
-		return data.getAllFacts(roomName);
+	public List<Fact> getAllFacts(String locationName) {
+		return data.getAllFacts(locationName);
 	}
 	
 }

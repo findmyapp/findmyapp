@@ -40,7 +40,7 @@ public class PositionController {
 
 	@Autowired
 	private PositionService service;
-	
+
 	@Autowired
 	private Gson gson;
 
@@ -60,7 +60,7 @@ public class PositionController {
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentPosition(signalList);
 		logger.info("getCurrentPosition ( " + location + " )");
-		mav.addObject("room", location); // model name, model object 
+		mav.addObject("room", location); // model name, model object
 
 		return mav;
 	}
@@ -74,37 +74,39 @@ public class PositionController {
 
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "user/{id}", method = RequestMethod.POST)
-	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestBody int locationId) {
+	public ModelAndView registerUserPosition(@PathVariable("id") int userId,
+			@RequestBody int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserPosition(userId, locationId);
 		logger.info("registerUserPosition ( " + regUserPos + " )");
 		mav.addObject("regUserPos", regUserPos); // model name, model object
 		return mav;
 	}
-	
-	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)  
-	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
+
+	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+	public ModelMap getUserPosition(@PathVariable("id") int userId,
+			ModelMap model) {
 		ModelMap mm = new ModelMap();
 		Location location = service.getUserPosition(userId);
 		mm.addAttribute(location);
-		return mm; 
-	}  
+		return mm;
+	}
 
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public void getAll(ModelMap model) {
 		model.addAttribute(service.getPositionOfAllUsers());
 	}
 
-	@RequestMapping(value = "/position/fact/{name}", method = RequestMethod.GET)  
-	public ModelAndView getAllFacts(@PathVariable("name") String roomName) {
-		logger.info("getAllFacts ( " + roomName + " )");
-		List<Fact> facts = service.getAllFacts(roomName);
-		return new ModelAndView("facts", "facts", gson.toJson(facts)); 
-		
+	@RequestMapping(value = "/position/fact/{name}", method = RequestMethod.GET)
+	public ModelAndView getAllFacts(@PathVariable("name") String locationName) {
+		logger.info("getAllFacts ( " + locationName + " )");
+		List<Fact> facts = service.getAllFacts(locationName);
+		return new ModelAndView("facts", "facts", gson.toJson(facts));
+
 	}
-	
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)
