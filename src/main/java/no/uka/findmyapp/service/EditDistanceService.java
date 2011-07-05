@@ -1,5 +1,11 @@
 package no.uka.findmyapp.service;
 
+import javax.inject.Singleton;
+
+import org.springframework.stereotype.Service;
+
+@Service
+@Singleton
 public class EditDistanceService {
 	/*
 	 * Edit distance finds the number of delete, add and substitute operations needed to convert qry

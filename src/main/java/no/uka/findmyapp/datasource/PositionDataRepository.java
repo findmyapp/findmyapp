@@ -270,7 +270,6 @@ public class PositionDataRepository {
 	}
 
 	public List<Fact> getAllFacts(String locationName) {
-//		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
 
 		List<Fact> facts = jdbcTemplate.query(
 				"SELECT fact.location_fact_id, fact.position_location_id, fact.text " +
@@ -279,7 +278,6 @@ public class PositionDataRepository {
 				"AND location.name = ?", 
 				new FactRowMapper(), locationName);
 
-//		return new ArrayList<Fact>(facts.values());
 		return facts;
 	}
 
