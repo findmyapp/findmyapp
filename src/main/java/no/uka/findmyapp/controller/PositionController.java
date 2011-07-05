@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.exception.LocationNotFoundException;
+import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.service.PositionService;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+
 /* Controller that handles HTTP requests for position
  * 
  * @author Cecilie Haugstvedt
@@ -37,6 +40,9 @@ public class PositionController {
 
 	@Autowired
 	private PositionService service;
+	
+	@Autowired
+	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PositionController.class);
@@ -91,6 +97,14 @@ public class PositionController {
 		model.addAttribute(service.getPositionOfAllUsers());
 	}
 
+	@RequestMapping(value = "/position/fact/{name}", method = RequestMethod.GET)  
+	public ModelAndView getAllFacts(@PathVariable("name") String roomName) {
+		logger.info("getAllFacts ( " + roomName + " )");
+		List<Fact> facts = service.getAllFacts(roomName);
+		return new ModelAndView("facts", "facts", gson.toJson(facts)); 
+		
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)

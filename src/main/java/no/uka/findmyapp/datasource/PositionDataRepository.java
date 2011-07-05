@@ -9,13 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
+import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
+import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
-import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
+import no.uka.findmyapp.model.Fact;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.UserPosition;
@@ -267,4 +269,16 @@ public class PositionDataRepository {
 		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
+	public List<Fact> getAllFacts(String roomName) {
+		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
+
+		jdbcTemplate.query(
+				"SELECT fact.position_room_id, fact.text" +
+				"FROM POSITION_LOCATION_FACT AS fact, POSITION_LOCATION AS location " +
+				"WHERE fact.position_room_id = location.position_room_id" +
+				"AND location.room_name = ?", 
+				new FactRowMapper(facts), roomName);
+
+		return new ArrayList<Fact>(facts.values());
+	}
 }
