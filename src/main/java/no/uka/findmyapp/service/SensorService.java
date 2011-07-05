@@ -1,6 +1,6 @@
 package no.uka.findmyapp.service;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
@@ -21,18 +21,18 @@ public class SensorService {
 	}
 	
 
-	public List<Temperature> getTemperatureData(Timestamp from, Timestamp to, String location){
+	public List<Temperature> getTemperatureData(Date from, Date to, String location){
 		List<Temperature> temp = null;	
 		
 		if(from == null && to == null){
 			temp=data.getTemperatureData(location);
 		}
 		else if(from != null && to == null){
-			temp=data.getTemperatureData(location);
+			temp=data.getTemperatureData(from,location);
 		}
 		
 		else if (to != null && from == null){
-			temp=data.getTemperatureData(location);
+			temp=data.getTemperatureDataTo(to,location);
 		
 		}
 		else if(from !=null && to!=null){
