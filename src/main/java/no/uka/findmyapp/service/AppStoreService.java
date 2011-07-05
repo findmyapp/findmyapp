@@ -15,12 +15,13 @@ import org.springframework.stereotype.Service;
 public class AppStoreService {
 	@Autowired
 	private AppStoreRepository data;
+	private String default_category = "none";
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreService.class);
-	
-	public AppStoreList getAppStoreListForPlatform(int count, int listType, int platform) {
-		List<App> appList = data.getAppList(count, listType, platform);
+
+	public AppStoreList getAppStoreListForPlatform(int count, int listType, int platform, String category) {
+		List<App> appList = data.getAppList(count, listType, platform, category);
 		
 		AppStoreList appStoreList = new AppStoreList();
 		appStoreList.setListType(listType);
@@ -30,6 +31,9 @@ public class AppStoreService {
 		appStoreList.setAppList(appList);
 		
 		return appStoreList;
+	}
+	public AppStoreList getAppStoreListForPlatform(int count, int listType, int platform){
+		return getAppStoreListForPlatform(count, listType, platform, default_category);
 	}
 	
 	public App getAppDetails(int appId) {

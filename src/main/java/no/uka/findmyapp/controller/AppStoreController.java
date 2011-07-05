@@ -34,6 +34,7 @@ public class AppStoreController {
 	private AppStoreService appStoreService;
 	@Autowired
 	private Gson gson;
+	private static final String APP_OF_THE_DAY = "app_of_the_day";
 	
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
@@ -132,6 +133,26 @@ public class AppStoreController {
 				10, 
 				2, 
 				1);
+		
+		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
+		fullList.add(androidList);
+		fullList.add(iosList);
+		
+		//TODO check values, throw exception
+		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+	}
+	
+	@RequestMapping(value = "/appstore/appOfTheDay/", method = RequestMethod.GET)
+	public ModelAndView getFeaturedApp() throws URISyntaxException {
+
+		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				4, 
+				2, APP_OF_THE_DAY);
+		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				4, 
+				1, APP_OF_THE_DAY);
 		
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
