@@ -55,15 +55,8 @@ public class SensorController {
 			@PathVariable String locationName,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to){
-
-		logger.info("Temperature data request received for location: " + locationName);
-
-
-		logger.info("Trying to fetch temperature data");
 		temperatureList = service.getTemperatureData(from, to, locationName);
-		logger.info("Got temperature data");
-
-		return new ModelAndView("sensor","sensor",gson.toJson(temperatureList));
+		return new ModelAndView("sensor","sensor",temperatureList);
 	}
 	
 
@@ -77,7 +70,7 @@ public class SensorController {
 		logger.info("Got noise data");
 
 		Gson g = new Gson(); 
-		return new ModelAndView("sensor","sensor",g.toJson(noiseList));
+		return new ModelAndView("sensor","sensor",noiseList);
 	}
 	
 	
