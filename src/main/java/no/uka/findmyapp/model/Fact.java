@@ -11,6 +11,9 @@ public class Fact {
 	private int roomId;
 	private String text;
 	
+	public Fact() {
+	}
+
 	public Fact(int roomId, String text) {
 		this.roomId = roomId;
 		this.text = text;
