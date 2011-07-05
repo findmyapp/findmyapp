@@ -8,14 +8,14 @@ package no.uka.findmyapp.model;
 public class Fact {
 
 	private int factId;
-	private int roomId;
+	private int locationId;
 	private String text;
 	
 	public Fact() {
 	}
 
-	public Fact(int roomId, String text) {
-		this.roomId = roomId;
+	public Fact(int locationId, String text) {
+		this.locationId = locationId;
 		this.text = text;
 	}
 
@@ -27,12 +27,12 @@ public class Fact {
 		this.factId = factId;
 	}
 
-	public int getRoomId() {
-		return roomId;
+	public int getLocationId() {
+		return locationId;
 	}
 
-	public void setRoomId(int roomId) {
-		this.roomId = roomId;
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
 	}
 
 	public String getText() {
