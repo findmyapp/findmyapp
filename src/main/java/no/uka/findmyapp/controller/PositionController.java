@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.exception.LocationNotFoundException;
+import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.service.PositionService;
@@ -22,8 +23,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 /* Controller that handles HTTP requests for position
  * 
@@ -32,11 +36,14 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
-@RequestMapping("/position/")
+@RequestMapping("/position")
 public class PositionController {
 
 	@Autowired
 	private PositionService service;
+
+	@Autowired
+	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PositionController.class);
@@ -54,12 +61,12 @@ public class PositionController {
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentPosition(signalList);
 		logger.info("getCurrentPosition ( " + location + " )");
-		mav.addObject("room", location); // model name, model object 
+		mav.addObject("room", location); // model name, model object
 
 		return mav;
 	}
 
-	@RequestMapping(value = "sample", method = RequestMethod.POST)
+	@RequestMapping(value = "/sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("registerPositionSample");
 		boolean regSample = service.registerSample(sample);
@@ -69,26 +76,46 @@ public class PositionController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "user/{id}", method = RequestMethod.POST)
-	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestBody int locationId) {
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
+	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestParam int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserPosition(userId, locationId);
 		logger.info("registerUserPosition ( " + regUserPos + " )");
 		mav.addObject("regUserPos", regUserPos); // model name, model object
 		return mav;
 	}
-	
-	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)  
-	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
+
+	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+	public ModelMap getUserPosition(@PathVariable("id") int userId) {
 		ModelMap mm = new ModelMap();
 		Location location = service.getUserPosition(userId);
 		mm.addAttribute(location);
-		return mm; 
-	}  
+		return mm;
+	}
 
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public void getAll(ModelMap model) {
 		model.addAttribute(service.getPositionOfAllUsers());
+	}
+
+	@RequestMapping(value = "/fact/{name}", method = RequestMethod.GET)
+	public ModelMap getAllFacts(@PathVariable("name") String locationName) {
+		logger.info("getAllFacts ( " + locationName + " )");
+		ModelMap model = new ModelMap();
+		List<Fact> facts = service.getAllFacts(locationName);
+		model.addAttribute(facts);
+		return model;
+
+	}
+	
+	@RequestMapping(value = "position/locations", method = RequestMethod.GET)
+	public ModelMap getAllLocations() {
+		logger.info("getAllLocations");
+		ModelMap model = new ModelMap();
+		List<Location> locations = service.getAllLocations();
+		model.addAttribute(locations);
+		return model;
+
 	}
 
 	@SuppressWarnings("unused")

@@ -12,7 +12,7 @@ public class UserPositionRowMapper implements RowMapper<UserPosition> {
 	public UserPosition mapRow(ResultSet rs, int rowNum) throws SQLException {
 		UserPosition userPosition = new UserPosition();
 		userPosition.setUser("/findmyapp/position/user/" + rs.getString("user_id"));
-		userPosition.setRoom("/findmyapp/position/location/" + rs.getString("position_room_id"));
+		userPosition.setLocation("/findmyapp/position/location/" + rs.getString("position_location_id"));
 		
 		return userPosition; 
 	}

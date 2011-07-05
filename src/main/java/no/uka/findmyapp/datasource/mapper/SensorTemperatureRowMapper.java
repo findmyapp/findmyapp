@@ -12,7 +12,7 @@ public class SensorTemperatureRowMapper implements RowMapper<Temperature> {
 	public Temperature mapRow(ResultSet rs, int arg1) throws SQLException {
 		Temperature temperature =  new Temperature();
 		temperature.setId(rs.getInt("sensor_temperature_id"));
-		temperature.setDate(rs.getDate("date"));
+		temperature.setTime(rs.getTimestamp("date"));
 		temperature.setLocation(rs.getString("location"));
 		temperature.setValue(rs.getFloat("value"));
 		

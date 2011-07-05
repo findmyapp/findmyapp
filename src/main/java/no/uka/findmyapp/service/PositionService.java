@@ -3,11 +3,13 @@ package no.uka.findmyapp.service;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.PositionDataRepository;
-import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.exception.LocationNotFoundException;
+import no.uka.findmyapp.model.Fact;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.UserPosition;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +60,12 @@ public class PositionService {
 		return data.registerSample(sample);
 	}
 
-	public boolean registerUserPosition(int user_id, int room_id) {
-		return data.registerUserPosition(user_id, room_id);
+	public boolean registerUserPosition(int userId, int locationId) {
+		return data.registerUserPosition(userId, locationId);
 	}
 	
-	public Location getUserPosition(int user_id) {
-		return data.getUserPosition(user_id);
+	public Location getUserPosition(int userId) {
+		return data.getUserPosition(userId);
 	}
 
 	/**
@@ -106,6 +108,14 @@ public class PositionService {
 
 	public List<UserPosition> getPositionOfAllUsers() {
 		return data.getPositionOfAllUsers();
+	}
+	
+	public List<Fact> getAllFacts(String locationName) {
+		return data.getAllFacts(locationName);
+	}
+
+	public List<Location> getAllLocations() {
+		return data.getAllLocations();
 	}
 	
 }

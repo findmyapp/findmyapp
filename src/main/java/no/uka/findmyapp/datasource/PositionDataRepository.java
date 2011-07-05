@@ -9,13 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
+import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
+import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
-import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
+import no.uka.findmyapp.model.Fact;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.UserPosition;
@@ -120,7 +122,7 @@ public class PositionDataRepository {
 	 */
 	public boolean registerSample(Sample sample) {
 		try {
-			// Insert the current room into the database, but only if it do not
+			// Insert the current location into the database, but only if it do not
 			// already exist
 			for (final Signal signal : sample.getSignalList()) {
 				jdbcTemplate
@@ -133,11 +135,11 @@ public class PositionDataRepository {
 								});
 			}
 			final Sample fSample = sample;
-			int numCurrentRooms = jdbcTemplate
+			int numCurrentLocations = jdbcTemplate
 					.queryForInt(
 							"SELECT COUNT(position_location_id) FROM POSITION_LOCATION WHERE name = ?",
 							sample.getLocationName());
-			if (numCurrentRooms == 0) {
+			if (numCurrentLocations == 0) {
 				jdbcTemplate.update(
 						"INSERT INTO POSITION_LOCATION(name) VALUES(?)",
 						new PreparedStatementSetter() {
@@ -241,7 +243,7 @@ public class PositionDataRepository {
 	public Location getLocation(int locationId) {
 
 		Location location = jdbcTemplate.queryForObject(
-				"SELECT * FROM POSITION_ROOM WHERE position_room_id=?",
+				"SELECT * FROM POSITION_LOCATION WHERE position_location_id=?",
 				new LocationRowMapper(), locationId);
 		return location;
 	}
@@ -249,7 +251,7 @@ public class PositionDataRepository {
 	private Location getLocationByName(String locationName) {
 
 		Location location = jdbcTemplate.queryForObject(
-				"SELECT * FROM POSITION_ROOM WHERE name=?",
+				"SELECT * FROM POSITION_LOCATION WHERE name=?",
 				new LocationRowMapper(), locationName);
 		return location;
 	}
@@ -267,4 +269,28 @@ public class PositionDataRepository {
 		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
+	public List<Fact> getAllFacts(String locationName) {
+//		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
+
+		List<Fact> facts = jdbcTemplate.query(
+				"SELECT fact.location_fact_id, fact.position_location_id, fact.text " +
+				"FROM POSITION_LOCATION_FACT fact, POSITION_LOCATION location " +
+				"WHERE fact.position_location_id = location.position_location_id " +
+				"AND location.name = ?", 
+				new FactRowMapper(), locationName);
+
+//		return new ArrayList<Fact>(facts.values());
+		return facts;
+	}
+
+	public List<Location> getAllLocations() {
+		try{
+			List<Location> locations = jdbcTemplate.query("SELECT * FROM POSITION_LOCATION", new LocationRowMapper());
+			return locations;
+		}
+		catch(Exception e) {
+			logger.error("Could not get all locations: "+e);
+			return null;
+		}
+	}
 }
