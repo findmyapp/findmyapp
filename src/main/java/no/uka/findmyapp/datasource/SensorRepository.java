@@ -42,6 +42,20 @@ public class SensorRepository {
 		return temperatureList;
 	}
 	
+	public List<Temperature> getTemperatureData(Timestamp from, String location){
+		
+		List<Temperature> temperatureList = jdbcTemplate.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ? AND date>=?", new SensorTemperatureRowMapper(), location, from);
+		logger.info("received temperature list");
+		return temperatureList;
+	}
+	
+	public List<Temperature> getTemperatureDataTo(Timestamp to, String location){
+		
+		List<Temperature> temperatureList = jdbcTemplate.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ? AND date<=?", new SensorTemperatureRowMapper(), location, to);
+		logger.info("received temperature list");
+		return temperatureList;
+	}
+	
 	public List<Temperature> getTemperatureData(Timestamp from, Timestamp to, String location) {
 		List<Temperature> temperatureList = jdbcTemplate.query(
 				"SELECT * FROM WHERE AND date>=? AND date<=? AND location=?", new SensorTemperatureRowMapper(), from, to, location );
