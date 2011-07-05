@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,7 +36,7 @@ import com.google.gson.Gson;
  * 
  */
 @Controller
-@RequestMapping("/position/")
+@RequestMapping("/position")
 public class PositionController {
 
 	@Autowired
@@ -65,7 +66,7 @@ public class PositionController {
 		return mav;
 	}
 
-	@RequestMapping(value = "sample", method = RequestMethod.POST)
+	@RequestMapping(value = "/sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		ModelAndView mav = new ModelAndView("registerPositionSample");
 		boolean regSample = service.registerSample(sample);
@@ -74,10 +75,9 @@ public class PositionController {
 
 		return mav;
 	}
-
-	@RequestMapping(value = "user/{id}", method = RequestMethod.POST)
-	public ModelAndView registerUserPosition(@PathVariable("id") int userId,
-			@RequestBody int locationId) {
+	
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
+	public ModelAndView registerUserPosition(@PathVariable("id") int userId, @RequestParam int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserPosition(userId, locationId);
 		logger.info("registerUserPosition ( " + regUserPos + " )");
@@ -99,10 +99,12 @@ public class PositionController {
 	}
 
 	@RequestMapping(value = "/fact/{name}", method = RequestMethod.GET)
-	public ModelAndView getAllFacts(@PathVariable("name") String locationName) {
+	public ModelMap getAllFacts(@PathVariable("name") String locationName) {
 		logger.info("getAllFacts ( " + locationName + " )");
+		ModelMap model = new ModelMap();
 		List<Fact> facts = service.getAllFacts(locationName);
-		return new ModelAndView("facts", "facts", gson.toJson(facts));
+		model.addAttribute(facts);
+		return model;
 
 	}
 	

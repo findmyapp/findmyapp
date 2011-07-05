@@ -101,6 +101,46 @@ public class AppStoreController {
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 	
+	@RequestMapping(value = "/appstore/latest/", method = RequestMethod.GET)
+	public ModelAndView getAppStoreLatestList() throws URISyntaxException {
+
+		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				3, 
+				2);
+		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				3, 
+				1);
+		
+		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
+		fullList.add(androidList);
+		fullList.add(iosList);
+		
+		//TODO check values, throw exception
+		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+	}
+	
+	@RequestMapping(value = "/appstore/mostPopular/", method = RequestMethod.GET)
+	public ModelAndView getAppStoreMostPopularList() throws URISyntaxException {
+
+		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				2, 
+				2);
+		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				2, 
+				1);
+		
+		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
+		fullList.add(androidList);
+		fullList.add(iosList);
+		
+		//TODO check values, throw exception
+		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
