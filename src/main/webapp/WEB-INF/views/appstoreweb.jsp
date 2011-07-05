@@ -152,11 +152,11 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 <body bgcolor="#FFFFFF">
 			<table width="583" border="0" cellpadding="5" cellspacing="2">
 				<tr>
-			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/ios-logo.png" width="82" height="49" margin-top="50px"/></p>
-			         	<p>(iPhone, iPad, iPod touch...)</p></td>
+			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/ios-logo.png" width="82" height="49" margin-top="50px"/><br />
+	              (iPhone, iPad, iPod touch...)</td>
 			         <td width="50"></td>
-			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/android-logo.png" width="77" height="69" /></p>
-			         	<p>(HTC, Samsung, SonyEricsson...)</p></td>
+			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/android-notext.png" width="58" height="64" /><br />
+	              (HTC, Samsung, SonyEricsson...)</td>
 		       	</tr>
 				<tr>
 					<td valign="top">
