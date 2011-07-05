@@ -281,4 +281,15 @@ public class PositionDataRepository {
 
 		return new ArrayList<Fact>(facts.values());
 	}
+
+	public List<Location> getAllLocations() {
+		try{
+			List<Location> locations = jdbcTemplate.query("SELECT * FROM POSITION_LOCATION", new LocationRowMapper());
+			return locations;
+		}
+		catch(Exception e) {
+			logger.error("Could not get all locations: "+e);
+			return null;
+		}
+	}
 }
