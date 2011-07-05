@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
-import no.uka.findmyapp.datasource.mapper.RoomRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserRowMapper;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
-import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.UserPosition;
@@ -44,30 +45,30 @@ public class PositionDataRepository {
 	 * @param SSID
 	 * @return position associated with this SSID
 	 */
-	public Room getPosition(Sample sample) {
+	public Location getPosition(Sample sample) {
 
-		Room pos = jdbcTemplate
+		Location pos = jdbcTemplate
 				.queryForObject(
-						"SELECT r.position_room_id, r.name FROM POSITION_ROOM r, POSITION_SAMPLE sa, POSITION_SIGNAL si "
-								+ "WHERE r.id = sa.position_room_id AND sa.position_sample_id = ?",
-						new PositionRowMapper(), sample.getRoomId());
+						"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_SAMPLE sa, POSITION_SIGNAL si "
+								+ "WHERE l.id = sa.position_location_id AND sa.position_sample_id = ?",
+						new PositionRowMapper(), sample.getLocationId());
 		return pos;
 	}
 
-	public boolean registerRoom(String roomName) {
+	public boolean registerLocation(String locationName) {
 		try {
-			final String fRoomName = roomName;
+			final String fLocationName = locationName;
 
-			jdbcTemplate.update("INSERT into POSITION_ROOM(name) values (?)",
+			jdbcTemplate.update("INSERT into POSITION_LOCATION(name) values (?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
-							ps.setString(1, fRoomName);
+							ps.setString(1, fLocationName);
 						}
 					});
 			return true;
 		} catch (Exception e) {
-			logger.error("Could not register given room: " + e);
+			logger.error("Could not register given location: " + e);
 			return false;
 		}
 	}
@@ -135,31 +136,30 @@ public class PositionDataRepository {
 			final Sample fSample = sample;
 			int numCurrentRooms = jdbcTemplate
 					.queryForInt(
-							"SELECT COUNT(position_room_id) FROM POSITION_ROOM WHERE name = ?",
-							sample.getRoomName());
+							"SELECT COUNT(position_location_id) FROM POSITION_LOCATION WHERE name = ?",
+							sample.getLocationName());
 			if (numCurrentRooms == 0) {
 				jdbcTemplate.update(
-						"INSERT INTO POSITION_ROOM(name) VALUES(?)",
+						"INSERT INTO POSITION_LOCATION(name) VALUES(?)",
 						new PreparedStatementSetter() {
 							public void setValues(PreparedStatement ps)
 									throws SQLException {
-								ps.setString(1, fSample.getRoomName());
+								ps.setString(1, fSample.getLocationName());
 							}
 						});
 			}
-			final int roomId = getRoomByName(fSample.getRoomName()).getRoomId();
+			final int locationId = getLocationByName(fSample.getLocationName()).getLocationId();
 			// Insert the sample into the database
 			jdbcTemplate.update(
-					"INSERT into POSITION_SAMPLE(position_room_id) values (?)",
+					"INSERT into POSITION_SAMPLE(position_location_id) values (?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
-							ps.setInt(1, roomId);
+							ps.setInt(1, locationId);
 						}
 					});
 			int lastSampleId = jdbcTemplate
 					.queryForInt("SELECT position_sample_id FROM POSITION_SAMPLE ORDER BY position_sample_id DESC LIMIT 1");
-			logger.info("Siste sampleId: "+lastSampleId);
 			sample.setId(lastSampleId);
 			// Insert the signals of the sample into the database
 			registerSignalsOfSample(sample);
@@ -189,7 +189,7 @@ public class PositionDataRepository {
 		Map<Integer, Sample> samples = new HashMap<Integer, Sample>();
 
 		jdbcTemplate
-				.query("SELECT sample.position_sample_id, sample.position_room_id, signal.position_signal_id, "
+				.query("SELECT sample.position_sample_id, sample.position_location_id, signal.position_signal_id, "
 						+ "signal.position_accesspoint_bssid, signal.signal_strength "
 						+ "FROM POSITION_SAMPLE AS sample, POSITION_SIGNAL AS signal "
 						+ "WHERE sample.position_sample_id = signal.position_sample_id",
@@ -198,21 +198,21 @@ public class PositionDataRepository {
 		return new ArrayList<Sample>(samples.values());
 	}
 	
-	public boolean registerUserPosition(int userId, int roomId) {
+	public boolean registerUserPosition(int userId, int locationId) {
 		try {
 			final int fUserId = userId;
-			final int fRoomId = roomId;
+			final int fLocationId = locationId;
 			final Timestamp now = new Timestamp(new Date().getTime()); 
 			jdbcTemplate
-			.update("INSERT INTO POSITION_USER_POSITION(user_id, position_room_id, registered_time) VALUES(?, ?, ?) " +
-					"ON DUPLICATE KEY UPDATE position_room_id = ?, registered_time = ?;",
+			.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) " +
+					"ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
 							ps.setInt(1, fUserId);
-							ps.setInt(2, fRoomId);
+							ps.setInt(2, fLocationId);
 							ps.setTimestamp(3, now);
-							ps.setInt(4, fRoomId);
+							ps.setInt(4, fLocationId);
 							ps.setTimestamp(5, now);
 						}
 					});
@@ -224,14 +224,14 @@ public class PositionDataRepository {
 		}
 	}
 	
-	public Room getUserPosition(int userId) {
+	public Location getUserPosition(int userId) {
 		try {
-			Room room = jdbcTemplate.queryForObject(
-					"SELECT room.position_room_id, room.name " +
-					"FROM POSITION_ROOM room, POSITION_USER_POSITION up " +
-					"WHERE room.position_room_id=up.position_room_id AND up.user_id = ?",
-					new RoomRowMapper(), userId);
-			return room;
+			Location location = jdbcTemplate.queryForObject(
+					"SELECT location.position_location_id, location.name " +
+					"FROM POSITION_LOCATION location, POSITION_USER_POSITION up " +
+					"WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
+					new LocationRowMapper(), userId);
+			return location;
 		}
 		catch(Exception e) {
 			logger.error("Could not get user position: "+e);
@@ -239,20 +239,20 @@ public class PositionDataRepository {
 		}
 	}
 
-	public Room getRoom(int roomId) {
+	public Location getLocation(int locationId) {
 
-		Room room = jdbcTemplate.queryForObject(
+		Location location = jdbcTemplate.queryForObject(
 				"SELECT * FROM POSITION_ROOM WHERE position_room_id=?",
-				new RoomRowMapper(), roomId);
-		return room;
+				new LocationRowMapper(), locationId);
+		return location;
 	}
 
-	private Room getRoomByName(String roomName) {
+	private Location getLocationByName(String locationName) {
 
-		Room room = jdbcTemplate.queryForObject(
+		Location location = jdbcTemplate.queryForObject(
 				"SELECT * FROM POSITION_ROOM WHERE name=?",
-				new RoomRowMapper(), roomName);
-		return room;
+				new LocationRowMapper(), locationName);
+		return location;
 	}
 
 	private List<Signal> getSignalsFromSample(int sampleId) {

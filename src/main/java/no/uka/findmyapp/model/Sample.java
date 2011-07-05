@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 public class Sample {
 	
 	private int Id;
-	private int roomId;
-	private String roomName;
+	private int locationId;
+	private String locationName;
 	private List<Signal> signalList;
 		
 	public Sample() {
@@ -34,20 +34,20 @@ public class Sample {
 		this.Id = Id;
 	}
 
-	public int getRoomId() {
-		return roomId;
+	public int getLocationId() {
+		return locationId;
 	}
 
-	public void setRoomId(int roomId) {
-		this.roomId = roomId;
+	public void setLocationId(int LocationId) {
+		this.locationId = LocationId;
 	}
 	
-	public String getRoomName() {
-		return roomName;
+	public String getLocationName() {
+		return locationName;
 	}
 
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
+	public void setLocationName(String LocationName) {
+		this.locationName = LocationName;
 	}
 	
 	public List<Signal> getSignalList() {

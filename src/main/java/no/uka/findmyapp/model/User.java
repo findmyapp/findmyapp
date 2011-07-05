@@ -8,7 +8,7 @@ public class User {
 	private String localUserId; 
 	private Timestamp userRegistered; 
 	private Timestamp lastLogon;
-	private Room lastKnownPosition;
+	private Location lastKnownPosition;
 	
 	public User() {}
 	
@@ -55,11 +55,11 @@ public class User {
 		this.lastLogon = lastLogon;
 	}
 
-	public Room getLastKnownPosition() {
+	public Location getLastKnownPosition() {
 		return lastKnownPosition;
 	}
 
-	public void setLastKnownPosition(Room lastKnownPosition) {
+	public void setLastKnownPosition(Location lastKnownPosition) {
 		this.lastKnownPosition = lastKnownPosition;
 	}
 

@@ -28,7 +28,7 @@ public class SampleSignalRowMapper implements RowMapper<Signal> {
 		} else {
 			Sample sample = new Sample();
 			sample.setId(signal.getSampleId());
-			sample.setRoomId(rs.getInt("sample.position_room_id"));
+			sample.setLocationId(rs.getInt("sample.position_location_id"));
 			sample.getSignalList().add(signal);
 			samples.put(signal.getSampleId(), sample);
 		}

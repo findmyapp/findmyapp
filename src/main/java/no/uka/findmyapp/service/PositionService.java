@@ -3,12 +3,11 @@ package no.uka.findmyapp.service;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.PositionDataRepository;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.exception.LocationNotFoundException;
-import no.uka.findmyapp.model.Room;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.UserPosition;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,8 @@ public class PositionService {
 	 *            List of visible BSSIDs with level
 	 * @return current position
 	 */
-	public Room getCurrentPosition(List<Signal> signals)
-			throws LocationNotFoundException {
-
+	public Location getCurrentPosition(List<Signal> signals) throws LocationNotFoundException {
+		
 		List<Sample> samples = data.getSamples();
 		int totalNumberOfAccessPoints = data.getTotalNumOfAccesspoints();
 		
@@ -47,12 +45,13 @@ public class PositionService {
 			double distance = getEuclideanDistance(sam, signals, totalNumberOfAccessPoints);
 			if (distance < minDistance) {
 				minDistance = distance;
-				bestPosition = sam.getRoomId();
+				bestPosition = sam.getLocationId();
 			}
+
 		}
 		
 		if (bestPosition == -1) throw new LocationNotFoundException("Best euclidean distance equals the worst case distance");
-		return (bestPosition != -1 ? data.getRoom(bestPosition) : null);
+		return (bestPosition != -1 ? data.getLocation(bestPosition) : null);
 	}
 
 	public boolean registerSample(Sample sample) {
@@ -62,8 +61,8 @@ public class PositionService {
 	public boolean registerUserPosition(int user_id, int room_id) {
 		return data.registerUserPosition(user_id, room_id);
 	}
-
-	public Room getUserPosition(int user_id) {
+	
+	public Location getUserPosition(int user_id) {
 		return data.getUserPosition(user_id);
 	}
 
@@ -77,6 +76,7 @@ public class PositionService {
 	 *            list of signals detected by user
 	 * @return Euclidean distance
 	 */
+
 	public double getEuclideanDistance(Sample sample, List<Signal> signals, int totalNumberOfAccessPoints)
 			throws LocationNotFoundException {
 		

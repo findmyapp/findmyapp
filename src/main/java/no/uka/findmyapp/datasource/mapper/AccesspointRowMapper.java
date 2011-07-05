@@ -7,7 +7,7 @@ import no.uka.findmyapp.model.Accesspoint;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class APRowMapper implements RowMapper<Accesspoint> {
+public class AccesspointRowMapper implements RowMapper<Accesspoint> {
 
 	public Accesspoint mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Accesspoint ap = new Accesspoint();
