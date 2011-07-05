@@ -273,10 +273,10 @@ public class PositionDataRepository {
 		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
 
 		jdbcTemplate.query(
-				"SELECT fact.position_location_id, fact.text" +
-				"FROM POSITION_LOCATION_FACT AS fact, POSITION_LOCATION AS location " +
-				"WHERE fact.position_location_id = location.position_location_id" +
-				"AND location.location_name = ?", 
+				"SELECT fact.position_location_id, fact.text " +
+				"FROM POSITION_LOCATION_FACT fact, POSITION_LOCATION location " +
+				"WHERE fact.position_location_id = location.position_location_id " +
+				"AND location.name = ?", 
 				new FactRowMapper(facts), locationName);
 
 		return new ArrayList<Fact>(facts.values());
