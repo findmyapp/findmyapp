@@ -33,7 +33,7 @@ public class SensorRepository {
 	 * @return
 	 */
 
-	public List<Temperature> getTemperatureData(String location) {
+	public List<Temperature> getTemperatureData(int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_TEMPERATURE WHERE location = ?",
@@ -42,7 +42,7 @@ public class SensorRepository {
 		return temperatureList;
 	}
 
-	public List<Temperature> getTemperatureData(Date from, String location) {
+	public List<Temperature> getTemperatureData(Date from, int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ? AND date>=?",
@@ -51,7 +51,7 @@ public class SensorRepository {
 		return temperatureList;
 	}
 
-	public List<Temperature> getTemperatureDataTo(Date to, String location) {
+	public List<Temperature> getTemperatureDataTo(Date to, int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_TEMPERATURE WHERE location = ? AND date<=?",
@@ -61,14 +61,14 @@ public class SensorRepository {
 	}
 
 	public List<Temperature> getTemperatureData(Date from, Date to,
-			String location) {
+			int location) {
 		List<Temperature> temperatureList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_TEMPERATURE WHERE date>=? AND date<=? AND location=?",
 				new SensorTemperatureRowMapper(), from, to, location);
 		return temperatureList;
 	}
 
-	public List<Noise> getNoiseData(String location) {
+	public List<Noise> getNoiseData(int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE location = ?",
@@ -77,7 +77,7 @@ public class SensorRepository {
 		return noiseList;
 	}
 
-	public List<Noise> getNoiseData(Date from, String location) {
+	public List<Noise> getNoiseData(Date from, int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE location = ? AND date <=?",
@@ -86,7 +86,7 @@ public class SensorRepository {
 		return noiseList;
 	}
 
-	public List<Noise> getNoiseDataTo(Date to, String location) {
+	public List<Noise> getNoiseDataTo(Date to, int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE location =? AND date >=?",
@@ -95,7 +95,7 @@ public class SensorRepository {
 		return noiseList;
 	}
 
-	public List<Noise> getNoiseData(Date from, Date to, String location) {
+	public List<Noise> getNoiseData(Date from, Date to, int location) {
 
 		List<Noise> noiseList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_NOISE WHERE location = ? AND date <=? AND date >=?",
@@ -104,7 +104,7 @@ public class SensorRepository {
 		return noiseList;
 	}
 
-	public List<Humidity> getHumidityData(String location) {
+	public List<Humidity> getHumidityData(int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ?",
@@ -113,34 +113,34 @@ public class SensorRepository {
 		return humidityList;
 	}
 
-	public List<Humidity> getHumidityData(Date from, String location) {
+	public List<Humidity> getHumidityData(Date from, int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ? AND date >=?",
 				new SensorHumidityRowMapper(), location, from);
 		logger.info("received humidity list");
 		return humidityList;
 	}
 
-	public List<Humidity> getHumidityDataTo(Date to, String location) {
+	public List<Humidity> getHumidityDataTo(Date to, int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ? AND date <=?",
 				new SensorHumidityRowMapper(), location, to);
 		logger.info("received humidity list");
 		return humidityList;
 	}
 
-	public List<Humidity> getHumidityData(Date from, Date to, String location) {
+	public List<Humidity> getHumidityData(Date from, Date to, int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE location = ? AND date >=? AND date <=?",
 				new SensorHumidityRowMapper(), location, from, to);
 		logger.info("received humidity list");
 		return humidityList;
 	}
 
-	public List<Beertap> getBeertapData(String location, int tapnr) {
+	public List<Beertap> getBeertapData(int location, int tapnr) {
 
 		List<Beertap> beertapList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_BEERTAP WHERE location = ? AND tapnr = ?",
@@ -155,7 +155,7 @@ public class SensorRepository {
 	 * @return
 	 */
 
-	public Temperature setTemperatureData(String location, float value) {
+	public Temperature setTemperatureData(int location, float value) {
 
 		jdbcTemplate
 				.execute("INSERT INTO SENSOR_TEMPERATURE (location, value) VALUES ('"
@@ -167,7 +167,7 @@ public class SensorRepository {
 		return temperature;
 	}
 
-	public Noise setNoiseData(String location, int raw_average, int raw_max,
+	public Noise setNoiseData(int location, int raw_average, int raw_max,
 			int raw_min, float decibel) {
 
 		jdbcTemplate
@@ -179,6 +179,7 @@ public class SensorRepository {
 						+ raw_max
 						+ ","
 						+ raw_min + "," + decibel + ")");
+		
 		Noise noise = new Noise();
 		noise.setLocation(location);
 		noise.setDecibel(decibel);
@@ -189,11 +190,12 @@ public class SensorRepository {
 		return noise;
 	}
 
-	public Humidity setHumidityData(String location, float value) {
+	public Humidity setHumidityData(int location, float value) {
 
 		jdbcTemplate
 				.execute("INSERT INTO SENSOR_HUMIDITY (location, value) VALUES ('"
 						+ location + "', " + value + ")");
+		
 		Humidity humidity = new Humidity();
 		humidity.setLocation(location);
 		humidity.setValue(value);
@@ -201,11 +203,12 @@ public class SensorRepository {
 		return humidity;
 	}
 
-	public Beertap setBeertapData(String location, float value, int tapnr) {
+	public Beertap setBeertapData(int location, float value, int tapnr) {
 
 		jdbcTemplate
 				.execute("INSERT INTO SENSOR_BEERTAP (location, value, tapnr) VALUES ('"
 						+ location + "', " + value + "," + tapnr + ")");
+		
 		Beertap beertap = new Beertap();
 		beertap.setLocation(location);
 		beertap.setValue(value);

@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Noise {
 	private int id;
-	private String location; 
+	private int location; 
 	private float decibel;	
 	private int raw_average;	// raw data average over time step
 	private int raw_max;    // raw max over in time step
@@ -22,11 +22,11 @@ public class Noise {
 	public int getId(){
 		return id;
 	}
-	public void setLocation(String location ){
+	public void setLocation(int location ){
 		this.location=location;
 	}
 	
-	public String getLocation(){
+	public int getLocation(){
 		return location;
 	}
 		

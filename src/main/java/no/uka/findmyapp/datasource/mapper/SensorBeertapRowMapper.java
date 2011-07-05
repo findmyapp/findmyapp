@@ -11,7 +11,7 @@ public class SensorBeertapRowMapper implements RowMapper<Beertap> {
 		Beertap beertap =  new Beertap();
 		beertap.setId(rs.getInt("sensor_beertap_id"));
 		beertap.setTime(rs.getTimestamp("date"));
-		beertap.setLocation(rs.getString("location"));
+		beertap.setLocation(rs.getInt("location"));
 		beertap.setValue(rs.getFloat("value"));
 		beertap.setTapnr(rs.getInt("tapnr"));
 		return beertap;
