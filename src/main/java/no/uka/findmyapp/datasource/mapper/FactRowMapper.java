@@ -17,7 +17,6 @@ private Map<Integer, Fact> facts;
 		this.facts = facts;
 	}
 	
-	@Override
 	public Fact mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Fact fact = new Fact();
 		fact.setFactId(rs.getInt("position_location_fact_id"));

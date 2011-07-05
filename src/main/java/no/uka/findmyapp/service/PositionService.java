@@ -113,5 +113,9 @@ public class PositionService {
 	public List<Fact> getAllFacts(String locationName) {
 		return data.getAllFacts(locationName);
 	}
+
+	public List<Location> getAllLocations() {
+		return data.getAllLocations();
+	}
 	
 }
