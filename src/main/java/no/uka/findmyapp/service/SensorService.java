@@ -1,20 +1,25 @@
 package no.uka.findmyapp.service;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import no.uka.findmyapp.model.Temperature;
+
 import org.springframework.stereotype.Service;
 
-/**
- * Jeg er ikke helt sikker, men jeg tror at vi kan lage logikk for aa regne paa dataene fra arduinoen her. 
- * Lagde den fordi det saa  ut som om den ble nadvendig.
- * 
- * @author John Modin
- * 
- */
+
 
 @Service
 public class SensorService {
+	
 	public float toDecibel(int value){
 		return (float) 111.111;// Dummy method, will calculate decibel
 	}
 	
 
+	public List<Temperature> getTemperatureData(Timestamp from, Timestamp to, String location){
+		List<Temperature> temp = null;  // HER ER DET IKKE FERDIG
+		
+		return temp;
+		}
 }

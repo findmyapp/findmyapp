@@ -1,6 +1,7 @@
 package no.uka.findmyapp.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 /*Each object is a measurement of the noise in a certain location at a certain time.
  * 
@@ -12,7 +13,7 @@ public class Noise {
 	private int raw_average;	// raw data average over time step
 	private int raw_max;    // raw max over in time step
 	private int raw_min;	// raw min over time step
-	private Date date;
+	private Timestamp time; 
 	
 	public void setId(int id){
 		this.id = id;
@@ -61,12 +62,12 @@ public class Noise {
 		return raw_min;
 	}
 	
-	public Date getDate() {
-		return date;
+	public Timestamp getTime() {
+		return time;
 	}
 	
-	public void setDate(Date date) {
-		this.date = date;
+	public void setTime(Timestamp time) {
+		this.time = time;
 	}
 
 }
