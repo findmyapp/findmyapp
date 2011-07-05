@@ -6,6 +6,7 @@ import java.util.List;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class UkaProgramService {
 	@Autowired
 	private UkaProgramRepository data;
+	@Autowired
+	private EditDistanceHelper edService;
 
 	private static final int maxED = 3;//maximum item edit distance to include from titleSearch
 
@@ -33,7 +36,7 @@ public class UkaProgramService {
 
 		int ED;
 		for (int i = 0; i < prg.size(); i++) {
-			ED = EditDistanceService.splitDistance(prg.get(i).getTitle(), qry);
+			ED = edService.splitDistance(prg.get(i).getTitle(), qry);
 			if (ED < maxED) {
 				retPrg.add(index[ED], prg.get(i));
 				for (int j = ED; j < maxED; j++) {
