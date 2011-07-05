@@ -97,7 +97,7 @@ public class PositionController {
 		model.addAttribute(service.getPositionOfAllUsers());
 	}
 
-	@RequestMapping(value = "/position/fact/{name}", method = RequestMethod.GET)  
+	@RequestMapping(value = "/fact/{name}", method = RequestMethod.GET)  
 	public ModelAndView getAllFacts(@PathVariable("name") String roomName) {
 		logger.info("getAllFacts ( " + roomName + " )");
 		List<Fact> facts = service.getAllFacts(roomName);

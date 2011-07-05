@@ -275,8 +275,8 @@ public class PositionDataRepository {
 		jdbcTemplate.query(
 				"SELECT fact.position_room_id, fact.text" +
 				"FROM POSITION_LOCATION_FACT AS fact, POSITION_LOCATION AS location " +
-				"WHERE fact.position_room_id = location.position_room_id" +
-				"AND location.room_name = ?", 
+				"WHERE fact.position_location_id = location.position_location_id" +
+				"AND location.name = ?", 
 				new FactRowMapper(facts), roomName);
 
 		return new ArrayList<Fact>(facts.values());
