@@ -64,6 +64,9 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `APPSTORE_DEVELOPER`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+DROP TABLE IF EXISTS `APPSTORE_DEVELOPER`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `APPSTORE_DEVELOPER` (
   `appstore_developer_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(15) DEFAULT NULL,
@@ -74,6 +77,8 @@ CREATE TABLE `APPSTORE_DEVELOPER` (
   `developer_token` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appstore_developer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,6 +267,22 @@ LOCK TABLES `POSITION_USER_POSITION` WRITE;
 INSERT INTO `POSITION_USER_POSITION` VALUES (1,1,'2011-07-04 15:33:27');
 /*!40000 ALTER TABLE `POSITION_USER_POSITION` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Table structure for table `SENSOR_BEERTAP`
+--
+DROP TABLE IF EXISTS `SENSOR_BEERTAP`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SENSOR_BEERTAP` (
+  `sensor_beertap_id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NULL DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `tapnr` int(11) DEFAULT NULL,
+  PRIMARY KEY (`sensor_beertap_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `SENSOR_HUMIDITY`
