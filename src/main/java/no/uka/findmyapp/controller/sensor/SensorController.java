@@ -1,9 +1,11 @@
 package no.uka.findmyapp.controller.sensor;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
+import no.uka.findmyapp.model.Beertap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Temperature;
@@ -39,18 +41,21 @@ public class SensorController {
 	List <Temperature> temperatureList;
 	List<Noise> noiseList;
 	List<Humidity> humidityList;
+	List<Beertap> beertapList;
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
 	@RequestMapping(value="location/{locationName}/temperature/pull",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
-			@PathVariable String locationName){
+			@PathVariable String locationName,
+			@RequestParam (required = false) Timestamp from,
+			@RequestParam (required = false) Timestamp to){
 
 		logger.info("Temperature data request received for location: " + locationName);
 
 
 		logger.info("Trying to fetch temperature data");
-		temperatureList = data.getTemperatureData(locationName);
+		temperatureList = service.getTemperatureData(from, to, locationName);
 		logger.info("Got temperature data");
 
 		Gson g = new Gson(); 
@@ -85,8 +90,19 @@ public class SensorController {
 		return new ModelAndView("sensor","sensor",g.toJson(humidityList));
 	}
 
-	//logger.info("unhandled exception 624358123478623784. Should return 400");
-	//return null;
+	@RequestMapping(value="location/{locationName}/beertap/pull",method = RequestMethod.GET)
+	public ModelAndView getBeertapData(
+			@PathVariable String locationName,
+			@RequestParam int tapnr){
+
+		logger.info("Beertap data request received for location: " + locationName+"tapnr" +tapnr);
+		logger.info("Trying to fetch beertap data");
+		beertapList = data.getBeertapData(locationName,tapnr);
+		logger.info("Got beertap data");
+
+		Gson g = new Gson(); 
+		return new ModelAndView("sensor","sensor",g.toJson(humidityList));
+	}
 
 
 
@@ -145,16 +161,27 @@ public class SensorController {
 		return new ModelAndView("sensor", "sensor", g.toJson(humidity));
 
 
-		//logger.info("unhandled exception 624358123478623784. Should return 400");
-		//return null;
 	}
 
+	@RequestMapping(value = "/location/{locationName}/humidity/push", method = RequestMethod.GET)
+	public ModelAndView setBeertapData(
+			@PathVariable String locationName,
+			@RequestParam float value,
+			@RequestParam int tapnr){
+		logger.info("Beertap data logged for location: " + locationName + ", Value: "+ value +",tap nr: "+tapnr  );
+		Beertap beertap = data.setBeertapData(locationName, value, tapnr);
+		Gson g = new Gson();
+		return new ModelAndView("sensor", "sensor", g.toJson(beertap));
 
+
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
 	private void handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
 		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
 	}
+
 }	
 

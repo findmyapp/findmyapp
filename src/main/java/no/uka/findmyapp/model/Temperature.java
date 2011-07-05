@@ -1,6 +1,6 @@
 package no.uka.findmyapp.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 public class Temperature {
@@ -8,7 +8,7 @@ public class Temperature {
 	private int id;
 	private String location;
 	private float value;
-	private Date date;
+	private Timestamp time;
 	
 	
 	public String getLocation() {
@@ -23,11 +23,11 @@ public class Temperature {
 	public void setValue(float value) {
 		this.value = value;
 	}
-	public Date getDate() {
-		return date;
+	public Timestamp getTime() {
+		return time;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setTime(Timestamp time) {
+		this.time = time;
 	}
 	public int getId() {
 		return id;
