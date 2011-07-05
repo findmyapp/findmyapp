@@ -3,7 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.Arrays;
 import java.util.List;
 
-import no.uka.findmyapp.model.Room;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.service.PositionService;
@@ -47,9 +47,9 @@ public class PositionController {
 		ModelAndView mav = new ModelAndView("pos"); //pos.jsp is the name of the page displaying the result
 
 		List<Signal> signalList = Arrays.asList(signals);
-		Room room = service.getCurrentPosition(signalList);
-		logger.info("getCurrentPosition ( " + room + " )");
-		mav.addObject("room", room); // model name, model object 
+		Location location = service.getCurrentPosition(signalList);
+		logger.info("getCurrentPosition ( " + location + " )");
+		mav.addObject("room", location); // model name, model object 
 
 		return mav;
 	}
@@ -76,8 +76,8 @@ public class PositionController {
 	@RequestMapping(value = "/position/user/{id}", method = RequestMethod.GET)  
 	public ModelMap getUserPosition(@PathVariable("id") int userId, ModelMap model) {  
 		ModelMap mm = new ModelMap();
-		Room room = service.getUserPosition(userId);
-		mm.addAttribute(room);
+		Location location = service.getUserPosition(userId);
+		mm.addAttribute(location);
 		return mm; 
 	}  
 

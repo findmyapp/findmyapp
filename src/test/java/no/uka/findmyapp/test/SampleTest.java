@@ -44,15 +44,15 @@ public class SampleTest {
 		dbSignals3.add(s9);
 		
 		dbSample1 = new Sample();
-		dbSample1.setRoomId(1);
+		dbSample1.setLocationId(1);
 		dbSample1.setSignalList(dbSignals1);
 		
 		dbSample2 = new Sample();
-		dbSample2.setRoomId(2);
+		dbSample2.setLocationId(2);
 		dbSample2.setSignalList(dbSignals2);
 		
 		dbSample3 = new Sample();
-		dbSample3.setRoomId(3);
+		dbSample3.setLocationId(3);
 		dbSample3.setSignalList(dbSignals3);
 
     }

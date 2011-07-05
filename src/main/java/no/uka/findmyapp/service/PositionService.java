@@ -3,14 +3,13 @@ package no.uka.findmyapp.service;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.PositionDataRepository;
-import no.uka.findmyapp.model.Room;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,22 +35,22 @@ public class PositionService {
 	 *            List of visible BSSIDs with level
 	 * @return current position
 	 */
-	public Room getCurrentPosition(List<Signal> signals) {
+	public Location getCurrentPosition(List<Signal> signals) {
 
 		List<Sample> samples = data.getSamples();
 
 		double minDistance = samples.get(0).getDistance(signals);
 		
-		int bestPosition = samples.get(0).getRoomId();
+		int bestPosition = samples.get(0).getLocationId();
 		System.out.println("NumOfSamples: "+samples.size());		
 		for (Sample sam : samples) {
 			double distance = getEuclideanDistance(sam, signals);
 			if (distance < minDistance) {
 				minDistance = distance;
-				bestPosition = sam.getRoomId();
+				bestPosition = sam.getLocationId();
 			}
 		}		
-		return (bestPosition != -1 ? data.getRoom(bestPosition) : null);
+		return (bestPosition != -1 ? data.getLocation(bestPosition) : null);
 	}
 	
 	public boolean registerSample(Sample sample) {
@@ -62,7 +61,7 @@ public class PositionService {
 		return data.registerUserPosition(user_id, room_id);
 	}
 	
-	public Room getUserPosition(int user_id) {
+	public Location getUserPosition(int user_id) {
 		return data.getUserPosition(user_id);
 	}
 	
@@ -75,15 +74,16 @@ public class PositionService {
 	 */
 	public double getEuclideanDistance(Sample sample, List<Signal> signals){
 		double delta = 0;
+		double numOfMatch = 0;
 		for (Signal storedSignal : sample.getSignalList()){ 
-			double signalStrength = -120; // use signal strength of -120dB if no signal from access point
+			double diff = 120; // use signal strength of -120dB if no signal from access point
 			for (Signal inputSignal : signals){
 				if (inputSignal.getBssid().equals(storedSignal.getBssid())) {
-					signalStrength = inputSignal.getSignalStrength();
+					diff = Math.abs(storedSignal.getSignalStrength() - inputSignal.getSignalStrength());
+					numOfMatch++;
 					break; //will jump out of inner for-loop
 				} 
 			}
-			double diff = storedSignal.getSignalStrength() - signalStrength;
 			diff *= diff;
 			delta += diff;	
 		}
