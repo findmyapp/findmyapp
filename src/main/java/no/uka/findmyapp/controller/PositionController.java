@@ -86,8 +86,7 @@ public class PositionController {
 	}
 
 	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
-	public ModelMap getUserPosition(@PathVariable("id") int userId,
-			ModelMap model) {
+	public ModelMap getUserPosition(@PathVariable("id") int userId) {
 		ModelMap mm = new ModelMap();
 		Location location = service.getUserPosition(userId);
 		mm.addAttribute(location);
@@ -99,11 +98,21 @@ public class PositionController {
 		model.addAttribute(service.getPositionOfAllUsers());
 	}
 
-	@RequestMapping(value = "/position/fact/{name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/fact/{name}", method = RequestMethod.GET)
 	public ModelAndView getAllFacts(@PathVariable("name") String locationName) {
 		logger.info("getAllFacts ( " + locationName + " )");
 		List<Fact> facts = service.getAllFacts(locationName);
 		return new ModelAndView("facts", "facts", gson.toJson(facts));
+
+	}
+	
+	@RequestMapping(value = "position/locations", method = RequestMethod.GET)
+	public ModelMap getAllLocations() {
+		logger.info("getAllLocations");
+		ModelMap model = new ModelMap();
+		List<Location> locations = service.getAllLocations();
+		model.addAttribute(locations);
+		return model;
 
 	}
 
