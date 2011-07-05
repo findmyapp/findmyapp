@@ -270,16 +270,17 @@ public class PositionDataRepository {
 	}
 
 	public List<Fact> getAllFacts(String locationName) {
-		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
+//		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
 
-		jdbcTemplate.query(
-				"SELECT fact.position_location_id, fact.text " +
+		List<Fact> facts = jdbcTemplate.query(
+				"SELECT fact.location_fact_id, fact.position_location_id, fact.text " +
 				"FROM POSITION_LOCATION_FACT fact, POSITION_LOCATION location " +
 				"WHERE fact.position_location_id = location.position_location_id " +
 				"AND location.name = ?", 
-				new FactRowMapper(facts), locationName);
+				new FactRowMapper(), locationName);
 
-		return new ArrayList<Fact>(facts.values());
+//		return new ArrayList<Fact>(facts.values());
+		return facts;
 	}
 
 	public List<Location> getAllLocations() {
