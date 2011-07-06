@@ -15,7 +15,7 @@ public class SensorNoiseRowMapper implements RowMapper<Noise> {
 		Noise noise =  new Noise();
 		noise.setId(rs.getInt("sensor_noise_id"));
 		noise.setDate(rs.getDate("date"));
-		noise.setLocation(rs.getInt("location"));
+		noise.setLocation(rs.getInt("position_location_id"));
 		noise.setDecibel(rs.getFloat("decibel"));
 		noise.setRawAverage(rs.getInt("raw_average"));
 		noise.setRawMax(rs.getInt("raw_max"));
