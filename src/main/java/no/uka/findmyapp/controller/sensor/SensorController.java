@@ -113,7 +113,7 @@ public class SensorController {
 		logger.info("Got beertap data");
 
 		 
-		return new ModelAndView("sensor","sensor",humidityList);
+		return new ModelAndView("sensor","sensor", beertapList);
 	}
 
 

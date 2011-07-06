@@ -4,6 +4,7 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
+import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,58 +32,59 @@ import com.google.gson.GsonBuilder;
 @Controller
 public class AppStoreController {
 
+	AppStoreService service;
 	@Autowired
 	private AppStoreService appStoreService;
 	@Autowired
 	private Gson gson;
 	private static final String APP_OF_THE_DAY = "app_of_the_day";
-	
+
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
-	
+
 	/**
-	* Returns a list of avaliable apps
+	 * Returns a list of avaliable apps
 	 * @throws URISyntaxException 
-	*/
+	 */
 	@RequestMapping(value = "/appstore/{platform}", method = RequestMethod.GET)
 	public String getAppStoreListForPlatform(
-		@PathVariable int platform,
-		@RequestParam(required=true) int listType,
-		@RequestParam(required=true) int count, Model model) throws URISyntaxException {
-	 
+			@PathVariable int platform,
+			@RequestParam(required=true) int listType,
+			@RequestParam(required=true) int count, Model model) throws URISyntaxException {
+
 		//TODO check values, throw exception
-		
+
 		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
 		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
 				count, 
 				listType, 
 				platform);
-		
+
 		model.addAttribute("appstore", gson.toJson(appStoreList));
 		return "appstore";
 	}
-	
+
 	/**
-	* Returns detailed info about an app
+	 * Returns detailed info about an app
 	 * @throws URISyntaxException /get.json
-	*/
+	 */
 	@RequestMapping(value = "/appstore/app/{appId}", method = RequestMethod.GET)
 	public String  getDetailedAppInfoFromId(
 			@PathVariable int appId, Model model) throws URISyntaxException {
-	
+
 		logger.info("AppStore App details requsted: " + appId);
-		
+
 		App app = appStoreService.getAppDetails(appId);
 		model.addAttribute("appstore", gson.toJson(app));
 		return "appstore";
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
-	
+
 
 	/**
-	* Returns a list of avaliable apps
+	 * Returns a list of avaliable apps
 	 * @throws URISyntaxException 
-	*/
+	 */
 	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
 	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
 
@@ -93,15 +96,17 @@ public class AppStoreController {
 				10, 
 				1, 
 				1);
-		
+
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		
+
 		//TODO check values, throw exception
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
-	
+
+
+
 	@RequestMapping(value = "/appstore/latest/", method = RequestMethod.GET)
 	public ModelAndView getAppStoreLatestList() throws URISyntaxException {
 
@@ -113,15 +118,15 @@ public class AppStoreController {
 				10, 
 				3, 
 				1);
-		
+
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		
+
 		//TODO check values, throw exception
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
-	
+
 	@RequestMapping(value = "/appstore/mostPopular/", method = RequestMethod.GET)
 	public ModelAndView getAppStoreMostPopularList() throws URISyntaxException {
 
@@ -133,15 +138,15 @@ public class AppStoreController {
 				10, 
 				2, 
 				1);
-		
+
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		
+
 		//TODO check values, throw exception
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
-	
+
 	@RequestMapping(value = "/appstore/appOfTheDay/", method = RequestMethod.GET)
 	public ModelAndView getFeaturedApp() throws URISyntaxException {
 
@@ -153,28 +158,39 @@ public class AppStoreController {
 				10, 
 				4, 
 				1, APP_OF_THE_DAY);
-		
+
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		
+
 		//TODO check values, throw exception
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
-	
+
+	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	public ModelAndView registerApp(@RequestBody App newApp) {
+		ModelAndView mav = new ModelAndView("registerApp");
+		boolean regApp = service.registerApp(newApp);
+		logger.info("APP IS REGISTERED:   ------>   "+   regApp);
+		mav.addObject("appIsRegistered", regApp); // model name, model object
+		return mav;
+	}
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler
 	private void handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
 		logger.info("handleEmptyResultDataAccessException ( " + ex.getLocalizedMessage() + " )");
 	}
-	
+
+
+
 	private App generateDemoApp() throws URISyntaxException {
 		App ukaApp = new App();
-		
+
 		ukaApp.setName("demoApp");
 		//ukaApp.setAndroidMarketUri(new URI("https://market.android.com/details?id=com.playcreek.DeathWorm&feature=featured-apps"));
-		
+
 		return ukaApp;
 	}
 
