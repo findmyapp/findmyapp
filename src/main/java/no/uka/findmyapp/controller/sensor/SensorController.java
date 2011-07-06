@@ -109,7 +109,14 @@ public class SensorController {
 
 		logger.info("Beertap data request received for location: " + locationId+"tapnr" +tapnr);
 		logger.info("Trying to fetch beertap data");
-		beertapList = data.getBeertapData(locationId,tapnr);
+		if (from != null && to != null) {
+			logger.info("Trying to fetch beertap data between " + from.toString() + to.toString());
+			beertapList = service.getBeertapData(locationId,tapnr, from, to);
+		} else {
+			logger.info("Trying to fetch beertap data for all dates");
+			beertapList = service.getBeertapData(locationId,tapnr);
+		}
+		
 		logger.info("Got beertap data");
 
 		 

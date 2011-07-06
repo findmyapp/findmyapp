@@ -149,6 +149,15 @@ public class SensorRepository {
 		logger.info("received beertap list");
 		return beertapList;
 	}
+	
+	public List<Beertap> getBeertapData(int location, int tapnr, Date from, Date to) {
+
+		List<Beertap> beertapList = jdbcTemplate
+				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=?",
+						new SensorBeertapRowMapper(), location, tapnr, from, to);
+		logger.info("received beertap list");
+		return beertapList;
+	}
 
 	/**
 	 * Methods to save sensor data received from Arduino.
