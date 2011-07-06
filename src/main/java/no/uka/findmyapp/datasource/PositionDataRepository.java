@@ -11,7 +11,6 @@ import java.util.Map;
 
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
-import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
@@ -20,6 +19,7 @@ import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class PositionDataRepository {
 				.queryForObject(
 						"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_SAMPLE sa, POSITION_SIGNAL si "
 								+ "WHERE l.id = sa.position_location_id AND sa.position_sample_id = ?",
-						new PositionRowMapper(), sample.getLocationId());
+						new LocationRowMapper(), sample.getLocationId());
 		return pos;
 	}
 
@@ -292,5 +292,14 @@ public class PositionDataRepository {
 			logger.error("Could not get all locations: "+e);
 			return null;
 		}
+	}
+
+	public Location getPositionOfFriend(int friendId) {
+		Location pos = jdbcTemplate
+			.queryForObject(
+				"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
+						+ "WHERE l.id = up.position_location_id AND up.user_id = ?",
+				new LocationRowMapper(), friendId);
+		return pos;
 	}
 }

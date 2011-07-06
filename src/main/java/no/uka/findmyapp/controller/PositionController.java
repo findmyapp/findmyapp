@@ -8,6 +8,7 @@ import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.PositionService;
 
 import org.slf4j.Logger;
@@ -115,7 +116,14 @@ public class PositionController {
 		List<Location> locations = service.getAllLocations();
 		model.addAttribute(locations);
 		return model;
-
+	}
+	
+	@RequestMapping(value = "/friend/{friendId}", method = RequestMethod.GET)
+	public ModelMap getPositionOfFriend(@PathVariable int friendId) {
+		ModelMap model = new ModelMap();
+		Location friendLocation = service.getPositionOfFriend(friendId);
+		model.addAttribute(friendLocation);
+		return model;
 	}
 
 	@SuppressWarnings("unused")
