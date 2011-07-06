@@ -21,7 +21,8 @@ public class AppStoreRepository {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreRepository.class);
 
-	public List<App> getAppList(int count, int listType, int platform) {
+
+	public List<App> getAppList(int count, int listType, int platform, String app_category) {
 		List<App> appList;
 		switch (listType) {
 		case 1:
@@ -44,6 +45,14 @@ public class AppStoreRepository {
 			logger.info(appList+ "");
 			logger.info("Sorting after publish date");
 			break;
+
+		case 4:			
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? AND category=? ORDER BY publish_time DESC LIMIT 0,?",
+					new AppRowMapper(), platform, app_category, count);
+			logger.info(appList+ "");
+			logger.info("Getting apps by category");
+			break;
+		
 
 		default:
 			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? LIMIT 0,?",
@@ -81,5 +90,10 @@ public class AppStoreRepository {
 	public App updateUkaApp() {
 		//TODO
 		return null;
+	}
+	
+	void registerApp(App newApp){
+		
+		
 	}
 }
