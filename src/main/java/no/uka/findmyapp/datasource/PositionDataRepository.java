@@ -11,7 +11,6 @@ import java.util.Map;
 
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
-import no.uka.findmyapp.datasource.mapper.PositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
@@ -20,6 +19,7 @@ import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class PositionDataRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	private static final Logger logger = LoggerFactory
-	.getLogger(SensorRepository.class);
+			.getLogger(SensorRepository.class);
 
 	/**
 	 * 
@@ -52,7 +52,7 @@ public class PositionDataRepository {
 				.queryForObject(
 						"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_SAMPLE sa, POSITION_SIGNAL si "
 								+ "WHERE l.id = sa.position_location_id AND sa.position_sample_id = ?",
-						new PositionRowMapper(), sample.getLocationId());
+						new LocationRowMapper(), sample.getLocationId());
 		return pos;
 	}
 
@@ -60,7 +60,8 @@ public class PositionDataRepository {
 		try {
 			final String fLocationName = locationName;
 
-			jdbcTemplate.update("INSERT into POSITION_LOCATION(name) values (?)",
+			jdbcTemplate.update(
+					"INSERT into POSITION_LOCATION(name) values (?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
@@ -94,7 +95,8 @@ public class PositionDataRepository {
 	 */
 	private boolean registerSignalsOfSample(Sample sample) {
 		try {
-			logger.info("Registrerer signaler for sample " +sample.getId()+ "..");
+			logger.info("Registrerer signaler for sample " + sample.getId()
+					+ "..");
 			// Insert the signals to the given sample into the database
 			final Sample fSample = sample;
 			for (final Signal signal : fSample.getSignalList()) {
@@ -122,7 +124,8 @@ public class PositionDataRepository {
 	 */
 	public boolean registerSample(Sample sample) {
 		try {
-			// Insert the current location into the database, but only if it do not
+			// Insert the current location into the database, but only if it do
+			// not
 			// already exist
 			for (final Signal signal : sample.getSignalList()) {
 				jdbcTemplate
@@ -149,16 +152,17 @@ public class PositionDataRepository {
 							}
 						});
 			}
-			final int locationId = getLocationByName(fSample.getLocationName()).getLocationId();
+			final int locationId = getLocationByName(fSample.getLocationName())
+					.getLocationId();
 			// Insert the sample into the database
-			jdbcTemplate.update(
-					"INSERT into POSITION_SAMPLE(position_location_id) values (?)",
-					new PreparedStatementSetter() {
-						public void setValues(PreparedStatement ps)
-								throws SQLException {
-							ps.setInt(1, locationId);
-						}
-					});
+			jdbcTemplate
+					.update("INSERT into POSITION_SAMPLE(position_location_id) values (?)",
+							new PreparedStatementSetter() {
+								public void setValues(PreparedStatement ps)
+										throws SQLException {
+									ps.setInt(1, locationId);
+								}
+							});
 			int lastSampleId = jdbcTemplate
 					.queryForInt("SELECT position_sample_id FROM POSITION_SAMPLE ORDER BY position_sample_id DESC LIMIT 1");
 			sample.setId(lastSampleId);
@@ -198,44 +202,43 @@ public class PositionDataRepository {
 
 		return new ArrayList<Sample>(samples.values());
 	}
-	
+
 	public boolean registerUserPosition(int userId, int locationId) {
 		try {
 			final int fUserId = userId;
 			final int fLocationId = locationId;
-			final Timestamp now = new Timestamp(new Date().getTime()); 
+			final Timestamp now = new Timestamp(new Date().getTime());
 			jdbcTemplate
-			.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) " +
-					"ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
-					new PreparedStatementSetter() {
-						public void setValues(PreparedStatement ps)
-								throws SQLException {
-							ps.setInt(1, fUserId);
-							ps.setInt(2, fLocationId);
-							ps.setTimestamp(3, now);
-							ps.setInt(4, fLocationId);
-							ps.setTimestamp(5, now);
-						}
-					});
+					.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) "
+							+ "ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
+							new PreparedStatementSetter() {
+								public void setValues(PreparedStatement ps)
+										throws SQLException {
+									ps.setInt(1, fUserId);
+									ps.setInt(2, fLocationId);
+									ps.setTimestamp(3, now);
+									ps.setInt(4, fLocationId);
+									ps.setTimestamp(5, now);
+								}
+							});
 			return true;
-		}
-		catch(Exception e) {
-			logger.error("Could not register user position: "+e);
+		} catch (Exception e) {
+			logger.error("Could not register user position: " + e);
 			return false;
 		}
 	}
-	
+
 	public Location getUserPosition(int userId) {
 		try {
-			Location location = jdbcTemplate.queryForObject(
-					"SELECT location.position_location_id, location.name " +
-					"FROM POSITION_LOCATION location, POSITION_USER_POSITION up " +
-					"WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
-					new LocationRowMapper(), userId);
+			Location location = jdbcTemplate
+					.queryForObject(
+							"SELECT location.position_location_id, location.name "
+									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
+									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
+							new LocationRowMapper(), userId);
 			return location;
-		}
-		catch(Exception e) {
-			logger.error("Could not get user position: "+e);
+		} catch (Exception e) {
+			logger.error("Could not get user position: " + e);
 			return null;
 		}
 	}
@@ -266,31 +269,16 @@ public class PositionDataRepository {
 	}
 
 	public List<UserPosition> getPositionOfAllUsers() {
-		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION",
+				new UserPositionRowMapper());
 	}
 
-	public List<Fact> getAllFacts(String locationName) {
-//		Map<Integer, Fact> facts = new HashMap<Integer, Fact>();
-
-		List<Fact> facts = jdbcTemplate.query(
-				"SELECT fact.location_fact_id, fact.position_location_id, fact.text " +
-				"FROM POSITION_LOCATION_FACT fact, POSITION_LOCATION location " +
-				"WHERE fact.position_location_id = location.position_location_id " +
-				"AND location.name = ?", 
-				new FactRowMapper(), locationName);
-
-//		return new ArrayList<Fact>(facts.values());
-		return facts;
-	}
-
-	public List<Location> getAllLocations() {
-		try{
-			List<Location> locations = jdbcTemplate.query("SELECT * FROM POSITION_LOCATION", new LocationRowMapper());
-			return locations;
-		}
-		catch(Exception e) {
-			logger.error("Could not get all locations: "+e);
-			return null;
-		}
+	public Location getPositionOfFriend(int friendId) {
+		Location pos = jdbcTemplate
+			.queryForObject(
+				"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
+						+ "WHERE l.id = up.position_location_id AND up.user_id = ?",
+				new LocationRowMapper(), friendId);
+		return pos;
 	}
 }

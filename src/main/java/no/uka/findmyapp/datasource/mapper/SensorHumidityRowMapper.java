@@ -11,10 +11,9 @@ public class SensorHumidityRowMapper implements RowMapper<Humidity> {
 	public Humidity mapRow(ResultSet rs, int arg1) throws SQLException {
 		Humidity humidity =  new Humidity();
 		humidity.setId(rs.getInt("sensor_humidity_id"));
-		humidity.setTime(rs.getTimestamp("date"));
-		humidity.setLocation(rs.getString("location"));
+		humidity.setDate(rs.getDate("date"));
+		humidity.setLocation(rs.getInt("position_location_id"));
 		humidity.setValue(rs.getFloat("value"));
 		return humidity;
 	}
-
 }

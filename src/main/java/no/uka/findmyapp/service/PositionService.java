@@ -8,6 +8,7 @@ import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
@@ -109,13 +110,9 @@ public class PositionService {
 	public List<UserPosition> getPositionOfAllUsers() {
 		return data.getPositionOfAllUsers();
 	}
-	
-	public List<Fact> getAllFacts(String locationName) {
-		return data.getAllFacts(locationName);
-	}
 
-	public List<Location> getAllLocations() {
-		return data.getAllLocations();
+	public Location getPositionOfFriend(int friendId) {
+		return data.getPositionOfFriend(friendId);
 	}
 	
 }
