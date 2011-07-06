@@ -1,8 +1,12 @@
 package no.uka.findmyapp.datasource;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.mapper.AppRowMapper;
+import no.uka.findmyapp.model.Sample;
+import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
 
@@ -10,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,7 +45,7 @@ public class AppStoreRepository {
 			break;
 
 		case 3:			
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? ORDER BY publish_time DESC LIMIT 0,?",
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? ORDER BY publish_date DESC LIMIT 0,?",
 					new AppRowMapper(), platform, count);
 			logger.info(appList+ "");
 			logger.info("Sorting after publish date");
@@ -52,7 +57,7 @@ public class AppStoreRepository {
 			logger.info(appList+ "");
 			logger.info("Getting apps by category");
 			break;
-		
+
 
 		default:
 			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? LIMIT 0,?",
@@ -91,9 +96,29 @@ public class AppStoreRepository {
 		//TODO
 		return null;
 	}
-	
-	void registerApp(App newApp){
-		
-		
+
+	public boolean registerApp(App newApp){
+		final App app = newApp;
+		try{
+		jdbcTemplate.update(
+				"INSERT INTO APPSTORE_APPLICASTION(name, market_identifier, platform, description, facebook_app_id, deevloper_id) VALUES(?,?,?,?,?,?)",
+				new PreparedStatementSetter() {
+					public void setValues(PreparedStatement ps)
+					throws SQLException {
+						ps.setString(1, app.getName());
+						ps.setString(1, app.getMarketID());
+						ps.setInt(1, app.getPlatform());
+						ps.setString(1, app.getDescription());
+						ps.setString(1, app.getFacebookAppID());
+						ps.setString(1, app.getDeveloperID());
+					}
+				});
+		return true;
+		}
+		catch(Exception e){
+			logger.error("Could not register given app: " + e);
+			logger.info(" " + newApp);
+			return false;
+		}
 	}
 }
