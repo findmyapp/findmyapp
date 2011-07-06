@@ -97,16 +97,16 @@ public class PositionController {
 		model.addAttribute(service.getPositionOfAllUsers());
 	}
 	
-	@RequestMapping(value = "/friend/{friendId}", method = RequestMethod.GET)
-	public ModelMap getPositionOfFriend(@PathVariable int friendId) {
+	@RequestMapping(value = "/friend/{id}", method = RequestMethod.GET)
+	public ModelMap getPositionOfFriend(@PathVariable("id") int friendId) {
 		ModelMap model = new ModelMap();
 		Location friendLocation = service.getPositionOfFriend(friendId);
 		model.addAttribute(friendLocation);
 		return model;
 	}
 	
-	@RequestMapping(value = "/allfriends/{userId}", method = RequestMethod.GET)
-	public ModelMap getAllFriends(@PathVariable int userId) {
+	@RequestMapping(value = "/allfriends/{id}", method = RequestMethod.GET)
+	public ModelMap getAllFriends(@PathVariable("id") int userId) {
 		ModelMap model = new ModelMap();
 		List<User> friends = service.getAllFriends(userId);
 		model.addAttribute(friends);
