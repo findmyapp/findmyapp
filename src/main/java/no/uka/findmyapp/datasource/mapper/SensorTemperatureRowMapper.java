@@ -13,7 +13,7 @@ public class SensorTemperatureRowMapper implements RowMapper<Temperature> {
 		Temperature temperature =  new Temperature();
 		temperature.setId(rs.getInt("sensor_temperature_id"));
 		temperature.setDate(rs.getDate("date"));
-		temperature.setLocation(rs.getString("location"));
+		temperature.setLocation(rs.getInt("location"));
 		temperature.setValue(rs.getFloat("value"));
 		
 		return temperature;

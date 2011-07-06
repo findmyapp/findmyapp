@@ -110,14 +110,6 @@ public class PositionService {
 	public List<UserPosition> getPositionOfAllUsers() {
 		return data.getPositionOfAllUsers();
 	}
-	
-	public List<Fact> getAllFacts(String locationName) {
-		return data.getAllFacts(locationName);
-	}
-
-	public List<Location> getAllLocations() {
-		return data.getAllLocations();
-	}
 
 	public Location getPositionOfFriend(int friendId) {
 		return data.getPositionOfFriend(friendId);

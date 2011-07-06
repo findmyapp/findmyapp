@@ -50,62 +50,59 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	@RequestMapping(value="location/{locationName}/temperature",method = RequestMethod.GET)
+	@RequestMapping(value="location/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
-			@PathVariable String locationName,
+			@PathVariable int locationId,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to){
+		
+	
+		temperatureList = service.getTemperatureData(from, to, locationId);
+		return new ModelAndView("sensor","sensor",temperatureList);
+	}
+	
+
+	@RequestMapping(value="location/{locationId}/noise",method = RequestMethod.GET)
+	public ModelAndView getNoiseData(
+			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to){
 
-		logger.info("Temperature data request received for location: " + locationName);
-
-
-		logger.info("Trying to fetch temperature data");
-		temperatureList = service.getTemperatureData(from, to, locationName);
-		logger.info("Got temperature data");
-
-		return new ModelAndView("sensor","sensor",gson.toJson(temperatureList));
-	}
-	
-
-	@RequestMapping(value="location/{locationName}/noise/pull",method = RequestMethod.GET)
-	public ModelAndView getNoiseData(
-			@PathVariable String locationName){
-
-		logger.info("Noise data request received for location: " + locationName);
-		logger.info("Trying to fetch noise data");
-		noiseList = data.getNoiseData(locationName);
-		logger.info("Got noise data");
-
-		Gson g = new Gson(); 
-		return new ModelAndView("sensor","sensor",g.toJson(noiseList));
+		
+		noiseList = service.getNoiseData(from, to, locationId);
+		return new ModelAndView("sensor","sensor",noiseList);
 	}
 	
 	
-	@RequestMapping(value="location/{locationName}/humidity/pull",method = RequestMethod.GET)
+	@RequestMapping(value="location/{locationId}/humidity",method = RequestMethod.GET)
 	public ModelAndView getHumidityData(
-			@PathVariable String locationName){
+			@PathVariable int locationId,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to){
 
-		logger.info("Humidity data request received for location: " + locationName);
+		logger.info("Humidity data request received for location: " + locationId);
 		logger.info("Trying to fetch humidity data");
-		humidityList = data.getHumidityData(locationName);
+		humidityList = service.getHumidityData(from, to, locationId);
 		logger.info("Got humidity data");
 
 		
-		return new ModelAndView("sensor","sensor",gson.toJson(humidityList));
+		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
-	@RequestMapping(value="location/{locationName}/beertap/pull",method = RequestMethod.GET)
+	@RequestMapping(value="location/{locationId}/beertap",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
-			@PathVariable String locationName,
+			@PathVariable int locationId,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
 			@RequestParam int tapnr){
 
-		logger.info("Beertap data request received for location: " + locationName+"tapnr" +tapnr);
+		logger.info("Beertap data request received for location: " + locationId+"tapnr" +tapnr);
 		logger.info("Trying to fetch beertap data");
-		beertapList = data.getBeertapData(locationName,tapnr);
+		beertapList = data.getBeertapData(locationId,tapnr);
 		logger.info("Got beertap data");
 
 		 
-		return new ModelAndView("sensor","sensor",gson.toJson(humidityList));
+		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
 
@@ -116,66 +113,66 @@ public class SensorController {
 	 */
 	
 	
-	@RequestMapping(value = "/location/{locationName}/temperature/push", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/{locationId}/temperature", method = RequestMethod.POST)
 	public ModelAndView setTemperatureData(
-			@PathVariable String locationName,
+			@PathVariable int locationId,
 			@RequestParam float value) {
 
 
-		logger.info("Temperature data logged for location: " + locationName  + ", Value: "+ value  );
+		logger.info("Temperature data logged for location: " + locationId  + ", Value: "+ value  );
 
-		Temperature temperature = data.setTemperatureData(locationName, value);
+		Temperature temperature = data.setTemperatureData(locationId, value);
 
 
 		
-		return new ModelAndView("sensor", "sensor", gson.toJson(temperature));
+		return new ModelAndView("ok_respons");
 
 	}
 	
 	
-	@RequestMapping(value = "/location/{locationName}/noise/push", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/{locationId}/noise", method = RequestMethod.POST)
 	public ModelAndView setNoiseData(
-			@PathVariable String locationName,
+			@PathVariable int locationId,
 			@RequestParam int raw_average,
 			@RequestParam int raw_max,
 			@RequestParam int raw_min){
 
 		float decibel = service.toDecibel(raw_average); 
-		logger.info("Noise data logged for location: " + locationName + ", Decibel: "+ decibel );
+		logger.info("Noise data logged for location: " + locationId + ", Decibel: "+ decibel );
 
-		Noise noise = data.setNoiseData(locationName,raw_average, raw_max, raw_min, decibel );
+		Noise noise = data.setNoiseData(locationId,raw_average, raw_max, raw_min, decibel );
 
 
 		
-		return new ModelAndView("sensor", "sensor", gson.toJson(noise));
+		return new ModelAndView("ok_respons");
 	}
 	
 	
-	@RequestMapping(value = "/location/{locationName}/humidity/push", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/{locationId}/humidity", method = RequestMethod.POST)
 	public ModelAndView setHumidityData(
-			@PathVariable String locationName,
+			@PathVariable int locationId,
 			@RequestParam float value){
 
-		logger.info("Humidity data logged for location: " + locationName + ", Value: "+ value  );
+		logger.info("Humidity data logged for location: " + locationId + ", Value: "+ value  );
 
-		Humidity humidity = data.setHumidityData(locationName, value);
+		Humidity humidity = data.setHumidityData(locationId, value);
 
 
 	
-		return new ModelAndView("sensor", "sensor", gson.toJson(humidity));
+		return new ModelAndView("ok_respons");
 
 
 	}
 
-	@RequestMapping(value = "/location/{locationName}/humidity/push", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/{locationId}/beertap", method = RequestMethod.POST)
 	public ModelAndView setBeertapData(
-			@PathVariable String locationName,
+			@PathVariable int  locationId,
 			@RequestParam float value,
 			@RequestParam int tapnr){
-		logger.info("Beertap data logged for location: " + locationName + ", Value: "+ value +",tap nr: "+tapnr  );
-		Beertap beertap = data.setBeertapData(locationName, value, tapnr);
+		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: "+tapnr  );
+		Beertap beertap = data.setBeertapData(locationId, value, tapnr);
 		
-		return new ModelAndView("sensor", "sensor", gson.toJson(beertap));
+		return new ModelAndView("ok_respons");
 
 
 	}

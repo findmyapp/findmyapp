@@ -7,15 +7,15 @@ import java.util.Date;
 public class Humidity {
 	
 	private int id;
-	private String location;
+	private int location;
 	private float value;
 	private Date date;
 	
 	
-	public String getLocation() {
+	public int getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
+	public void setLocation(int location) {
 		this.location = location;
 	}
 	public float getValue() {

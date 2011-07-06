@@ -1,6 +1,6 @@
+<%@page import="no.uka.findmyapp.model.appstore.App"%>
 <%@ page import="java.util.List" %>
 <%@	page import="no.uka.findmyapp.model.appstore.AppStoreList" %>
-<%@	page import="no.uka.findmyapp.model.appstore.App" %>
 
 <%
 List<AppStoreList> fullList = (List<AppStoreList>) request.getAttribute("appstoreweb");
