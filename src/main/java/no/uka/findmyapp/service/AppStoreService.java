@@ -39,4 +39,8 @@ public class AppStoreService {
 	public App getAppDetails(int appId) {
 		return data.getAppDetails(appId);
 	}
+	public boolean registerApp(App app){
+		return data.registerApp(app);
+	}
+	
 }

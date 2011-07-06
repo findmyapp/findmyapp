@@ -4,21 +4,57 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 public class App {
-	private int id;
 	private String name;
-	private String androidMarketUri;
+	private int id;
+	private String marketID;
+	private int platform;
+	private String description;
+	private String facebookAppID;
+	private String developerID;
 	private URI thumbImage;
 	private List<URI> imageList;
-	private Timestamp publishDate;
+	private DateTime publishDate;
 	private int timesDownloaded;
 	private double ranking;
 	
+	public String getMarketID() {
+		return marketID;
+	}
+	public void setMarketID(String marketID) {
+		this.marketID = marketID;
+	}
+	public int getPlatform() {
+		return platform;
+	}
+	public void setPlatform(int platform) {
+		this.platform = platform;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getFacebookAppID() {
+		return facebookAppID;
+	}
+	public void setFacebookAppID(String facebookAppID) {
+		this.facebookAppID = facebookAppID;
+	}
+	public String getDeveloperID() {
+		return developerID;
+	}
+	public void setDeveloperID(String developerID) {
+		this.developerID = developerID;
+	}
 	
-	public Timestamp getPublishDate() {
+	public DateTime getPublishDate() {
 		return publishDate;
 	}
-	public void setPublishDate(Timestamp publishDate) {
+	public void setPublishDate(DateTime publishDate) {
 		this.publishDate = publishDate;
 	}
 	public int getTimesDownloaded() {
@@ -46,10 +82,10 @@ public class App {
 		this.name = name;
 	}
 	public String getAndroidMarketUri() {
-		return androidMarketUri;
+		return marketID;
 	}
 	public void setAndroidMarketUri(String androidMarketUri) {
-		this.androidMarketUri = androidMarketUri;
+		this.marketID = androidMarketUri;
 	}
 	public URI getThumbImage() {
 		return thumbImage;
@@ -65,7 +101,7 @@ public class App {
 	}
 	@Override
 	public String toString() {
-		return "App [name=" + name + ", androidMarketUri=" + androidMarketUri
+		return "App [name=" + name + ", androidMarketUri=" + marketID
 				+ ", thumbImage=" + thumbImage + ", imageList=" + imageList
 				+ "]";
 	}

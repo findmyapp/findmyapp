@@ -150,19 +150,19 @@ public class SensorController {
 	}
 	
 	
-	@RequestMapping(value = "/location/{locationId}/noise", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/location/{locationId}/noise", method = RequestMethod.POST)
 	public ModelAndView setNoiseData(@RequestBody int[] samples,
 			@PathVariable int locationId){
 
-		//float decibel = service.toDecibel(raw_average); 
-		//logger.info("Noise data logged for location: " + locationId + ", Decibel: "+ decibel );
+		
+		logger.info("Noise data logged for location: " + locationId );
 
-		//Noise noise = data.setNoiseData(locationId,raw_average, raw_max, raw_min, decibel );
+		Noise noise = data.setNoiseData(locationId, samples);
 
 
 		
 		return new ModelAndView("ok_respons");
-	}
+	}*/
 	
 	
 	@RequestMapping(value = "/location/{locationId}/humidity", method = RequestMethod.POST)

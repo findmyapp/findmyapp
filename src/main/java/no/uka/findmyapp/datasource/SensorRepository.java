@@ -182,25 +182,15 @@ public class SensorRepository {
 		return temperature;
 	}
 
-	public Noise setNoiseData(int location, int raw_average, int raw_max,
-			int raw_min, float decibel) {
+	public Noise setNoiseData(int location, int[] sample) {
 
 		jdbcTemplate
-				.execute("INSERT INTO SENSOR_NOISE (position_location_id , raw_average, raw_max, raw_min, decibel) VALUES ('"
-						+ location
-						+ "', "
-						+ raw_average
-						+ ","
-						+ raw_max
-						+ ","
-						+ raw_min + "," + decibel + ")");
+				.execute("INSERT INTO SENSOR_NOISE (position_location_id , noise_sample) VALUES ('"
+						+ location +","+sample+ ")");
 		
 		Noise noise = new Noise();
 		noise.setLocation(location);
-		noise.setDecibel(decibel);
-		noise.setRawAverage(raw_average);
-		noise.setRawMax(raw_max);
-		noise.setRawMin(raw_min);
+		noise.setSample(sample);
 		logger.info("Data logged: " + noise.toString());
 		return noise;
 	}
