@@ -1,6 +1,7 @@
 package no.uka.findmyapp.service;
 
 import java.util.List;
+import java.util.Map;
 
 import no.uka.findmyapp.datasource.PositionDataRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
@@ -113,6 +114,14 @@ public class PositionService {
 
 	public Location getPositionOfFriend(int friendId) {
 		return data.getPositionOfFriend(friendId);
+	}
+	
+	public List<User> getAllFriends(int userId) {
+		return data.getAllFriends(userId);
+	}
+
+	public Map<Integer,Integer> getPositionOfFriends(int userId) {
+		return data.getPositionOfFriends(userId);
 	}
 	
 }

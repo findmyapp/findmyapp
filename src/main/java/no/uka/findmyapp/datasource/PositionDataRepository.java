@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserLocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
-import no.uka.findmyapp.model.Fact;
+import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
@@ -280,5 +280,30 @@ public class PositionDataRepository {
 						+ "WHERE l.id = up.position_location_id AND up.user_id = ?",
 				new LocationRowMapper(), friendId);
 		return pos;
+	}
+	
+	public List<User> getAllFriends(int userId) {
+		return jdbcTemplate.query(
+			"SELECT u.* " + "FROM USER u, FRIENDS f " + 
+			"WHERE u.user_id=f.user1_id AND f.user2_id = ? " +
+			"UNION " +
+			"SELECT u.* " + "FROM USER u, FRIENDS f " +
+			"WHERE u.user_id=f.user2_id AND f.user1_id = ?", 
+			new UserRowMapper(), userId, userId);		
+	}
+
+	// Returns a hashmap of the positions of the friends of the user, with userId as key and locationId as value
+	public Map<Integer,Integer> getPositionOfFriends(int userId) {
+		Map<Integer,Integer> userPositions = new HashMap<Integer,Integer>();
+		jdbcTemplate.query(
+				"SELECT DISTINCT u.user_id, pl.position_location_id " +
+				"FROM POSITION_USER_POSITION pup, USER u, FRIENDS f, POSITION_LOCATION pl " +
+				"WHERE pup.position_location_id = pl.position_location_id " +
+				"AND u.user_id = pup.user_id AND pup.user_id IN (SELECT u.user_id FROM USER u, FRIENDS f " +
+				"WHERE u.user_id=f.user1_id AND f.user2_id = ? " +
+				"UNION " +
+				"SELECT u.user_id FROM USER u, FRIENDS f WHERE u.user_id=f.user2_id AND f.user1_id = ?)",
+				new UserLocationRowMapper(userPositions), userId, userId);
+		return userPositions;
 	}
 }
