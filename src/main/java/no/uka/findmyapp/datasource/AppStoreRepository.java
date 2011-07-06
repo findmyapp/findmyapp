@@ -45,7 +45,7 @@ public class AppStoreRepository {
 			break;
 
 		case 3:			
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? ORDER BY publish_time DESC LIMIT 0,?",
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE platform=? ORDER BY publish_date DESC LIMIT 0,?",
 					new AppRowMapper(), platform, count);
 			logger.info(appList+ "");
 			logger.info("Sorting after publish date");
