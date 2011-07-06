@@ -20,8 +20,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +60,16 @@ public class SensorController {
 		
 	
 		temperatureList = service.getTemperatureData(from, to, locationId);
-		return new ModelAndView("sensor","sensor",temperatureList);
+		
+		if(temperatureList.isEmpty()){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("sensor","sensor",temperatureList);
+		}
+		
+		
+		
 	}
 	
 
@@ -116,31 +127,30 @@ public class SensorController {
 	@RequestMapping(value = "/location/{locationId}/temperature", method = RequestMethod.POST)
 	public ModelAndView setTemperatureData(
 			@PathVariable int locationId,
-			@RequestParam float value) {
+			@RequestBody float value) {
 
 
 		logger.info("Temperature data logged for location: " + locationId  + ", Value: "+ value  );
 
 		Temperature temperature = data.setTemperatureData(locationId, value);
-
-
 		
-		return new ModelAndView("ok_respons");
-
+		if (temperature == null){//Data not stored properly
+			return new ModelAndView("fail_respons");
+		}
+		else{ //Success
+			return new ModelAndView("ok_respons");
+		}
 	}
 	
 	
 	@RequestMapping(value = "/location/{locationId}/noise", method = RequestMethod.POST)
-	public ModelAndView setNoiseData(
-			@PathVariable int locationId,
-			@RequestParam int raw_average,
-			@RequestParam int raw_max,
-			@RequestParam int raw_min){
+	public ModelAndView setNoiseData(@RequestBody int[] samples,
+			@PathVariable int locationId){
 
-		float decibel = service.toDecibel(raw_average); 
-		logger.info("Noise data logged for location: " + locationId + ", Decibel: "+ decibel );
+		//float decibel = service.toDecibel(raw_average); 
+		//logger.info("Noise data logged for location: " + locationId + ", Decibel: "+ decibel );
 
-		Noise noise = data.setNoiseData(locationId,raw_average, raw_max, raw_min, decibel );
+		//Noise noise = data.setNoiseData(locationId,raw_average, raw_max, raw_min, decibel );
 
 
 		
@@ -151,7 +161,7 @@ public class SensorController {
 	@RequestMapping(value = "/location/{locationId}/humidity", method = RequestMethod.POST)
 	public ModelAndView setHumidityData(
 			@PathVariable int locationId,
-			@RequestParam float value){
+			@RequestBody float value){
 
 		logger.info("Humidity data logged for location: " + locationId + ", Value: "+ value  );
 
@@ -167,8 +177,7 @@ public class SensorController {
 	@RequestMapping(value = "/location/{locationId}/beertap", method = RequestMethod.POST)
 	public ModelAndView setBeertapData(
 			@PathVariable int  locationId,
-			@RequestParam float value,
-			@RequestParam int tapnr){
+			@RequestBody int tapnr, float value){
 		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: "+tapnr  );
 		Beertap beertap = data.setBeertapData(locationId, value, tapnr);
 		
