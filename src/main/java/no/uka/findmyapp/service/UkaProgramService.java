@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import no.uka.findmyapp.configuration.SearchConfiguration;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
@@ -17,11 +18,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UkaProgramService {
+	
 	@Autowired
 	private UkaProgramRepository data;
+	
 	@Autowired
 	private EditDistanceHelper edService;
-
+	
+	@Autowired
+	private SearchConfiguration searchConfiguration;
+	
 	private static final int maxED = 3;//maximum item edit distance to include from titleSearch
 	
 	/**

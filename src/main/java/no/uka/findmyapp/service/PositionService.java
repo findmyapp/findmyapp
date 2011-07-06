@@ -4,11 +4,9 @@ import java.util.List;
 
 import no.uka.findmyapp.datasource.PositionDataRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
-import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
-import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;

@@ -76,7 +76,7 @@ public class UkaProgramController {
 		logger.info("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces();
 
-		return new ModelAndView("places", "places", gson.toJson(places));
+		return new ModelAndView("places", "places", places);
 	}
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
