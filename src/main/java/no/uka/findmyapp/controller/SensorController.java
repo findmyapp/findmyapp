@@ -100,20 +100,15 @@ public class SensorController {
 		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
-	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
+	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}/",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
 			@PathVariable int tapNr){
-
-		if (from != null && to != null) {
-			logger.info("Trying to fetch beertap data from " + from.toString() + " to " + to.toString());
-			beertapList = service.getBeertapData(locationId,tapNr, from, to);
-		} else {
-			logger.info("Trying to fetch beertap data");
-			beertapList = service.getBeertapData(locationId,tapNr);
-		}
+		
+		beertapList = service.getBeertapData(locationId,tapNr, from, to);
+		
 		return new ModelAndView("sensor","sensor", beertapList);
 	}
 
@@ -125,14 +120,8 @@ public class SensorController {
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
 			@PathVariable int tapNr){
 
-		int sum = 0;
-		if (from != null && to != null) {
-			logger.info("Trying to fetch beertap data from " + from.toString() + " to " + to.toString());
-			sum = service.getBeertapSum(locationId,tapNr, from, to);
-		} else {
-			logger.info("Trying to fetch beertap data");
-			sum = service.getBeertapSum(locationId,tapNr);
-		}
+		int sum = service.getBeertapSum(locationId,tapNr, from, to);
+		
 		return new ModelAndView("sensor","sensor", sum);
 	}
 

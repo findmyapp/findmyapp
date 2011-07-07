@@ -87,20 +87,20 @@ public class SensorService {
 		return hum;
 	}
 	
-	public List<Beertap> getBeertapData(int locationId,int tapnr){
-		 return data.getBeertapData(locationId,tapnr);
-	}
-	
 	public List<Beertap> getBeertapData(int locationId,int tapnr, Date from, Date to){
-		 return data.getBeertapData(locationId,tapnr, from, to);
-	}
-	
-	public int getBeertapSum(int locationId,int tapnr){
-		 return data.getBeertapSum(locationId,tapnr);
+		 if (from != null && to != null) {
+			 return data.getBeertapData(locationId,tapnr, from, to);
+		 } else {
+			 return data.getBeertapData(locationId,tapnr);
+		 }
 	}
 	
 	public int getBeertapSum(int locationId,int tapnr, Date from, Date to){
-		 return data.getBeertapSum(locationId,tapnr, from, to);
+		if(from != null && to != null){
+			return data.getBeertapSum(locationId,tapnr, from, to);
+		} else {
+			return data.getBeertapSum(locationId,tapnr);
+		}
 	}
 }
 

@@ -141,6 +141,14 @@ public class SensorRepository {
 		return humidityList;
 	}
 
+	public List<Beertap> getBeertapData(int location) {
+		List<Beertap> beertapList = jdbcTemplate
+				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ?",
+						new SensorBeertapRowMapper(), location);
+		logger.info("received beertap list");
+		return beertapList;
+	}
+	
 	public List<Beertap> getBeertapData(int location, int tapnr) {
 		List<Beertap> beertapList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ?",
@@ -157,6 +165,12 @@ public class SensorRepository {
 		return beertapList;
 	}
 
+	public int getBeertapSum(int location) {
+		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ?", location);
+		logger.info("received beertap sum: " + sum);
+		return sum;
+	}
+	
 	public int getBeertapSum(int location, int tapnr) {
 		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ?", location, tapnr);
 		logger.info("received beertap sum: " + sum);
