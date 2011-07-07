@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
-import no.uka.findmyapp.model.Beertap;
+import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Temperature;
@@ -48,7 +48,7 @@ public class SensorController {
 	List <Temperature> temperatureList;
 	List<Noise> noiseList;
 	List<Humidity> humidityList;
-	List<Beertap> beertapList;
+	List<BeerTap> beertapList;
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
@@ -100,40 +100,20 @@ public class SensorController {
 		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
-	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
+	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}/",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
+			@RequestParam (required = false) boolean sum,
 			@PathVariable int tapNr){
-
-		if (from != null && to != null) {
-			logger.info("Trying to fetch beertap data from " + from.toString() + " to " + to.toString());
+		if (sum == false){
 			beertapList = service.getBeertapData(locationId,tapNr, from, to);
+			return new ModelAndView("sensor","sensor", beertapList);
 		} else {
-			logger.info("Trying to fetch beertap data");
-			beertapList = service.getBeertapData(locationId,tapNr);
+			int total = service.getBeertapSum(locationId,tapNr, from, to);
+			return new ModelAndView("sensor","sensor", total);
 		}
-		return new ModelAndView("sensor","sensor", beertapList);
-	}
-
-
-	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}/sum",method = RequestMethod.GET)
-	public ModelAndView getBeertapSum(
-			@PathVariable int locationId,
-			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
-			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@PathVariable int tapNr){
-
-		int sum = 0;
-		if (from != null && to != null) {
-			logger.info("Trying to fetch beertap data from " + from.toString() + " to " + to.toString());
-			sum = service.getBeertapSum(locationId,tapNr, from, to);
-		} else {
-			logger.info("Trying to fetch beertap data");
-			sum = service.getBeertapSum(locationId,tapNr);
-		}
-		return new ModelAndView("sensor","sensor", sum);
 	}
 
 	/**
@@ -194,7 +174,7 @@ public class SensorController {
 			@PathVariable int  locationId,
 			@RequestBody int tapnr, float value){
 		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: "+tapnr  );
-		Beertap beertap = data.setBeertapData(locationId, value, tapnr);
+		BeerTap beerTap = data.setBeertapData(locationId, value, tapnr);
 		
 		return new ModelAndView("ok_respons");
 
