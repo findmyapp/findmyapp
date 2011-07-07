@@ -92,12 +92,12 @@ public class SensorController {
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
 			@RequestParam (required = false) boolean sum,
 			@PathVariable int tapNr){
-		if (sum == false){
-			beertapList = service.getBeertapData(locationId,tapNr, from, to);
-			return new ModelAndView("sensor","sensor", beertapList);
-		} else {
+		if (sum == true){
 			int total = service.getBeertapSum(locationId,tapNr, from, to);
 			return new ModelAndView("sensor","sensor", total);
+		} else {
+			beertapList = service.getBeertapData(locationId,tapNr, from, to);
+			return new ModelAndView("sensor","sensor", beertapList);
 		}
 	}
 
