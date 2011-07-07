@@ -43,7 +43,7 @@ public class UkaProgramService {
 	 */
 	public  UkaProgram titleSearch(String ukaYear, String qry) {
 		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten må ha riktig ukaYear");
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
 		}
 		logger.info("MinLength is " + searchConfiguration.getMinLength());
 		logger.info("Depth is " + searchConfiguration.getDepth());
@@ -77,7 +77,7 @@ public class UkaProgramService {
 	 */
 	public List<String> getUkaPlaces(String ukaYear){
 		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten må ha riktig ukaYear");
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
 		}
 		List<String> places;
 		places = data.getUkaPlaces();
@@ -91,7 +91,7 @@ public class UkaProgramService {
 	 */
 	public Event getUkaEventById(String ukaYear, int id){
 		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten må ha riktig ukaYear");
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
 		}
 		Event event;
 		event = data.getUkaEventById(id);
@@ -109,7 +109,7 @@ public class UkaProgramService {
 	 */
 	public UkaProgram getUkaProgram(String ukaYear, Date date, Date from, Date to, Boolean all, String place){
 		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten må ha riktig ukaYear");
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
 		}
 		
 		UkaProgram program = new UkaProgram();
@@ -131,7 +131,7 @@ public class UkaProgramService {
 				program = new UkaProgram(eventList);
 
 			}else{
-				throw new IllegalArgumentException("Requesten mÃ¥ inneholde fra og tildato, en bestemt dato eller flag for alle events");
+				throw new IllegalArgumentException("Requesten maa inneholde fra og tildato, en bestemt dato eller flag for alle events");
 			}
 		}
 
@@ -165,7 +165,7 @@ public class UkaProgramService {
 
 	public List<Date> getUkaProgramStartEndDate(String ukaYear) {
 		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten må ha riktig ukaYear");
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
 		}
 		List<Date> dates = new ArrayList<Date>();
 		dates.add(ukaProgramConfiguration.getStartDate());
