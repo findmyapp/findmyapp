@@ -24,6 +24,10 @@ public class SensorService {
 	public float toDecibel(int value) {
 		return (float) 111.111;// Dummy method, will calculate decibel
 	}
+	
+	public Temperature getLatestTemperatureData(int location) {
+		return data.getLatestTemperatureData(location);
+	}
 
 	public List<Temperature> getTemperatureData(Date from, Date to, int location) {
 		List<Temperature> temp = null;

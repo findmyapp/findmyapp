@@ -34,6 +34,16 @@ public class SensorRepository {
 	 * @return
 	 */
 
+
+	public Temperature getLatestTemperatureData(int location) {
+
+		Temperature temp = jdbcTemplate.queryForObject(
+				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
+				new SensorTemperatureRowMapper(), location);
+		logger.info("received temperature list");
+		return temp;
+	}
+	
 	public List<Temperature> getTemperatureData(int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate.query(

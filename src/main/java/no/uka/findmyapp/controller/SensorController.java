@@ -41,12 +41,26 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
+	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
+	public ModelAndView getTemperatureData(
+			@PathVariable int locationId) {
+		
+		Temperature temp = service.getLatestTemperatureData(locationId);
+		
+		if(temp == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("sensor","sensor",temp);
+		}
+	}
+	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to
-			){
+			) {
 		
 		temperatureList = service.getTemperatureData(from, to, locationId);
 		
@@ -56,7 +70,7 @@ public class SensorController {
 		else{
 			return new ModelAndView("sensor","sensor",temperatureList);
 		}
-		}
+	}
 
 	@RequestMapping(value="/{locationId}/noise",method = RequestMethod.GET)
 	public ModelAndView getNoiseData(
