@@ -199,11 +199,6 @@
                             <xsl:variable name="id2"><xsl:call-template name="getId"/></xsl:variable>
                             <a name="{$id2}"><xsl:value-of select="$name"/></a>
                         </td>
-                        <td class="methodNameTd" style="text-align: right">
-                            <xsl:if test="@id">
-                                <xsl:value-of select="@id"/>() 
-                            </xsl:if>
-                        </td>
                     </tr>
                 </table>
                 <p>
@@ -357,9 +352,6 @@
     <xsl:param name="base"/>
     <xsl:for-each select="wadl:doc">
         <xsl:if test="position() > 1"><br/></xsl:if>
-        <xsl:if test="@title and local-name(..) != 'application'">
-            <xsl:value-of select="@title"/>:
-        </xsl:if>
         <xsl:choose>
             <xsl:when test="@title = 'Example'">
                 <xsl:variable name="url">
