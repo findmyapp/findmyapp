@@ -1,6 +1,6 @@
 <%@page import="no.uka.findmyapp.model.appstore.App"%>
-<%@ page import="java.util.List" %>
-<%@	page import="no.uka.findmyapp.model.appstore.AppStoreList" %>
+<%@ page import="java.util.List"%>
+<%@	page import="no.uka.findmyapp.model.appstore.AppStoreList"%>
 
 <%
 List<AppStoreList> fullList = (List<AppStoreList>) request.getAttribute("appstoreweb");
@@ -27,30 +27,40 @@ body {
 }
 
 /* ~~ Element/tag selectors ~~ */
-ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
+ul,ol,dl {
+	/* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
 	padding: 0;
 	margin: 0;
 }
-h1, h2, h3, h4, h5, h6, p {
-	margin-top: 0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+
+h1,h2,h3,h4,h5,h6,p {
+	margin-top: 0;
+	/* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
 	padding-right: 10px;
-	padding-left: 10px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+	padding-left: 10px;
+	/* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
 	font-size: x-small;
 }
-a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+
+a img {
+	/* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
 	border: none;
 }
 
 /* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
 a:link {
-	color:#000000;
-	text-decoration: none; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+	color: #000000;
+	text-decoration: none;
+	/* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
 }
+
 a:visited {
 	color: #000000;
 	text-decoration: none;
 }
-a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+
+a:hover,a:active,a:focus {
+	/* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
 	text-decoration: underline;
 }
 
@@ -97,10 +107,13 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 /* ~~ this container surrounds all other divs giving them their percentage-based width ~~ */
 .container {
 	width: 80%;
-	max-width: 1260px;/* a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration. */
-	min-width: 780px;/* a min-width may be desirable to keep this layout from getting too narrow. This keeps line length more readable in the side columns. IE6 does not respect this declaration. */
+	max-width: 1260px;
+	/* a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration. */
+	min-width: 780px;
+	/* a min-width may be desirable to keep this layout from getting too narrow. This keeps line length more readable in the side columns. IE6 does not respect this declaration. */
 	background: #FFF;
-	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout. It is not needed if you set the .container's width to 100%. */
+	margin: 0 auto;
+	/* the auto value on the sides, coupled with the width, centers the layout. It is not needed if you set the .container's width to 100%. */
 }
 
 /* ~~the header is not given a width. It will extend the full width of your layout. It contains an image placeholder that should be replaced with your own linked logo~~ */
@@ -118,8 +131,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 }
 
 /* ~~ This grouped selector gives the lists in the .content area space ~~ */
-.content ul, .content ol { 
-	padding: 0 15px 15px 40px; /* this padding mirrors the right padding in the headings and paragraph rule above. Padding was placed on the bottom for space between other elements on the lists and on the left to create the indention. These may be adjusted as you wish. */
+.content ul,.content ol {
+	padding: 0 15px 15px 40px;
+	/* this padding mirrors the right padding in the headings and paragraph rule above. Padding was placed on the bottom for space between other elements on the lists and on the left to create the indention. These may be adjusted as you wish. */
 }
 
 /* ~~ The footer ~~ */
@@ -129,51 +143,68 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 }
 
 /* ~~ miscellaneous float/clear classes ~~ */
-.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+.fltrt {
+	/* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
 	float: right;
 	margin-left: 8px;
 }
-.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+
+.fltlft {
+	/* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
 	float: left;
 	margin-right: 8px;
 }
-.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the #footer is removed or taken out of the #container */
-	clear:both;
-	height:0;
+
+.clearfloat {
+	/* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the #footer is removed or taken out of the #container */
+	clear: both;
+	height: 0;
 	font-size: 1px;
 	line-height: 0px;
 }
+
 .container .header strong {
 	color: #930000;
 }
 -->
-</style></head>
+</style>
+</head>
 
 <body bgcolor="#FFFFFF">
-			<table width="583" border="0" cellpadding="5" cellspacing="2">
-				<tr>
-			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/ios-logo.png" width="82" height="49" margin-top="50px"/><br />
-	              (iPhone, iPad, iPod touch...)</td>
-			         <td width="50"></td>
-			         <td align="center" valign="bottom"><p><img src="../../appstoreweb-pictures/android-notext.png" width="58" height="64" /><br />
-	              (HTC, Samsung, SonyEricsson...)</td>
-		       	</tr>
-				<tr>
-					<td valign="top">
-	         		<%
+	<tr>
+		<td height="50" align="center" valign="top"><b>Click on the app icon to select the new featured app</b>
+		</td>
+		
+	</tr>
+	<table width="583" border="0" cellpadding="5" cellspacing="2">
+		<tr>
+			<td align="center" valign="bottom"><p>
+					<img src="../../appstoreweb-pictures/ios-logo.png" width="82"
+						height="49" margin-top="50px" /><br /> (iPhone, iPad, iPod
+					touch...)
+			</td>
+			<td width="50"></td>
+			<td align="center" valign="bottom"><p>
+					<img src="../../appstoreweb-pictures/android-notext.png" width="58"
+						height="64" /><br /> (HTC, Samsung, SonyEricsson...)
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<%
 			         	List<App> applicationListI = iosList.getAppList();
 			         	
 			         	for(App myApp : applicationListI) {
 			         		String tableString = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
 			       		"<tr>" +
 			       			"<td width=\"71\" rowspan=\"3\">" +
-			       				"<a href=\"../SetFeaturedApp/" + myApp.getMarketID() + "\">" +
+			       				"<a href=\"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() + "\">" +
 			       				"<img src=\"../../appstoreweb-pictures/appicon-template.png\" width=\"71\" height=\"69\" />" +
 			       			"</td>" +
 			       			"<td class=\"utvikler\">"+myApp.getDeveloperName()+"</td>" +
 			       		"</tr>" +
 			       		"<tr>" +
-			       			"<td class=\"appnavn\"><a href=\"../SetFeaturedApp/" + myApp.getMarketID() +"\">" + myApp.getName() + "</td>" +
+			       			"<td class=\"appnavn\"><a href=\"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() +"\">" + myApp.getName() + "</td>" +
 			       		"</tr>" +
 			       		"<tr>" +
 			       			"<td class=\"rating\">* * * * * 102 ratings</td>" +
@@ -183,23 +214,23 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			       		
 					}
 			        %>
-	        		</td>
-	        		<td></td>
-					<td valign="top">
-			          <%
+			</td>
+			<td></td>
+			<td valign="top">
+				<%
 			          List<App> applicationListA = androidList.getAppList();
 			          	
 			          	for(App myApp : applicationListA) {
 			          		String tableString = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
 			        		"<tr>" +
 			        			"<td width=\"71\" rowspan=\"3\">" +
-			        				"<a href=\"../SetFeaturedApp/" + myApp.getMarketID() + "\">" +
+			        				"<a href=\"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() + "\">" +
 			        				"<img src=\"../../appstoreweb-pictures/appicon-template.png\" width=\"71\" height=\"69\" /></a>" +
 			        			"</td>" +
 			        			"<td class=\"utvikler\">"+myApp.getDeveloperName()+"</td>" +
 			        		"</tr>" +
 			        		"<tr>" +
-			        			"<td class=\"appnavn\"><a href= \"../SetFeaturedApp/" + myApp.getMarketID() + "\">" + myApp.getName() + "</td>" +
+			        			"<td class=\"appnavn\"><a href= \"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() + "\">" + myApp.getName() + "</td>" +
 			        		"</tr>" +
 			        		"<tr>" +
 			        			"<td class=\"rating\">* * * * * 102 ratings</td>" +
@@ -209,16 +240,8 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			        		
 						}
 					%>
-					</td>
-	        	</tr>
-		        <tr>
-		          <td height="50" align="center" valign="bottom"><b>Lag app selv!</b></td>
-		          <td></td>
-		          <td align="center" valign="bottom"><b>Lag app selv!</b></td>
-	          </tr>
-		        <tr>
-					<td height="50" colspan="3" align="center" valign="bottom"><p id="devcorner" align="center"><a href="market://details?id=no.uka.findmyapp.appstoreAndroid">Last ned findmyapp</a></p></td>
-				</tr>
-			</table>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>

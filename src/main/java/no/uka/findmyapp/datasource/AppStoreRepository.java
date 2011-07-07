@@ -10,6 +10,7 @@ import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.AppStoreList;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class AppStoreRepository {
 		logger.info(app.toString());
 		return app;
 	}
-	
+
 	public App getAppFromMarketID(String marketID) {
 
 		App app = jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE app.market_identifier = ?",
@@ -86,7 +87,7 @@ public class AppStoreRepository {
 		logger.info(app.toString());
 		return app;
 	}
-	
+
 	public AppDetailed getAppDetailed(App app){
 		AppDetailed appDetailed= jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE app.market_identifier = ?",
 				new AppDetailedRowMapper(), app.getMarketID());
@@ -116,18 +117,19 @@ public class AppStoreRepository {
 		final App app = newApp;
 		try{
 			jdbcTemplate.update(
-					"INSERT INTO APPSTORE_APPLICASTION(name, market_identifier, platform, description, facebook_app_id, deevloper_id) VALUES(?,?,?,?,?,?)",
+					"INSERT INTO APPSTORE_APPLICATION(name, market_identifier, platform, description, facebook_app_id, appstore_developer_id, publish_date) VALUES(?,?,?,?,?,?,NOW())",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 						throws SQLException {
 							ps.setString(1, app.getName());
-							ps.setString(1, app.getMarketID());
-							ps.setInt(1, app.getPlatform());
-							ps.setString(1, app.getDescription());
-							ps.setString(1, app.getFacebookAppID());
-							ps.setString(1, app.getDeveloperID());
+							ps.setString(2, app.getMarketID());
+							ps.setInt(3, app.getPlatform());
+							ps.setString(4, app.getDescription());
+							ps.setString(5, app.getFacebookAppID());
+							ps.setString(6, app.getDeveloperID());
 						}
 					});
+			
 			return true;
 		}
 		catch(Exception e){
@@ -172,19 +174,7 @@ public class AppStoreRepository {
 			logger.info(" " + featuredApp);
 			return false;
 		}
-		
-
-		//Set category to app_of_the_day in the new featured app
-
-
-
 	}
 }
 
-/*
- * SELECT * FROM APPSTORE_APPLICATION AS app
-JOIN APPSTORE_DEVELOPER AS dev
-ON app.appstore_developer_id = dev.appstore_developer_id
-WHERE app.appstore_application_id = 7
 
-*/

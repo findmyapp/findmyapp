@@ -172,4 +172,9 @@ public class UkaProgramService {
 		dates.add(ukaProgramConfiguration.getEndDate());
 		return dates;
 	}
+
+	public void setUkaProgramConfiguration(
+			UkaProgramConfiguration ukaProgramConfiguration) {
+		this.ukaProgramConfiguration = ukaProgramConfiguration;
+	}
 }
