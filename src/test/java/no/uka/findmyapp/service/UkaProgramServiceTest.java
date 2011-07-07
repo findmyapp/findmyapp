@@ -2,24 +2,27 @@ package no.uka.findmyapp.service;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("test-context.xml")
 public class UkaProgramServiceTest {
 
-	@Autowired
 	UkaProgramConfiguration ukaProgramConfiguration;
 	
+	@Before
+	public void init() {
+		ukaProgramConfiguration = new UkaProgramConfiguration();
+		ukaProgramConfiguration.setStartDate(new GregorianCalendar(2011, 1, 1).getTime());
+		ukaProgramConfiguration.setEndDate(new GregorianCalendar(2011, 6, 1).getTime());
+		ukaProgramConfiguration.setUkaYearForStartAndEndDate("uka11");
+	}
+
 	@Test
 	public void testWithOnlyDateAsInput() throws ParseException {
 		UkaProgramService service = new UkaProgramService();
