@@ -1,10 +1,14 @@
 package no.uka.findmyapp.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.Sample;
+import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.LocationService;
 
@@ -18,8 +22,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,7 +48,7 @@ public class LocationController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationController.class);
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelMap getAllLocations() {
 		logger.info("getAllLocations");
@@ -51,7 +57,24 @@ public class LocationController {
 		model.addAttribute(locations);
 		return model;
 	}
-	
+
+	/*
+	 * ************* POSITIONING *************
+	 */
+
+	@RequestMapping(method = RequestMethod.POST)
+	public ModelAndView getPosition(@RequestBody Signal[] signals)
+			throws LocationNotFoundException {
+		logger.info("getPosition ( " + signals.length + " )");
+		ModelAndView mav = new ModelAndView("pos");
+		List<Signal> signalList = Arrays.asList(signals);
+		Location location = service.getCurrentLocation(signalList);
+		logger.info("getCurrentPosition ( " + location + " )");
+		mav.addObject("room", location); // model name, model object
+
+		return mav;
+	}
+
 	@RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
@@ -61,6 +84,60 @@ public class LocationController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/sample", method = RequestMethod.POST)
+	public ModelAndView registerSample(@RequestBody Sample sample) {
+		ModelAndView mav = new ModelAndView("registerPositionSample");
+		boolean regSample = service.registerSample(sample);
+		logger.info("registerSample ( " + regSample + " )");
+		mav.addObject("regSample", regSample); // model name, model object
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
+	public ModelAndView registerUserLocation(@PathVariable("id") int userId,
+			@RequestParam int locationId) {
+		ModelAndView mav = new ModelAndView("registerUserPosition");
+		boolean regUserPos = service.registerUserLocation(userId, locationId);
+		logger.info("registerUserPosition ( " + regUserPos + " )");
+		mav.addObject("regUserPos", regUserPos); // model name, model object
+		return mav;
+	}
+
+	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+	public ModelMap getUserLocation(@PathVariable("id") int userId,
+			ModelMap model) {
+		Location location = service.getUserLocation(userId);
+		model.addAttribute(location);
+		return model;
+	}
+
+	@RequestMapping(value = "users", method = RequestMethod.GET)
+	public void getAllUserLocations(ModelMap model) {
+		model.addAttribute(service.getLocationOfAllUsers());
+	}
+
+	@RequestMapping(value = "/friend/{id}", method = RequestMethod.GET)
+	public ModelMap getPositionOfFriend(@PathVariable("id") int friendId,
+			ModelMap model) {
+		Location friendLocation = service.getLocationOfFriend(friendId);
+		model.addAttribute(friendLocation);
+		return model;
+	}
+
+	@RequestMapping(value = "/friends/{userId}", method = RequestMethod.GET)
+	public ModelMap getPositionOfFriends(@PathVariable int userId,
+			ModelMap model) {
+		Map<Integer, Integer> friendsPositions = service
+				.getLocationOfFriends(userId);
+		model.addAttribute(friendsPositions);
+		return model;
+	}
+
+	/*
+	 * **************** FACT *****************
+	 */
+
 	@RequestMapping(value = "/{id}/fact", method = RequestMethod.GET)
 	public ModelMap getAllFacts(@PathVariable("id") int locationId) {
 		logger.info("getAllFacts ( " + locationId + " )");
@@ -69,14 +146,15 @@ public class LocationController {
 		model.addAttribute(facts);
 		return model;
 	}
-	
+
+	@RequestMapping(value = "/{id}/randomFact", method = RequestMethod.GET)
 	public ModelMap getRandomFact(@PathVariable("id") int locationId) {
 		ModelMap model = new ModelMap();
 		Fact fact = service.getRandomFact(locationId);
 		model.addAttribute(fact);
 		return model;
 	}
-	
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)
