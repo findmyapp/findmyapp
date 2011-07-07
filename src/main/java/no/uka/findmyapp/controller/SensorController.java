@@ -105,24 +105,15 @@ public class SensorController {
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
+			@RequestParam (required = false) boolean sum,
 			@PathVariable int tapNr){
-		
-		beertapList = service.getBeertapData(locationId,tapNr, from, to);
-		
-		return new ModelAndView("sensor","sensor", beertapList);
-	}
-
-
-	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}/sum",method = RequestMethod.GET)
-	public ModelAndView getBeertapSum(
-			@PathVariable int locationId,
-			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
-			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@PathVariable int tapNr){
-
-		int sum = service.getBeertapSum(locationId,tapNr, from, to);
-		
-		return new ModelAndView("sensor","sensor", sum);
+		if (sum == false){
+			beertapList = service.getBeertapData(locationId,tapNr, from, to);
+			return new ModelAndView("sensor","sensor", beertapList);
+		} else {
+			int total = service.getBeertapSum(locationId,tapNr, from, to);
+			return new ModelAndView("sensor","sensor", total);
+		}
 	}
 
 	/**
