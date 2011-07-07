@@ -70,6 +70,13 @@ public class LocationController {
 		return model;
 	}
 	
+	public ModelMap getRandomFact(@PathVariable("id") int locationId) {
+		ModelMap model = new ModelMap();
+		Fact fact = service.getRandomFact(locationId);
+		model.addAttribute(fact);
+		return model;
+	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)

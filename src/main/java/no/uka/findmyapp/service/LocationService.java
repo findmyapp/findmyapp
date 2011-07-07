@@ -28,4 +28,8 @@ public class LocationService {
 		return data.getAllLocations();
 	}
 
+	public Fact getRandomFact(int locationId) {
+		return data.getRandomFact(locationId);
+	}
+
 }

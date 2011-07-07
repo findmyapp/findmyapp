@@ -36,12 +36,14 @@ public class LocationRepository {
 	
 	public List<Fact> getAllFacts(int locationId) {
 		List<Fact> facts = jdbcTemplate.query(
-				"SELECT fact.location_fact_id, fact.position_location_id, fact.text " +
-				"FROM POSITION_LOCATION_FACT fact, POSITION_LOCATION location " +
-				"WHERE fact.position_location_id = location.position_location_id " +
-				"AND location.position_location_id = ?", 
+				"SELECT * FROM POSITION_LOCATION_FACT WHERE position_location_id = ?", 
 				new FactRowMapper(), locationId);
 		return facts;
+	}
+
+	public Fact getRandomFact(int locationId) {
+		return jdbcTemplate.queryForObject("SELECT * FROM POSITION_LOCATION_FACT " +
+				"WHERE position_location_id = ? ORDER BY rand() limit 1;", new FactRowMapper(), locationId);
 	}
 
 }
