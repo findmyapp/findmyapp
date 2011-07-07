@@ -43,6 +43,7 @@ public class UkaProgramController {
 	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramForDate(
+			@PathVariable String ukaYear,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
@@ -52,7 +53,7 @@ public class UkaProgramController {
 		
 
 			logger.info("getUkaProgram - new");
-			program = ukaProgramService.getUkaProgram(date, from, to, all, place);	
+			program = ukaProgramService.getUkaProgram(ukaYear, date, from, to, all, place);	
 			
 			return new ModelAndView("home", "program", gson.toJson(program));
 	
@@ -60,35 +61,40 @@ public class UkaProgramController {
 	
 	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
 	// We do not use ukaYear
-	public ModelAndView getUkaProgramForDate(
+	public ModelAndView searchForUkaProgramByName(
+			@PathVariable String ukaYear,
 			@RequestParam(required=true) String eventName){
 		UkaProgram program = new UkaProgram();
 		
 			logger.info("searchForUkaProgramByName");
-			program = ukaProgramService.titleSearch(eventName);	
+			program = ukaProgramService.titleSearch(ukaYear, eventName);	
 	
 			return new ModelAndView("home", "program", gson.toJson(program));
 	}
 
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	// We do not use ukaYear
-	public ModelAndView getUkaProgramPlaces(){
+	public ModelAndView getUkaProgramPlaces(
+			@PathVariable String ukaYear){
 		List<String> places;
 		logger.info("getUkaProgramPlaces");
-		places = ukaProgramService.getUkaPlaces();
+		places = ukaProgramService.getUkaPlaces(ukaYear);
 
 		return new ModelAndView("places", "places", places);
 	}
 	
 	@RequestMapping(value = "/program/{ukaYear}/beginningAndEndDates", method = RequestMethod.GET)
 	// We do use ukaYear
-	public ModelAndView getUkaProgramStartEndDate(){ //Should depend on ukaYear (TOHDO)
+	public ModelAndView getUkaProgramStartEndDate(
+			@PathVariable String ukaYear){
+
 		List<Date> dates;
 		logger.info("getUkaProgramStartEndDate using a config file");
-		dates = ukaProgramService.getUkaProgramStartEndDate();
+		dates = ukaProgramService.getUkaProgramStartEndDate(ukaYear);
 
-		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", dates);
+		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(dates));
 	}
+
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
@@ -101,10 +107,10 @@ public class UkaProgramController {
 	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
-			@PathVariable int id){
+			@PathVariable int id, @PathVariable String ukaYear){
 		Event event;
 		logger.info("getUkaEventById");
-		event = ukaProgramService.getUkaEventById(id);
+		event = ukaProgramService.getUkaEventById(ukaYear, id);
 
 		return new ModelAndView("event", "event", gson.toJson(event));
 	}

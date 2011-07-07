@@ -189,23 +189,18 @@ public class SensorRepository {
 	 * @return
 	 */
 
-	public Temperature setTemperatureData(int location, float value) {
-		
-		try{
-		jdbcTemplate
-				.execute("INSERT INTO SENSOR_TEMPERATURE (position_location_id , value) VALUES ('"
-						+ location + "', " + value + ")");
-		}
-		catch (DataAccessException d){
-			return null;
-		}
-		Temperature temperature = new Temperature();
-		temperature.setLocation(location);
-		temperature.setValue(value);
+	public void setTemperatureData(Temperature temperature) {
+		jdbcTemplate.execute("INSERT INTO SENSOR_TEMPERATURE (position_location_id , value, date) VALUES ("+ temperature.getLocation() +","+ temperature.getValue() +",now())");
 		logger.info("Data logged: " + temperature.toString());
-		return temperature;
+		return;
 	}
 
+	public void setHumidityData(Humidity humidity) {
+		jdbcTemplate.execute("INSERT INTO SENSOR_HUMIDITY (position_location_id , value, date) VALUES ("+ humidity.getLocation() +","+ humidity.getValue() +",now())");		
+		logger.info("Data logged: " + humidity.toString());
+		return;
+	}
+/*
 	public Noise setNoiseData(int location, int[] sample) {
 
 		jdbcTemplate
@@ -218,19 +213,7 @@ public class SensorRepository {
 		logger.info("Data logged: " + noise.toString());
 		return noise;
 	}
-
-	public Humidity setHumidityData(int location, float value) {
-
-		jdbcTemplate
-				.execute("INSERT INTO SENSOR_HUMIDITY (position_location_id , value) VALUES ('"
-						+ location + "', " + value + ")");
-		
-		Humidity humidity = new Humidity();
-		humidity.setLocation(location);
-		humidity.setValue(value);
-		logger.info("Data logged: " + humidity.toString());
-		return humidity;
-	}
+*/
 
 	public BeerTap setBeertapData(int location, float value, int tapnr) {
 

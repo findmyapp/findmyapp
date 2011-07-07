@@ -41,7 +41,10 @@ public class UkaProgramService {
 	 * @param qry is the search query. 
 	 * @return is a list of all the events sorted by relevance, wrapped inside UkaProgram. 
 	 */
-	public  UkaProgram titleSearch(String qry) {
+	public  UkaProgram titleSearch(String ukaYear, String qry) {
+		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		}
 		logger.info("MinLength is " + searchConfiguration.getMinLength());
 		logger.info("Depth is " + searchConfiguration.getDepth());
 		
@@ -72,7 +75,10 @@ public class UkaProgramService {
 	 * getUkaPlaces returns all places where there is one event occurring.
 	 * @return list of places (identified by their names)
 	 */
-	public List<String> getUkaPlaces(){
+	public List<String> getUkaPlaces(String ukaYear){
+		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		}
 		List<String> places;
 		places = data.getUkaPlaces();
 		return places;
@@ -83,7 +89,10 @@ public class UkaProgramService {
 	 * @param id is the database id (primary key). 
 	 * @return is the event with the given id. If there is no such event then null is returned.
 	 */
-	public Event getUkaEventById(int id){
+	public Event getUkaEventById(String ukaYear, int id){
+		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		}
 		Event event;
 		event = data.getUkaEventById(id);
 		return event;
@@ -98,7 +107,11 @@ public class UkaProgramService {
 	 * @param place can be used alone or together with date or to/from. When place is specified only events occurring at this place are returned. 
 	 * @return a list of events wrapped inside an instance of the UkaProgram class.
 	 */
-	public UkaProgram getUkaProgram(Date date, Date from, Date to, Boolean all, String place){
+	public UkaProgram getUkaProgram(String ukaYear, Date date, Date from, Date to, Boolean all, String place){
+		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		}
+		
 		UkaProgram program = new UkaProgram();
 
 		if (place==null){
@@ -118,7 +131,7 @@ public class UkaProgramService {
 				program = new UkaProgram(eventList);
 
 			}else{
-				throw new IllegalArgumentException("Requesten må inneholde fra og tildato, en bestemt dato eller flag for alle events");
+				throw new IllegalArgumentException("Requesten maa inneholde fra og tildato, en bestemt dato eller flag for alle events");
 			}
 		}
 
@@ -150,7 +163,10 @@ public class UkaProgramService {
 		this.data = repository;
 	}
 
-	public List<Date> getUkaProgramStartEndDate() {
+	public List<Date> getUkaProgramStartEndDate(String ukaYear) {
+		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		}
 		List<Date> dates = new ArrayList<Date>();
 		dates.add(ukaProgramConfiguration.getStartDate());
 		dates.add(ukaProgramConfiguration.getEndDate());
