@@ -77,10 +77,11 @@ public class AppStoreController {
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
-	@RequestMapping(value = "/appstore/SetFeaturedApp/{marketID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/appstore/SetFeaturedApp/selectedAppIs", method = RequestMethod.GET)
 	public ModelAndView  setNewFeaturedAppById(
-			@PathVariable String marketID, Model model) throws URISyntaxException {
-
+			@RequestParam String marketID, Model model) throws URISyntaxException {
+		
+		System.out.println(marketID);
 		App app = appStoreService.getAppFromMarketID(marketID);
 		System.out.println(app);
 		logger.info("The new featured app is:  ---------->    " + app.getName());
@@ -207,7 +208,7 @@ public class AppStoreController {
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 
-	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	@RequestMapping(value = "/appstore/form/", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody App newApp) {
 		ModelAndView mav = new ModelAndView("registerApp");
 		boolean regApp = service.registerApp(newApp);

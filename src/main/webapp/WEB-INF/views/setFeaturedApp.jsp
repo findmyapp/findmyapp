@@ -167,13 +167,13 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			         		String tableString = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
 			       		"<tr>" +
 			       			"<td width=\"71\" rowspan=\"3\">" +
-			       				"<a href=\"../SetFeaturedApp/" + myApp.getMarketID() + "\">" +
+			       				"<a href=\"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() + "\">" +
 			       				"<img src=\"../../appstoreweb-pictures/appicon-template.png\" width=\"71\" height=\"69\" />" +
 			       			"</td>" +
 			       			"<td class=\"utvikler\">"+myApp.getDeveloperName()+"</td>" +
 			       		"</tr>" +
 			       		"<tr>" +
-			       			"<td class=\"appnavn\"><a href=\"../SetFeaturedApp/" + myApp.getMarketID() +"\">" + myApp.getName() + "</td>" +
+			       			"<td class=\"appnavn\"><a href=\"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() +"\">" + myApp.getName() + "</td>" +
 			       		"</tr>" +
 			       		"<tr>" +
 			       			"<td class=\"rating\">* * * * * 102 ratings</td>" +
@@ -193,13 +193,13 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 			          		String tableString = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
 			        		"<tr>" +
 			        			"<td width=\"71\" rowspan=\"3\">" +
-			        				"<a href=\"../SetFeaturedApp/" + myApp.getMarketID() + "\">" +
+			        				"<a href=\"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() + "\">" +
 			        				"<img src=\"../../appstoreweb-pictures/appicon-template.png\" width=\"71\" height=\"69\" /></a>" +
 			        			"</td>" +
 			        			"<td class=\"utvikler\">"+myApp.getDeveloperName()+"</td>" +
 			        		"</tr>" +
 			        		"<tr>" +
-			        			"<td class=\"appnavn\"><a href= \"../SetFeaturedApp/" + myApp.getMarketID() + "\">" + myApp.getName() + "</td>" +
+			        			"<td class=\"appnavn\"><a href= \"../SetFeaturedApp/selectedAppIs?marketID=" + myApp.getMarketID() + "\">" + myApp.getName() + "</td>" +
 			        		"</tr>" +
 			        		"<tr>" +
 			        			"<td class=\"rating\">* * * * * 102 ratings</td>" +
