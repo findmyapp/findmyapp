@@ -4,10 +4,8 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
-import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
-
 import no.uka.findmyapp.service.AppStoreService;
 
 import org.slf4j.Logger;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Controller
 public class AppStoreController {
@@ -108,7 +105,7 @@ public class AppStoreController {
 	 * Returns a list of avaliable apps
 	 * @throws URISyntaxException 
 	 */
-	@RequestMapping(value = "/appstore/list/", method = RequestMethod.GET)
+	@RequestMapping(value = "/appstore/list", method = RequestMethod.GET)
 	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
 
 		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(

@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import no.uka.findmyapp.configuration.SearchConfiguration;
+import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
@@ -10,19 +12,29 @@ import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is used between the UkaProgramController layer and the UkaProgramRepository layer. It contains most of the logic.
  */
 @Service
 public class UkaProgramService {
+	
 	@Autowired
 	private UkaProgramRepository data;
+	
 	@Autowired
 	private EditDistanceHelper edService;
-
-	private static final int maxED = 3;//maximum item edit distance to include from titleSearch
+	
+	@Autowired
+	private SearchConfiguration searchConfiguration;
+	
+	@Autowired
+	private	UkaProgramConfiguration ukaProgramConfiguration;
+	
+	private static final Logger logger = LoggerFactory
+	.getLogger(UkaProgramRepository.class);
 	
 	/**
 	 * titleSearch searches for a list of events with names containing a substring close to the query.
@@ -30,8 +42,10 @@ public class UkaProgramService {
 	 * @return is a list of all the events sorted by relevance, wrapped inside UkaProgram. 
 	 */
 	public  UkaProgram titleSearch(String qry) {
-
-		if (qry.replace(" ", "").length() < 6) {//too short query return empty
+		logger.info("MinLength is " + searchConfiguration.getMinLength());
+		logger.info("Depth is " + searchConfiguration.getDepth());
+		
+		if (qry.replace(" ", "").length() < searchConfiguration.getMinLength()) {//too short query return empty
 			return new UkaProgram();
 		}
 		//todo: add all events in repo to prg
@@ -39,14 +53,14 @@ public class UkaProgramService {
 		//search for match:
 		ArrayList<Event> prg = (ArrayList<Event>) data.getUkaProgram(); //for test
 		ArrayList<Event> retPrg = new ArrayList<Event>();
-		int index[] = new int[maxED]; //index for sorting
+		int index[] = new int[searchConfiguration.getDepth()]; //index for sorting
 
 		int ED;
 		for (int i = 0; i < prg.size(); i++) {
 			ED = edService.splitDistance(prg.get(i).getTitle(), qry);
-			if (ED < maxED) {
+			if (ED < searchConfiguration.getDepth()) {
 				retPrg.add(index[ED], prg.get(i));
-				for (int j = ED; j < maxED; j++) {
+				for (int j = ED; j < searchConfiguration.getDepth(); j++) {
 					index[j]++;
 				}
 			}
@@ -134,5 +148,12 @@ public class UkaProgramService {
 	 */
 	public void setUkaProgramRepository(UkaProgramRepository repository) {
 		this.data = repository;
+	}
+
+	public List<Date> getUkaProgramStartEndDate() {
+		List<Date> dates = new ArrayList<Date>();
+		dates.add(ukaProgramConfiguration.getStartDate());
+		dates.add(ukaProgramConfiguration.getEndDate());
+		return dates;
 	}
 }

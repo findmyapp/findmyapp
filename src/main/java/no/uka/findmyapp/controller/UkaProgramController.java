@@ -3,6 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.Date;
 import java.util.List;
 
+import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.service.UkaProgramService;
@@ -76,7 +77,17 @@ public class UkaProgramController {
 		logger.info("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces();
 
-		return new ModelAndView("places", "places", gson.toJson(places));
+		return new ModelAndView("places", "places", places);
+	}
+	
+	@RequestMapping(value = "/program/{ukaYear}/beginningAndEndDates", method = RequestMethod.GET)
+	// We do use ukaYear
+	public ModelAndView getUkaProgramStartEndDate(){ //Should depend on ukaYear (TOHDO)
+		List<Date> dates;
+		logger.info("getUkaProgramStartEndDate using a config file");
+		dates = ukaProgramService.getUkaProgramStartEndDate();
+
+		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", dates);
 	}
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)

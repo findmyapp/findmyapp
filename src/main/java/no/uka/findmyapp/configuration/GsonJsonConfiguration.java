@@ -1,4 +1,4 @@
-package no.uka.findmyapp.controller.gson;
+package no.uka.findmyapp.configuration;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Configuration
-public class GsonJsonCreator {
+public class GsonJsonConfiguration {
 	
 	@Bean(autowire = Autowire.BY_TYPE)
 	public Gson createGson() {

@@ -304,33 +304,6 @@
 					</soapuiProperties>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>xml-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>transform</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<transformationSets>
-						<transformationSet>
-							<dir>doc/wadl</dir>
-							<stylesheet>doc/wadl2html.xslt</stylesheet>
-						</transformationSet>
-					</transformationSets>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>net.sf.saxon</groupId>
-						<artifactId>saxon</artifactId>
-						<version>8.7</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 		</plugins>
 	</build>
 </project>

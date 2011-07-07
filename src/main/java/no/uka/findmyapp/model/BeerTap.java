@@ -3,7 +3,7 @@ package no.uka.findmyapp.model;
 import java.sql.Timestamp;
 
 
-public class Beertap {
+public class BeerTap {
 	private int id;
 	private int location;
 	private float value;
