@@ -121,11 +121,11 @@ public class AppStoreRepository {
 						public void setValues(PreparedStatement ps)
 						throws SQLException {
 							ps.setString(1, app.getName());
-							ps.setString(1, app.getMarketID());
-							ps.setInt(1, app.getPlatform());
-							ps.setString(1, app.getDescription());
-							ps.setString(1, app.getFacebookAppID());
-							ps.setString(1, app.getDeveloperID());
+							ps.setString(2, app.getMarketID());
+							ps.setInt(3, app.getPlatform());
+							ps.setString(4, app.getDescription());
+							ps.setString(5, app.getFacebookAppID());
+							ps.setString(6, app.getDeveloperID());
 						}
 					});
 			return true;

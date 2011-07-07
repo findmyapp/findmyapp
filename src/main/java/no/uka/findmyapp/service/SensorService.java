@@ -103,24 +103,39 @@ public class SensorService {
 		}
 	}
 
-	public Temperature setTemperatureData(int location, float value) {
-
-		return data.setTemperatureData(location, value);
+	public void setTemperatureData(Temperature temperature) {
+		data.setTemperatureData(temperature);
+		return; 
 	}
 
 	public Noise setNoiseData(int location, int[] sample) {
-
-		return data.setNoiseData(location, sample);
+		
+		//returns Noise data.
+		Noise noise = extractNoiseData(location, sample);
+		return noise; //data.setNoiseData(noise);
 	}
 
-	public Humidity setHumidityData(int location, float value) {
 
-		return data.setHumidityData(location, value);
+	public void setHumidityData(Humidity humidity) {
+
+		data.setHumidityData(humidity);
+		return;
 	}
 
 	public BeerTap setBeertapData(int location, float value, int tapnr) {
 
 		return data.setBeertapData(location, value, tapnr);
 	}
+	
+	private Noise extractNoiseData(int location, int[] sample) {
+		Noise noise = new Noise();
+		noise.setLocation(location);
+		
+		//sample.
+		
+		return new Noise();
+		
+	}
+	
 }
 

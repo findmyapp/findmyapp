@@ -144,7 +144,7 @@ public class LocationController {
 		return model;
 	}
 
-	@RequestMapping(value = "/{id}/randomFact", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/fact/random", method = RequestMethod.GET)
 	public ModelMap getRandomFact(@PathVariable("id") int locationId) {
 		ModelMap model = new ModelMap();
 		Fact fact = service.getRandomFact(locationId);
