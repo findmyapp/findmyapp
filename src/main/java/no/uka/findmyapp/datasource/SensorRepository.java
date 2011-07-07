@@ -142,7 +142,7 @@ public class SensorRepository {
 	}
 
 	public List<Beertap> getBeertapData(int location, int tapnr) {
-
+		logger.info("called get beertap");
 		List<Beertap> beertapList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ?",
 						new SensorBeertapRowMapper(), location, tapnr);

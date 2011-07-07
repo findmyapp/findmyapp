@@ -52,7 +52,7 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	@RequestMapping(value="location/{locationId}/temperature",method = RequestMethod.GET)
+	@RequestMapping(value="/location/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
@@ -73,7 +73,7 @@ public class SensorController {
 	}
 	
 
-	@RequestMapping(value="location/{locationId}/noise",method = RequestMethod.GET)
+	@RequestMapping(value="/location/{locationId}/noise",method = RequestMethod.GET)
 	public ModelAndView getNoiseData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
@@ -85,7 +85,7 @@ public class SensorController {
 	}
 	
 	
-	@RequestMapping(value="location/{locationId}/humidity",method = RequestMethod.GET)
+	@RequestMapping(value="/location/{locationId}/humidity",method = RequestMethod.GET)
 	public ModelAndView getHumidityData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
@@ -100,7 +100,7 @@ public class SensorController {
 		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
-	@RequestMapping(value="location/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
+	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
