@@ -10,6 +10,7 @@ import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.AppStoreList;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,10 +115,9 @@ public class AppStoreRepository {
 
 	public boolean registerApp(App newApp){
 		final App app = newApp;
-		System.out.println(app);
 		try{
 			jdbcTemplate.update(
-					"INSERT INTO APPSTORE_APPLICATION(name, market_identifier, platform, description, facebook_app_id, appstore_developer_id) VALUES(?,?,?,?,?,?)",
+					"INSERT INTO APPSTORE_APPLICATION(name, market_identifier, platform, description, facebook_app_id, appstore_developer_id, publish_date) VALUES(?,?,?,?,?,?,NOW())",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 						throws SQLException {
@@ -129,6 +129,7 @@ public class AppStoreRepository {
 							ps.setString(6, app.getDeveloperID());
 						}
 					});
+			
 			return true;
 		}
 		catch(Exception e){
