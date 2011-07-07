@@ -320,6 +320,15 @@
 						<transformationSet>
 							<dir>doc/wadl</dir>
 							<stylesheet>doc/wadl2html.xslt</stylesheet>
+							<outputDir>${basedir}/src/main/webapp/WEB-INF/views</outputDir>
+							<fileMappers>
+								<fileMapper
+									implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
+									<pattern>^(.*)\.wadl$</pattern>
+									<replacement>api.jsp</replacement>
+									<replaceAll>true</replaceAll>
+								</fileMapper>
+							</fileMappers>
 						</transformationSet>
 					</transformationSets>
 				</configuration>

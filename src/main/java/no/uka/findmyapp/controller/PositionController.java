@@ -2,13 +2,14 @@ package no.uka.findmyapp.controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.exception.LocationNotFoundException;
-import no.uka.findmyapp.model.Fact;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 import no.uka.findmyapp.service.PositionService;
 
 import org.slf4j.Logger;
@@ -96,11 +97,27 @@ public class PositionController {
 		model.addAttribute(service.getPositionOfAllUsers());
 	}
 	
-	@RequestMapping(value = "/friend/{friendId}", method = RequestMethod.GET)
-	public ModelMap getPositionOfFriend(@PathVariable int friendId) {
+	@RequestMapping(value = "/friend/{id}", method = RequestMethod.GET)
+	public ModelMap getPositionOfFriend(@PathVariable("id") int friendId) {
 		ModelMap model = new ModelMap();
 		Location friendLocation = service.getPositionOfFriend(friendId);
 		model.addAttribute(friendLocation);
+		return model;
+	}
+	
+	@RequestMapping(value = "/allfriends/{id}", method = RequestMethod.GET)
+	public ModelMap getAllFriends(@PathVariable("id") int userId) {
+		ModelMap model = new ModelMap();
+		List<User> friends = service.getAllFriends(userId);
+		model.addAttribute(friends);
+		return model;
+	}
+	
+	@RequestMapping(value = "/friends/{userId}", method = RequestMethod.GET) 
+	public ModelMap getPositionOfFriends(@PathVariable int userId) {
+		ModelMap model = new ModelMap();
+		Map<Integer,Integer> friendsPositions = service.getPositionOfFriends(userId);
+		model.addAttribute(friendsPositions);
 		return model;
 	}
 

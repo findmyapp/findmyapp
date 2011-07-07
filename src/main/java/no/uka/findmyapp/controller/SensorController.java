@@ -1,4 +1,4 @@
-package no.uka.findmyapp.controller.sensor;
+package no.uka.findmyapp.controller;
 
 
 
@@ -100,37 +100,26 @@ public class SensorController {
 		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
-	@RequestMapping(value="location/{locationId}/beertap",method = RequestMethod.GET)
+	@RequestMapping(value="location/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam int tapnr){
+			@PathVariable int tapNr){
 
-		logger.info("Beertap data request received for location: " + locationId+"tapnr" +tapnr);
-		logger.info("Trying to fetch beertap data");
 		if (from != null && to != null) {
-			logger.info("Trying to fetch beertap data between " + from.toString() + to.toString());
-			beertapList = service.getBeertapData(locationId,tapnr, from, to);
+			beertapList = service.getBeertapData(locationId,tapNr, from, to);
 		} else {
-			logger.info("Trying to fetch beertap data for all dates");
-			beertapList = service.getBeertapData(locationId,tapnr);
+			beertapList = service.getBeertapData(locationId,tapNr);
 		}
-		
-		logger.info("Got beertap data");
-
-		 
 		return new ModelAndView("sensor","sensor", beertapList);
 	}
-
 
 
 
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */
-	
-	
 	@RequestMapping(value = "/location/{locationId}/temperature", method = RequestMethod.POST)
 	public ModelAndView setTemperatureData(
 			@PathVariable int locationId,
