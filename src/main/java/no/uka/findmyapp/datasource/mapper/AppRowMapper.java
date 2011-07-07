@@ -11,9 +11,13 @@ public class AppRowMapper implements RowMapper<App> {
 	
 	public App mapRow(ResultSet rs, int rowNum) throws SQLException {
 		App app = new App();
-		app.setAndroidMarketUri("details?id=" + rs.getString("market_identifier"));
+		app.setMarketID(rs.getString("market_identifier"));
 		app.setName(rs.getString("name"));
-		
+		app.setCategory(rs.getString("category"));
+		app.setDescription(rs.getString("description"));
+		app.setPlatform(rs.getInt("platform"));
+		app.setFacebookAppID(rs.getString("facebook_app_id"));	
+		app.setDeveloperName(rs.getString("fullname"));
 		return app;
 	}
 }
