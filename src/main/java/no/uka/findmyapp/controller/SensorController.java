@@ -108,8 +108,10 @@ public class SensorController {
 			@PathVariable int tapNr){
 
 		if (from != null && to != null) {
+			logger.info("Trying to fetch beertap data from " + from.toString() + " to " + to.toString());
 			beertapList = service.getBeertapData(locationId,tapNr, from, to);
 		} else {
+			logger.info("Trying to fetch beertap data");
 			beertapList = service.getBeertapData(locationId,tapNr);
 		}
 		return new ModelAndView("sensor","sensor", beertapList);

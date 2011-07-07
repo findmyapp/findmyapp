@@ -92,7 +92,7 @@ public class SensorService {
 	}
 	
 	public List<Beertap> getBeertapData(int locationId,int tapnr, Date from, Date to){
-		 return data.getBeertapData(locationId,tapnr);
+		 return data.getBeertapData(locationId,tapnr, from, to);
 	}
 }
 
