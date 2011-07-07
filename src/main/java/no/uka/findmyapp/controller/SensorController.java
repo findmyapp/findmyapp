@@ -125,7 +125,9 @@ public class SensorController {
 		logger.info("Noise data logged for location: " + locationId );
 		
 		Noise noise = service.setNoiseData(locationId, samples);
-		mav.addObject("respons", noise);
+		
+		
+		mav.addObject("respons",noise.getNumberOfSamples() );
 		
 		return mav;
 	}
