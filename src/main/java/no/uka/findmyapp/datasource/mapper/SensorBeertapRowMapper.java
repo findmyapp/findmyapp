@@ -2,19 +2,19 @@ package no.uka.findmyapp.datasource.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import no.uka.findmyapp.model.Beertap;
+import no.uka.findmyapp.model.BeerTap;
 import org.springframework.jdbc.core.RowMapper;
 
-public class SensorBeertapRowMapper implements RowMapper<Beertap> {
+public class SensorBeertapRowMapper implements RowMapper<BeerTap> {
 
-	public Beertap mapRow(ResultSet rs, int arg1) throws SQLException {
-		Beertap beertap =  new Beertap();
-		beertap.setId(rs.getInt("sensor_beertap_id"));
-		beertap.setTime(rs.getTimestamp("date"));
-		beertap.setLocation(rs.getInt("position_location_id"));
-		beertap.setValue(rs.getFloat("value"));
-		beertap.setTapnr(rs.getInt("tapnr"));
-		return beertap;
+	public BeerTap mapRow(ResultSet rs, int arg1) throws SQLException {
+		BeerTap beerTap =  new BeerTap();
+		beerTap.setId(rs.getInt("sensor_beertap_id"));
+		beerTap.setTime(rs.getTimestamp("date"));
+		beerTap.setLocation(rs.getInt("position_location_id"));
+		beerTap.setValue(rs.getFloat("value"));
+		beerTap.setTapnr(rs.getInt("tapnr"));
+		return beerTap;
 	}
 
 }

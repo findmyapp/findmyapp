@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
-import no.uka.findmyapp.model.Beertap;
+import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Temperature;
@@ -48,7 +48,7 @@ public class SensorController {
 	List <Temperature> temperatureList;
 	List<Noise> noiseList;
 	List<Humidity> humidityList;
-	List<Beertap> beertapList;
+	List<BeerTap> beertapList;
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
@@ -174,7 +174,7 @@ public class SensorController {
 			@PathVariable int  locationId,
 			@RequestBody int tapnr, float value){
 		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: "+tapnr  );
-		Beertap beertap = data.setBeertapData(locationId, value, tapnr);
+		BeerTap beerTap = data.setBeertapData(locationId, value, tapnr);
 		
 		return new ModelAndView("ok_respons");
 

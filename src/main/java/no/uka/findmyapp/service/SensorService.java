@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SensorRepository;
-import no.uka.findmyapp.model.Beertap;
+import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Temperature;
@@ -87,7 +87,7 @@ public class SensorService {
 		return hum;
 	}
 	
-	public List<Beertap> getBeertapData(int locationId,int tapnr, Date from, Date to){
+	public List<BeerTap> getBeertapData(int locationId,int tapnr, Date from, Date to){
 		 if (from != null && to != null) {
 			 return data.getBeertapData(locationId,tapnr, from, to);
 		 } else {
