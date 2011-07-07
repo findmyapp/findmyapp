@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.configuration.SearchConfiguration;
+import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
@@ -28,6 +29,9 @@ public class UkaProgramService {
 	
 	@Autowired
 	private SearchConfiguration searchConfiguration;
+	
+	@Autowired
+	private	UkaProgramConfiguration ukaProgramConfiguration;
 	
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
@@ -144,5 +148,12 @@ public class UkaProgramService {
 	 */
 	public void setUkaProgramRepository(UkaProgramRepository repository) {
 		this.data = repository;
+	}
+
+	public List<Date> getUkaProgramStartEndDate() {
+		List<Date> dates = new ArrayList<Date>();
+		dates.add(ukaProgramConfiguration.getStartDate());
+		dates.add(ukaProgramConfiguration.getEndDate());
+		return dates;
 	}
 }

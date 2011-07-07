@@ -12,6 +12,7 @@
 			<list>
 				<value>file:///${CREDENTIAL_PATH}/credentials.properties</value>
 				<value>classpath:search.properties</value>
+				<value>classpath:uka-program.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -40,6 +41,21 @@
 			<value>${search.depth}</value>
 		</property>
 	</bean>
+	
+	<bean id="ukaProgramConfiguration" class="no.uka.findmyapp.configuration.UkaProgramConfiguration">
+		<property name="startDate">
+			<value>${ukaProgram.startDate}</value>
+		</property>
+		<property name="endDate">
+			<value>${ukaProgram.endDate}</value>
+		</property>
+		<property name="ukaYearForStartAndEndDate">
+			<value>${ukaProgram.ukaYearForStartAndEndDate}</value>
+		</property>
+	</bean>
+	
+	
+
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
