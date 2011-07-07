@@ -152,12 +152,13 @@ public class SensorController {
 
 	}
 
-	@RequestMapping(value = "/{locationId}/beertap", method = RequestMethod.POST)
+	@RequestMapping(value = "/{locationId}/beertap/{tapNr}", method = RequestMethod.POST)
 	public ModelAndView setBeertapData(
 			@PathVariable int  locationId,
-			@RequestBody int tapnr, float value){
-		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: "+tapnr  );
-		BeerTap beerTap = service.setBeertapData(locationId, value, tapnr);
+			@PathVariable int  tapNr,
+			@RequestBody float value){
+		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: " + tapNr  );
+		BeerTap beerTap = service.setBeertapData(locationId, value, tapNr);
 		
 		return new ModelAndView("ok_respons");
 
