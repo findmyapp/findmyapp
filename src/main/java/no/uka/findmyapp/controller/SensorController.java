@@ -118,6 +118,23 @@ public class SensorController {
 	}
 
 
+	@RequestMapping(value="/location/{locationId}/beertap/{tapNr}/sum",method = RequestMethod.GET)
+	public ModelAndView getBeertapSum(
+			@PathVariable int locationId,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
+			@PathVariable int tapNr){
+
+		int sum = 0;
+		if (from != null && to != null) {
+			logger.info("Trying to fetch beertap data from " + from.toString() + " to " + to.toString());
+			sum = service.getBeertapSum(locationId,tapNr, from, to);
+		} else {
+			logger.info("Trying to fetch beertap data");
+			sum = service.getBeertapSum(locationId,tapNr);
+		}
+		return new ModelAndView("sensor","sensor", sum);
+	}
 
 	/**
 	 * Simply selects the sensor view to return a confirmation.

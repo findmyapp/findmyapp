@@ -94,5 +94,13 @@ public class SensorService {
 	public List<Beertap> getBeertapData(int locationId,int tapnr, Date from, Date to){
 		 return data.getBeertapData(locationId,tapnr, from, to);
 	}
+	
+	public int getBeertapSum(int locationId,int tapnr){
+		 return data.getBeertapSum(locationId,tapnr);
+	}
+	
+	public int getBeertapSum(int locationId,int tapnr, Date from, Date to){
+		 return data.getBeertapSum(locationId,tapnr, from, to);
+	}
 }
 
