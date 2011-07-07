@@ -7,7 +7,7 @@ import no.uka.findmyapp.datasource.mapper.SensorBeertapRowMapper;
 import no.uka.findmyapp.datasource.mapper.SensorHumidityRowMapper;
 import no.uka.findmyapp.datasource.mapper.SensorNoiseRowMapper;
 import no.uka.findmyapp.datasource.mapper.SensorTemperatureRowMapper;
-import no.uka.findmyapp.model.Beertap;
+import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Temperature;
@@ -141,22 +141,46 @@ public class SensorRepository {
 		return humidityList;
 	}
 
-	public List<Beertap> getBeertapData(int location, int tapnr) {
-
-		List<Beertap> beertapList = jdbcTemplate
+	public List<BeerTap> getBeertapData(int location) {
+		List<BeerTap> beertapList = jdbcTemplate
+				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ?",
+						new SensorBeertapRowMapper(), location);
+		logger.info("received beertap list");
+		return beertapList;
+	}
+	
+	public List<BeerTap> getBeertapData(int location, int tapnr) {
+		List<BeerTap> beertapList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ?",
 						new SensorBeertapRowMapper(), location, tapnr);
 		logger.info("received beertap list");
 		return beertapList;
 	}
 	
-	public List<Beertap> getBeertapData(int location, int tapnr, Date from, Date to) {
-
-		List<Beertap> beertapList = jdbcTemplate
+	public List<BeerTap> getBeertapData(int location, int tapnr, Date from, Date to) {
+		List<BeerTap> beertapList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=?",
 						new SensorBeertapRowMapper(), location, tapnr, from, to);
 		logger.info("received beertap list");
 		return beertapList;
+	}
+
+	public int getBeertapSum(int location) {
+		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ?", location);
+		logger.info("received beertap sum: " + sum);
+		return sum;
+	}
+	
+	public int getBeertapSum(int location, int tapnr) {
+		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ?", location, tapnr);
+		logger.info("received beertap sum: " + sum);
+		return sum;
+	}
+	
+	public int getBeertapSum(int location, int tapnr, Date from, Date to) {
+		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=?", location, tapnr, from, to);
+		logger.info("received beertap sum: " + sum);
+		return sum;
 	}
 
 	/**
@@ -208,18 +232,18 @@ public class SensorRepository {
 		return humidity;
 	}
 
-	public Beertap setBeertapData(int location, float value, int tapnr) {
+	public BeerTap setBeertapData(int location, float value, int tapnr) {
 
 		jdbcTemplate
 				.execute("INSERT INTO SENSOR_BEERTAP (position_location_id , value, tapnr) VALUES ('"
 						+ location + "', " + value + "," + tapnr + ")");
 		
-		Beertap beertap = new Beertap();
-		beertap.setLocation(location);
-		beertap.setValue(value);
-		beertap.setTapnr(tapnr);
-		logger.info("Data logged: " + beertap.toString());
-		return beertap;
+		BeerTap beerTap = new BeerTap();
+		beerTap.setLocation(location);
+		beerTap.setValue(value);
+		beerTap.setTapnr(tapnr);
+		logger.info("Data logged: " + beerTap.toString());
+		return beerTap;
 	}
 
 }
