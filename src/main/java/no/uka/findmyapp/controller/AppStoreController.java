@@ -76,7 +76,30 @@ public class AppStoreController {
 		return "appstore";
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
+	
+	@RequestMapping(value = "/appstore/SetFeaturedApp/{marketID}", method = RequestMethod.GET)
+	public ModelAndView  setNewFeaturedAppById(
+			@PathVariable String marketID, Model model) throws URISyntaxException {
 
+		App app = appStoreService.getAppFromMarketID(marketID);
+		System.out.println(app);
+		logger.info("The new featured app is:  ---------->    " + app.getName());
+		appStoreService.setNewFeaturedApp(app);
+		
+		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				4, 
+				2, APP_OF_THE_DAY);
+		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				4, 
+				1, APP_OF_THE_DAY);
+
+		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
+		fullList.add(androidList);
+		fullList.add(iosList);
+		return new ModelAndView("setFeaturedApp", "appstoreweb", fullList);
+	}
 
 	/**
 	 * Returns a list of avaliable apps
@@ -115,7 +138,6 @@ public class AppStoreController {
 				10, 
 				3, 
 				1);
-
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
@@ -144,6 +166,27 @@ public class AppStoreController {
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 
+	@RequestMapping(value = "/appstore/SetFeaturedApp/", method = RequestMethod.GET)
+	public ModelAndView setFeaturedApp() throws URISyntaxException {
+
+		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				2, 
+				2, APP_OF_THE_DAY);
+		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
+				10, 
+				2, 
+				1, APP_OF_THE_DAY);
+
+		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
+		fullList.add(androidList);
+		fullList.add(iosList);
+
+		//TODO check values, throw exception
+		//return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+		return new ModelAndView("setFeaturedApp", "appstoreweb", fullList);
+	}
+	
 	@RequestMapping(value = "/appstore/appOfTheDay/", method = RequestMethod.GET)
 	public ModelAndView getFeaturedApp() throws URISyntaxException {
 

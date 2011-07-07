@@ -62,7 +62,7 @@ public class LocationController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView getPosition(@RequestBody Signal[] signals)
 			throws LocationNotFoundException {
-		logger.info("getPosition ( " + signals.length + " )");
+		logger.info("getCurrentLocation ( " + signals.length + " )");
 		ModelAndView mav = new ModelAndView("pos");
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentLocation(signalList);
@@ -101,7 +101,7 @@ public class LocationController {
 		return mav;
 	}
 
-	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public ModelMap getUserLocation(@PathVariable("id") int userId,
 			ModelMap model) {
 		Location location = service.getUserLocation(userId);
@@ -109,13 +109,13 @@ public class LocationController {
 		return model;
 	}
 
-	@RequestMapping(value = "users", method = RequestMethod.GET)
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public void getAllUserLocations(ModelMap model) {
 		model.addAttribute(service.getLocationOfAllUsers());
 	}
 
 	@RequestMapping(value = "/friend/{id}", method = RequestMethod.GET)
-	public ModelMap getPositionOfFriend(@PathVariable("id") int friendId,
+	public ModelMap getLocationOfFriend(@PathVariable("id") int friendId,
 			ModelMap model) {
 		Location friendLocation = service.getLocationOfFriend(friendId);
 		model.addAttribute(friendLocation);
@@ -123,7 +123,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "/friends/{userId}", method = RequestMethod.GET)
-	public ModelMap getPositionOfFriends(@PathVariable int userId,
+	public ModelMap getLocationOfFriends(@PathVariable int userId,
 			ModelMap model) {
 		Map<Integer, Integer> friendsPositions = service
 				.getLocationOfFriends(userId);

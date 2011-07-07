@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 public class App {
+	private String developerName;
 	private String name;
 	private int id;
 	private String marketID;
@@ -19,7 +20,39 @@ public class App {
 	private DateTime publishDate;
 	private int timesDownloaded;
 	private double ranking;
+	private String category;
 	
+	@Override
+	public String toString() {
+		return "App [name=" + name + ", id=" + id + ", marketID=" + marketID
+				+ ", platform=" + platform + ", description=" + description
+				+ ", facebookAppID=" + facebookAppID + ", developerID="
+				+ developerID + ", thumbImage=" + thumbImage + ", imageList="
+				+ imageList + ", publishDate=" + publishDate
+				+ ", timesDownloaded=" + timesDownloaded + ", ranking="
+				+ ranking + ", category=" + category + "]";
+	}
+	
+	public String getDeveloperName() {
+		return developerName;
+	}
+
+	public void setDeveloperName(String developerName) {
+		this.developerName = developerName;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getMarketID() {
 		return marketID;
 	}
@@ -50,7 +83,18 @@ public class App {
 	public void setDeveloperID(String developerID) {
 		this.developerID = developerID;
 	}
-	
+	public URI getThumbImage() {
+		return thumbImage;
+	}
+	public void setThumbImage(URI thumbImage) {
+		this.thumbImage = thumbImage;
+	}
+	public List<URI> getImageList() {
+		return imageList;
+	}
+	public void setImageList(List<URI> imageList) {
+		this.imageList = imageList;
+	}
 	public DateTime getPublishDate() {
 		return publishDate;
 	}
@@ -69,41 +113,10 @@ public class App {
 	public void setRanking(double ranking) {
 		this.ranking = ranking;
 	}
-	public int getId() {
-		return id;
+	public String getCategory() {
+		return category;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setCategory(String category) {
+		this.category = category;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getAndroidMarketUri() {
-		return marketID;
-	}
-	public void setAndroidMarketUri(String androidMarketUri) {
-		this.marketID = androidMarketUri;
-	}
-	public URI getThumbImage() {
-		return thumbImage;
-	}
-	public void setThumbImage(URI thumbImage) {
-		this.thumbImage = thumbImage;
-	}
-	public List<URI> getImageList() {
-		return imageList;
-	}
-	public void setImageList(List<URI> imageList) {
-		this.imageList = imageList;
-	}
-	@Override
-	public String toString() {
-		return "App [name=" + name + ", androidMarketUri=" + marketID
-				+ ", thumbImage=" + thumbImage + ", imageList=" + imageList
-				+ "]";
-	}
-	
 }

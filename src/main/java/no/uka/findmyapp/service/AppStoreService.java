@@ -39,8 +39,16 @@ public class AppStoreService {
 	public App getAppDetails(int appId) {
 		return data.getAppDetails(appId);
 	}
+	
+	public App getAppFromMarketID(String marketID){
+		return data.getAppFromMarketID(marketID);
+	}
 	public boolean registerApp(App app){
 		return data.registerApp(app);
+	}
+	
+	public boolean setNewFeaturedApp(App app){
+		return data.setNewFeaturedApp(app);
 	}
 	
 }
