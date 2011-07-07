@@ -124,8 +124,8 @@ public class SensorController {
 		ModelAndView mav = new ModelAndView("ok_respons");
 		logger.info("Noise data logged for location: " + locationId );
 		
-		service.setNoiseData(locationId, samples);
-		mav.addObject("respons", locationId);
+		Noise noise = service.setNoiseData(locationId, samples);
+		mav.addObject("respons", noise);
 		
 		return mav;
 	}
