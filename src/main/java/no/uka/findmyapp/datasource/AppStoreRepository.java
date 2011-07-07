@@ -77,7 +77,7 @@ public class AppStoreRepository {
 		logger.info(app.toString());
 		return app;
 	}
-	
+
 	public App getAppFromMarketID(String marketID) {
 
 		App app = jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE app.market_identifier = ?",
@@ -86,7 +86,7 @@ public class AppStoreRepository {
 		logger.info(app.toString());
 		return app;
 	}
-	
+
 	public AppDetailed getAppDetailed(App app){
 		AppDetailed appDetailed= jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE app.market_identifier = ?",
 				new AppDetailedRowMapper(), app.getMarketID());
@@ -114,9 +114,10 @@ public class AppStoreRepository {
 
 	public boolean registerApp(App newApp){
 		final App app = newApp;
+		System.out.println(app);
 		try{
 			jdbcTemplate.update(
-					"INSERT INTO APPSTORE_APPLICASTION(name, market_identifier, platform, description, facebook_app_id, deevloper_id) VALUES(?,?,?,?,?,?)",
+					"INSERT INTO APPSTORE_APPLICATION(name, market_identifier, platform, description, facebook_app_id, appstore_developer_id) VALUES(?,?,?,?,?,?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 						throws SQLException {
@@ -172,19 +173,7 @@ public class AppStoreRepository {
 			logger.info(" " + featuredApp);
 			return false;
 		}
-		
-
-		//Set category to app_of_the_day in the new featured app
-
-
-
 	}
 }
 
-/*
- * SELECT * FROM APPSTORE_APPLICATION AS app
-JOIN APPSTORE_DEVELOPER AS dev
-ON app.appstore_developer_id = dev.appstore_developer_id
-WHERE app.appstore_application_id = 7
 
-*/

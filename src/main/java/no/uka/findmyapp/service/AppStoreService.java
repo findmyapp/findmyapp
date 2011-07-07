@@ -44,6 +44,8 @@ public class AppStoreService {
 		return data.getAppFromMarketID(marketID);
 	}
 	public boolean registerApp(App app){
+
+		logger.info("EAWEGAERGEGRAERHAERHAEREARHAERGHRERWEAGAEWRGWERGT-S");
 		return data.registerApp(app);
 	}
 	

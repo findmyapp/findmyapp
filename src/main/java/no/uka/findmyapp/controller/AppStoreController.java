@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 @Controller
 public class AppStoreController {
 
-	AppStoreService service;
+	//AppStoreService service;
 	@Autowired
 	private AppStoreService appStoreService;
 	@Autowired
@@ -99,7 +99,7 @@ public class AppStoreController {
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		return new ModelAndView("setFeaturedApp", "appstoreweb", fullList);
+		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 
 	/**
@@ -211,7 +211,8 @@ public class AppStoreController {
 	@RequestMapping(value = "/appstore/form/", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody App newApp) {
 		ModelAndView mav = new ModelAndView("registerApp");
-		boolean regApp = service.registerApp(newApp);
+		System.out.print(newApp);
+		boolean regApp = appStoreService.registerApp(newApp);
 		logger.info("APP IS REGISTERED:   ------>   "+   regApp);
 		mav.addObject("appIsRegistered", regApp); // model name, model object
 		return mav;
