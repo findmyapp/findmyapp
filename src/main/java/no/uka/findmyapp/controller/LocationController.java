@@ -43,13 +43,10 @@ public class LocationController {
 	@Autowired
 	private LocationService service;
 
-	@Autowired
-	private Gson gson;
-
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationController.class);
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ModelMap getAllLocations() {
 		logger.info("getAllLocations");
 		ModelMap model = new ModelMap();
