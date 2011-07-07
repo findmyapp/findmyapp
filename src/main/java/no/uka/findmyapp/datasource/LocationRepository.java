@@ -102,7 +102,7 @@ public class LocationRepository {
 		Location location = jdbcTemplate
 				.queryForObject(
 						"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
-								+ "WHERE l.id = up.position_location_id AND up.user_id = ?",
+								+ "WHERE l.position_location_id = up.position_location_id AND up.user_id = ?",
 						new LocationRowMapper(), friendId);
 		return location;
 	}
