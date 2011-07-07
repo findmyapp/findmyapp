@@ -24,7 +24,13 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
+
+	<!-- API documentation -->		
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
