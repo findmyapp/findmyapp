@@ -27,79 +27,31 @@
         </method>
       </resource>
     </resource>
-    <resource path="position" id="position">
-      <doc xml:lang="en" title="position"/>
-      <resource path="sample" id="sample">
-        <doc xml:lang="en" title="sample"/>
-        <method name="POST" id="insert_sample">
-          <doc xml:lang="en" title="insert_sample">Method for adding samples of signals to database in order to create data for which to run the Euclidean distance.</doc>
-          <request/>
-        </method>
-      </resource>
-      <resource path="user/{id}" id="user">
-        <doc xml:lang="en" title="user">User position</doc>
-        <param name="id" type="xs:int" required="true" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-          <doc xml:lang="en" title="id Parameter">User ID</doc>
-        </param>
-        <method name="POST" id="post">
-          <doc xml:lang="en" title="post"/>
-          <request>
-            <param name="locationId" type="xs:string" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-              <doc xml:lang="en" title="locationId Parameter">The id of the location where the user is located</doc>
-            </param>
-          </request>
-        </method>
-        <method name="GET" id="get">
-          <doc xml:lang="en" title="get">Get one user's position</doc>
-          <request/>
-          <response status="200">
-            <representation mediaType="application/json" element="ns:Response" xmlns:ns="http://findmyapp.net/findmyapp/position/user/1"/>
-          </response>
-        </method>
-      </resource>
-      <resource path="users" id="users">
-        <doc xml:lang="en" title="users"/>
-        <method name="GET" id="get">
-          <doc xml:lang="en" title="get">Get position of all users</doc>
-          <request/>
-          <response status="200">
-            <representation mediaType="application/json" element="user:Response" xmlns:user="http://findmyapp.net/findmyapp/position/users"/>
-          </response>
-        </method>
-      </resource>
-      <method name="POST" id="post">
-        <doc xml:lang="en" title="post">Determine position based on proximity to WLAN access points. [     {         "bssid": "C0:CB:38:2C:88:85",         "signalStrength": -60     },     {         "bssid": "C0:CB:48:2C:88:85",         "signalStrength": -30     } ]</doc>
-        <request>
-          <representation mediaType="application/json"/>
-        </request>
-        <response status="">
-          <representation mediaType="application/json"/>
-        </response>
-        <response status="200">
-          <representation mediaType="application/json"/>
-        </response>
-      </method>
-    </resource>
     <resource path="location" id="location">
-      <doc xml:lang="en" title="location"/>
+      <doc xml:lang="en" title="location">Location of something</doc>
       <resource path="{id}" id="id">
         <doc xml:lang="en" title="id"/>
         <param name="id" type="xs:string" required="true" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
         <resource path="fact" id="fact">
-          <doc xml:lang="en" title="fact"/>
-          <method name="GET" id="Method 1">
-            <doc xml:lang="en" title="Method 1"/>
+          <doc xml:lang="en" title="fact">Fact of a location</doc>
+          <resource path="random" id="random">
+            <doc xml:lang="en" title="random">Random fact of a location</doc>
+            <method name="GET" id="getRandomFact">
+              <doc xml:lang="en" title="getRandomFact">Get a randomly chosen fact of a location</doc>
+              <request/>
+              <response status="404">
+                <representation mediaType="text/html" element="html"/>
+              </response>
+              <response status="200">
+                <representation mediaType="application/json" element="ran:Response" xmlns:ran="http://findmyapp.net/findmyapp/location/2/fact/random"/>
+              </response>
+            </method>
+          </resource>
+          <method name="GET" id="getFacts">
+            <doc xml:lang="en" title="getFacts">Get facts of a location</doc>
             <request/>
-            <response status="0">
-              <representation mediaType="" element="data"/>
-              <representation mediaType="" element="data"/>
-              <representation mediaType="" element="HTML"/>
-            </response>
             <response status="200">
-              <representation mediaType="application/json" element="fact:Response" xmlns:fact="http://localhost/findmyapp/location/1/fact"/>
-            </response>
-            <response status="404">
-              <representation mediaType="text/html" element="html"/>
+              <representation mediaType="application/json" element="fact:Response" xmlns:fact="http://findmyapp.net/findmyapp/location/1/fact"/>
             </response>
           </method>
         </resource>
@@ -158,16 +110,128 @@
             </method>
           </resource>
         </resource>
-        <method name="GET" id="Method 1">
-          <doc xml:lang="en" title="Method 1"/>
+        <method name="GET" id="getLocation">
+          <doc xml:lang="en" title="getLocation"/>
           <request>
             <param name="id" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
           </request>
         </method>
       </resource>
-      <method name="GET" id="Method 1">
-        <doc xml:lang="en" title="Method 1"/>
-        <request/>
+      <resource path="all" id="all">
+        <doc xml:lang="en" title="all"/>
+        <method name="GET" id="getAllLocations">
+          <doc xml:lang="en" title="getAllLocations">Get a list of all locations</doc>
+          <request/>
+        </method>
+      </resource>
+      <resource path="friend/{id}" id="friend">
+        <doc xml:lang="en" title="friend"/>
+        <method name="GET" id="getFriendLocation">
+          <doc xml:lang="en" title="getFriendLocation">Get the location of a friend</doc>
+          <request>
+            <param name="id" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+          </request>
+          <response status="500">
+            <representation mediaType="text/html" element="html"/>
+          </response>
+          <response status="200">
+            <representation mediaType="application/json" element="ns:Response" xmlns:ns="http://findmyapp.net/findmyapp/location/friend/2"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="friends/{userId}" id="allFriends">
+        <doc xml:lang="en" title="allFriends"/>
+        <method name="GET" id="getLocationOfAllFriends">
+          <doc xml:lang="en" title="getLocationOfAllFriends">Get the location of all your friends</doc>
+          <request>
+            <param name="userId" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+          </request>
+          <response status="400">
+            <representation mediaType="text/html" element="html"/>
+          </response>
+          <response status="200">
+            <representation mediaType="application/json"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="sample" id="sample">
+        <doc xml:lang="en" title="sample">A location sample</doc>
+        <method name="POST" id="registerSample">
+          <doc xml:lang="en" title="registerSample">Register a location sample containing signals and location name</doc>
+          <request>
+            <representation mediaType="application/json"/>
+          </request>
+          <response status="">
+            <representation mediaType="application/json"/>
+          </response>
+          <response status="500">
+            <representation mediaType="text/html" element="html"/>
+          </response>
+          <response status="200">
+            <representation mediaType="application/json" element="sam:Response" xmlns:sam="http://findmyapp.net/findmyapp/location/sample"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="user/{id}" id="user">
+        <doc xml:lang="en" title="user">User location</doc>
+        <param name="id" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method name="GET" id="getUserLocation">
+          <doc xml:lang="en" title="getUserLocation">Get the location of a user</doc>
+          <request>
+            <param name="id" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+          </request>
+          <response status="">
+            <representation mediaType="application/xml"/>
+          </response>
+          <response status="400 404 500">
+            <representation mediaType="text/html" element="html"/>
+          </response>
+          <response status="200">
+            <representation mediaType="application/json" element="ns:Response" xmlns:ns="http://findmyapp.net/findmyapp/location/user/1"/>
+          </response>
+        </method>
+        <method name="POST" id="regUserLocation">
+          <doc xml:lang="en" title="regUserLocation">Register the location of a user</doc>
+          <request>
+            <param name="locationId" type="xs:string" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <param name="id" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+            <representation mediaType="application/xml"/>
+          </request>
+          <response status="400">
+            <representation mediaType="text/html" element="html"/>
+          </response>
+          <response status="">
+            <representation mediaType="application/xml"/>
+          </response>
+          <response status="200">
+            <representation mediaType="application/json" element="ns:Response" xmlns:ns="http://findmyapp.net/findmyapp/location/user/1"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="users" id="allUsers">
+        <doc xml:lang="en" title="allUsers">All users currently registered</doc>
+        <method name="GET" id="getAllUserLocations">
+          <doc xml:lang="en" title="getAllUserLocations">Get the location of all users</doc>
+          <request/>
+          <response status="200">
+            <representation mediaType="application/json" element="user:Response" xmlns:user="http://findmyapp.net/findmyapp/location/users"/>
+          </response>
+          <response status="404">
+            <representation mediaType="text/html" element="html"/>
+          </response>
+        </method>
+      </resource>
+      <method name="POST" id="getCurrentLocation">
+        <doc xml:lang="en" title="getCurrentLocation">Get your current location</doc>
+        <request>
+          <representation mediaType="application/json"/>
+        </request>
+        <response status="">
+          <representation mediaType="application/json"/>
+        </response>
+        <response status="200">
+          <representation mediaType="application/json"/>
+        </response>
       </method>
     </resource>
   </resources>
