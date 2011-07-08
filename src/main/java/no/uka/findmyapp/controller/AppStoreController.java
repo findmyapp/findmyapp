@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 @Controller
 public class AppStoreController {
 
-	AppStoreService service;
+	//AppStoreService service;
 	@Autowired
 	private AppStoreService appStoreService;
 	@Autowired
@@ -73,14 +73,16 @@ public class AppStoreController {
 
 		App app = appStoreService.getAppDetails(appId);
 		model.addAttribute("appstore", gson.toJson(app));
+		System.out.println(gson.toJson(app));
 		return "appstore";
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
-	@RequestMapping(value = "/appstore/SetFeaturedApp/{marketID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/appstore/SetFeaturedApp/selectedAppIs", method = RequestMethod.GET)
 	public ModelAndView  setNewFeaturedAppById(
-			@PathVariable String marketID, Model model) throws URISyntaxException {
-
+			@RequestParam String marketID, Model model) throws URISyntaxException {
+		
+		System.out.println(marketID);
 		App app = appStoreService.getAppFromMarketID(marketID);
 		System.out.println(app);
 		logger.info("The new featured app is:  ---------->    " + app.getName());
@@ -98,7 +100,7 @@ public class AppStoreController {
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		return new ModelAndView("setFeaturedApp", "appstoreweb", fullList);
+		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 
 	/**
@@ -207,10 +209,11 @@ public class AppStoreController {
 		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
 	}
 
-	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	@RequestMapping(value = "/appstore/form/", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody App newApp) {
 		ModelAndView mav = new ModelAndView("registerApp");
-		boolean regApp = service.registerApp(newApp);
+		System.out.print(newApp);
+		boolean regApp = appStoreService.registerApp(newApp);
 		logger.info("APP IS REGISTERED:   ------>   "+   regApp);
 		mav.addObject("appIsRegistered", regApp); // model name, model object
 		return mav;
