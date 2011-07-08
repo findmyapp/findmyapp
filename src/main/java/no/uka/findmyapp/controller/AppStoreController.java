@@ -73,6 +73,7 @@ public class AppStoreController {
 
 		App app = appStoreService.getAppDetails(appId);
 		model.addAttribute("appstore", gson.toJson(app));
+		System.out.println(gson.toJson(app));
 		return "appstore";
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}

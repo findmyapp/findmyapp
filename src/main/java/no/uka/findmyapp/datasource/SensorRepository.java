@@ -34,6 +34,16 @@ public class SensorRepository {
 	 * @return
 	 */
 
+
+	public Temperature getLatestTemperatureData(int location) {
+
+		Temperature temp = jdbcTemplate.queryForObject(
+				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
+				new SensorTemperatureRowMapper(), location);
+		logger.info("received temperature list");
+		return temp;
+	}
+	
 	public List<Temperature> getTemperatureData(int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate.query(
@@ -200,20 +210,14 @@ public class SensorRepository {
 		logger.info("Data logged: " + humidity.toString());
 		return;
 	}
-/*
-	public Noise setNoiseData(int location, int[] sample) {
 
-		jdbcTemplate
-				.execute("INSERT INTO SENSOR_NOISE (position_location_id , noise_sample) VALUES ('"
-						+ location +","+sample+ ")");
-		
-		Noise noise = new Noise();
-		noise.setLocation(location);
-		noise.setSample(sample);
+	public void setNoiseData(Noise noise) {
+
+		jdbcTemplate.execute("INSERT INTO SENSOR_NOISE (position_location_id , average, max, min, standard_deviation, samples, date) VALUES ("+ noise.getLocation() +","+ noise.getAverage()+","+noise.getMax()+","+noise.getMin()+","+noise.getStandardDeviation()+",'"+noise.getJsonSamples() +"',now())");
 		logger.info("Data logged: " + noise.toString());
-		return noise;
+		return;
 	}
-*/
+
 
 	public BeerTap setBeertapData(int location, float value, int tapnr) {
 
