@@ -17,10 +17,12 @@ public class Noise {
 	private int min;
 	private double standardDeviation;
 	private int[] samples;
+	private Date date; 
+	private Date time;
 	
 	private Gson gson = new Gson();
 	
-	private Date date; 
+	
 	
 	public void setId(int id){
 		this.id = id;
@@ -98,6 +100,14 @@ public class Noise {
 	}
 	public int getNumberOfSamples(){
 		return samples.length;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+	public Date getTime() {
+		return time;
 	}
 
 }

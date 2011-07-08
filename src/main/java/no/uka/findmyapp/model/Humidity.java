@@ -10,6 +10,7 @@ public class Humidity {
 	private int location;
 	private float value;
 	private Date date;
+	private Date time;
 	
 	
 	public int getLocation() {
@@ -35,6 +36,12 @@ public class Humidity {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public void setTime(Date time) {
+		this.time = time;
+	}
+	public Date getTime() {
+		return time;
 	}
 	
 }

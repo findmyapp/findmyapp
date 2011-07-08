@@ -1,6 +1,6 @@
 package no.uka.findmyapp.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class BeerTap {
@@ -8,7 +8,8 @@ public class BeerTap {
 	private int location;
 	private float value;
 	private int tapnr;
-	private Timestamp time;
+	private Date date;
+	private Date time;
 	
 	public int getTapnr(){
 		return tapnr;
@@ -29,16 +30,22 @@ public class BeerTap {
 	public void setValue(float value) {
 		this.value = value;
 	}
-	public Timestamp getTime() {
-		return time;
+	public Date getDate() {
+		return date;
 	}
-	public void setTime(Timestamp time) {
-		this.time = time;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public void setTime(Date time) {
+		this.time = time;
+	}
+	public Date getTime() {
+		return time;
 	}
 }

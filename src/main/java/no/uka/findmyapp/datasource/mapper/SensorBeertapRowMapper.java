@@ -10,7 +10,8 @@ public class SensorBeertapRowMapper implements RowMapper<BeerTap> {
 	public BeerTap mapRow(ResultSet rs, int arg1) throws SQLException {
 		BeerTap beerTap =  new BeerTap();
 		beerTap.setId(rs.getInt("sensor_beertap_id"));
-		beerTap.setTime(rs.getTimestamp("date"));
+		beerTap.setDate(rs.getDate("date"));
+		beerTap.setTime(rs.getTime("date"));
 		beerTap.setLocation(rs.getInt("position_location_id"));
 		beerTap.setValue(rs.getFloat("value"));
 		beerTap.setTapnr(rs.getInt("tapnr"));
