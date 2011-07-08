@@ -47,7 +47,6 @@ public class AppStoreController {
 	public String getAppStoreListForPlatform(
 			@PathVariable int platform,
 			@RequestParam(required=true) int listType,
-			@RequestParam(required=false) String category,
 			@RequestParam(required=true) int count, Model model) throws URISyntaxException {
 
 		//TODO check values, throw exception
@@ -56,7 +55,7 @@ public class AppStoreController {
 		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
 				count, 
 				listType, 
-				platform, category);
+				platform);
 
 		model.addAttribute("appstore", gson.toJson(appStoreList));
 		return "appstore";
