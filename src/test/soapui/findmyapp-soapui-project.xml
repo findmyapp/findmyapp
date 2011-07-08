@@ -204,35 +204,34 @@
           <con:resource name="id" path="{tapId}">
             <con:settings/>
             <con:parameters/>
-            <con:method name="Method 1" method="GET">
+            <con:method name="getDataFromBeerTap" method="GET">
+              <con:description>Get data from beer tap. Choose between all data or just the numbers of beer sold, either for the entire period or for a specified time.</con:description>
               <con:settings/>
               <con:parameters>
-                <con:parameter>
+                <con:parameter required="true">
                   <con:name>tapId</con:name>
-                  <con:value/>
                   <con:style>TEMPLATE</con:style>
-                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type>
+                </con:parameter>
+                <con:parameter>
+                  <con:name>sum</con:name>
+                  <con:value/>
+                  <con:style>QUERY</con:style>
                   <con:default/>
                 </con:parameter>
-                <con:parameter required="false" disableUrlEncoding="false">
+                <con:parameter>
                   <con:name>from</con:name>
                   <con:value/>
                   <con:style>QUERY</con:style>
-                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type>
                   <con:default/>
-                  <con:description xsi:nil="true"/>
                 </con:parameter>
                 <con:parameter>
                   <con:name>to</con:name>
-                  <con:value/>
                   <con:style>QUERY</con:style>
-                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type>
-                  <con:default/>
                 </con:parameter>
               </con:parameters>
               <con:representation type="FAULT">
                 <con:mediaType>text/html</con:mediaType>
-                <con:status>400</con:status>
+                <con:status>405 500 404</con:status>
                 <con:params/>
                 <con:element>html</con:element>
               </con:representation>
@@ -240,7 +239,7 @@
                 <con:mediaType>application/json</con:mediaType>
                 <con:status>200</con:status>
                 <con:params/>
-                <con:element xmlns:ns="http://findmyapp.net/findmyapp/location/12/beertap/223">ns:Response</con:element>
+                <con:element xmlns:ns="http://findmyapp.net/findmyapp/location/2/beertap/31">ns:Response</con:element>
               </con:representation>
             </con:method>
           </con:resource>
@@ -831,25 +830,119 @@
     </con:testCase>
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/beertap" searchProperties="true">
       <con:settings/>
-      <con:testStep type="restrequest" name="Request 1">
+      <con:testStep type="restrequest" name="Get number of sold beers">
         <con:settings/>
-        <con:config service="FindMyApp service" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Request 1" mediaType="application/xml" postQueryString="false" accept="application/json">
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" methodName="getDataFromBeerTap" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get number of sold beers" mediaType="application/xml" accept="application/json">
+            <con:description>Get total numbers of beers sold from this beer tap</con:description>
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="id" value="12"/>
-              <con:entry key="tapId" value="223"/>
+              <con:entry key="id" value="2"/>
+              <con:entry key="sum" value="true"/>
+              <con:entry key="tapId" value="31"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Get number of sold beers in period">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getDataFromBeerTap" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get number of sold beers in period" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token/>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <con:entry key="to" value="2007-07-05T06:00:00.0Z"/>
+              <con:entry key="id" value="2"/>
+              <con:entry key="sum" value="true"/>
+              <con:entry key="from" value="2007-07-05T01:00:00.0Z"/>
+              <con:entry key="tapId" value="31"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Get data from beer tap">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getDataFromBeerTap" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get data from beer tap" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <con:entry key="id" value="2"/>
+              <con:entry key="tapId" value="31"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Get data from beer tap in period">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getDataFromBeerTap" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get data from beer tap in period" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>"value":36.0,"location":2,"id":15</token>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <con:entry key="to" value="2007-07-05T06:00:00.0Z"/>
+              <con:entry key="id" value="2"/>
+              <con:entry key="sum" value="false"/>
+              <con:entry key="from" value="2007-07-05T01:00:00.0Z"/>
+              <con:entry key="tapId" value="31"/>
             </con:parameters>
           </con:restRequest>
         </con:config>
