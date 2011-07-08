@@ -1,5 +1,561 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="FindMyApp" resourceRoot="${projectDir}" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp service" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:description>UKA-11 student festival service</con:description><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://findmyapp.net</con:endpoint><con:endpoint>http://localhost:8080</con:endpoint><con:endpoint>http://10.110.60.75:8080</con:endpoint></con:endpoints><con:resource name="ping" path="ping"><con:description>Check availability of service</con:description><con:settings/><con:parameters/><con:method name="get" method="GET"><con:description>Check availability of the server</con:description><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>text/html</con:mediaType><con:status>200</con:status><con:params/><con:element>html</con:element></con:representation></con:method></con:resource><con:resource name="appstore" path="appstore"><con:settings/><con:parameters/><con:resource name="list" path="list"><con:description>List of applications</con:description><con:settings/><con:parameters/><con:method name="get" method="GET"><con:description>Get list of applications available in the appstore</con:description><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:list="http://localhost/findmyapp/appstore/list">list:Response</con:element></con:representation></con:method></con:resource><con:resource name="form" path="/form/"><con:settings/><con:parameters/><con:method name="registerApp" method="POST"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400 500 404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:form="http://10.110.60.75/findmyapp/appstore/form/">form:Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/json" postQueryString="false" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://10.110.60.75:8080</con:endpoint><con:request>{"name":"jsonAppen", "marketID":"com.test.json", "platform":2, "description":"Funker dette?", "facebookAppID":"facebookstrenger", "developerID":2}</con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:resource><con:resource name="location" path="location"><con:description>Location of something</con:description><con:settings/><con:parameters/><con:resource name="id" path="{id}"><con:settings/><con:parameters><con:parameter required="true"><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:resource name="fact" path="fact"><con:description>Fact of a location</con:description><con:settings/><con:parameters/><con:resource name="random" path="random"><con:description>Random fact of a location</con:description><con:settings/><con:parameters/><con:method name="getRandomFact" method="GET"><con:description>Get a randomly chosen fact of a location</con:description><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ran="http://findmyapp.net/findmyapp/location/2/fact/random">ran:Response</con:element></con:representation></con:method></con:resource><con:method name="getFacts" method="GET"><con:description>Get facts of a location</con:description><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:fact="http://findmyapp.net/findmyapp/location/1/fact">fact:Response</con:element></con:representation></con:method></con:resource><con:resource name="humidity" path="humidity"><con:settings/><con:parameters/><con:method name="Method 1" method="GET"><con:settings/><con:parameters/></con:method></con:resource><con:resource name="noise" path="noise"><con:settings/><con:parameters/><con:method name="Method 1" method="GET"><con:settings/><con:parameters/></con:method></con:resource><con:resource name="temperature" path="temperature"><con:settings/><con:parameters/><con:method name="Method 1" method="GET"><con:settings/><con:parameters/></con:method></con:resource><con:resource name="user" path="user"><con:settings/><con:parameters/><con:method name="Method 1" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:user="http://findmyapp.net/findmyapp/location/1/user">user:Response</con:element></con:representation></con:method></con:resource><con:resource name="beertap" path="beertap"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value>id</con:value><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>id</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:resource name="id" path="{tapId}"><con:settings/><con:parameters/><con:method name="Method 1" method="GET"><con:settings/><con:parameters><con:parameter><con:name>tapId</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default/></con:parameter><con:parameter required="false" disableUrlEncoding="false"><con:name>from</con:name><con:value/><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type><con:default/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>to</con:name><con:value/><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type><con:default/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://findmyapp.net/findmyapp/location/12/beertap/223">ns:Response</con:element></con:representation></con:method></con:resource></con:resource><con:method name="getLocation" method="GET"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters></con:method></con:resource><con:resource name="all" path="all"><con:settings/><con:parameters/><con:method name="getAllLocations" method="GET"><con:description>Get a list of all locations</con:description><con:settings/><con:parameters/></con:method></con:resource><con:resource name="friend" path="friend/{id}"><con:settings/><con:parameters/><con:method name="getFriendLocation" method="GET"><con:description>Get the location of a friend</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://findmyapp.net/findmyapp/location/friend/2">ns:Response</con:element></con:representation></con:method></con:resource><con:resource name="allFriends" path="friends/{userId}"><con:settings/><con:parameters/><con:method name="getLocationOfAllFriends" method="GET"><con:description>Get the location of all your friends</con:description><con:settings/><con:parameters><con:parameter><con:name>userId</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/></con:representation></con:method></con:resource><con:resource name="sample" path="sample"><con:description>A location sample</con:description><con:settings/><con:parameters/><con:method name="registerSample" method="POST"><con:description>Register a location sample containing signals and location name</con:description><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:sam="http://findmyapp.net/findmyapp/location/sample">sam:Response</con:element></con:representation></con:method></con:resource><con:resource name="user" path="user/{id}"><con:description>User location</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:style>TEMPLATE</con:style></con:parameter></con:parameters><con:method name="getUserLocation" method="GET"><con:description>Get the location of a user</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400 500 404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://findmyapp.net/findmyapp/location/user/1">ns:Response</con:element></con:representation></con:method><con:method name="regUserLocation" method="POST"><con:description>Register the location of a user</con:description><con:settings/><con:parameters><con:parameter><con:name>locationId</con:name><con:style>QUERY</con:style></con:parameter><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://findmyapp.net/findmyapp/location/user/1">ns:Response</con:element></con:representation></con:method></con:resource><con:resource name="allUsers" path="users"><con:description>All users currently registered</con:description><con:settings/><con:parameters/><con:method name="getAllUserLocations" method="GET"><con:description>Get the location of all users</con:description><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:user="http://findmyapp.net/findmyapp/location/users">user:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation></con:method></con:resource><con:method name="getCurrentLocation" method="POST"><con:description>Get your current location</con:description><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:loc="http://findmyapp.net/findmyapp/location">loc:Response</con:element></con:representation></con:method></con:resource></con:interface><con:testSuite name="Services TestSuite"><con:description>TestSuite generated for REST Service [Services]</con:description><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ping TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [echo] located at [/echo]</con:description><con:settings/><con:testStep type="restrequest" name="Ping accept text/html"><con:settings/><con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Ping accept text/html" mediaType="application/xml" accept="text/html"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Ping accept application/json"><con:settings/><con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Ping accept application/json" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/list TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [list] located at [/appstore/list]</con:description><con:settings/><con:testStep type="restrequest" name="Get list of applications"><con:settings/><con:config service="FindMyApp service" resourcePath="/findmyapp/appstore/list" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get list of applications" mediaType="application/xml" accept="application/json"><con:description>Takes a list of signals as parameter. Contains bssid and signalStrength for all discovered end points.</con:description><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [position] located at [/position]</con:description><con:settings/><con:testStep type="restrequest" name="Determine location"><con:settings/><con:config service="FindMyApp service" resourcePath="/findmyapp/location" methodName="getCurrentLocation" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Determine location" mediaType="application/json" postQueryString="false" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request>[
+<con:soapui-project name="FindMyApp" resourceRoot="${projectDir}" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp service" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:description>UKA-11 student festival service</con:description>
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
+      <con:endpoint>http://findmyapp.net</con:endpoint>
+      <con:endpoint>http://localhost:8080</con:endpoint>
+      <con:endpoint>http://10.110.60.75:8080</con:endpoint>
+    </con:endpoints>
+    <con:resource name="ping" path="ping">
+      <con:description>Check availability of service</con:description>
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="get" method="GET">
+        <con:description>Check availability of the server</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>text/html</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>html</con:element>
+        </con:representation>
+      </con:method>
+    </con:resource>
+    <con:resource name="appstore" path="appstore">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="list" path="list">
+        <con:description>List of applications</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="get" method="GET">
+          <con:description>Get list of applications available in the appstore</con:description>
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:list="http://localhost/findmyapp/appstore/list">list:Response</con:element>
+          </con:representation>
+        </con:method>
+      </con:resource>
+      <con:resource name="form" path="/form/">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="registerApp" method="POST">
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>400 500 404</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="REQUEST">
+            <con:mediaType>application/json</con:mediaType>
+            <con:params/>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:form="http://10.110.60.75/findmyapp/appstore/form/">form:Response</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType xsi:nil="true"/>
+            <con:status>0</con:status>
+            <con:params/>
+            <con:element>data</con:element>
+          </con:representation>
+          <con:request name="Request 1" mediaType="application/json" postQueryString="false" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://10.110.60.75:8080</con:endpoint>
+            <con:request>{"name":"jsonAppen", "marketID":"com.test.json", "platform":2, "description":"Funker dette?", "facebookAppID":"facebookstrenger", "developerID":2}</con:request>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+    </con:resource>
+    <con:resource name="location" path="location">
+      <con:description>Location of something</con:description>
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="id" path="{id}">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>id</con:name>
+            <con:value/>
+            <con:style>TEMPLATE</con:style>
+            <con:default/>
+          </con:parameter>
+        </con:parameters>
+        <con:resource name="fact" path="fact">
+          <con:description>Fact of a location</con:description>
+          <con:settings/>
+          <con:parameters/>
+          <con:resource name="random" path="random">
+            <con:description>Random fact of a location</con:description>
+            <con:settings/>
+            <con:parameters/>
+            <con:method name="getRandomFact" method="GET">
+              <con:description>Get a randomly chosen fact of a location</con:description>
+              <con:settings/>
+              <con:parameters/>
+              <con:representation type="FAULT">
+                <con:mediaType>text/html</con:mediaType>
+                <con:status>404</con:status>
+                <con:params/>
+                <con:element>html</con:element>
+              </con:representation>
+              <con:representation type="RESPONSE">
+                <con:mediaType>application/json</con:mediaType>
+                <con:status>200</con:status>
+                <con:params/>
+                <con:element xmlns:ran="http://findmyapp.net/findmyapp/location/2/fact/random">ran:Response</con:element>
+              </con:representation>
+            </con:method>
+          </con:resource>
+          <con:method name="getFacts" method="GET">
+            <con:description>Get facts of a location</con:description>
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element xmlns:fact="http://findmyapp.net/findmyapp/location/1/fact">fact:Response</con:element>
+            </con:representation>
+          </con:method>
+        </con:resource>
+        <con:resource name="humidity" path="humidity">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="Method 1" method="GET">
+            <con:settings/>
+            <con:parameters/>
+          </con:method>
+        </con:resource>
+        <con:resource name="noise" path="noise">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="Method 1" method="GET">
+            <con:settings/>
+            <con:parameters/>
+          </con:method>
+        </con:resource>
+        <con:resource name="temperature" path="temperature">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="Method 1" method="GET">
+            <con:settings/>
+            <con:parameters/>
+          </con:method>
+        </con:resource>
+        <con:resource name="user" path="user">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="Method 1" method="GET">
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>404</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element xmlns:user="http://findmyapp.net/findmyapp/location/1/user">user:Response</con:element>
+            </con:representation>
+          </con:method>
+        </con:resource>
+        <con:resource name="beertap" path="beertap">
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>id</con:name>
+              <con:value>id</con:value>
+              <con:style>TEMPLATE</con:style>
+              <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+              <con:default>id</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+          </con:parameters>
+          <con:resource name="id" path="{tapId}">
+            <con:settings/>
+            <con:parameters/>
+            <con:method name="Method 1" method="GET">
+              <con:settings/>
+              <con:parameters>
+                <con:parameter>
+                  <con:name>tapId</con:name>
+                  <con:value/>
+                  <con:style>TEMPLATE</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type>
+                  <con:default/>
+                </con:parameter>
+                <con:parameter required="false" disableUrlEncoding="false">
+                  <con:name>from</con:name>
+                  <con:value/>
+                  <con:style>QUERY</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type>
+                  <con:default/>
+                  <con:description xsi:nil="true"/>
+                </con:parameter>
+                <con:parameter>
+                  <con:name>to</con:name>
+                  <con:value/>
+                  <con:style>QUERY</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type>
+                  <con:default/>
+                </con:parameter>
+              </con:parameters>
+              <con:representation type="FAULT">
+                <con:mediaType>text/html</con:mediaType>
+                <con:status>400</con:status>
+                <con:params/>
+                <con:element>html</con:element>
+              </con:representation>
+              <con:representation type="RESPONSE">
+                <con:mediaType>application/json</con:mediaType>
+                <con:status>200</con:status>
+                <con:params/>
+                <con:element xmlns:ns="http://findmyapp.net/findmyapp/location/12/beertap/223">ns:Response</con:element>
+              </con:representation>
+            </con:method>
+          </con:resource>
+        </con:resource>
+        <con:method name="getLocation" method="GET">
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>id</con:name>
+              <con:value/>
+              <con:style>TEMPLATE</con:style>
+              <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+              <con:default/>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+          </con:parameters>
+        </con:method>
+      </con:resource>
+      <con:resource name="all" path="all">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="getAllLocations" method="GET">
+          <con:description>Get a list of all locations</con:description>
+          <con:settings/>
+          <con:parameters/>
+        </con:method>
+      </con:resource>
+      <con:resource name="friend" path="friend/{id}">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="getFriendLocation" method="GET">
+          <con:description>Get the location of a friend</con:description>
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>id</con:name>
+              <con:value/>
+              <con:style>TEMPLATE</con:style>
+              <con:default/>
+            </con:parameter>
+          </con:parameters>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>500</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:ns="http://findmyapp.net/findmyapp/location/friend/2">ns:Response</con:element>
+          </con:representation>
+        </con:method>
+      </con:resource>
+      <con:resource name="allFriends" path="friends/{userId}">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="getLocationOfAllFriends" method="GET">
+          <con:description>Get the location of all your friends</con:description>
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>userId</con:name>
+              <con:value/>
+              <con:style>TEMPLATE</con:style>
+              <con:default/>
+            </con:parameter>
+          </con:parameters>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>400</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+          </con:representation>
+        </con:method>
+      </con:resource>
+      <con:resource name="sample" path="sample">
+        <con:description>A location sample</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="registerSample" method="POST">
+          <con:description>Register a location sample containing signals and location name</con:description>
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="REQUEST">
+            <con:mediaType>application/json</con:mediaType>
+            <con:params/>
+          </con:representation>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>500</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:sam="http://findmyapp.net/findmyapp/location/sample">sam:Response</con:element>
+          </con:representation>
+        </con:method>
+      </con:resource>
+      <con:resource name="user" path="user/{id}">
+        <con:description>User location</con:description>
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>id</con:name>
+            <con:style>TEMPLATE</con:style>
+          </con:parameter>
+        </con:parameters>
+        <con:method name="getUserLocation" method="GET">
+          <con:description>Get the location of a user</con:description>
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>id</con:name>
+              <con:value/>
+              <con:style>TEMPLATE</con:style>
+              <con:default/>
+            </con:parameter>
+          </con:parameters>
+          <con:representation type="REQUEST">
+            <con:mediaType>application/xml</con:mediaType>
+            <con:params/>
+          </con:representation>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>400 500 404</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:ns="http://findmyapp.net/findmyapp/location/user/1">ns:Response</con:element>
+          </con:representation>
+        </con:method>
+        <con:method name="regUserLocation" method="POST">
+          <con:description>Register the location of a user</con:description>
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>locationId</con:name>
+              <con:style>QUERY</con:style>
+            </con:parameter>
+            <con:parameter>
+              <con:name>id</con:name>
+              <con:value/>
+              <con:style>TEMPLATE</con:style>
+              <con:default/>
+            </con:parameter>
+          </con:parameters>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>400</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="REQUEST">
+            <con:mediaType>application/xml</con:mediaType>
+            <con:params/>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:ns="http://findmyapp.net/findmyapp/location/user/1">ns:Response</con:element>
+          </con:representation>
+        </con:method>
+      </con:resource>
+      <con:resource name="allUsers" path="users">
+        <con:description>All users currently registered</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="getAllUserLocations" method="GET">
+          <con:description>Get the location of all users</con:description>
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:user="http://findmyapp.net/findmyapp/location/users">user:Response</con:element>
+          </con:representation>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>404</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+        </con:method>
+      </con:resource>
+      <con:method name="getCurrentLocation" method="POST">
+        <con:description>Get your current location</con:description>
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:loc="http://findmyapp.net/findmyapp/location">loc:Response</con:element>
+        </con:representation>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:testSuite name="Services TestSuite">
+    <con:description>TestSuite generated for REST Service [Services]</con:description>
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ping TestCase" searchProperties="true">
+      <con:description>TestCase generated for REST Resource [echo] located at [/echo]</con:description>
+      <con:settings/>
+      <con:testStep type="restrequest" name="Ping accept text/html">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Ping accept text/html" mediaType="application/xml" accept="text/html">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Ping accept application/json">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Ping accept application/json" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/list TestCase" searchProperties="true">
+      <con:description>TestCase generated for REST Resource [list] located at [/appstore/list]</con:description>
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get list of applications">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/appstore/list" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get list of applications" mediaType="application/xml" accept="application/json">
+            <con:description>Takes a list of signals as parameter. Contains bssid and signalStrength for all discovered end points.</con:description>
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location TestCase" searchProperties="true">
+      <con:description>TestCase generated for REST Resource [position] located at [/position]</con:description>
+      <con:settings/>
+      <con:testStep type="restrequest" name="Determine location">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/location" methodName="getCurrentLocation" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Determine location" mediaType="application/json" postQueryString="false" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request>[
     {
         "bssid": "strossa",
         "signalStrength": -60
@@ -8,7 +564,45 @@
         "bssid": "storsalen",
         "signalStrength": -30
     }
-]</con:request><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>storsalen</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/sample TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [sample] located at [/position/sample]</con:description><con:settings/><con:testStep type="restrequest" name="registerSample"><con:settings/><con:config service="FindMyApp service" methodName="registerSample" resourcePath="/findmyapp/location/sample" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="registerSample" mediaType="application/json" postQueryString="false" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request>{
+]</con:request>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>storsalen</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/sample TestCase" searchProperties="true">
+      <con:description>TestCase generated for REST Resource [sample] located at [/position/sample]</con:description>
+      <con:settings/>
+      <con:testStep type="restrequest" name="registerSample">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="registerSample" resourcePath="/findmyapp/location/sample" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="registerSample" mediaType="application/json" postQueryString="false" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request>{
 "signalList":
 [
     {
@@ -23,11 +617,247 @@
 "locationName": "Storsalen",
 "locationId": -1,
 "id": -1
-}
-</con:request><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>true</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/user TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [user] located at [/position/user/{id}]</con:description><con:settings/><con:testStep type="restrequest" name="Get user location"><con:settings/><con:config service="FindMyApp service" methodName="getUserLocation" resourcePath="/findmyapp/location/user/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get user location" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>edgar</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Register user location"><con:settings/><con:config service="FindMyApp service" methodName="regUserLocation" resourcePath="/findmyapp/location/user/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Register user location" mediaType="application/xml" accept="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>true</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
-  <con:entry key="id" value="1"/>
-  <con:entry key="locationId" value="3"/>
-</con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [users] located at [/position/users]</con:description><con:settings/><con:testStep type="restrequest" name="Get location of all users"><con:settings/><con:config service="FindMyApp service" methodName="getAllUserLocations" resourcePath="/findmyapp/location/users" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get location of all users" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple NotContains" name="Not Contains"><con:configuration><token>error</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/friend TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get position of a friend"><con:settings/><con:config service="FindMyApp service" methodName="getFriendLocation" resourcePath="/findmyapp/location/friend/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get position of a friend" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>strossa</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/allFriends TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get location of all friends"><con:settings/><con:config service="FindMyApp service" methodName="getLocationOfAllFriends" resourcePath="/findmyapp/location/friends/{userId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get location of all friends" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple NotContains" name="Not Contains"><con:configuration><token>ERROR</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="userId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/fact TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get facts"><con:settings/><con:config service="FindMyApp service" methodName="getFacts" resourcePath="/findmyapp/location/{id}/fact" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get facts" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>strosse</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="Get random fact"><con:settings/><con:config service="FindMyApp service" methodName="getRandomFact" resourcePath="/findmyapp/location/{id}/fact/random" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get random fact" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>2</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="2" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/beertap" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Request 1"><con:settings/><con:config service="FindMyApp service" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Request 1" mediaType="application/xml" postQueryString="false" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
-  <con:entry key="id" value="12"/>
-  <con:entry key="tapId" value="223"/>
-</con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>
+}</con:request>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>true</token>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/user TestCase" searchProperties="true">
+      <con:description>TestCase generated for REST Resource [user] located at [/position/user/{id}]</con:description>
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get user location">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getUserLocation" resourcePath="/findmyapp/location/user/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get user location" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>edgar</token>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Register user location">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="regUserLocation" resourcePath="/findmyapp/location/user/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Register user location" mediaType="application/xml" accept="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>true</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <con:entry key="id" value="1"/>
+              <con:entry key="locationId" value="3"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users TestCase" searchProperties="true">
+      <con:description>TestCase generated for REST Resource [users] located at [/position/users]</con:description>
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get location of all users">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getAllUserLocations" resourcePath="/findmyapp/location/users" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get location of all users" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple NotContains" name="Not Contains">
+              <con:configuration>
+                <token>error</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/friend TestCase" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get position of a friend">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getFriendLocation" resourcePath="/findmyapp/location/friend/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get position of a friend" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>strossa</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="2" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/allFriends TestCase" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get location of all friends">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getLocationOfAllFriends" resourcePath="/findmyapp/location/friends/{userId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get location of all friends" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple NotContains" name="Not Contains">
+              <con:configuration>
+                <token>ERROR</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="userId" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/fact TestCase" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get facts">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getFacts" resourcePath="/findmyapp/location/{id}/fact" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get facts" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>strosse</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="Get random fact">
+        <con:settings/>
+        <con:config service="FindMyApp service" methodName="getRandomFact" resourcePath="/findmyapp/location/{id}/fact/random" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get random fact" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Simple Contains" name="Contains">
+              <con:configuration>
+                <token>2</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="2" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/beertap" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Request 1">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/location/{id}/beertap/{tapId}" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Request 1" mediaType="application/xml" postQueryString="false" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <con:entry key="id" value="12"/>
+              <con:entry key="tapId" value="223"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:properties/>
+  </con:testSuite>
+  <con:properties/>
+  <con:wssContainer/>
+</con:soapui-project>
