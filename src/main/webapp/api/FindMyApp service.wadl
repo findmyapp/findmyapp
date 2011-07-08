@@ -94,12 +94,13 @@
           <param name="id" default="id" type="xs:string" required="false" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
           <resource path="{tapId}" id="id">
             <doc xml:lang="en" title="id"/>
-            <method name="GET" id="Method 1">
-              <doc xml:lang="en" title="Method 1"/>
+            <method name="GET" id="Get beer tap data">
+              <doc xml:lang="en" title="Get beer tap data">Get data from beer tap. Returns all data or number of tapped beers in the interval between to and from or for the entire time period.</doc>
               <request>
                 <param name="tapId" type="xs:int" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
                 <param name="from" type="xs:dateTime" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
                 <param name="to" type="xs:dateTime" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                <param name="sum" type="xs:string" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
               </request>
               <response status="400">
                 <representation mediaType="text/html" element="html"/>
@@ -233,6 +234,29 @@
           <representation mediaType="application/json"/>
         </response>
       </method>
+    </resource>
+    <resource path="user" id="user">
+      <doc xml:lang="en" title="user">A user</doc>
+      <resource path="{id}" id="id">
+        <doc xml:lang="en" title="id">The id of the user</doc>
+        <param name="id" type="xs:string" required="false" default="" style="template" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <resource path="friend" id="friend">
+          <doc xml:lang="en" title="friend">Resources regarding friends</doc>
+          <resource path="all" id="all">
+            <doc xml:lang="en" title="all">All friends of the user</doc>
+            <method name="GET" id="getAllFriends">
+              <doc xml:lang="en" title="getAllFriends">Get all friends of the user</doc>
+              <request/>
+              <response status="400 404">
+                <representation mediaType="text/html" element="html"/>
+              </response>
+              <response status="200">
+                <representation mediaType="application/json" element="all:Response" xmlns:all="http://findmyapp.net/findmyapp/user/1/friend/all"/>
+              </response>
+            </method>
+          </resource>
+        </resource>
+      </resource>
     </resource>
   </resources>
 </application>
