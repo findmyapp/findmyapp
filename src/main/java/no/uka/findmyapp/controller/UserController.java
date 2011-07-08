@@ -24,7 +24,7 @@ public class UserController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserController.class);
 
-	@RequestMapping(value = "/allfriends/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/friend/all", method = RequestMethod.GET)
 	public ModelMap getAllFriends(@PathVariable("id") int userId, ModelMap model) {
 		List<User> friends = service.getAllFriends(userId);
 		model.addAttribute(friends);
