@@ -407,7 +407,7 @@
         </con:method>
       </con:resource>
       <con:method name="getCurrentLocation" method="POST">
-        <con:description>Get your current location</con:description>
+        <con:description>Determine location based on WLAN signals received</con:description>
         <con:settings/>
         <con:parameters/>
         <con:representation type="REQUEST">
