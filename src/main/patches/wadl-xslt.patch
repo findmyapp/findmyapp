@@ -1,5 +1,5 @@
---- FindMyApp service.wadl.orig	Thu Jul  7 15:03:21 2011
-+++ FindMyApp service.wadl	Thu Jul  7 15:04:39 2011
+--- FindMyApp service.wadl.orig	2011-07-11 00:14:59.000000000 +0200
++++ FindMyApp service.wadl	2011-07-11 00:17:13.585090978 +0200
 @@ -1,4 +1,5 @@
  <?xml version="1.0" encoding="UTF-8"?>
 +<?xml-stylesheet type="text/xsl" href="wadl.xsl"?>
