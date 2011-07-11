@@ -83,6 +83,16 @@ public class UkaProgramController {
 		return new ModelAndView("places", "places", places);
 	}
 	
+	@RequestMapping(value = "/program/{ukaYear}/{place}/next", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getNextUkaEvent(
+			@PathVariable String ukaYear, @PathVariable String place){
+		logger.info("getNextUkaEvent");
+		Event event = ukaProgramService.getNextUkaEvent(ukaYear, place);
+
+		return new ModelAndView("event", "event", event);
+	}
+	
 	@RequestMapping(value = "/program/{ukaYear}/beginningAndEndDates", method = RequestMethod.GET)
 	// We do use ukaYear
 	public ModelAndView getUkaProgramStartEndDate(

@@ -84,6 +84,18 @@ public class UkaProgramService {
 		return places;
 	}
 	
+	/*
+	 * getNextUkaEvent returns the next event that takes place in the given input place
+	 * @param place is the event place you want to ask for
+	 * @return an event
+	 */
+	public Event getNextUkaEvent(String ukaYear, String place) {
+		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
+			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		}
+		return data.getNextUkaEvent(place);
+	}
+	
 	/**
 	 * getUkaEventById looks up an event by using the id in the database via a call to the class UkaProgramRepository.
 	 * @param id is the database id (primary key). 

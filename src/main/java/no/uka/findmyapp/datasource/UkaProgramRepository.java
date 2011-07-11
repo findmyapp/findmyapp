@@ -3,8 +3,6 @@ package no.uka.findmyapp.datasource;
 import java.util.Date;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
@@ -19,7 +17,7 @@ import org.springframework.stereotype.Repository;
 public class UkaProgramRepository {
 
 	@Autowired
-	private DataSource ds;
+	private JdbcTemplate jdbcTemplate;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
@@ -35,7 +33,6 @@ public class UkaProgramRepository {
 	}
 	
 	public List<Event> getUkaProgram(Date startDate, Date endDate) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Event> eventList = jdbcTemplate.query(
 				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
 				new EventRowMapper(),startDate, endDate  );
@@ -43,7 +40,6 @@ public class UkaProgramRepository {
 		return eventList;
 	}
 	public List<Event> getUkaProgram(Date startDate, Date endDate, String place) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Event> eventList = jdbcTemplate.query(
 				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=? AND place =?",
 				new EventRowMapper(),startDate, endDate , place );
@@ -52,7 +48,6 @@ public class UkaProgramRepository {
 	}
 
 	public List<Event> getUkaProgram(){
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Event> eventList = jdbcTemplate.query(
 				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
 				new EventRowMapper());
@@ -60,7 +55,6 @@ public class UkaProgramRepository {
 	}
 
 	public List<Event> getUkaProgram(String place){
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<Event> eventList = jdbcTemplate.query(
 				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND place = ?",
 				new EventRowMapper(), place);
@@ -69,18 +63,21 @@ public class UkaProgramRepository {
 	
 	
 	public List<String> getUkaPlaces(){
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		List<String> places;
 		places = jdbcTemplate.queryForList("SELECT DISTINCT place FROM event_showing_real", String.class);
 		return places;
 	}
 	
 	public Event getUkaEventById(int id){
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		Event event;
 		logger.info("logH 1");
 		event = jdbcTemplate.queryForObject ("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND s.id=?", new EventRowMapper(),id);
 		logger.info("logH 2");
 		return event;
+	}
+	
+	public Event getNextUkaEvent(String place) {
+		return jdbcTemplate.queryForObject("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id " +
+				"AND s.place = ? AND s.showing_time > (now()) ORDER BY s.showing_time LIMIT 1", new EventRowMapper(), place);
 	}
 }
