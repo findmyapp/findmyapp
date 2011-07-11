@@ -97,7 +97,7 @@ public class SensorController {
 		return new ModelAndView("sensor","sensor",humidityList);
 	}
 
-	@RequestMapping(value="/{locationId}/beertap/{tapNr}/",method = RequestMethod.GET)
+	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
