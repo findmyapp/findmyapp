@@ -21,5 +21,9 @@ public class UserService {
 	public List<User> getAllFriends(int userId) {
 		return data.getAllFriends(userId);
 	}
+	
+	public boolean areFriends(int userId1, int userId2) {
+		return data.areFriends(userId1, userId2);
+	}
 
 }
