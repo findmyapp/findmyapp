@@ -2,6 +2,7 @@ package no.uka.findmyapp.controller;
 
 import java.util.List;
 
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UserService;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
@@ -29,6 +30,16 @@ public class UserController {
 		List<User> friends = service.getAllFriends(userId);
 		model.addAttribute(friends);
 		return model;
+	}
+	
+	@RequestMapping(value = "/{id}/events", method= RequestMethod.GET)
+	public List<Event> getEventsOnUser(@PathVariable("id") int userId){
+		List<Event> events;
+		logger.info("getEventsOnUser -controller");
+		events = service.getEventsOnUser(userId);
+		logger.info("got events!");
+		return events;
+		
 	}
 
 }

@@ -8,12 +8,13 @@ import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * This class is used between the UkaProgramController layer and the UkaProgramRepository layer. It contains most of the logic.
@@ -23,7 +24,7 @@ public class UkaProgramService {
 	
 	@Autowired
 	private UkaProgramRepository data;
-	
+			
 	@Autowired
 	private EditDistanceHelper edService;
 	
@@ -167,6 +168,10 @@ public class UkaProgramService {
 		return program;
 	}
 	
+	public List<User> getUsersOnEvent(int eventId, String filter){//TODO: Fill this method 
+		List<User> users = null;
+		return users;
+	}
 	/**
 	 * setUkaProgramRepository is only used for testing.
 	 * @param repository

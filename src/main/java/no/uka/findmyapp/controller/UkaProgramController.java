@@ -3,9 +3,9 @@ package no.uka.findmyapp.controller;
 import java.util.Date;
 import java.util.List;
 
-import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
@@ -105,6 +105,18 @@ public class UkaProgramController {
 		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(dates));
 	}
 
+	@RequestMapping(value = "/program/{ukaYear}/events/{id}/users", method = RequestMethod.GET)
+	// We do not use ukaYear
+	public ModelAndView getUsersOnEvent(
+			@PathVariable String ukaYear,
+			@PathVariable("id") int eventId,//Not sure if this is string or int yet.
+			@RequestParam String filter){
+		List<User> users;
+		logger.info("getUsersOnEvent");
+		users = ukaProgramService.getUsersOnEvent(eventId, filter);
+		
+		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(users));
+	}
 
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
