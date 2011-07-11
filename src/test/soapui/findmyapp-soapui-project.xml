@@ -29,7 +29,7 @@
           <con:params/>
           <con:element>html</con:element>
         </con:representation>
-      </con:method>
+      <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>401</con:status><con:params/><con:element>html</con:element></con:representation></con:method>
     </con:resource>
     <con:resource name="appstore" path="appstore">
       <con:settings/>
@@ -427,7 +427,7 @@
     <con:description>TestSuite generated for REST Service [Services]</con:description>
     <con:settings/>
     <con:runType>SEQUENTIAL</con:runType>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ping TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ping TestCase" searchProperties="true" id="7dde6965-06eb-453f-93e2-c4f0277a8606">
       <con:description>TestCase generated for REST Resource [echo] located at [/echo]</con:description>
       <con:settings/>
       <con:testStep type="restrequest" name="Ping accept text/html">
@@ -440,14 +440,12 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
+              <con:configuration><codes>200</codes></con:configuration>
             </con:assertion>
             <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
+              <con:username>john</con:username>
+              <con:password>john</con:password>
+              <con:domain/>
             </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
@@ -465,13 +463,11 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
+              <con:configuration><codes>200</codes></con:configuration>
             </con:assertion>
             <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
+              <con:username>john</con:username>
+              <con:password>john</con:password>
               <con:domain xsi:nil="true"/>
             </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
@@ -480,7 +476,51 @@
           </con:restRequest>
         </con:config>
       </con:testStep>
-      <con:properties/>
+      <con:testStep type="restrequest" name="Ping reject text/html">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Ping reject text/html" mediaType="application/xml" accept="text/html">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration><codes>401</codes></con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username/>
+              <con:password/>
+              <con:domain/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep><con:testStep type="restrequest" name="Ping reject application/json">
+        <con:settings/>
+        <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration><codes>401</codes></con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username/>
+              <con:password/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep><con:properties/>
     </con:testCase>
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/list TestCase" searchProperties="true">
       <con:description>TestCase generated for REST Resource [list] located at [/appstore/list]</con:description>
