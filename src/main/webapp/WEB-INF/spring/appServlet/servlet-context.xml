@@ -39,7 +39,7 @@
 		<property name="defaultViews">
 			<list>
 				<bean
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+					class="no.uka.findmyapp.helpers.MappingJacksonJsonViewExtension" />
 			</list>
 		</property>
 	</bean>
