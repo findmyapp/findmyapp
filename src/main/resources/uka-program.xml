@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd" />
+	</bean>
+	
+	<bean id="ukaProgramConfigurationList" class="no.uka.findmyapp.configuration.UkaProgramConfigurationList">
+		<property name="list">
+			<list>
+				<bean class="no.uka.findmyapp.configuration.UkaProgramConfiguration">
+					<property name="startDate">
+						<bean factory-bean="dateFormat" factory-method="parse">
+							<constructor-arg value="2011-08-01" />
+						</bean>
+					</property>
+					<property name="endDate">
+						<bean factory-bean="dateFormat" factory-method="parse">
+							<constructor-arg value="2011-11-01" />
+						</bean>
+					</property>
+					<property name="ukaYear" value="uka11" />
+				</bean>
+				<bean class="no.uka.findmyapp.configuration.UkaProgramConfiguration">
+					<property name="startDate">
+						<bean factory-bean="dateFormat" factory-method="parse">
+							<constructor-arg value="2009-08-01" />
+						</bean>
+					</property>
+					<property name="endDate">
+						<bean factory-bean="dateFormat" factory-method="parse">
+							<constructor-arg value="2009-11-01" />
+						</bean>
+					</property>
+					<property name="ukaYear" value="uka09" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

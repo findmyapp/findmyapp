@@ -42,21 +42,8 @@
 		</property>
 	</bean>
 	
-	<bean id="ukaProgramConfiguration" class="no.uka.findmyapp.configuration.UkaProgramConfiguration">
-		<property name="startDate">
-			<value>${ukaProgram.startDate}</value>
-		</property>
-		<property name="endDate">
-			<value>${ukaProgram.endDate}</value>
-		</property>
-		<property name="ukaYearForStartAndEndDate">
-			<value>${ukaProgram.ukaYearForStartAndEndDate}</value>
-		</property>
-	</bean>
+	<import resource="classpath:uka-program.xml" />
 	
-	
-
-
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
