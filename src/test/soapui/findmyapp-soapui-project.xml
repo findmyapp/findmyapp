@@ -401,7 +401,7 @@
       </con:testStep><con:testStep type="restrequest" name="Ping reject application/json">
         <con:settings/>
         <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="application/json">
+          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="text/html">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
