@@ -78,6 +78,14 @@ public class LocationController {
 		mav.addObject("usersAtLocation", users);
 		return mav;
 	}
+	
+	@RequestMapping(value = "/{id}/usercount", method = RequestMethod.GET)
+	public ModelAndView getUserCountAtLocation(@PathVariable("id") int locationId) {
+		logger.debug("getUserCountAtLocation ( " + locationId + ")");
+		int count = 0;
+		//int total = service.getBeertapSum(locationId,tapNr, from, to);
+		return new ModelAndView("pos","usercount", count);
+	}
 
 	@RequestMapping(value = "/sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
