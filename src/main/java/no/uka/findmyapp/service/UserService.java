@@ -27,7 +27,7 @@ public class UserService {
 		return data.areFriends(userId1, userId2);
 	}
 
-	public boolean addEvent(int userId, int eventId) {
+	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
 	

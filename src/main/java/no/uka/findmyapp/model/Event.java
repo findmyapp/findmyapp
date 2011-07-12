@@ -11,7 +11,7 @@ public class Event {
 	private Timestamp publishTime;
 	private String place;
 	private int billigId;
-	private int eventId;
+	private long eventId;
 	private Timestamp netsaleFrom;
 	private Timestamp netsaleTo;
 	private boolean free;
@@ -58,10 +58,10 @@ public class Event {
 	public void setBilligId(int billigId) {
 		this.billigId = billigId;
 	}
-	public int getEventId() {
+	public long getEventId() {
 		return eventId;
 	}
-	public void setEventId(int eventId) {
+	public void setEventId(long eventId) {
 		this.eventId = eventId;
 	}
 	public Timestamp getNetsaleFrom() {
