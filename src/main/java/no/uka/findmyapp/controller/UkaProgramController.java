@@ -113,6 +113,8 @@ public class UkaProgramController {
 
 		//data.insertUkaProgram(date);
 	}
+	
+	
 
 	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear
