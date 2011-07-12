@@ -343,8 +343,8 @@
               <con:configuration><codes>200</codes></con:configuration>
             </con:assertion>
             <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
+              <con:username>ping</con:username>
+              <con:password>ping</con:password>
               <con:domain xsi:nil="true"/>
             </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
@@ -366,8 +366,8 @@
               <con:configuration><codes>200</codes></con:configuration>
             </con:assertion>
             <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
+              <con:username>ping</con:username>
+              <con:password>ping</con:password>
               <con:domain xsi:nil="true"/>
             </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
