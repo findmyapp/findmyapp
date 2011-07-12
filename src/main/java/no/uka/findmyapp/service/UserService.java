@@ -3,6 +3,7 @@ package no.uka.findmyapp.service;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
 
 import org.slf4j.Logger;
@@ -24,6 +25,14 @@ public class UserService {
 	
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
+	}
+
+	public boolean addEvent(int userId, int eventId) {
+		return data.addEvent(userId, eventId);
+	}
+	
+	public List<Event> getEvents(int userId) {
+		return data.getEvents(userId);
 	}
 
 }

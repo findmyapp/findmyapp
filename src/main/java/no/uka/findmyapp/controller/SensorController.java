@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/location")
+@RequestMapping("/locations")
 public class SensorController {
 
 	@Autowired
