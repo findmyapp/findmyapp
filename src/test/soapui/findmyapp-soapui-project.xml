@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <con:soapui-project name="FindMyApp" resourceRoot="${projectDir}" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
-  <con:settings/>
+  <con:settings><con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.TestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Global Properties" value=""/>
+  <con:entry key="TestSuite" value="Services TestSuite"/>
+  <con:entry key="Report to Generate" value=""/>
+  <con:entry key="Password" value=""/>
+  <con:entry key="soapui-setings.xml Password" value=""/>
+  <con:entry key="TestRunner Path" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Ignore Errors" value="false"/>
+  <con:entry key="Host:Port" value=""/>
+  <con:entry key="WSS Password Type" value=""/>
+  <con:entry key="Save Project" value="false"/>
+  <con:entry key="Enable UI" value="false"/>
+  <con:entry key="System Properties" value=""/>
+  <con:entry key="Domain" value=""/>
+  <con:entry key="Coverage Report" value="false"/>
+  <con:entry key="Export JUnit Results" value="false"/>
+  <con:entry key="Open Report" value="false"/>
+  <con:entry key="Project Properties" value=""/>
+  <con:entry key="Project Password" value=""/>
+  <con:entry key="Export All" value="false"/>
+  <con:entry key="Report Format(s)" value=""/>
+  <con:entry key="TestCase" value="&lt;all>"/>
+  <con:entry key="Print Report" value="false"/>
+  <con:entry key="Username" value=""/>
+  <con:entry key="Root Folder" value=""/>
+  <con:entry key="Save After" value="false"/>
+  <con:entry key="Add Settings" value="false"/>
+  <con:entry key="Endpoint" value=""/>
+</xml-fragment>]]></con:setting></con:settings>
   <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp service" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:description>UKA-11 student festival service</con:description>
     <con:settings/>
@@ -330,52 +359,8 @@
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ping TestCase" searchProperties="true" id="7dde6965-06eb-453f-93e2-c4f0277a8606">
       <con:description>TestCase generated for REST Resource [echo] located at [/echo]</con:description>
       <con:settings/>
-      <con:testStep type="restrequest" name="Ping accept text/html">
-        <con:settings/>
-        <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Ping accept text/html" mediaType="application/xml" accept="text/html">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration><codes>200</codes></con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username>ping</con:username>
-              <con:password>ping</con:password>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:testStep type="restrequest" name="Ping accept application/json">
-        <con:settings/>
-        <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Ping accept application/json" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration><codes>200</codes></con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username>ping</con:username>
-              <con:password>ping</con:password>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
+      
+      
       <con:testStep type="restrequest" name="Ping reject text/html">
         <con:settings/>
         <con:config service="FindMyApp service" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -435,7 +420,8 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
-            <con:credentials>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200
+</codes></con:configuration></con:assertion><con:credentials>
               <con:username xsi:nil="true"/>
               <con:password xsi:nil="true"/>
               <con:domain xsi:nil="true"/>
@@ -497,44 +483,7 @@
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/sample TestCase" searchProperties="true">
       <con:description>TestCase generated for REST Resource [sample] located at [/position/sample]</con:description>
       <con:settings/>
-      <con:testStep type="restrequest" name="registerSample">
-        <con:settings/>
-        <con:config service="FindMyApp service" methodName="registerSample" resourcePath="/findmyapp/locations/sample" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="registerSample" mediaType="application/json" postQueryString="false" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:encoding>UTF-8</con:encoding>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request>{
-"signalList":
-[
-    {
-        "bssid": "strossa",
-        "signalStrength": -65
-    },
-    {
-        "bssid": "storsalen",
-        "signalStrength": -15
-    }
-],
-"locationName": "Storsalen",
-"locationId": -1,
-"id": -1
-}</con:request>
-            <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>true</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
-            </con:assertion>
-            <con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
+      
       <con:properties/>
     </con:testCase>
     
@@ -654,7 +603,7 @@
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
             <con:encoding>UTF-8</con:encoding>
-            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
               <con:configuration>
