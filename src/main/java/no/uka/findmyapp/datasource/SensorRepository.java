@@ -47,7 +47,7 @@ public class SensorRepository {
 	public List<Temperature> getTemperatureData(int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ?",
+				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ? ORDER BY date DESC",
 				new SensorTemperatureRowMapper(), location);
 		logger.info("received temperature list");
 		return temperatureList;

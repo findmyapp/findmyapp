@@ -141,7 +141,7 @@ public class SensorController {
 		Noise noise = service.setNoiseData(locationId, samples);
 		
 		
-		mav.addObject("respons",noise.getNumberOfSamples() );
+		mav.addObject("respons",noise );
 		
 		return mav;
 	}
