@@ -53,9 +53,9 @@ public class UserRepository {
 		else return false;
 	}
 
-	public boolean addEvent(int userId, int eventId) {
+	public boolean addEvent(int userId, long eventId) {
 		try {
-			final int event_id = eventId;
+			final long event_id = eventId;
 			final int user_id = userId;
 			jdbcTemplate.update(
 					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)",
@@ -63,7 +63,7 @@ public class UserRepository {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
 							ps.setInt(1, user_id);
-							ps.setInt(2, event_id);
+							ps.setLong(2, event_id);
 						}
 					});
 			return true;
