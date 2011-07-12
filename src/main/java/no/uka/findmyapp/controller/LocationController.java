@@ -29,15 +29,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-
 /* Controller that handles HTTP requests for location
  * 
  * @author Kåre Blakstad
  * 
  */
 @Controller
-@RequestMapping("/location")
+@RequestMapping("/locations")
 public class LocationController {
 
 	@Autowired
@@ -46,7 +44,7 @@ public class LocationController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationController.class);
 
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelMap getAllLocations() {
 		logger.info("getAllLocations");
 		ModelMap model = new ModelMap();
@@ -72,7 +70,7 @@ public class LocationController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
 		ModelAndView mav = new ModelAndView();
@@ -91,9 +89,9 @@ public class LocationController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-	public ModelAndView registerUserLocation(@PathVariable("id") int userId,
-			@RequestParam int locationId) {
+	@RequestMapping(value = "{locationId}/users/{userId}", method = RequestMethod.POST)
+	public ModelAndView registerUserLocation(@PathVariable int userId,
+			@PathVariable int locationId) {
 		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserLocation(userId, locationId);
 		logger.info("registerUserPosition ( " + regUserPos + " )");
@@ -101,7 +99,7 @@ public class LocationController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelMap getUserLocation(@PathVariable("id") int userId,
 			ModelMap model) {
 		Location location = service.getUserLocation(userId);
@@ -114,7 +112,7 @@ public class LocationController {
 		model.addAttribute(service.getLocationOfAllUsers());
 	}
 
-	@RequestMapping(value = "/friend/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/friends/{id}", method = RequestMethod.GET)
 	public ModelMap getLocationOfFriend(@PathVariable("id") int friendId,
 			ModelMap model) {
 		Location friendLocation = service.getLocationOfFriend(friendId);
@@ -122,7 +120,7 @@ public class LocationController {
 		return model;
 	}
 
-	@RequestMapping(value = "/friends/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/friends", method = RequestMethod.GET)
 	public ModelMap getLocationOfFriends(@PathVariable int userId,
 			ModelMap model) {
 		Map<Integer, Integer> friendsPositions = service
@@ -135,7 +133,7 @@ public class LocationController {
 	 * **************** FACT *****************
 	 */
 
-	@RequestMapping(value = "/{id}/fact", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
 	public ModelMap getAllFacts(@PathVariable("id") int locationId) {
 		logger.info("getAllFacts ( " + locationId + " )");
 		ModelMap model = new ModelMap();
@@ -144,7 +142,7 @@ public class LocationController {
 		return model;
 	}
 
-	@RequestMapping(value = "/{id}/fact/random", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/facts/random", method = RequestMethod.GET)
 	public ModelMap getRandomFact(@PathVariable("id") int locationId) {
 		ModelMap model = new ModelMap();
 		Fact fact = service.getRandomFact(locationId);
