@@ -2,6 +2,7 @@ package no.uka.findmyapp.controller;
 
 import java.util.List;
 
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UserService;
 
@@ -30,5 +31,18 @@ public class UserController {
 		model.addAttribute(friends);
 		return model;
 	}
-
+	
+	@RequestMapping(value = "/{id}/event/{eventId}/add", method = RequestMethod.POST)
+	public ModelMap addEvent(@PathVariable("id") int userId, @PathVariable int eventId, ModelMap model) {
+		boolean addEvent = service.addEvent(userId, eventId);
+		model.addAttribute(addEvent);
+		return model;
+	}
+	
+	@RequestMapping(value = "/{id}/event/all", method = RequestMethod.GET)
+	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
+		List<Event> events = service.getEvents(userId);
+		model.addAttribute(events);
+		return model;
+	}
 }
