@@ -98,9 +98,6 @@ public class Noise {
 	public String getJsonSamples(){
 		return gson.toJson(this.samples);
 	}
-	public int getNumberOfSamples(){
-		return samples.length;
-	}
 
 	public void setTime(Date time) {
 		this.time = time;
