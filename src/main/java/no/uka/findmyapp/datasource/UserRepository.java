@@ -53,7 +53,6 @@ public class UserRepository {
 		else return false;
 	}
 
-<<<<<<< HEAD
 	public List<User> getUsersOnEvent(String sqlFriendList) {
 		// TODO Auto-generated method stub
 		return null;
@@ -65,8 +64,13 @@ public class UserRepository {
 				"AND USER_EVENT.event_id =? AND USER.facebook_id IN?",
 				new UserRowMapper(), eventId,facebookFriends);
 		}
-}
-=======
+
+	public List<Event> getEvents(int userId) {
+		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
+				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", new EventRowMapper(), userId);
+		return events;
+	}
+	
 	public boolean addEvent(int userId, long eventId) {
 		try {
 			final long event_id = eventId;
@@ -87,11 +91,7 @@ public class UserRepository {
 		}
 	}
 	
-	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
-				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", new EventRowMapper(), userId);
-		return events;
-	}
+	
 	
 }
->>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937
+

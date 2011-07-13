@@ -3,6 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.Date;
 import java.util.List;
 
+import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
