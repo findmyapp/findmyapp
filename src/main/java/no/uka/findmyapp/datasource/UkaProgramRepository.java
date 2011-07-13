@@ -67,12 +67,6 @@ public class UkaProgramRepository {
 				"AND s.place = ? AND s.showing_time > (now()) ORDER BY s.showing_time LIMIT 1", new EventRowMapper(), place);
 	}
 
-	public List<Event> getEventsOnUser(int userId) {
-		logger.info("look up for"+ userId);
-		return jdbcTemplate.query("SELECT * FROM USER_EVENT, event_showing_real ," +
-				" events_event WHERE USER_EVENT.user_id = ? AND event_showing_real.event_id=events_event.id", 
-				new EventRowMapper(),userId);
-	}
 	public Event getNextUkaEvent(String place, Date from, Date to) {
 		return jdbcTemplate.queryForObject("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id " +
 				"AND s.place = ? AND s.showing_time > (now()) AND s.showing_time >= ? AND s.showing_time <= ? ORDER BY s.showing_time LIMIT 1", new EventRowMapper(), place, from, to);

@@ -9,6 +9,7 @@ import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
+import no.uka.findmyapp.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class UkaProgramController {
 
 	@Autowired
 	private UkaProgramService ukaProgramService;
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private Gson gson;
 
@@ -113,29 +116,17 @@ public class UkaProgramController {
 		return new ModelAndView("json", "ukaProgram", configs);
 	}
 
-	@RequestMapping(value = "/program/{ukaYear}/events/{id}/users", method = RequestMethod.GET)
-	public ModelAndView getUsersOnEvent(
-			@PathVariable String ukaYear,
-			@PathVariable("id") int eventId,//Not sure if this is string or int yet.
-			@RequestParam String filter,
-			@RequestParam String auth){
-		List<User> users;
-		logger.info("getUsersOnEvent");
-		users = ukaProgramService.getUsersOnEvent(eventId, filter, auth);
-		
-		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(users));
-	}
-
-	/*
-	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
-	public void insertUkaProgramForDate(
-			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
-		logger.info("insertUkaProgramForDate ( " + date + " )");
-
-		//data.insertUkaProgram(date);
-	}
-	*/
 	
+
+	@RequestMapping(value = "/events/{id}/friends", method = RequestMethod.GET)
+	public ModelAndView getFriendsAttendingEvent(
+			@PathVariable("id") int eventId,
+			@RequestParam String accessToken){
+		ModelAndView mav = new ModelAndView("friendsAtEvent");
+		List<User> users = userService.getFriendsAtEvent(eventId, accessToken);
+		mav.addObject("users", users);
+		return mav;
+	}
 
 	@RequestMapping(value = "/program/{ukaYear}/events/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear

@@ -3,14 +3,18 @@ package no.uka.findmyapp.datasource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPrivacy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,17 +61,6 @@ public class UserRepository {
 			return false;
 	}
 
-	public List<User> getUsersOnEvent(String sqlFriendList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<User> getFriendsOnEvent(String facebookFriends, int eventId) {
-		return jdbcTemplate
-				.query("SELECT USER.* FROM USER_EVENT, USER WHERE USER_EVENT.user_id = USER.user_id"
-						+ "AND USER_EVENT.event_id =? AND USER.facebook_id IN?",
-						new UserRowMapper(), eventId, facebookFriends);
-	}
 
 	public boolean addEvent(int userId, long eventId) {
 		try {
@@ -90,11 +83,44 @@ public class UserRepository {
 	}
 
 	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate
-				.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
-						+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?",
-						new EventRowMapper(), userId);
+		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
+				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", 
+				new EventRowMapper(), userId);
 		return events;
+	}
+
+	
+//	Henter data, ok testet i db
+	public UserPrivacy retrievePrivacy(int userId) {
+		UserPrivacy privacy = jdbcTemplate.queryForObject(
+				"SELECT USER_PRIVACY_SETTINGS.* FROM USER, USER_PRIVACY_SETTINGS " + 
+				"WHERE USER.user_id = "+ userId + " AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+				new UserPrivacyRowMapper());
+		return privacy;
+	}
+
+	
+//	update, ok testet i db
+	public void updatePrivacy(int userId, int newPosition, int newEvents, int newMoney, int newMedia) {
+		int temp = jdbcTemplate.update(
+				"UPDATE USER, USER_PRIVACY_SETTINGS " + 
+				"SET USER_PRIVACY_SETTINGS.position = ? ," +
+				"USER_PRIVACY_SETTINGS.events = ? ," +
+				"USER_PRIVACY_SETTINGS.money = ? ," +
+				"USER_PRIVACY_SETTINGS.media = ? " +
+				"WHERE USER.user_id = ? AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+				int.class, newPosition, newEvents, newMoney, newMedia, userId);
+	}
+	
+	
+// Lager defaults settings, ok testet i db
+	public int createDefaultPrivacySettingsEntry() {
+		jdbcTemplate.execute(
+				"INSERT INTO USER_PRIVACY_SETTINGS " + 
+				"(position, events, money, media) VALUES (2, 2, 2, 2)");
+		int user_privacy_id = jdbcTemplate.queryForInt(
+				"SELECT user_privacy_id FROM USER_PRIVACY_SETTINGS ORDER BY user_privacy_id DESC LIMIT 1");
+		return user_privacy_id;
 	}
 
 	public List<User> getRegisteredFacebookFriends(List<String> friendIds) {
@@ -104,6 +130,17 @@ public class UserRepository {
 				.query("SELECT * FROM USER WHERE facebook_id IN (:ids)",
 						Collections.singletonMap("ids", friendIds),
 						new UserRowMapper());
+		return users;
+	}
+
+	public List<User> getFacebookFriendsAtEvent(int eventId,
+			List<String> friendIds) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("eventid", eventId);
+		namedParameters.put("ids", friendIds);
+		
+		List<User> users = namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, USER_EVENT e WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)", namedParameters, new UserRowMapper());
 		return users;
 	}
 
