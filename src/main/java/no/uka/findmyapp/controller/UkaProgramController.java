@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
@@ -47,12 +49,13 @@ public class UkaProgramController {
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
-			@RequestParam(required=false) String place){ 
+			@RequestParam(required=false) String place)
+			throws UkaYearNotFoundException { 
 
-			logger.info("getUkaProgram - new");
-			UkaProgram program = ukaProgramService.getUkaProgram(ukaYear, date, from, to, place);	
-			
-			return new ModelAndView("json", "program", program);
+		logger.info("getUkaProgram - new");
+		UkaProgram program = ukaProgramService.getUkaProgram(ukaYear, date, from, to, place);	
+		
+		return new ModelAndView("json", "program", program);
 	
 	}
 	
@@ -60,19 +63,21 @@ public class UkaProgramController {
 	// We do not use ukaYear
 	public ModelAndView searchForUkaProgramByName(
 			@PathVariable String ukaYear,
-			@RequestParam(required=true) String eventName){
+			@RequestParam(required=true) String eventName)
+			throws UkaYearNotFoundException {
+			
 		UkaProgram program = new UkaProgram();
-		
-			logger.info("searchForUkaProgramByName");
-			program = ukaProgramService.titleSearch(ukaYear, eventName);	
-	
-			return new ModelAndView("json", "program", program);
+		logger.info("searchForUkaProgramByName");
+		program = ukaProgramService.titleSearch(ukaYear, eventName);	
+
+		return new ModelAndView("json", "program", program);
 	}
 
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(
-			@PathVariable String ukaYear){
+			@PathVariable String ukaYear)
+			throws UkaYearNotFoundException {
 		List<String> places;
 		logger.info("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces(ukaYear);
@@ -83,7 +88,9 @@ public class UkaProgramController {
 	@RequestMapping(value = "/program/{ukaYear}/{place}/next", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getNextUkaEvent(
-			@PathVariable String ukaYear, @PathVariable String place){
+			@PathVariable String ukaYear, @PathVariable String place)
+			throws UkaYearNotFoundException {
+		
 		logger.info("getNextUkaEvent");
 		Event event = ukaProgramService.getNextUkaEvent(ukaYear, place);
 
@@ -92,7 +99,8 @@ public class UkaProgramController {
 	
 	@RequestMapping(value = "/program/{ukaYear}", method = RequestMethod.GET)
 	public ModelAndView getUkaProgramStartEndDate(
-			@PathVariable String ukaYear){
+			@PathVariable String ukaYear)
+			throws UkaYearNotFoundException {
 
 		logger.info("getUkaProgramStartEndDate using a config file");
 		UkaProgramConfiguration config = ukaProgramService.getUkaProgramConfiguration(ukaYear);
@@ -105,7 +113,20 @@ public class UkaProgramController {
 		return new ModelAndView("json", "ukaProgram", configs);
 	}
 
+	@RequestMapping(value = "/program/{ukaYear}/events/{id}/users", method = RequestMethod.GET)
+	public ModelAndView getUsersOnEvent(
+			@PathVariable String ukaYear,
+			@PathVariable("id") int eventId,//Not sure if this is string or int yet.
+			@RequestParam String filter,
+			@RequestParam String auth){
+		List<User> users;
+		logger.info("getUsersOnEvent");
+		users = ukaProgramService.getUsersOnEvent(eventId, filter, auth);
+		
+		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(users));
+	}
 
+	/*
 	@RequestMapping(value = "/program/{date}", method = RequestMethod.PUT)
 	public void insertUkaProgramForDate(
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date date) {
@@ -113,13 +134,14 @@ public class UkaProgramController {
 
 		//data.insertUkaProgram(date);
 	}
-	
+	*/
 	
 
 	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
-			@PathVariable int id, @PathVariable String ukaYear){
+			@PathVariable int id, @PathVariable String ukaYear) 
+			throws UkaYearNotFoundException {
 		Event event;
 		logger.info("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(ukaYear, id);
@@ -142,6 +164,13 @@ public class UkaProgramController {
 			EmptyResultDataAccessException ex) {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
+	}
+	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(UkaYearNotFoundException.class)
+	private void handleUkaYearNotFoundException(UkaYearNotFoundException e) {
+		logger.info("UkaYearNotFoundException ( "+e.getLocalizedMessage()+ " )");
 	}
 }
 

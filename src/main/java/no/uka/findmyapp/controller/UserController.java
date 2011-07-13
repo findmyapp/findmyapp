@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
@@ -32,6 +32,16 @@ public class UserController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/{id}/events", method= RequestMethod.GET)
+	public List<Event> getEventsOnUser(@PathVariable("id") int userId){
+		List<Event> events;
+		logger.info("getEventsOnUser -controller");
+		events = service.getEventsOnUser(userId);
+		logger.info("got events!");
+		return events;
+		
+	}
+
 	@RequestMapping(value = "/{id}/event/{eventId}", method = RequestMethod.POST)
 	public ModelMap addEvent(@PathVariable("id") int userId, @PathVariable("eventId") long eventId, ModelMap model) {
 		boolean addEvent = service.addEvent(userId, eventId);

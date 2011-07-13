@@ -24,7 +24,7 @@ public class UserRepository {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserRepository.class);
 
-	public List<User> getAllFriends(int userId) {
+	public List<User> getAllFriends(int userId) {//Needs some change, ie. get friendlist from Facebook.
 		return jdbcTemplate.query("SELECT u.* " + "FROM USER u, FRIENDS f "
 				+ "WHERE u.user_id=f.user1_id AND f.user2_id = ? " + "UNION "
 				+ "SELECT u.* " + "FROM USER u, FRIENDS f "
@@ -53,6 +53,24 @@ public class UserRepository {
 		else return false;
 	}
 
+	public List<User> getUsersOnEvent(String sqlFriendList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	public List<User> getFriendsOnEvent(String facebookFriends, int eventId) {
+		return jdbcTemplate.query("SELECT USER.* FROM USER_EVENT, USER WHERE USER_EVENT.user_id = USER.user_id" +
+				"AND USER_EVENT.event_id =? AND USER.facebook_id IN?",
+				new UserRowMapper(), eventId,facebookFriends);
+		}
+
+	public List<Event> getEvents(int userId) {
+		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
+				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", new EventRowMapper(), userId);
+		return events;
+	}
+	
 	public boolean addEvent(int userId, long eventId) {
 		try {
 			final long event_id = eventId;
@@ -73,10 +91,7 @@ public class UserRepository {
 		}
 	}
 	
-	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
-				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", new EventRowMapper(), userId);
-		return events;
-	}
+	
 	
 }
+

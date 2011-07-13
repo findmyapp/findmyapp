@@ -9,6 +9,7 @@ import java.util.List;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithOnlyDateAsInput() throws ParseException {
+	public void testWithOnlyDateAsInput() throws ParseException, UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
@@ -48,7 +49,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithDateFromAndTOAsInput() {
+	public void testWithDateFromAndTOAsInput() throws UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
@@ -60,7 +61,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithAllIsTrueAsInput() {
+	public void testWithAllIsTrueAsInput() throws UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
@@ -70,7 +71,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithOnlyPlaceAsInput() {
+	public void testWithOnlyPlaceAsInput() throws UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
@@ -81,7 +82,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithDateAndPlaceAsInput() {
+	public void testWithDateAndPlaceAsInput() throws UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
@@ -93,7 +94,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithDateFromAndTOAndPlaceAsInput() {
+	public void testWithDateFromAndTOAndPlaceAsInput() throws UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
@@ -106,7 +107,7 @@ public class UkaProgramServiceTest {
 	}
 
 	@Test
-	public void testWithDateFromAndTOAndDateAsInput() {
+	public void testWithDateFromAndTOAndDateAsInput() throws UkaYearNotFoundException {
 		UkaProgramService service = new UkaProgramService();
 		UkaProgramRepository mock = Mockito.mock(UkaProgramRepository.class);
 		service.setUkaProgramRepository(mock);
