@@ -28,11 +28,7 @@ public class UserService {
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
-	public List<Event> getEventsOnUser(int userId) {
-		UkaProgramRepository rep = new UkaProgramRepository();
-		return rep.getEventsOnUser(userId);
-	}
-	
+		
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}

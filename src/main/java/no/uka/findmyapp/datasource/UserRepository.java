@@ -59,17 +59,6 @@ public class UserRepository {
 			return false;
 	}
 
-	public List<User> getUsersOnEvent(String sqlFriendList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<User> getFriendsOnEvent(String facebookFriends, int eventId) {
-		return jdbcTemplate
-				.query("SELECT USER.* FROM USER_EVENT, USER WHERE USER_EVENT.user_id = USER.user_id"
-						+ "AND USER_EVENT.event_id =? AND USER.facebook_id IN?",
-						new UserRowMapper(), eventId, facebookFriends);
-	}
 
 	public boolean addEvent(int userId, long eventId) {
 		try {

@@ -116,18 +116,7 @@ public class UkaProgramController {
 		return new ModelAndView("json", "ukaProgram", configs);
 	}
 
-	@RequestMapping(value = "/program/{ukaYear}/events/{id}/users", method = RequestMethod.GET)
-	public ModelAndView getUsersOnEvent(
-			@PathVariable String ukaYear,
-			@PathVariable("id") int eventId,//Not sure if this is string or int yet.
-			@RequestParam String filter,
-			@RequestParam String auth){
-		List<User> users;
-		logger.info("getUsersOnEvent");
-		users = ukaProgramService.getUsersOnEvent(eventId, filter, auth);
-		
-		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(users));
-	}
+	
 
 	@RequestMapping(value = "/events/{id}/friends", method = RequestMethod.GET)
 	public ModelAndView getFriendsAttendingEvent(

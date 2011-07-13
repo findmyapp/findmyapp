@@ -196,19 +196,6 @@ public class UkaProgramService {
 	}
 	
 	
-	public List<User> getUsersOnEvent(int eventId, String filter, String accessToken){
-		List<User> users;//TODO, add check on eventId and accessToken
-		if (!filter.equals("friends")){// may add more parameters later, like family, gender or school()
-			throw new IllegalArgumentException("filter maa vaere friends");
-		}
-		else{
-			String sqlFbIdList = "";
-			UserRepository rep = new UserRepository();
-			users = rep.getFriendsOnEvent(sqlFbIdList, eventId);
-		}
-		
-		return users;
-	}
 	/**
 	 * setUkaProgramRepository is only used for testing.
 	 * @param repository
