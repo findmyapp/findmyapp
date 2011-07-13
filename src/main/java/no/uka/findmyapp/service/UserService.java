@@ -1,7 +1,9 @@
 package no.uka.findmyapp.service;
 
+
 import java.util.List;
 
+import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
@@ -26,7 +28,11 @@ public class UserService {
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
-
+	public List<Event> getEventsOnUser(int userId) {
+		UkaProgramRepository rep = new UkaProgramRepository();
+		return rep.getEventsOnUser(userId);
+		}
+	
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
@@ -34,5 +40,4 @@ public class UserService {
 	public List<Event> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
-
 }

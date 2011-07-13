@@ -7,6 +7,7 @@ import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
 
 import org.slf4j.Logger;
@@ -110,6 +111,19 @@ public class UkaProgramController {
 		logger.info("get all ukaprograms");
 		List<UkaProgramConfiguration> configs = ukaProgramService.getUkaProgramConfiguration();
 		return new ModelAndView("json", "ukaProgram", configs);
+	}
+
+	@RequestMapping(value = "/program/{ukaYear}/events/{id}/users", method = RequestMethod.GET)
+	public ModelAndView getUsersOnEvent(
+			@PathVariable String ukaYear,
+			@PathVariable("id") int eventId,//Not sure if this is string or int yet.
+			@RequestParam String filter,
+			@RequestParam String auth){
+		List<User> users;
+		logger.info("getUsersOnEvent");
+		users = ukaProgramService.getUsersOnEvent(eventId, filter, auth);
+		
+		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(users));
 	}
 
 	/*

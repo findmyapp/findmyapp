@@ -1,4 +1,9 @@
 package no.uka.findmyapp.service;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,15 +12,22 @@ import no.uka.findmyapp.configuration.SearchConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
+
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
+
+import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.facebook.FacebookUserProfile;
 import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
+
 
 /**
  * This class is used between the UkaProgramController layer and the UkaProgramRepository layer. It contains most of the logic.
@@ -25,7 +37,7 @@ public class UkaProgramService {
 	
 	@Autowired
 	private UkaProgramRepository data;
-	
+			
 	@Autowired
 	private EditDistanceHelper edService;
 	
@@ -110,6 +122,7 @@ public class UkaProgramService {
 	 * @param id is the database id (primary key). 
 	 * @return is the event with the given id. If there is no such event then null is returned.
 	 */
+
 	public Event getUkaEventById(String ukaYear, int id)
 		throws UkaYearNotFoundException {
 		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
@@ -182,6 +195,20 @@ public class UkaProgramService {
 		}
 	}
 	
+	
+	public List<User> getUsersOnEvent(int eventId, String filter, String accessToken){
+		List<User> users;//TODO, add check on eventId and accessToken
+		if (!filter.equals("friends")){// may add more parameters later, like family, gender or school()
+			throw new IllegalArgumentException("filter maa vaere friends");
+		}
+		else{
+			String sqlFbIdList = "";
+			UserRepository rep = new UserRepository();
+			users = rep.getFriendsOnEvent(sqlFbIdList, eventId);
+		}
+		
+		return users;
+	}
 	/**
 	 * setUkaProgramRepository is only used for testing.
 	 * @param repository
@@ -206,5 +233,4 @@ public class UkaProgramService {
 		this.ukaProgramConfigurationList = list;
 		
 	}
-	
 }
