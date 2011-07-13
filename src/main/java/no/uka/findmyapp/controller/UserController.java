@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
@@ -27,13 +27,6 @@ public class UserController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserController.class);
 
-	@RequestMapping(value = "/{id}/friend/all", method = RequestMethod.GET)
-	public ModelMap getAllFriends(@PathVariable("id") int userId, ModelMap model) {
-		List<User> friends = service.getAllFriends(userId);
-		model.addAttribute(friends);
-		return model;
-	}
-	
 	@RequestMapping(value = "/friends")
 	public ModelAndView getRegisteredFacebookFriends(@RequestParam String accessToken) {
 		ModelAndView mav = new ModelAndView();
@@ -42,6 +35,16 @@ public class UserController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/{id}/events", method= RequestMethod.GET)
+	public List<Event> getEventsOnUser(@PathVariable("id") int userId){
+		List<Event> events;
+		logger.info("getEventsOnUser -controller");
+		events = service.getEventsOnUser(userId);
+		logger.info("got events!");
+		return events;
+		
+	}
+
 	@RequestMapping(value = "/{id}/event/{eventId}", method = RequestMethod.POST)
 	public ModelMap addEvent(@PathVariable("id") int userId, @PathVariable("eventId") long eventId, ModelMap model) {
 		boolean addEvent = service.addEvent(userId, eventId);

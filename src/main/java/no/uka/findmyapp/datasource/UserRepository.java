@@ -28,17 +28,9 @@ public class UserRepository {
 	private JdbcTemplate jdbcTemplate;
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserRepository.class);
-	
+
 	@Autowired
 	DataSource dataSource;
-
-	public List<User> getAllFriends(int userId) {
-		return jdbcTemplate.query("SELECT u.* " + "FROM USER u, FRIENDS f "
-				+ "WHERE u.user_id=f.user1_id AND f.user2_id = ? " + "UNION "
-				+ "SELECT u.* " + "FROM USER u, FRIENDS f "
-				+ "WHERE u.user_id=f.user2_id AND f.user1_id = ?",
-				new UserRowMapper(), userId, userId);
-	}
 
 	public boolean areFriends(int userId1, int userId2) {
 		final int id1 = userId1;
@@ -63,6 +55,18 @@ public class UserRepository {
 			return true;
 		else
 			return false;
+	}
+
+	public List<User> getUsersOnEvent(String sqlFriendList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<User> getFriendsOnEvent(String facebookFriends, int eventId) {
+		return jdbcTemplate
+				.query("SELECT USER.* FROM USER_EVENT, USER WHERE USER_EVENT.user_id = USER.user_id"
+						+ "AND USER_EVENT.event_id =? AND USER.facebook_id IN?",
+						new UserRowMapper(), eventId, facebookFriends);
 	}
 
 	public boolean addEvent(int userId, long eventId) {
@@ -94,11 +98,12 @@ public class UserRepository {
 	}
 
 	public List<User> getRegisteredFacebookFriends(List<String> friendIds) {
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		List<User> users = namedParameterJdbcTemplate.query(
-				"SELECT * FROM USER WHERE facebook_id IN (:ids)", 
-				Collections.singletonMap("ids", friendIds),
-				new UserRowMapper());
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		List<User> users = namedParameterJdbcTemplate
+				.query("SELECT * FROM USER WHERE facebook_id IN (:ids)",
+						Collections.singletonMap("ids", friendIds),
+						new UserRowMapper());
 		return users;
 	}
 
