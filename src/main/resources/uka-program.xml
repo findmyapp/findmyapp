@@ -23,6 +23,7 @@
 						</bean>
 					</property>
 					<property name="ukaYear" value="uka11" />
+					<property name="title" value="unknown" />
 				</bean>
 				<bean class="no.uka.findmyapp.configuration.UkaProgramConfiguration">
 					<property name="startDate">
@@ -36,6 +37,7 @@
 						</bean>
 					</property>
 					<property name="ukaYear" value="uka09" />
+					<property name="title" value="Manifest" />
 				</bean>
 			</list>
 		</property>

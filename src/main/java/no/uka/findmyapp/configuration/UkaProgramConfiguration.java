@@ -12,10 +12,10 @@ public class UkaProgramConfiguration {
 	/**
 	 * Default values
 	 */
-	Date startDate = new Date(1);
-	Date endDate = new Date(10);
-	String ukaYear = "s";
-	
+	private Date startDate = new Date(1);
+	private Date endDate = new Date(10);
+	private String ukaYear = "s";
+	private String title = "unknown";
 	
 	public Date getStartDate() {
 		return startDate;
@@ -37,6 +37,12 @@ public class UkaProgramConfiguration {
 	}
 	public String toString() {
 		return ukaYear+" - "+startDate+" - "+endDate;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getTitle() {
+		return title;
 	}
 
 

@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-
 @Controller
 public class UkaProgramController {
 
@@ -36,8 +34,6 @@ public class UkaProgramController {
 	private UkaProgramService ukaProgramService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private Gson gson;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramController.class);
