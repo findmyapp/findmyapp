@@ -10,7 +10,9 @@
 	<properties>
 		<java-version>1.6</java-version>
 		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
+		<org.springframework.security-version>3.1.0.RC2</org.springframework.security-version>
 		<org.springframework.roo-version>1.0.2.RELEASE</org.springframework.roo-version>
+		<org.springframework.social-version>1.0.0.RC1</org.springframework.social-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>
 	</properties>
@@ -53,24 +55,41 @@
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
-		
+
+		<!-- Spring Social -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-core</artifactId>
+			<version>${org.springframework.social-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-web</artifactId>
+			<version>${org.springframework.social-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${org.springframework.social-version}</version>
+		</dependency>
+
 		<!-- Roo dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -236,7 +255,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
 		</dependency>
-
 	</dependencies>
 
 	<repositories>
@@ -369,30 +387,47 @@
 								</goals>
 								<configuration>
 									<tool>wadlexport</tool>
-									<outputFolder>${project.build.directory}/${project.build.finalName}/api</outputFolder>
+									<outputFolder>${project.build.directory}/wadl</outputFolder>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-patch-plugin</artifactId>
-						<version>1.1.1</version>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>xml-maven-plugin</artifactId>
+						<version>1.0</version>
 						<configuration>
-							<patches>
-								<patch>wadl-xslt.patch</patch>
-							</patches>
-							<targetDirectory>${project.build.directory}/${project.build.finalName}/api/</targetDirectory>
+							<transformationSets>
+								<transformationSet>
+									<dir>${project.build.directory}/wadl</dir>
+									<stylesheet>src/main/xslt/wadl.xsl</stylesheet>
+									<outputDir>${project.build.directory}/${project.build.finalName}/api</outputDir>
+									<fileMappers>
+										<fileMapper
+											implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+											<targetExtension>.html</targetExtension>
+										</fileMapper>
+									</fileMappers>
+								</transformationSet>
+							</transformationSets>
 						</configuration>
 						<executions>
 							<execution>
-								<id>patch-wadl</id>
+								<id>transform-wadl</id>
 								<phase>process-resources</phase>
 								<goals>
-									<goal>apply</goal>
+									<goal>transform</goal>
 								</goals>
 							</execution>
 						</executions>
+						<dependencies>
+							<!-- XSLT 2.0 -->
+							<dependency>
+								<groupId>net.sf.saxon</groupId>
+								<artifactId>saxon</artifactId>
+								<version>8.7</version>
+							</dependency>
+						</dependencies>
 					</plugin>
 				</plugins>
 			</build>

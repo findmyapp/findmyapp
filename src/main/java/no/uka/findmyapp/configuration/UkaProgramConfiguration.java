@@ -14,7 +14,7 @@ public class UkaProgramConfiguration {
 	 */
 	Date startDate = new Date(1);
 	Date endDate = new Date(10);
-	String ukaYearForStartAndEndDate = "s";
+	String ukaYear = "s";
 	
 	
 	public Date getStartDate() {
@@ -29,11 +29,14 @@ public class UkaProgramConfiguration {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public String getUkaYearForStartAndEndDate() {
-		return ukaYearForStartAndEndDate;
+	public String getUkaYear() {
+		return ukaYear;
 	}
-	public void setUkaYearForStartAndEndDate(String ukaYearForStartAndEndDate) {
-		this.ukaYearForStartAndEndDate = ukaYearForStartAndEndDate;
+	public void setUkaYear(String ukaYear) {
+		this.ukaYear = ukaYear;
+	}
+	public String toString() {
+		return ukaYear+" - "+startDate+" - "+endDate;
 	}
 
 

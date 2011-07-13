@@ -1,7 +1,9 @@
 package no.uka.findmyapp.service;
 
+
 import java.util.List;
 
+import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
@@ -10,28 +12,28 @@ import no.uka.findmyapp.model.UserPrivacy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-	@Autowired
-	private UserRepository data;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserService.class);
 
-	public List<User> getAllFriends(int userId) {
-		return data.getAllFriends(userId);
-	}
-	
+	@Autowired
+	private UserRepository data;
+
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
-
-	public boolean addEvent(int userId, int eventId) {
+		
+	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
-	
+
 	public List<Event> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
@@ -83,6 +85,7 @@ public class UserService {
 		}
 	}
 
+
 		
 	public void updatePrivacy(int userId, int newPosition, int newEvents, int newMoney, int newMedia){		
 		 data.updatePrivacy(userId, newPosition, newEvents, newMoney, newMedia);
@@ -96,6 +99,24 @@ public class UserService {
 	
 	public int createDefaultPrivacySettingsEntry(){
 		return data.createDefaultPrivacySettingsEntry();
+	}
+
+	public List<User> getRegisteredFacebookFriends(String accessToken) {
+		List<String> friendIds = getFacebookFriends(accessToken);
+		List<User> users = data.getRegisteredFacebookFriends(friendIds);
+		return users;
+	}
+
+	public List<User> getFriendsAtEvent(int eventId, String accessToken) {
+		List<String> friendIds = getFacebookFriends(accessToken);
+		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
+		return users;
+	}
+	
+	private List<String> getFacebookFriends(String accessToken) {
+		Facebook facebook = new FacebookTemplate(accessToken);
+		List<String> friendIds = facebook.friendOperations().getFriendIds();
+		return friendIds;
 	}
 }
 

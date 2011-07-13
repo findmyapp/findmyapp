@@ -92,6 +92,11 @@ public class LocationRepository {
 		return users;
 	}
 
+	public int getUserCountAtLocation(int locationId) {
+		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ?", locationId);
+		return count;
+	}
+
 	public List<Location> getAllLocations() {
 		List<Location> locations = jdbcTemplate.query(
 				"SELECT * FROM POSITION_LOCATION", new LocationRowMapper());

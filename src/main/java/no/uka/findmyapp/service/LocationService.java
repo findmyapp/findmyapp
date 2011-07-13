@@ -33,6 +33,10 @@ public class LocationService {
 		return data.getUsersAtLocation(locationId);
 	}
 
+	public int getUserCountAtLocation(int locationId){
+		return data.getUserCountAtLocation(locationId);
+	}
+	
 	public boolean registerSample(Sample sample) {
 		return data.registerSample(sample);
 	}
