@@ -82,8 +82,7 @@ public class LocationController {
 	@RequestMapping(value = "/{id}/usercount", method = RequestMethod.GET)
 	public ModelAndView getUserCountAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUserCountAtLocation ( " + locationId + ")");
-		int count = 0;
-		//int total = service.getBeertapSum(locationId,tapNr, from, to);
+		int count = service.getUserCountAtLocation(locationId);
 		return new ModelAndView("pos","usercount", count);
 	}
 
