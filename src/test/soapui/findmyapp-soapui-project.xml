@@ -212,7 +212,7 @@
                   <con:style>QUERY</con:style>
                   <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type>
                   <con:default/>
-                  <con:description xsi:nil="true"/>
+                  <con:description>The date of the first day you want information from the beertap. The parameter is optional. If not not in use, the "from"-date will be set to the first day of the period. The format of a date: yyyy-MM-dd'T'hh:mm:ss.SSSZ Example: 2007-07-05T01:00:00.0Z </con:description>
                 </con:parameter>
                 <con:parameter>
                   <con:name>to</con:name>
@@ -220,11 +220,11 @@
                   <con:style>QUERY</con:style>
                   <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:dateTime</con:type>
                   <con:default/>
-                </con:parameter>
+                <con:description>The date of the last day you want information from the beertap. The parameter is optional. If not in use, the "to"-date is set to the current day/last day of the period. Format of a date: yyyy-MM-dd'T'hh:mm:ss.SSSZ Example: 2007-07-05T06:00:00.0Z </con:description></con:parameter>
                 <con:parameter>
                   <con:name>sum</con:name>
                   <con:style>QUERY</con:style>
-                </con:parameter>
+                <con:option>true</con:option><con:option>false</con:option><con:description>If true, returns the number of consumed beers between the from and to date. If false, returns the number of consumed beers from each beertap from every day between the from and to date.</con:description></con:parameter>
               </con:parameters>
               <con:representation type="FAULT">
                 <con:mediaType>text/html</con:mediaType>
@@ -613,9 +613,9 @@
             <con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="id" value="2"/>
-              <con:entry key="tapId" value="31"/>
-            </con:parameters>
+  <con:entry key="id" value="2"/>
+  <con:entry key="tapId" value="31"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -663,10 +663,10 @@
             <con:credentials><con:username xsi:nil="true"/><con:password xsi:nil="true"/><con:domain xsi:nil="true"/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="id" value="2"/>
-              <con:entry key="sum" value="true"/>
-              <con:entry key="tapId" value="31"/>
-            </con:parameters>
+  <con:entry key="id" value="2"/>
+  <con:entry key="sum" value="true"/>
+  <con:entry key="tapId" value="31"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
