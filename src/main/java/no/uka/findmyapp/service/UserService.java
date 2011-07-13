@@ -42,10 +42,21 @@ public class UserService {
 	}
 
 	public List<User> getRegisteredFacebookFriends(String accessToken) {
-		Facebook facebook = new FacebookTemplate(accessToken);
-		List<String> friendIds = facebook.friendOperations().getFriendIds();
+		List<String> friendIds = getFacebookFriends(accessToken);
 		List<User> users = data.getRegisteredFacebookFriends(friendIds);
 		return users;
 	}
 
+	public List<User> getFriendsAtEvent(int eventId, String accessToken) {
+		List<String> friendIds = getFacebookFriends(accessToken);
+		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
+		return users;
+	}
+	
+	private List<String> getFacebookFriends(String accessToken) {
+		Facebook facebook = new FacebookTemplate(accessToken);
+		List<String> friendIds = facebook.friendOperations().getFriendIds();
+		return friendIds;
+	}
+	
 }

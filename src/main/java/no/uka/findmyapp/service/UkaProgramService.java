@@ -233,4 +233,5 @@ public class UkaProgramService {
 		this.ukaProgramConfigurationList = list;
 		
 	}
+
 }

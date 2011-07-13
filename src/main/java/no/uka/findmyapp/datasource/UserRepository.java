@@ -3,7 +3,9 @@ package no.uka.findmyapp.datasource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -104,6 +106,17 @@ public class UserRepository {
 				.query("SELECT * FROM USER WHERE facebook_id IN (:ids)",
 						Collections.singletonMap("ids", friendIds),
 						new UserRowMapper());
+		return users;
+	}
+
+	public List<User> getFacebookFriendsAtEvent(int eventId,
+			List<String> friendIds) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("eventid", eventId);
+		namedParameters.put("ids", friendIds);
+		
+		List<User> users = namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, USER_EVENT e WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)", namedParameters, new UserRowMapper());
 		return users;
 	}
 
