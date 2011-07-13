@@ -11,20 +11,20 @@ import no.uka.findmyapp.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-	@Autowired
-	private UserRepository data;
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserService.class);
 
-	public List<User> getAllFriends(int userId) {
-		return data.getAllFriends(userId);
-	}
-	
+	@Autowired
+	private UserRepository data;
+
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
@@ -36,8 +36,16 @@ public class UserService {
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
-	
+
 	public List<Event> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
+
+	public List<User> getRegisteredFacebookFriends(String accessToken) {
+		Facebook facebook = new FacebookTemplate(accessToken);
+		List<String> friendIds = facebook.friendOperations().getFriendIds();
+		List<User> users = data.getRegisteredFacebookFriends(friendIds);
+		return users;
+	}
+
 }
