@@ -93,8 +93,7 @@ public class LocationRepository {
 	}
 
 	public int getUserCountAtLocation(int locationId) {
-		int count = 0;
-		jdbcTemplate.queryForInt("SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ?", locationId);
+		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ?", locationId);
 		return count;
 	}
 
