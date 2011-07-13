@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPrivacy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +77,43 @@ public class UserRepository {
 	
 	public List<Event> getEvents(int userId) {
 		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
-				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", new EventRowMapper(), userId);
+				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", 
+				new EventRowMapper(), userId);
 		return events;
 	}
+
 	
+//	Henter data, ok testet i db
+	public UserPrivacy retrievePrivacy(int userId) {
+		UserPrivacy privacy = jdbcTemplate.queryForObject(
+				"SELECT USER_PRIVACY_SETTINGS.* FROM USER, USER_PRIVACY_SETTINGS " + 
+				"WHERE USER.user_id = "+ userId + " AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+				new UserPrivacyRowMapper());
+		return privacy;
+	}
+
+	
+//	update, ok testet i db
+	public void updatePrivacy(int userId, int newPosition, int newEvents, int newMoney, int newMedia) {
+		int temp = jdbcTemplate.update(
+				"UPDATE USER, USER_PRIVACY_SETTINGS " + 
+				"SET USER_PRIVACY_SETTINGS.position = ? ," +
+				"USER_PRIVACY_SETTINGS.events = ? ," +
+				"USER_PRIVACY_SETTINGS.money = ? ," +
+				"USER_PRIVACY_SETTINGS.media = ? " +
+				"WHERE USER.user_id = ? AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+				int.class, newPosition, newEvents, newMoney, newMedia, userId);
+	}
+	
+	
+// Lager defaults settings, ok testet i db
+	public int createDefaultPrivacySettingsEntry() {
+		jdbcTemplate.execute(
+				"INSERT INTO USER_PRIVACY_SETTINGS " + 
+				"(position, events, money, media) VALUES (2, 2, 2, 2)");
+		int user_privacy_id = jdbcTemplate.queryForInt(
+				"SELECT user_privacy_id FROM USER_PRIVACY_SETTINGS ORDER BY user_privacy_id DESC LIMIT 1");
+		return user_privacy_id;
+	}
+
 }
