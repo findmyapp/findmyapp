@@ -3,6 +3,7 @@ package no.uka.findmyapp.service;
 
 import java.util.List;
 
+import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
@@ -39,4 +40,4 @@ public class UserService {
 	public List<Event> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
-
+}

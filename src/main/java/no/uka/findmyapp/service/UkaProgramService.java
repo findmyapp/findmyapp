@@ -119,15 +119,10 @@ public class UkaProgramService {
 	 * @return is the event with the given id. If there is no such event then null is returned.
 	 */
 	public Event getUkaEventById(String ukaYear, int id){
-<<<<<<< HEAD
-		
-		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
-=======
+
 		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
 		if (config == null) {
 			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
->>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937
 		}
 		Date from = config.getStartDate();
 		Date to = config.getEndDate();
@@ -231,10 +226,4 @@ public class UkaProgramService {
 		this.ukaProgramConfigurationList = list;
 		
 	}
-	
-<<<<<<< HEAD
-
-	
-=======
->>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937
 }
