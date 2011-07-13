@@ -85,7 +85,7 @@ public class UkaProgramController {
 		return new ModelAndView("json", "places", places);
 	}
 	
-	@RequestMapping(value = "/program/{ukaYear}/{place}/next", method = RequestMethod.GET)
+	@RequestMapping(value = "/program/{ukaYear}/places/{place}/next", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getNextUkaEvent(
 			@PathVariable String ukaYear, @PathVariable String place)
@@ -137,7 +137,7 @@ public class UkaProgramController {
 	*/
 	
 
-	@RequestMapping(value = "/program/{ukaYear}/event/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/program/{ukaYear}/events/{id}", method = RequestMethod.GET)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
 			@PathVariable int id, @PathVariable String ukaYear) 
@@ -146,7 +146,7 @@ public class UkaProgramController {
 		logger.info("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(ukaYear, id);
 
-		return new ModelAndView("event", "event", gson.toJson(event));
+		return new ModelAndView("json", "event", event);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
