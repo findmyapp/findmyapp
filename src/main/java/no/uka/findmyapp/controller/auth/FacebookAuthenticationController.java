@@ -2,15 +2,10 @@ package no.uka.findmyapp.controller.auth;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL; 
-import java.net.URLConnection;
 
 import no.uka.findmyapp.datasource.FacebookAuthenticationDataHandler;
-import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.facebook.FacebookUserProfile;
-//import no.uka.findmyapp.model.;
+import no.uka.findmyapp.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +42,8 @@ public class FacebookAuthenticationController
 		FacebookUserProfile fbp = new FacebookUserProfile(); // default null
 		 
 		try {
-			String userdata = this.getUserdataFromFacebook(facebookUrl);
+			UserService userservice = new UserService();
+			String userdata = this.parseUserdataFromFacebook(userservice.getUserdataFromFacebook(facebookUrl));
 			logger.info("userdata: " + userdata);
 			fbp = this.parseFacebookProfile(userdata);
 			logger.info("fbp.toString(): " + gson.toJson(fbp));
@@ -77,12 +73,23 @@ public class FacebookAuthenticationController
 		return gson.fromJson(fbdata, FacebookUserProfile.class);
 	}
 	
-	private String getUserdataFromFacebook(String urlWithaccessToken) throws IOException {
+	/*private String getUserdataFromFacebook(String urlWithaccessToken) throws IOException {
 		URL url = new URL(urlWithaccessToken);
 		URLConnection connection = url.openConnection();
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		StringBuilder content = new StringBuilder();
 
+		String line; 
+		while((line = bufferedReader.readLine()) != null) {
+			content.append(line + "\n");
+		}
+		bufferedReader.close();
+		logger.info("FacebookAuticationController:89: " + content.toString());
+		
+		return content.toString(); 
+	}*/
+	private String parseUserdataFromFacebook(BufferedReader bufferedReader) throws IOException {
+		StringBuilder content = new StringBuilder();
 		String line; 
 		while((line = bufferedReader.readLine()) != null) {
 			content.append(line + "\n");

@@ -110,10 +110,11 @@ public class UkaProgramController {
 	public ModelAndView getUsersOnEvent(
 			@PathVariable String ukaYear,
 			@PathVariable("id") int eventId,//Not sure if this is string or int yet.
-			@RequestParam String filter){
+			@RequestParam String filter,
+			@RequestParam String auth){
 		List<User> users;
 		logger.info("getUsersOnEvent");
-		users = ukaProgramService.getUsersOnEvent(eventId, filter);
+		users = ukaProgramService.getUsersOnEvent(eventId, filter, auth);
 		
 		return new ModelAndView("beginningAndEndDates", "beginningAndEndDates", gson.toJson(users));
 	}
