@@ -31,7 +31,7 @@ public class UserService {
 	public List<Event> getEventsOnUser(int userId) {
 		UkaProgramRepository rep = new UkaProgramRepository();
 		return rep.getEventsOnUser(userId);
-		}
+	}
 	
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);

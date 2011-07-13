@@ -68,7 +68,8 @@ public class UkaProgramRepository {
 	}
 
 	public List<Event> getEventsOnUser(int userId) {
-		return jdbcTemplate.query("SELECT event_showing_real.*,events_event.* FROM USER_EVENT, event_showing_real ," +
+		logger.info("look up for"+ userId);
+		return jdbcTemplate.query("SELECT * FROM USER_EVENT, event_showing_real ," +
 				" events_event WHERE USER_EVENT.user_id = ? AND event_showing_real.event_id=events_event.id", 
 				new EventRowMapper(),userId);
 	}
