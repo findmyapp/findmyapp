@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
+import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.User;
 
 import org.slf4j.Logger;
@@ -51,6 +53,7 @@ public class UserRepository {
 		else return false;
 	}
 
+<<<<<<< HEAD
 	public List<User> getUsersOnEvent(String sqlFriendList) {
 		// TODO Auto-generated method stub
 		return null;
@@ -63,3 +66,32 @@ public class UserRepository {
 				new UserRowMapper(), eventId,facebookFriends);
 		}
 }
+=======
+	public boolean addEvent(int userId, long eventId) {
+		try {
+			final long event_id = eventId;
+			final int user_id = userId;
+			jdbcTemplate.update(
+					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)",
+					new PreparedStatementSetter() {
+						public void setValues(PreparedStatement ps)
+								throws SQLException {
+							ps.setInt(1, user_id);
+							ps.setLong(2, event_id);
+						}
+					});
+			return true;
+		} catch (Exception e) {
+			logger.error("Could not register given location: " + e);
+			return false;
+		}
+	}
+	
+	public List<Event> getEvents(int userId) {
+		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
+				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", new EventRowMapper(), userId);
+		return events;
+	}
+	
+}
+>>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937

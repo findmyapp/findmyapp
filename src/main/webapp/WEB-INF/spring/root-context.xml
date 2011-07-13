@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.4.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -43,44 +44,47 @@
 			<value>${search.depth}</value>
 		</property>
 	</bean>
-
-	<bean id="ukaProgramConfiguration" class="no.uka.findmyapp.configuration.UkaProgramConfiguration">
-		<property name="startDate">
-			<value>${ukaProgram.startDate}</value>
-		</property>
-		<property name="endDate">
-			<value>${ukaProgram.endDate}</value>
-		</property>
-		<property name="ukaYearForStartAndEndDate">
-			<value>${ukaProgram.ukaYearForStartAndEndDate}</value>
-		</property>
-	</bean>
-
+	
+	<import resource="classpath:uka-program.xml" />
+	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-		<sec:global-method-security
+
+	<security:global-method-security
 		secured-annotations="enabled" />
-	<sec:http auto-config="true">
-		<sec:intercept-url pattern="/ping" access="ROLE_ADMIN"/>
-		<sec:http-basic/>
-	</sec:http>
-	
+	<security:http auto-config="true">
+<!-- 		<security:intercept-url pattern="/**" filters="none"/> -->
+<!-- 		<security:intercept-url pattern="/location/**" access="ROLE_SENSOR" method="POST"/> -->
+		<security:http-basic />
+	</security:http>
+
 	<!-- Declare an authentication-manager to use a custom userDetailsService -->
-	<sec:authentication-manager>
-		<sec:authentication-provider
+	<security:authentication-manager>
+		<security:authentication-provider
 			user-service-ref="userDetailsService">
-			<sec:password-encoder ref="passwordEncoder" />
-		</sec:authentication-provider>
-	</sec:authentication-manager>
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
 
 	<bean
-		class="org.springframework.security.authentication.encoding.PlaintextPasswordEncoder"
-		id="passwordEncoder" />
-	<sec:user-service id="userDetailsService">
-		<sec:user name="john" password="john" authorities="ROLE_USER, ROLE_ADMIN" />
-		<sec:user name="jane" password="jane" authorities="ROLE_USER" />
-	</sec:user-service>
-	
+		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"
+		id="passwordEncoder">
+		<constructor-arg value="256" />
+	</bean>
+	<security:user-service id="userDetailsService">
+		<security:user name="wordpress"
+			password="d6ef441296e261a73cedc89faa2643cec5b71b114e2870ea24e6e1738e091429"
+			authorities="ROLE_WORDPRESS" />
+		<security:user name="sensor"
+			password="18e788d1f9fa1c3b5092075863e2f107af757c29bba8c91516b8513d352afc1a"
+			authorities="ROLE_SENSOR" />
+		<security:user name="ping"
+			password="758d61f26a44448384e5c4468a0dcb7a2abe456067b0f7b505bc28b9411fe931"
+			authorities="ROLE_PING" />
+		<security:user name="sampler" 
+			password="4c75617abecff91a061ec30cf5e5047dbff001605df879b2d838280ad15aa0ce"
+			authorities="ROLE_SAMPLER"/>
+	</security:user-service>
+
 </beans>

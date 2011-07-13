@@ -32,6 +32,7 @@ public class UserController {
 		return model;
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping(value = "/{id}/events", method= RequestMethod.GET)
 	public List<Event> getEventsOnUser(@PathVariable("id") int userId){
 		List<Event> events;
@@ -42,4 +43,19 @@ public class UserController {
 		
 	}
 
+=======
+	@RequestMapping(value = "/{id}/event/{eventId}", method = RequestMethod.POST)
+	public ModelMap addEvent(@PathVariable("id") int userId, @PathVariable("eventId") long eventId, ModelMap model) {
+		boolean addEvent = service.addEvent(userId, eventId);
+		model.addAttribute(addEvent);
+		return model;
+	}
+	
+	@RequestMapping(value = "/{id}/event/all", method = RequestMethod.GET)
+	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
+		List<Event> events = service.getEvents(userId);
+		model.addAttribute(events);
+		return model;
+	}
+>>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937
 }

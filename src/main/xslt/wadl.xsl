@@ -231,6 +231,19 @@
                     
                             <xsl:call-template name="getRepresentations"/>
                         </xsl:for-each> <!-- wadl:request -->
+                        
+          				<a>
+          					<xsl:attribute name="href">
+          						<xsl:variable name="name" select="@name"/>
+				                <xsl:call-template name="getFullResourcePath">
+									<xsl:with-param name="base" select="replace($resourceBase, $g_resourcesBase, concat($g_resourcesBase, '/api/examples'))"/>
+									<xsl:with-param name="path" select="concat($resourcePath, '/', $name, '.html')"/>
+								</xsl:call-template>
+								
+          					</xsl:attribute>
+          					Example
+          				</a>
+                        
                     </xsl:when>
     
                     <xsl:when test="not(wadl:request) and (ancestor::wadl:*/wadl:param)">

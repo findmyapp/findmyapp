@@ -10,6 +10,7 @@ import java.util.List;
 
 import no.uka.findmyapp.configuration.SearchConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
+import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.Event;
@@ -41,7 +42,7 @@ public class UkaProgramService {
 	private SearchConfiguration searchConfiguration;
 	
 	@Autowired
-	private	UkaProgramConfiguration ukaProgramConfiguration;
+	private	UkaProgramConfigurationList ukaProgramConfigurationList;
 	
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
@@ -52,58 +53,64 @@ public class UkaProgramService {
 	 * @return is a list of all the events sorted by relevance, wrapped inside UkaProgram. 
 	 */
 	public  UkaProgram titleSearch(String ukaYear, String qry) {
-		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
-		}
 		logger.info("MinLength is " + searchConfiguration.getMinLength());
 		logger.info("Depth is " + searchConfiguration.getDepth());
 		
-		if (qry.replace(" ", "").length() < searchConfiguration.getMinLength()) {//too short query return empty
-			return new UkaProgram();
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
 		}
-		//todo: add all events in repo to prg
-
-		//search for match:
-		ArrayList<Event> prg = (ArrayList<Event>) data.getUkaProgram(); //for test
-		ArrayList<Event> retPrg = new ArrayList<Event>();
+		Date from = config.getStartDate();
+		Date to = config.getEndDate();
+		
+		
+		if (qry.replace(" ", "").length() < searchConfiguration.getMinLength()) {
+			throw new IllegalArgumentException("Query too short");
+		}
+		ArrayList<Event> allEvents = (ArrayList<Event>) data.getUkaProgram(from, to); //for test
+		ArrayList<Event> matchedEvents = new ArrayList<Event>();
 		int index[] = new int[searchConfiguration.getDepth()]; //index for sorting
 
 		int ED;
-		for (int i = 0; i < prg.size(); i++) {
-			ED = edService.splitDistance(prg.get(i).getTitle(), qry);
+		for (int i = 0; i < allEvents.size(); i++) {
+			ED = edService.splitDistance(allEvents.get(i).getTitle(), qry);
 			if (ED < searchConfiguration.getDepth()) {
-				retPrg.add(index[ED], prg.get(i));
+				matchedEvents.add(index[ED], allEvents.get(i));
 				for (int j = ED; j < searchConfiguration.getDepth(); j++) {
 					index[j]++;
 				}
 			}
 		}
-		return new UkaProgram(retPrg);
-	} 
-
+		return new UkaProgram(matchedEvents);
+	}
+	
 	/**
 	 * getUkaPlaces returns all places where there is one event occurring.
 	 * @return list of places (identified by their names)
 	 */
 	public List<String> getUkaPlaces(String ukaYear){
-		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
 		}
-		List<String> places;
-		places = data.getUkaPlaces();
-		return places;
+		Date from = config.getStartDate();
+		Date to = config.getEndDate();
+		return data.getUkaPlaces(from, to);
 	}
 	
-	/*
+	/**
 	 * getNextUkaEvent returns the next event that takes place in the given input place
 	 * @param place is the event place you want to ask for
 	 * @return an event
 	 */
 	public Event getNextUkaEvent(String ukaYear, String place) {
-		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
 		}
-		return data.getNextUkaEvent(place);
+		Date from = config.getStartDate();
+		Date to = config.getEndDate();
+		return data.getNextUkaEvent(place, from, to);
 	}
 	
 	/**
@@ -112,13 +119,19 @@ public class UkaProgramService {
 	 * @return is the event with the given id. If there is no such event then null is returned.
 	 */
 	public Event getUkaEventById(String ukaYear, int id){
+<<<<<<< HEAD
 		
 		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
 			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+=======
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
+>>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937
 		}
-		Event event;
-		event = data.getUkaEventById(id);
-		return event;
+		Date from = config.getStartDate();
+		Date to = config.getEndDate();
+		return data.getUkaEventById(id, from, to);
 	}
 
 	/**
@@ -130,52 +143,55 @@ public class UkaProgramService {
 	 * @param place can be used alone or together with date or to/from. When place is specified only events occurring at this place are returned. 
 	 * @return a list of events wrapped inside an instance of the UkaProgram class.
 	 */
-	public UkaProgram getUkaProgram(String ukaYear, Date date, Date from, Date to, Boolean all, String place){
-		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+	public UkaProgram getUkaProgram(String ukaYear, Date date, Date from, Date to, String place){
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
+		}
+		if (date != null) {
+			from = date;
+			to = new Date(date.getTime()+86400000);// to =  (date+24h)
 		}
 		
 		UkaProgram program = new UkaProgram();
+		from = getFromDate(config, from);
+		to = getToDate(config, to);
 
 		if (place==null){
-			if (date!=null) {			
-				// Use date
-				List<Event> eventList = data.getUkaProgram(date);
-				program = new UkaProgram(eventList);
-
-			}else if(from != null && to != null) {
-				// Use from to
-				List<Event> eventList = data.getUkaProgram(from, to);
-				program = new UkaProgram(eventList);
-
-
-			}else if(all != null && all) {
-				List<Event> eventList = data.getUkaProgram();
-				program = new UkaProgram(eventList);
-
-			}else{
-				throw new IllegalArgumentException("Requesten maa inneholde fra og tildato, en bestemt dato eller flag for alle events");
-			}
+			program.setEvents(data.getUkaProgram(from, to));
 		}
-
 		else {
-
-			if (date!=null) {			
-				// Use date
-				List<Event> eventList = data.getUkaProgram(date, place);
-				program = new UkaProgram(eventList);
-
-			}else if(from != null && to != null) {
-				// Use from to
-				List<Event> eventList = data.getUkaProgram(from, to, place);
-				program = new UkaProgram(eventList);
-
-			}else {
-				List<Event> eventList = data.getUkaProgram(place);
-				program = new UkaProgram(eventList);
-			}
+			program.setEvents(data.getUkaProgram(from, to, place));
 		}
 		return program;
+	}
+	/**
+	 * Private method for getting the last date of arguments
+	 * @param config 
+	 * @param date
+	 * @return
+	 */
+	private Date getFromDate(UkaProgramConfiguration config, Date date) {
+		if (date == null || config.getStartDate().after(date)) {
+			return config.getStartDate();
+		}
+		else {
+			return date;
+		}
+	}
+	/**
+	 * Private method for getting the first date of arguments
+	 * @param config 
+	 * @param date
+	 * @return
+	 */
+	private Date getToDate(UkaProgramConfiguration config, Date date) {
+		if (date == null || config.getEndDate().before(date)) {
+			return config.getEndDate();
+		}
+		else {
+			return date;
+		}
 	}
 	
 	
@@ -200,21 +216,25 @@ public class UkaProgramService {
 		this.data = repository;
 	}
 
-	public List<Date> getUkaProgramStartEndDate(String ukaYear) {
-		if (!ukaYear.equals(ukaProgramConfiguration.getUkaYearForStartAndEndDate())){
-			throw new IllegalArgumentException("Requesten maa ha riktig ukaYear");
+	public List<UkaProgramConfiguration> getUkaProgramConfiguration() {
+		return ukaProgramConfigurationList.getList();
+	}
+	public UkaProgramConfiguration getUkaProgramConfiguration(String ukaYear) {
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new IllegalArgumentException("ukaYear "+ukaYear+" not found ");
 		}
-		List<Date> dates = new ArrayList<Date>();
-		dates.add(ukaProgramConfiguration.getStartDate());
-		dates.add(ukaProgramConfiguration.getEndDate());
-		return dates;
-	}
-
-	public void setUkaProgramConfiguration(
-			UkaProgramConfiguration ukaProgramConfiguration) {
-		this.ukaProgramConfiguration = ukaProgramConfiguration;
+		return config;
 	}
 	
+	public void setUkaProgramConfigurationList(UkaProgramConfigurationList list) {
+		this.ukaProgramConfigurationList = list;
+		
+	}
+	
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> 1436371ca4625a0d3e94b37fe71b1bb750d48937
 }
