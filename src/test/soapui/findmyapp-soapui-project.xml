@@ -35,8 +35,8 @@
   <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:description>REST API for FindMyApp - UKA-11 student festival</con:description>
     <con:settings/>
-    <con:definitionCache type="TEXT" rootPart=""/>
-    <con:endpoints>
+    
+    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
       <con:endpoint>http://findmyapp.net</con:endpoint>
       <con:endpoint>http://localhost:8080</con:endpoint>
     </con:endpoints>
@@ -829,7 +829,7 @@
         </con:representation>
       </con:method>
     </con:resource>
-  </con:interface>
+  <con:resource name="users" path="/users"><con:settings/><con:parameters/><con:resource name="id" path="/{id}"><con:settings/><con:parameters/><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:method name="getEvents" method="GET"><con:description>Get all events registered on this user.</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>ID of the user you want events from.</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource></con:interface>
   <con:testSuite name="Services TestSuite">
     <con:description>TestSuite generated for REST Service [Services]</con:description>
     <con:settings/>
@@ -1683,7 +1683,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:properties/>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="getEvents"><con:settings/><con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getEvents" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
   </con:testSuite>
   <con:properties/>
   <con:wssContainer/>
