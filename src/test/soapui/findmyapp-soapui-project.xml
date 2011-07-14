@@ -828,7 +828,7 @@
                   <con:params/>
                   <con:element>data</con:element>
                 </con:representation>
-              <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500 404</con:status><con:params/><con:element>html</con:element></con:representation></con:method>
+              <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500 404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
             </con:resource>
           </con:resource>
           <con:method name="getAllPlaces" method="GET">
@@ -1875,9 +1875,7 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
+              <con:configuration><codes>200</codes></con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
               <con:configuration><token>"samfundet"</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration>
@@ -1890,9 +1888,9 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="place" value="bodegaen"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="place" value="samfundet"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
