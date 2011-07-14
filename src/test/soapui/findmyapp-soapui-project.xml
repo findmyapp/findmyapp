@@ -62,7 +62,7 @@
         </con:representation>
         <con:representation type="FAULT">
           <con:mediaType>text/html</con:mediaType>
-          <con:status>401</con:status>
+          <con:status>401 404</con:status>
           <con:params/>
           <con:element>html</con:element>
         </con:representation>
@@ -97,6 +97,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -134,6 +139,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -164,6 +174,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -188,6 +203,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -228,6 +248,11 @@
               </con:settings>
               <con:endpoint>http://findmyapp.net</con:endpoint>
               <con:request/>
+              <con:credentials>
+                <con:username xsi:nil="true"/>
+                <con:password xsi:nil="true"/>
+                <con:domain xsi:nil="true"/>
+              </con:credentials>
               <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
               <con:jmsPropertyConfig/>
               <con:parameters/>
@@ -257,6 +282,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -265,11 +295,11 @@
       </con:resource>
     </con:resource>
     <con:resource name="locations" path="locations">
-      <con:description>Location of something</con:description>
+      <con:description/>
       <con:settings/>
       <con:parameters/>
-      <con:resource name="id" path="{id}">
-        <con:description>ID of the location</con:description>
+      <con:resource name="location id" path="{id}">
+        <con:description/>
         <con:settings/>
         <con:parameters>
           <con:parameter required="true">
@@ -410,7 +440,7 @@
         </con:resource>
         <con:resource name="beertap" path="beertap">
           <con:settings/>
-          <con:parameters></con:parameters>
+          <con:parameters/>
           <con:resource name="tapId" path="{tapId}">
             <con:description>ID of the beer tap</con:description>
             <con:settings/>
@@ -487,6 +517,11 @@
               <con:settings/>
               <con:endpoint>http://findmyapp.net</con:endpoint>
               <con:request/>
+              <con:credentials>
+                <con:username xsi:nil="true"/>
+                <con:password xsi:nil="true"/>
+                <con:domain xsi:nil="true"/>
+              </con:credentials>
               <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
               <con:jmsPropertyConfig/>
               <con:parameters/>
@@ -496,17 +531,7 @@
         <con:method name="getLocation" method="GET">
           <con:description>Get the location with this location ID</con:description>
           <con:settings/>
-          <con:parameters>
-            <con:parameter>
-              <con:name>id</con:name>
-              <con:value/>
-              <con:style>TEMPLATE</con:style>
-              <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
-              <con:default/>
-              <con:path xsi:nil="true"/>
-              <con:description xsi:nil="true"/>
-            </con:parameter>
-          </con:parameters>
+          <con:parameters></con:parameters>
         </con:method>
       </con:resource>
       <con:resource name="friends" path="friends/{id}">
@@ -908,6 +933,11 @@
                 <con:settings/>
                 <con:endpoint>http://findmyapp.net</con:endpoint>
                 <con:request/>
+                <con:credentials>
+                  <con:username xsi:nil="true"/>
+                  <con:password xsi:nil="true"/>
+                  <con:domain xsi:nil="true"/>
+                </con:credentials>
                 <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
                 <con:jmsPropertyConfig/>
                 <con:parameters/>
@@ -1022,7 +1052,7 @@
       <con:testStep type="restrequest" name="Ping reject application/json">
         <con:settings/>
         <con:config service="FindMyApp" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="text/html">
+          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
@@ -1264,7 +1294,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/facts TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/facts TestCase" searchProperties="true" id="aa0683b4-9473-4286-afd0-16baa54564f6">
       <con:settings/>
       <con:testStep type="restrequest" name="Get facts">
         <con:settings/>
@@ -1478,6 +1508,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1510,6 +1545,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1544,6 +1584,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1574,6 +1619,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1605,6 +1655,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1636,6 +1691,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1667,6 +1727,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1694,6 +1759,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1718,6 +1788,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1742,6 +1817,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1774,6 +1854,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1805,6 +1890,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1832,6 +1922,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1857,6 +1952,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1879,6 +1979,11 @@
             <con:encoding>UTF-8</con:encoding>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1905,6 +2010,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1927,6 +2037,11 @@
             <con:encoding>UTF-8</con:encoding>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1949,6 +2064,11 @@
             <con:encoding>UTF-8</con:encoding>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1976,6 +2096,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
