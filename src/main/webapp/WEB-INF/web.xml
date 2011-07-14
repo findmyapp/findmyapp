@@ -46,6 +46,12 @@
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- API documentation -->
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/appstore/*</url-pattern>
+	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
