@@ -47,22 +47,23 @@ public class UserService {
 	}
 	
 
+	// We recommend using retrievePrivacy instead.
 	public PrivacySetting retrieveOnePrivacy(int userId, String privacyType) throws IllegalArgumentException{
 		// We could try to make an enum out of privacyType also, would this give two nested enum classes?
 		UserPrivacy privacy =  data.retrievePrivacy(userId);
 		privacyType = privacyType.toLowerCase();
 		
 		if (privacyType.equals("position")){
-			return privacy.getPosition();
+			return privacy.getPositionPrivacySetting();
 		}
 		else if (privacyType.equals("events")){
-			return privacy.getEvents();
+			return privacy.getEventsPrivacySetting();
 		}
 		else if (privacyType.equals("money")){
-			return privacy.getMoney();
+			return privacy.getMoneyPrivacySetting();
 		}
 		else if (privacyType.equals("media")){
-			return privacy.getMedia();
+			return privacy.getMediaPrivacySetting();
 		}
 		else{
 			throw new IllegalArgumentException("Function retreiveOnePrivacy was called with illegal input"); 
@@ -76,7 +77,7 @@ public class UserService {
 	}	
 	
 	public void updatePrivacy(int userId, UserPrivacy userPrivacy){	
-		 data.updatePrivacy(userId, userPrivacy.getPosition(), userPrivacy.getEvents(), userPrivacy.getMoney(), userPrivacy.getMedia());
+		 data.updatePrivacy(userId, userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
 	}
 	
 	
