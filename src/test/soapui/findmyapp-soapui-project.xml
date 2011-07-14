@@ -35,8 +35,8 @@
   <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:description>REST API for FindMyApp - UKA-11 student festival</con:description>
     <con:settings/>
-    
-    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
       <con:endpoint>http://findmyapp.net</con:endpoint>
       <con:endpoint>http://localhost:8080</con:endpoint>
     </con:endpoints>
@@ -269,6 +269,7 @@
       <con:settings/>
       <con:parameters/>
       <con:resource name="id" path="{id}">
+        <con:description>ID of the location</con:description>
         <con:settings/>
         <con:parameters>
           <con:parameter required="true">
@@ -319,25 +320,52 @@
         <con:resource name="humidity" path="humidity">
           <con:settings/>
           <con:parameters/>
-          <con:method name="Method 1" method="GET">
+          <con:method name="getHumidityData" method="GET">
+            <con:description>Get humidity data from a location</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:resource name="noise" path="noise">
           <con:settings/>
           <con:parameters/>
-          <con:method name="Method 1" method="GET">
+          <con:method name="getNoiseData" method="GET">
+            <con:description>Get noise data from a location</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>404</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:resource name="temperature" path="temperature">
           <con:settings/>
           <con:parameters/>
-          <con:method name="Method 1" method="GET">
+          <con:method name="getTemperatureData" method="GET">
+            <con:description>Get temperature data from a location</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:resource name="user" path="user">
@@ -398,22 +426,13 @@
         </con:resource>
         <con:resource name="beertap" path="beertap">
           <con:settings/>
-          <con:parameters>
-            <con:parameter>
-              <con:name>id</con:name>
-              <con:value>id</con:value>
-              <con:style>TEMPLATE</con:style>
-              <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
-              <con:default>id</con:default>
-              <con:path xsi:nil="true"/>
-              <con:description xsi:nil="true"/>
-            </con:parameter>
-          </con:parameters>
-          <con:resource name="id" path="{tapId}">
+          <con:parameters></con:parameters>
+          <con:resource name="tapId" path="{tapId}">
+            <con:description>ID of the beer tap</con:description>
             <con:settings/>
             <con:parameters/>
-            <con:method name="Get beer tap data" method="GET">
-              <con:description>Get data from beer tap. Returns all data or number of tapped beers in the interval between to and from or for the entire time period.</con:description>
+            <con:method name="getBeerTapData" method="GET">
+              <con:description>Get beer tap data from a location</con:description>
               <con:settings/>
               <con:parameters>
                 <con:parameter>
@@ -461,6 +480,34 @@
               </con:representation>
             </con:method>
           </con:resource>
+        </con:resource>
+        <con:resource name="usercount" path="usercount">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="getUserCount" method="GET">
+            <con:description>Get the number of users at a specific location</con:description>
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>404</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+            </con:representation>
+            <con:request name="Request 1" mediaType="application/xml">
+              <con:settings/>
+              <con:endpoint>http://findmyapp.net</con:endpoint>
+              <con:request/>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters/>
+            </con:request>
+          </con:method>
         </con:resource>
         <con:method name="getLocation" method="GET">
           <con:settings/>
@@ -829,7 +876,123 @@
         </con:representation>
       </con:method>
     </con:resource>
-  <con:resource name="users" path="/users"><con:settings/><con:parameters/><con:resource name="id" path="/{id}"><con:settings/><con:parameters/><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:resource name="eventId" path="/{eventId}"><con:settings/><con:parameters/><con:method name="addEvent" method="POST"><con:settings/><con:parameters><con:parameter><con:name>userId</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>eventId</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:request name="Request 1" mediaType="application/xml" postQueryString="false"><con:settings/><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:method name="getEvents" method="GET"><con:description>Get all events registered on this user.</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>ID of the user you want events from.</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:resource name="eventId" path="/{id}"><con:settings/><con:parameters/><con:resource name="friends" path="/friends"><con:settings/><con:parameters/><con:method name="getFriendsAttendingEvent" method="GET"><con:description>Returns a list of the users facebook friends that are attending an event spcified by the event Id</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default/><con:path xsi:nil="true"/><con:description>The event id of the event of interest</con:description></con:parameter><con:parameter><con:name>accessToken</con:name><con:value/><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>The users facebook access token. Needed to access facebook and get the users friend list.</con:description></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource></con:interface>
+    <con:resource name="users" path="/users">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="id" path="/{id}">
+        <con:settings/>
+        <con:parameters/>
+        <con:resource name="events" path="/events">
+          <con:settings/>
+          <con:parameters/>
+          <con:resource name="eventId" path="/{eventId}">
+            <con:settings/>
+            <con:parameters/>
+            <con:method name="addEvent" method="POST">
+              <con:settings/>
+              <con:parameters>
+                <con:parameter>
+                  <con:name>userId</con:name>
+                  <con:value/>
+                  <con:style>TEMPLATE</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                  <con:default/>
+                  <con:path xsi:nil="true"/>
+                  <con:description xsi:nil="true"/>
+                </con:parameter>
+                <con:parameter>
+                  <con:name>eventId</con:name>
+                  <con:value/>
+                  <con:style>TEMPLATE</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                  <con:default/>
+                  <con:path xsi:nil="true"/>
+                  <con:description xsi:nil="true"/>
+                </con:parameter>
+              </con:parameters>
+              <con:request name="Request 1" mediaType="application/xml" postQueryString="false">
+                <con:settings/>
+                <con:endpoint>http://findmyapp.net</con:endpoint>
+                <con:request/>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:parameters/>
+              </con:request>
+            </con:method>
+          </con:resource>
+          <con:method name="getEvents" method="GET">
+            <con:description>Get all events registered on this user.</con:description>
+            <con:settings/>
+            <con:parameters>
+              <con:parameter>
+                <con:name>id</con:name>
+                <con:value/>
+                <con:style>TEMPLATE</con:style>
+                <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                <con:default/>
+                <con:path xsi:nil="true"/>
+                <con:description>ID of the user you want events from.</con:description>
+              </con:parameter>
+            </con:parameters>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
+          </con:method>
+        </con:resource>
+      </con:resource>
+    </con:resource>
+    <con:resource name="events" path="/events">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="eventId" path="/{id}">
+        <con:settings/>
+        <con:parameters/>
+        <con:resource name="friends" path="/friends">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="getFriendsAttendingEvent" method="GET">
+            <con:description>Returns a list of the users facebook friends that are attending an event spcified by the event Id</con:description>
+            <con:settings/>
+            <con:parameters>
+              <con:parameter>
+                <con:name>id</con:name>
+                <con:value/>
+                <con:style>TEMPLATE</con:style>
+                <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type>
+                <con:default/>
+                <con:path xsi:nil="true"/>
+                <con:description>The event id of the event of interest</con:description>
+              </con:parameter>
+              <con:parameter>
+                <con:name>accessToken</con:name>
+                <con:value/>
+                <con:style>QUERY</con:style>
+                <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                <con:default/>
+                <con:path xsi:nil="true"/>
+                <con:description>The users facebook access token. Needed to access facebook and get the users friend list.</con:description>
+              </con:parameter>
+            </con:parameters>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>400</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
+          </con:method>
+        </con:resource>
+      </con:resource>
+    </con:resource>
+  </con:interface>
   <con:testSuite name="Services TestSuite">
     <con:description>TestSuite generated for REST Service [Services]</con:description>
     <con:settings/>
@@ -1175,7 +1338,7 @@
       <con:settings/>
       <con:testStep type="restrequest" name="Get beer tap data">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get beer tap data" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1204,7 +1367,7 @@
       </con:testStep>
       <con:testStep type="restrequest" name="Get beer tap data in period">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get beer tap data in period" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1235,7 +1398,7 @@
       </con:testStep>
       <con:testStep type="restrequest" name="Get number of beers">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get number of beers" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1265,7 +1428,7 @@
       </con:testStep>
       <con:testStep type="restrequest" name="Get number of beers in period">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get number of beers in period" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1683,7 +1846,126 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="getEvents"><con:settings/><con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getEvents" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="getEvents">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="getEvents" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/usercount" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="getUserCount">
+        <con:settings/>
+        <con:config service="FindMyApp" resourcePath="/findmyapp/locations/{id}/usercount" methodName="getUserCount" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="getUserCount" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/noise" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get noise data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getNoiseData" resourcePath="/findmyapp/locations/{id}/noise" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get noise data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/humidity" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get humidity data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getHumidityData" resourcePath="/findmyapp/locations/{id}/humidity" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get humidity data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/temperature" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get temperature data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getTemperatureData" resourcePath="/findmyapp/locations/{id}/temperature" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get temperature data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:properties/>
   </con:testSuite>
   <con:properties/>
   <con:wssContainer/>
