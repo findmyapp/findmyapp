@@ -793,7 +793,7 @@
               <con:params/>
               <con:element xmlns:even="http://findmyapp.net/findmyapp/program/uka11/events">even:Response</con:element>
             </con:representation>
-          </con:method>
+          <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
         </con:resource>
         <con:resource name="places" path="/places">
           <con:description>Places with events in uka</con:description>
@@ -1605,7 +1605,7 @@
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
             <con:encoding>UTF-8</con:encoding>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:endpoint>http://localhost:8080</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
               <con:configuration>
@@ -1627,9 +1627,9 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="place" value="dodens dal"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="place" value="samfundet"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -1641,7 +1641,7 @@
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
             <con:encoding>UTF-8</con:encoding>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:endpoint>http://localhost:8080</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
               <con:configuration>
@@ -1663,9 +1663,9 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="date" value="2011-10-10"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="date" value="2011-10-03"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
