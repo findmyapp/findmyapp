@@ -306,7 +306,7 @@
             </con:method>
           </con:resource>
           <con:method name="getFacts" method="GET">
-            <con:description>Get facts of a location</con:description>
+            <con:description>Get facts about a location</con:description>
             <con:settings/>
             <con:parameters/>
             <con:representation type="RESPONSE">
@@ -388,26 +388,10 @@
               <con:description>Registers a user to a location</con:description>
               <con:settings/>
               <con:parameters/>
-              <con:request name="Request 1" mediaType="application/xml" postQueryString="false">
-                <con:settings/>
-                <con:endpoint>http://findmyapp.net</con:endpoint>
-                <con:request/>
-                <con:credentials>
-                  <con:username xsi:nil="true"/>
-                  <con:password xsi:nil="true"/>
-                  <con:domain xsi:nil="true"/>
-                </con:credentials>
-                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-                <con:jmsPropertyConfig/>
-                <con:parameters>
-                  <con:entry key="id" value="awd"/>
-                  <con:entry key="userId" value="awd"/>
-                </con:parameters>
-              </con:request>
             </con:method>
           </con:resource>
           <con:method name="getUsersAtLocation" method="GET">
-            <con:description>Retreives users at a specific location</con:description>
+            <con:description>Retrieves all users at a specific location</con:description>
             <con:settings/>
             <con:parameters/>
             <con:representation type="FAULT">
@@ -485,7 +469,7 @@
           <con:settings/>
           <con:parameters/>
           <con:method name="getUserCount" method="GET">
-            <con:description>Get the number of users at a specific location</con:description>
+            <con:description>Get the number of users at a location</con:description>
             <con:settings/>
             <con:parameters/>
             <con:representation type="FAULT">
@@ -510,6 +494,7 @@
           </con:method>
         </con:resource>
         <con:method name="getLocation" method="GET">
+          <con:description>Get the location with this location ID</con:description>
           <con:settings/>
           <con:parameters>
             <con:parameter>
@@ -582,7 +567,8 @@
         <con:description>All users currently registered</con:description>
         <con:settings/>
         <con:parameters/>
-        <con:resource name="id" path="/{id}">
+        <con:resource name="id" path="{id}">
+          <con:description>User ID</con:description>
           <con:settings/>
           <con:parameters>
             <con:parameter>
@@ -596,8 +582,15 @@
             </con:parameter>
           </con:parameters>
           <con:method name="getUserLocation" method="GET">
+            <con:description>Get the location of a user</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element xmlns:ns="http://findmyapp.net/findmyapp/locations/users/1">ns:Response</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:method name="getAllUserLocations" method="GET">
@@ -634,6 +627,7 @@
         </con:representation>
       </con:method>
       <con:method name="getAllLocations" method="GET">
+        <con:description>Get all locations</con:description>
         <con:settings/>
         <con:parameters/>
         <con:representation type="FAULT">
@@ -1184,8 +1178,8 @@
       <con:settings/>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users TestCase" searchProperties="true">
-      <con:description>TestCase generated for REST Resource [users] located at [/position/users]</con:description>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users TestCase" searchProperties="true" id="c326232a-f597-46f6-bece-9068db4d3f92">
+      <con:description>TestCase generated for REST Resource [users] located at [/location/users]</con:description>
       <con:settings/>
       <con:testStep type="restrequest" name="Get location of all users">
         <con:settings/>
@@ -1873,7 +1867,29 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/usercount" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/temperature" searchProperties="true" id="ff3088da-9632-428e-8009-da5e23ab5117">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get temperature data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getTemperatureData" resourcePath="/findmyapp/locations/{id}/temperature" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get temperature data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/usercount" searchProperties="true" id="9c70e595-c24b-4291-957b-c93ce2fc8f70">
       <con:settings/>
       <con:testStep type="restrequest" name="getUserCount">
         <con:settings/>
@@ -1899,7 +1915,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/noise" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/noise" searchProperties="true" id="7fe828e2-2d41-4ef6-862f-fb44b538c1fb">
       <con:settings/>
       <con:testStep type="restrequest" name="Get noise data">
         <con:settings/>
@@ -1921,7 +1937,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/humidity" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/humidity" searchProperties="true" id="eaf1f102-9073-44d5-8e73-9201bb6a1ed7">
       <con:settings/>
       <con:testStep type="restrequest" name="Get humidity data">
         <con:settings/>
@@ -1943,18 +1959,23 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/temperature" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users/id" searchProperties="true">
       <con:settings/>
-      <con:testStep type="restrequest" name="Get temperature data">
+      <con:testStep type="restrequest" name="Get the location of a user">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="getTemperatureData" resourcePath="/findmyapp/locations/{id}/temperature" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Get temperature data" mediaType="application/xml" accept="application/json">
+        <con:config service="FindMyApp" methodName="getUserLocation" resourcePath="/findmyapp/locations/users/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get the location of a user" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
             <con:encoding>UTF-8</con:encoding>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
