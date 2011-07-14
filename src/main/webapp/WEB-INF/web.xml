@@ -49,7 +49,7 @@
 	<!-- API documentation -->
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
-		<url-pattern>/appstore/*</url-pattern>
+		<url-pattern>/apks/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
