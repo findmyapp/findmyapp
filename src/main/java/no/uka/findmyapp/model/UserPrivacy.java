@@ -1,43 +1,44 @@
 package no.uka.findmyapp.model;
 
 public class UserPrivacy {
-	public static final int ALL = 1;
-	public static final int FRIENDS = 2;
-	public static final int NONE = 3;
 	private int id;
-	private int position;
-	private int events;
-	private int money;
-	private int media;
+	private PrivacySetting position;
+	private PrivacySetting events;
+	private PrivacySetting money;
+	private PrivacySetting media;
+	
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getPosition() {
+	public PrivacySetting getPosition() {
 		return position;
 	}
-	public void setPosition(int position) {
+	public void setPosition(PrivacySetting position) {
 		this.position = position;
 	}
-	public int getEvents() {
+	public PrivacySetting getEvents() {
 		return events;
 	}
-	public void setEvents(int events) {
+	public void setEvents(PrivacySetting events) {
 		this.events = events;
 	}
-	public int getMoney() {
+	public PrivacySetting getMoney() {
 		return money;
 	}
-	public void setMoney(int money) {
+	public void setMoney(PrivacySetting money) {
 		this.money = money;
-	} 
-	public int getMedia() {
+	}
+	public PrivacySetting getMedia() {
 		return media;
 	}
-	public void setMedia(int media) {
+	public void setMedia(PrivacySetting media) {
 		this.media = media;
-	} 
-
+	}
+	
+	
+	
 }
