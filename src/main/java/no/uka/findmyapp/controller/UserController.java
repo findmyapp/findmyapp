@@ -35,7 +35,7 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/{id}/event/{eventId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/events/{eventId}", method = RequestMethod.POST)
 	public ModelMap addEvent(@PathVariable("id") int userId, @PathVariable("eventId") long eventId, ModelMap model) {
 		boolean addEvent = service.addEvent(userId, eventId);
 		model.addAttribute(addEvent);
