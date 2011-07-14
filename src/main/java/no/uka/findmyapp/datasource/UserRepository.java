@@ -13,6 +13,7 @@ import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPrivacy;
 
@@ -23,7 +24,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 @Repository
 public class UserRepository {
@@ -101,7 +101,7 @@ public class UserRepository {
 
 	
 //	update, ok testet i db
-	public void updatePrivacy(int userId, int newPosition, int newEvents, int newMoney, int newMedia) {
+	public void updatePrivacy(int userId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
 		int temp = jdbcTemplate.update(
 				"UPDATE USER, USER_PRIVACY_SETTINGS " + 
 				"SET USER_PRIVACY_SETTINGS.position = ? ," +
@@ -109,7 +109,7 @@ public class UserRepository {
 				"USER_PRIVACY_SETTINGS.money = ? ," +
 				"USER_PRIVACY_SETTINGS.media = ? " +
 				"WHERE USER.user_id = ? AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
-				int.class, newPosition, newEvents, newMoney, newMedia, userId);
+				PrivacySetting.toInt(newPosition), PrivacySetting.toInt(newEvents), PrivacySetting.toInt(newMoney), PrivacySetting.toInt(newMedia), userId);
 	}
 	
 	

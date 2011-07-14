@@ -1,43 +1,44 @@
 package no.uka.findmyapp.model;
 
 public class UserPrivacy {
-	public static final int ALL = 1;
-	public static final int FRIENDS = 2;
-	public static final int NONE = 3;
 	private int id;
-	private int position;
-	private int events;
-	private int money;
-	private int media;
+	private PrivacySetting positionPrivacySetting;
+	private PrivacySetting eventsPrivacySetting;
+	private PrivacySetting moneyPrivacySetting;
+	private PrivacySetting mediaPrivacySetting;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getPosition() {
-		return position;
+	public PrivacySetting getPositionPrivacySetting() {
+		return positionPrivacySetting;
 	}
-	public void setPosition(int position) {
-		this.position = position;
+	public void setPositionPrivacySetting(PrivacySetting positionPrivacySetting) {
+		this.positionPrivacySetting = positionPrivacySetting;
 	}
-	public int getEvents() {
-		return events;
+	public PrivacySetting getEventsPrivacySetting() {
+		return eventsPrivacySetting;
 	}
-	public void setEvents(int events) {
-		this.events = events;
+	public void setEventsPrivacySetting(PrivacySetting eventsPrivacySetting) {
+		this.eventsPrivacySetting = eventsPrivacySetting;
 	}
-	public int getMoney() {
-		return money;
+	public PrivacySetting getMoneyPrivacySetting() {
+		return moneyPrivacySetting;
 	}
-	public void setMoney(int money) {
-		this.money = money;
-	} 
-	public int getMedia() {
-		return media;
+	public void setMoneyPrivacySetting(PrivacySetting moneyPrivacySetting) {
+		this.moneyPrivacySetting = moneyPrivacySetting;
 	}
-	public void setMedia(int media) {
-		this.media = media;
-	} 
+	public PrivacySetting getMediaPrivacySetting() {
+		return mediaPrivacySetting;
+	}
+	public void setMediaPrivacySetting(PrivacySetting mediaPrivacySetting) {
+		this.mediaPrivacySetting = mediaPrivacySetting;
+	}
+	
+	
 
+
+	
 }
