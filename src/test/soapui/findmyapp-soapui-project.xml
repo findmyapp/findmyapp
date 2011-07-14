@@ -829,7 +829,7 @@
         </con:representation>
       </con:method>
     </con:resource>
-  <con:resource name="users" path="/users"><con:settings/><con:parameters/><con:resource name="id" path="/{id}"><con:settings/><con:parameters/><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:method name="getEvents" method="GET"><con:description>Get all events registered on this user.</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>ID of the user you want events from.</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource></con:interface>
+  <con:resource name="users" path="/users"><con:settings/><con:parameters/><con:resource name="id" path="/{id}"><con:settings/><con:parameters/><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:resource name="eventId" path="/{eventId}"><con:settings/><con:parameters/><con:method name="addEvent" method="POST"><con:settings/><con:parameters><con:parameter><con:name>userId</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>eventId</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:request name="Request 1" mediaType="application/xml" postQueryString="false"><con:settings/><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:method name="getEvents" method="GET"><con:description>Get all events registered on this user.</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>ID of the user you want events from.</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:resource name="eventId" path="/{id}"><con:settings/><con:parameters/><con:resource name="friends" path="/friends"><con:settings/><con:parameters/><con:method name="getFriendsAttendingEvent" method="GET"><con:description>Returns a list of the users facebook friends that are attending an event spcified by the event Id</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default/><con:path xsi:nil="true"/><con:description>The event id of the event of interest</con:description></con:parameter><con:parameter><con:name>accessToken</con:name><con:value/><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>The users facebook access token. Needed to access facebook and get the users friend list.</con:description></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource></con:interface>
   <con:testSuite name="Services TestSuite">
     <con:description>TestSuite generated for REST Service [Services]</con:description>
     <con:settings/>
@@ -1569,6 +1569,30 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="get - mostPopular">
+        <con:settings/>
+        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/mostPopular/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="get - mostPopular" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear/places" searchProperties="true">
       <con:settings/>
       <con:testStep type="restrequest" name="Get all places in uka">
@@ -1659,31 +1683,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true">
-      <con:settings/>
-      <con:testStep type="restrequest" name="get - mostPopular">
-        <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/mostPopular/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="get - mostPopular" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
-            </con:assertion>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:properties/>
-    </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="getEvents"><con:settings/><con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getEvents" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="getEvents"><con:settings/><con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getEvents" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
   </con:testSuite>
   <con:properties/>
   <con:wssContainer/>
