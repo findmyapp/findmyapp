@@ -310,11 +310,11 @@
           </con:parameter>
         </con:parameters>
         <con:resource name="facts" path="facts">
-          <con:description>Fact of a location</con:description>
+          <con:description/>
           <con:settings/>
           <con:parameters/>
           <con:resource name="random" path="random">
-            <con:description>Random fact of a location</con:description>
+            <con:description/>
             <con:settings/>
             <con:parameters/>
             <con:method name="getRandomFact" method="GET">
@@ -531,7 +531,7 @@
         <con:method name="getLocation" method="GET">
           <con:description>Get the location with this location ID</con:description>
           <con:settings/>
-          <con:parameters></con:parameters>
+          <con:parameters/>
         </con:method>
       </con:resource>
       <con:resource name="friends" path="friends/{id}">
@@ -563,7 +563,7 @@
         </con:method>
       </con:resource>
       <con:resource name="sample" path="sample">
-        <con:description>A location sample</con:description>
+        <con:description/>
         <con:settings/>
         <con:parameters/>
         <con:method name="registerSample" method="POST">
@@ -589,11 +589,11 @@
         </con:method>
       </con:resource>
       <con:resource name="users" path="users">
-        <con:description>All users currently registered</con:description>
+        <con:description/>
         <con:settings/>
         <con:parameters/>
-        <con:resource name="id" path="{id}">
-          <con:description>User ID</con:description>
+        <con:resource name="user id" path="{id}">
+          <con:description/>
           <con:settings/>
           <con:parameters>
             <con:parameter>
@@ -676,11 +676,11 @@
       </con:method>
     </con:resource>
     <con:resource name="program" path="program">
-      <con:description>Event schedule of all Ukas</con:description>
+      <con:description/>
       <con:settings/>
       <con:parameters/>
       <con:resource name="ukaYear" path="{ukaYear}">
-        <con:description>Information about a specific ukaYear</con:description>
+        <con:description/>
         <con:settings/>
         <con:parameters>
           <con:parameter required="true">
@@ -690,11 +690,11 @@
           </con:parameter>
         </con:parameters>
         <con:resource name="events" path="/events">
-          <con:description>List of Uka's events</con:description>
+          <con:description/>
           <con:settings/>
           <con:parameters/>
           <con:resource name="search" path="search">
-            <con:description>A semi intelligent titlesearch service</con:description>
+            <con:description/>
             <con:settings/>
             <con:parameters/>
             <con:method name="getUkaEventsFromQuery" method="GET">
@@ -721,8 +721,8 @@
               </con:representation>
             </con:method>
           </con:resource>
-          <con:resource name="{id}" path="/{id}">
-            <con:description>Get event with id</con:description>
+          <con:resource name="event id" path="{id}">
+            <con:description/>
             <con:settings/>
             <con:parameters>
               <con:parameter required="true">
@@ -850,7 +850,7 @@
           </con:method>
         </con:resource>
         <con:method name="getInfoAboutUka" method="GET">
-          <con:description>Get start and endDate of specified Uka</con:description>
+          <con:description>Get start and end date of specified UKA</con:description>
           <con:settings/>
           <con:parameters>
             <con:parameter required="true">
@@ -878,7 +878,7 @@
         </con:method>
       </con:resource>
       <con:method name="getInfoAboutAllUkas" method="GET">
-        <con:description>Gets startdate, enddate and name of all Ukas</con:description>
+        <con:description>Gets start date, end date and name of all Ukas</con:description>
         <con:settings/>
         <con:parameters/>
         <con:representation type="FAULT">
