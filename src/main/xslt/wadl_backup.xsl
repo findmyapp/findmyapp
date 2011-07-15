@@ -231,7 +231,7 @@
                     
                             <xsl:call-template name="getRepresentations"/>
                         </xsl:for-each> <!-- wadl:request -->
-                        Click 
+                        
           				<a>
           					<xsl:attribute name="href">
           						<xsl:variable name="name" select="@name"/>
@@ -241,8 +241,8 @@
 								</xsl:call-template>
 								
           					</xsl:attribute>
-          					 here 
-          				</a> to go to a page with an example
+          					Example
+          				</a>
                         
                     </xsl:when>
     
@@ -271,6 +271,53 @@
                     </xsl:otherwise>
                 </xsl:choose>
                 </div>  <!-- left indent for request -->
+                                
+                <!-- Response -->
+                <h6>responses</h6>
+                <div style="margin-left: 2em">  <!-- left indent -->
+                <xsl:choose>
+                    <xsl:when test="wadl:response">
+                        <xsl:for-each select="wadl:response">
+                            <div class="h8">status: </div>
+                            <xsl:choose>
+                                <xsl:when test="@status">
+                                    <xsl:value-of select="@status"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    200 - OK
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <xsl:for-each select="wadl:doc">
+                                <xsl:if test="@title">
+                                    - <xsl:value-of select="@title"/>
+                                </xsl:if>
+                                <xsl:if test="text()">
+                                    - <xsl:value-of select="text()"/>
+                                </xsl:if>
+                            </xsl:for-each>
+                            
+                            <!-- Get response headers/representations -->
+                            <xsl:if test="wadl:param or wadl:representation">
+                                <div style="margin-left: 2em"> <!-- left indent -->
+                                <xsl:if test="wadl:param">
+                                    <div class="h7">headers</div>
+                                    <table>
+                                        <xsl:for-each select="wadl:param[@style='header']">
+                                            <xsl:call-template name="getParams"/>
+                                        </xsl:for-each>
+                                    </table>
+                                </xsl:if>
+    
+                                <xsl:call-template name="getRepresentations"/>
+                                </div>  <!-- left indent for response headers/representations -->
+                            </xsl:if>
+                        </xsl:for-each> <!-- wadl:response -->
+                    </xsl:when>
+                    <xsl:otherwise>
+                        unspecified
+                    </xsl:otherwise>
+                </xsl:choose>                
+                </div>  <!-- left indent for responses -->
 
             </div>  <!-- class=method -->
             </xsl:for-each> <!-- wadl:method  -->
