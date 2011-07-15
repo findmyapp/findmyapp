@@ -405,61 +405,62 @@ UNLOCK TABLES;
 -- Table structure for table `event_showing_real`
 --
 
-DROP TABLE IF EXISTS `event_showing_real`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `event_showing_real` (
+DROP TABLE IF EXISTS `UKA_EVENTS`;
+
+CREATE TABLE `UKA_EVENTS` (
   `id` int(11) NOT NULL DEFAULT '0',
-  `showing_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `showing_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `publish_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `place` varchar(30) DEFAULT NULL,
   `billig_id` int(11) DEFAULT NULL,
-  `event_id` int(11) DEFAULT NULL,
+  `billig_name` varchar(255) DEFAULT NULL,
   `netsale_from` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `netsale_to` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `free` enum('true','false') DEFAULT NULL,
-  `canceled` enum('true','false') DEFAULT NULL,
+  `sale_from` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `sale_to` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `free` BOOLEAN DEFAULT FALSE,
+  `available_for_purchase` BOOLEAN DEFAULT TRUE,
+  `canceled` BOOLEAN DEFAULT FALSE,
   `entrance_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `event_showing_real`
---
-
-LOCK TABLES `event_showing_real` WRITE;
-/*!40000 ALTER TABLE `event_showing_real` DISABLE KEYS */;
-INSERT INTO `event_showing_real` VALUES (11,'2011-10-03 13:37:00','2011-10-01 11:37:00','Samfundet',0,1,'2011-10-01 11:37:00','2011-10-21 11:37:00','false','false',2222),(21,'2011-10-01 00:00:00','2011-10-07 00:00:00','Dodens dal',0,2,'2011-10-01 00:00:00','2011-10-07 00:00:00','false','false',2222),(22,'2011-10-10 18:00:00','2011-10-07 00:00:00','Rundt Dådens dal',0,5,'2011-10-01 00:00:00','2011-10-10 00:00:00','true','false',2222),(31,'2011-10-15 20:00:00','2011-10-01 11:37:00','Bodegaen',0,3,'2011-10-01 11:37:00','2011-10-21 11:37:00','false','false',2222),(32,'2011-10-15 17:00:00','2011-10-01 11:37:00','Dådens Dal',0,6,'2011-10-01 11:37:00','2011-10-21 11:37:00','false','false',2222);
-/*!40000 ALTER TABLE `event_showing_real` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `events_event`
---
-
-DROP TABLE IF EXISTS `events_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `events_event` (
-  `id` int(11) NOT NULL DEFAULT '0',
+  `event_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(255) DEFAULT NULL,
   `lead` varchar(255) DEFAULT NULL,
-  `text` varchar(255) DEFAULT NULL,
+  `text` text DEFAULT NULL,
   `event_type` varchar(30) DEFAULT NULL,
   `image` varchar(100) DEFAULT NULL,
   `thumbnail` varchar(100) DEFAULT NULL,
-  `hidden_from_listing` enum('true','false') DEFAULT NULL,
-  `slug` varchar(50) DEFAULT NULL,
   `age_limit` smallint(6) DEFAULT NULL,
-  `detail_photo_id` int(11) DEFAULT NULL,
+  `spotify_string` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `events_event`
---
+LOCK TABLES `UKA_EVENTS` WRITE;
+
+INSERT INTO `UKA_EVENTS` VALUES (
+	11,
+	'2011-10-03 13:37:00',
+	'2011-10-01 11:37:00',
+	'Samfundet',
+	0,
+	'Et eller annet',
+	'2011-10-01 11:37:00',
+	'2011-10-21 11:37:00',
+	'2011-10-01 11:37:00',
+	'2011-10-21 11:37:00',
+	0,
+	1,
+	0,
+	10,
+	10,
+	'Konsert 1',
+	'Lead 1',
+	'Dette er et arrangement!',
+	'Konsert',
+	'bilde1.jpg',
+	'thumb1.jpg',
+	23,
+	'skjdhkjshakjhskdjhsadh');
+UNLOCK TABLES;
 
 LOCK TABLES `events_event` WRITE;
 /*!40000 ALTER TABLE `events_event` DISABLE KEYS */;

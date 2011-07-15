@@ -56,7 +56,7 @@ public class SensorRepository {
 	public List<Temperature> getTemperatureData(Date from, int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate
-				.query("SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id = ? AND date>=?",
+				.query("SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id = ? AND date>=? ORDER BY date DESC",
 						new SensorTemperatureRowMapper(), location, from);
 		logger.info("received temperature list");
 		return temperatureList;
@@ -65,7 +65,7 @@ public class SensorRepository {
 	public List<Temperature> getTemperatureDataTo(Date to, int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate
-				.query("SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id = ? AND date<=?",
+				.query("SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id = ? AND date<=? ORDER BY date DESC",
 						new SensorTemperatureRowMapper(), location, to);
 		logger.info("received temperature list");
 		return temperatureList;
@@ -74,7 +74,7 @@ public class SensorRepository {
 	public List<Temperature> getTemperatureData(Date from, Date to,
 			int location) {
 		List<Temperature> temperatureList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_TEMPERATURE WHERE date>=? AND date<=? AND position_location_id =?",
+				"SELECT * FROM SENSOR_TEMPERATURE WHERE date>=? AND date<=? AND position_location_id =? ORDER BY date DESC",
 				new SensorTemperatureRowMapper(), from, to, location);
 		return temperatureList;
 	}
@@ -82,7 +82,7 @@ public class SensorRepository {
 	public List<Noise> getNoiseData(int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ?",
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC",
 				new SensorNoiseRowMapper(), location);
 		logger.info("received noise list");
 		return noiseList;
@@ -91,7 +91,7 @@ public class SensorRepository {
 	public List<Noise> getNoiseData(Date from, int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date <=?",
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date <=? ORDER BY date DESC",
 				new SensorNoiseRowMapper(), location, from);
 		logger.info("received noise list");
 		return noiseList;
@@ -100,7 +100,7 @@ public class SensorRepository {
 	public List<Noise> getNoiseDataTo(Date to, int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  =? AND date >=?",
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  =? AND date >=? ORDER BY date DESC",
 				new SensorNoiseRowMapper(), location, to);
 		logger.info("received noise list");
 		return noiseList;
@@ -109,7 +109,7 @@ public class SensorRepository {
 	public List<Noise> getNoiseData(Date from, Date to, int location) {
 
 		List<Noise> noiseList = jdbcTemplate
-				.query("SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date <=? AND date >=?",
+				.query("SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date <=? AND date >=? ORDER BY date DESC",
 						new SensorNoiseRowMapper(), location, from, to);
 		logger.info("received noise list");
 		return noiseList;
@@ -118,7 +118,7 @@ public class SensorRepository {
 	public List<Humidity> getHumidityData(int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? ORDER BY date DESC",
 				new SensorHumidityRowMapper(), location);
 		logger.info("received humidity list");
 		return humidityList;
@@ -127,7 +127,7 @@ public class SensorRepository {
 	public List<Humidity> getHumidityData(Date from, int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? AND date >=?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? AND date >=? ORDER BY date DESC",
 				new SensorHumidityRowMapper(), location, from);
 		logger.info("received humidity list");
 		return humidityList;
@@ -136,7 +136,7 @@ public class SensorRepository {
 	public List<Humidity> getHumidityDataTo(Date to, int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? AND date <=?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? AND date <=? ORDER BY date DESC",
 				new SensorHumidityRowMapper(), location, to);
 		logger.info("received humidity list");
 		return humidityList;
@@ -145,7 +145,7 @@ public class SensorRepository {
 	public List<Humidity> getHumidityData(Date from, Date to, int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? AND date >=? AND date <=?",
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? AND date >=? AND date <=? ORDER BY date DESC",
 				new SensorHumidityRowMapper(), location, from, to);
 		logger.info("received humidity list");
 		return humidityList;
@@ -153,7 +153,7 @@ public class SensorRepository {
 
 	public List<BeerTap> getBeertapData(int location) {
 		List<BeerTap> beertapList = jdbcTemplate
-				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ?",
+				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? ORDER BY date DESC",
 						new SensorBeertapRowMapper(), location);
 		logger.info("received beertap list");
 		return beertapList;
@@ -161,7 +161,7 @@ public class SensorRepository {
 	
 	public List<BeerTap> getBeertapData(int location, int tapnr) {
 		List<BeerTap> beertapList = jdbcTemplate
-				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ?",
+				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? ORDER BY date DESC",
 						new SensorBeertapRowMapper(), location, tapnr);
 		logger.info("received beertap list");
 		return beertapList;
@@ -169,7 +169,7 @@ public class SensorRepository {
 	
 	public List<BeerTap> getBeertapData(int location, int tapnr, Date from, Date to) {
 		List<BeerTap> beertapList = jdbcTemplate
-				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=?",
+				.query("SELECT * FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=? ORDER BY date DESC",
 						new SensorBeertapRowMapper(), location, tapnr, from, to);
 		logger.info("received beertap list");
 		return beertapList;

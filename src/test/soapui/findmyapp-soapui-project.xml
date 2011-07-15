@@ -35,8 +35,8 @@
   <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:description>REST API for FindMyApp - UKA-11 student festival</con:description>
     <con:settings/>
-    
-    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
       <con:endpoint>http://findmyapp.net</con:endpoint>
       <con:endpoint>http://localhost:8080</con:endpoint>
     </con:endpoints>
@@ -62,7 +62,7 @@
         </con:representation>
         <con:representation type="FAULT">
           <con:mediaType>text/html</con:mediaType>
-          <con:status>401</con:status>
+          <con:status>401 404</con:status>
           <con:params/>
           <con:element>html</con:element>
         </con:representation>
@@ -97,6 +97,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -134,6 +139,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -164,6 +174,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -188,6 +203,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -228,6 +248,11 @@
               </con:settings>
               <con:endpoint>http://findmyapp.net</con:endpoint>
               <con:request/>
+              <con:credentials>
+                <con:username xsi:nil="true"/>
+                <con:password xsi:nil="true"/>
+                <con:domain xsi:nil="true"/>
+              </con:credentials>
               <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
               <con:jmsPropertyConfig/>
               <con:parameters/>
@@ -257,6 +282,11 @@
             </con:settings>
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -265,10 +295,11 @@
       </con:resource>
     </con:resource>
     <con:resource name="locations" path="locations">
-      <con:description>Location of something</con:description>
+      <con:description/>
       <con:settings/>
       <con:parameters/>
-      <con:resource name="id" path="{id}">
+      <con:resource name="location id" path="{id}">
+        <con:description/>
         <con:settings/>
         <con:parameters>
           <con:parameter required="true">
@@ -279,11 +310,11 @@
           </con:parameter>
         </con:parameters>
         <con:resource name="facts" path="facts">
-          <con:description>Fact of a location</con:description>
+          <con:description/>
           <con:settings/>
           <con:parameters/>
           <con:resource name="random" path="random">
-            <con:description>Random fact of a location</con:description>
+            <con:description/>
             <con:settings/>
             <con:parameters/>
             <con:method name="getRandomFact" method="GET">
@@ -305,7 +336,7 @@
             </con:method>
           </con:resource>
           <con:method name="getFacts" method="GET">
-            <con:description>Get facts of a location</con:description>
+            <con:description>Get facts about a location</con:description>
             <con:settings/>
             <con:parameters/>
             <con:representation type="RESPONSE">
@@ -319,25 +350,52 @@
         <con:resource name="humidity" path="humidity">
           <con:settings/>
           <con:parameters/>
-          <con:method name="Method 1" method="GET">
+          <con:method name="getHumidityData" method="GET">
+            <con:description>Get humidity data from a location</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:resource name="noise" path="noise">
           <con:settings/>
           <con:parameters/>
-          <con:method name="Method 1" method="GET">
+          <con:method name="getNoiseData" method="GET">
+            <con:description>Get noise data from a location</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>404</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:resource name="temperature" path="temperature">
           <con:settings/>
           <con:parameters/>
-          <con:method name="Method 1" method="GET">
+          <con:method name="getTemperatureData" method="GET">
+            <con:description>Get temperature data from a location</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:resource name="user" path="user">
@@ -360,26 +418,10 @@
               <con:description>Registers a user to a location</con:description>
               <con:settings/>
               <con:parameters/>
-              <con:request name="Request 1" mediaType="application/xml" postQueryString="false">
-                <con:settings/>
-                <con:endpoint>http://findmyapp.net</con:endpoint>
-                <con:request/>
-                <con:credentials>
-                  <con:username xsi:nil="true"/>
-                  <con:password xsi:nil="true"/>
-                  <con:domain xsi:nil="true"/>
-                </con:credentials>
-                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-                <con:jmsPropertyConfig/>
-                <con:parameters>
-                  <con:entry key="id" value="awd"/>
-                  <con:entry key="userId" value="awd"/>
-                </con:parameters>
-              </con:request>
             </con:method>
           </con:resource>
           <con:method name="getUsersAtLocation" method="GET">
-            <con:description>Retreives users at a specific location</con:description>
+            <con:description>Retrieves all users at a specific location</con:description>
             <con:settings/>
             <con:parameters/>
             <con:representation type="FAULT">
@@ -398,22 +440,13 @@
         </con:resource>
         <con:resource name="beertap" path="beertap">
           <con:settings/>
-          <con:parameters>
-            <con:parameter>
-              <con:name>id</con:name>
-              <con:value>id</con:value>
-              <con:style>TEMPLATE</con:style>
-              <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
-              <con:default>id</con:default>
-              <con:path xsi:nil="true"/>
-              <con:description xsi:nil="true"/>
-            </con:parameter>
-          </con:parameters>
-          <con:resource name="id" path="{tapId}">
+          <con:parameters/>
+          <con:resource name="tapId" path="{tapId}">
+            <con:description>ID of the beer tap</con:description>
             <con:settings/>
             <con:parameters/>
-            <con:method name="Get beer tap data" method="GET">
-              <con:description>Get data from beer tap. Returns all data or number of tapped beers in the interval between to and from or for the entire time period.</con:description>
+            <con:method name="getBeerTapData" method="GET">
+              <con:description>Get beer tap data from a location</con:description>
               <con:settings/>
               <con:parameters>
                 <con:parameter>
@@ -462,19 +495,43 @@
             </con:method>
           </con:resource>
         </con:resource>
-        <con:method name="getLocation" method="GET">
+        <con:resource name="usercount" path="usercount">
           <con:settings/>
-          <con:parameters>
-            <con:parameter>
-              <con:name>id</con:name>
-              <con:value/>
-              <con:style>TEMPLATE</con:style>
-              <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
-              <con:default/>
-              <con:path xsi:nil="true"/>
-              <con:description xsi:nil="true"/>
-            </con:parameter>
-          </con:parameters>
+          <con:parameters/>
+          <con:method name="getUserCount" method="GET">
+            <con:description>Get the number of users at a location</con:description>
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>404</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+            </con:representation>
+            <con:request name="Request 1" mediaType="application/xml">
+              <con:settings/>
+              <con:endpoint>http://findmyapp.net</con:endpoint>
+              <con:request/>
+              <con:credentials>
+                <con:username xsi:nil="true"/>
+                <con:password xsi:nil="true"/>
+                <con:domain xsi:nil="true"/>
+              </con:credentials>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters/>
+            </con:request>
+          </con:method>
+        </con:resource>
+        <con:method name="getLocation" method="GET">
+          <con:description>Get the location with this location ID</con:description>
+          <con:settings/>
+          <con:parameters/>
         </con:method>
       </con:resource>
       <con:resource name="friends" path="friends/{id}">
@@ -506,7 +563,7 @@
         </con:method>
       </con:resource>
       <con:resource name="sample" path="sample">
-        <con:description>A location sample</con:description>
+        <con:description/>
         <con:settings/>
         <con:parameters/>
         <con:method name="registerSample" method="POST">
@@ -532,10 +589,11 @@
         </con:method>
       </con:resource>
       <con:resource name="users" path="users">
-        <con:description>All users currently registered</con:description>
+        <con:description/>
         <con:settings/>
         <con:parameters/>
-        <con:resource name="id" path="/{id}">
+        <con:resource name="user id" path="{id}">
+          <con:description/>
           <con:settings/>
           <con:parameters>
             <con:parameter>
@@ -549,8 +607,15 @@
             </con:parameter>
           </con:parameters>
           <con:method name="getUserLocation" method="GET">
+            <con:description>Get the location of a user</con:description>
             <con:settings/>
             <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element xmlns:ns="http://findmyapp.net/findmyapp/locations/users/1">ns:Response</con:element>
+            </con:representation>
           </con:method>
         </con:resource>
         <con:method name="getAllUserLocations" method="GET">
@@ -587,6 +652,7 @@
         </con:representation>
       </con:method>
       <con:method name="getAllLocations" method="GET">
+        <con:description>Get all locations</con:description>
         <con:settings/>
         <con:parameters/>
         <con:representation type="FAULT">
@@ -610,11 +676,11 @@
       </con:method>
     </con:resource>
     <con:resource name="program" path="program">
-      <con:description>Event schedule of all Ukas</con:description>
+      <con:description/>
       <con:settings/>
       <con:parameters/>
       <con:resource name="ukaYear" path="{ukaYear}">
-        <con:description>Information about a specific ukaYear</con:description>
+        <con:description/>
         <con:settings/>
         <con:parameters>
           <con:parameter required="true">
@@ -624,11 +690,11 @@
           </con:parameter>
         </con:parameters>
         <con:resource name="events" path="/events">
-          <con:description>List of Uka's events</con:description>
+          <con:description/>
           <con:settings/>
           <con:parameters/>
           <con:resource name="search" path="search">
-            <con:description>A semi intelligent titlesearch service</con:description>
+            <con:description/>
             <con:settings/>
             <con:parameters/>
             <con:method name="getUkaEventsFromQuery" method="GET">
@@ -655,8 +721,8 @@
               </con:representation>
             </con:method>
           </con:resource>
-          <con:resource name="{id}" path="/{id}">
-            <con:description>Get event with id</con:description>
+          <con:resource name="event id" path="{id}">
+            <con:description/>
             <con:settings/>
             <con:parameters>
               <con:parameter required="true">
@@ -727,7 +793,7 @@
               <con:params/>
               <con:element xmlns:even="http://findmyapp.net/findmyapp/program/uka11/events">even:Response</con:element>
             </con:representation>
-          </con:method>
+          <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
         </con:resource>
         <con:resource name="places" path="/places">
           <con:description>Places with events in uka</con:description>
@@ -762,7 +828,7 @@
                   <con:params/>
                   <con:element>data</con:element>
                 </con:representation>
-              </con:method>
+              <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500 404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
             </con:resource>
           </con:resource>
           <con:method name="getAllPlaces" method="GET">
@@ -784,7 +850,7 @@
           </con:method>
         </con:resource>
         <con:method name="getInfoAboutUka" method="GET">
-          <con:description>Get start and endDate of specified Uka</con:description>
+          <con:description>Get start and end date of specified UKA</con:description>
           <con:settings/>
           <con:parameters>
             <con:parameter required="true">
@@ -812,7 +878,7 @@
         </con:method>
       </con:resource>
       <con:method name="getInfoAboutAllUkas" method="GET">
-        <con:description>Gets startdate, enddate and name of all Ukas</con:description>
+        <con:description>Gets start date, end date and name of all Ukas</con:description>
         <con:settings/>
         <con:parameters/>
         <con:representation type="FAULT">
@@ -829,7 +895,128 @@
         </con:representation>
       </con:method>
     </con:resource>
-  <con:resource name="users" path="/users"><con:settings/><con:parameters/><con:resource name="id" path="/{id}"><con:settings/><con:parameters/><con:resource name="events" path="/events"><con:settings/><con:parameters/><con:method name="getEvents" method="GET"><con:description>Get all events registered on this user.</con:description><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description>ID of the user you want events from.</con:description></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource></con:resource></con:resource></con:interface>
+    <con:resource name="users" path="/users">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="id" path="/{id}">
+        <con:settings/>
+        <con:parameters/>
+        <con:resource name="events" path="/events">
+          <con:settings/>
+          <con:parameters/>
+          <con:resource name="eventId" path="/{eventId}">
+            <con:settings/>
+            <con:parameters/>
+            <con:method name="addEvent" method="POST">
+              <con:settings/>
+              <con:parameters>
+                <con:parameter>
+                  <con:name>userId</con:name>
+                  <con:value/>
+                  <con:style>TEMPLATE</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                  <con:default/>
+                  <con:path xsi:nil="true"/>
+                  <con:description xsi:nil="true"/>
+                </con:parameter>
+                <con:parameter>
+                  <con:name>eventId</con:name>
+                  <con:value/>
+                  <con:style>TEMPLATE</con:style>
+                  <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                  <con:default/>
+                  <con:path xsi:nil="true"/>
+                  <con:description xsi:nil="true"/>
+                </con:parameter>
+              </con:parameters>
+              <con:request name="Request 1" mediaType="application/xml" postQueryString="false">
+                <con:settings/>
+                <con:endpoint>http://findmyapp.net</con:endpoint>
+                <con:request/>
+                <con:credentials>
+                  <con:username xsi:nil="true"/>
+                  <con:password xsi:nil="true"/>
+                  <con:domain xsi:nil="true"/>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:parameters/>
+              </con:request>
+            </con:method>
+          </con:resource>
+          <con:method name="getEvents" method="GET">
+            <con:description>Get all events registered on this user.</con:description>
+            <con:settings/>
+            <con:parameters>
+              <con:parameter>
+                <con:name>id</con:name>
+                <con:value/>
+                <con:style>TEMPLATE</con:style>
+                <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                <con:default/>
+                <con:path xsi:nil="true"/>
+                <con:description>ID of the user you want events from.</con:description>
+              </con:parameter>
+            </con:parameters>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
+          </con:method>
+        </con:resource>
+      </con:resource>
+    </con:resource>
+    <con:resource name="events" path="/events">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="eventId" path="/{id}">
+        <con:settings/>
+        <con:parameters/>
+        <con:resource name="friends" path="/friends">
+          <con:settings/>
+          <con:parameters/>
+          <con:method name="getFriendsAttendingEvent" method="GET">
+            <con:description>Returns a list of the users facebook friends that are attending an event spcified by the event Id</con:description>
+            <con:settings/>
+            <con:parameters>
+              <con:parameter>
+                <con:name>id</con:name>
+                <con:value/>
+                <con:style>TEMPLATE</con:style>
+                <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type>
+                <con:default/>
+                <con:path xsi:nil="true"/>
+                <con:description>The event id of the event of interest</con:description>
+              </con:parameter>
+              <con:parameter>
+                <con:name>accessToken</con:name>
+                <con:value/>
+                <con:style>QUERY</con:style>
+                <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+                <con:default/>
+                <con:path xsi:nil="true"/>
+                <con:description>The users facebook access token. Needed to access facebook and get the users friend list.</con:description>
+              </con:parameter>
+            </con:parameters>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html</con:mediaType>
+              <con:status>400</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element>Response</con:element>
+            </con:representation>
+          </con:method>
+        </con:resource>
+      </con:resource>
+    </con:resource>
+  </con:interface>
   <con:testSuite name="Services TestSuite">
     <con:description>TestSuite generated for REST Service [Services]</con:description>
     <con:settings/>
@@ -865,7 +1052,7 @@
       <con:testStep type="restrequest" name="Ping reject application/json">
         <con:settings/>
         <con:config service="FindMyApp" resourcePath="/findmyapp/ping" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="text/html">
+          <con:restRequest name="Ping reject application/json" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
@@ -1021,8 +1208,8 @@
       <con:settings/>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users TestCase" searchProperties="true">
-      <con:description>TestCase generated for REST Resource [users] located at [/position/users]</con:description>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users TestCase" searchProperties="true" id="c326232a-f597-46f6-bece-9068db4d3f92">
+      <con:description>TestCase generated for REST Resource [users] located at [/location/users]</con:description>
       <con:settings/>
       <con:testStep type="restrequest" name="Get location of all users">
         <con:settings/>
@@ -1107,7 +1294,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/facts TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/facts TestCase" searchProperties="true" id="aa0683b4-9473-4286-afd0-16baa54564f6">
       <con:settings/>
       <con:testStep type="restrequest" name="Get facts">
         <con:settings/>
@@ -1175,7 +1362,7 @@
       <con:settings/>
       <con:testStep type="restrequest" name="Get beer tap data">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get beer tap data" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1204,7 +1391,7 @@
       </con:testStep>
       <con:testStep type="restrequest" name="Get beer tap data in period">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get beer tap data in period" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1235,7 +1422,7 @@
       </con:testStep>
       <con:testStep type="restrequest" name="Get number of beers">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get number of beers" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1265,7 +1452,7 @@
       </con:testStep>
       <con:testStep type="restrequest" name="Get number of beers in period">
         <con:settings/>
-        <con:config service="FindMyApp" methodName="Get beer tap data" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:config service="FindMyApp" methodName="getBeerTapData" resourcePath="/findmyapp/locations/{id}/beertap/{tapId}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Get number of beers in period" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
@@ -1321,6 +1508,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1353,6 +1545,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1381,12 +1578,13 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>"events"</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>"events"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1417,12 +1615,17 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="place" value="dodens dal"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="place" value="samfundet"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -1448,12 +1651,17 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="date" value="2011-10-10"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="date" value="2011-10-03"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -1479,6 +1687,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1510,6 +1723,11 @@
                 <useRegEx>false</useRegEx>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1537,6 +1755,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1561,6 +1784,40 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="get - mostPopular">
+        <con:settings/>
+        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/mostPopular/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="get - mostPopular" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1587,12 +1844,13 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>Bodegaen</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>Samfundet</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
@@ -1613,23 +1871,22 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
+              <con:configuration><codes>200</codes></con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>"bodegaen"</token>
-                <ignoreCase>true</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>"samfundet"</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="place" value="bodegaen"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="place" value="samfundet"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -1651,6 +1908,11 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters/>
@@ -1659,12 +1921,71 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true">
       <con:settings/>
-      <con:testStep type="restrequest" name="get - mostPopular">
+      <con:testStep type="restrequest" name="getEvents">
         <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/mostPopular/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="get - mostPopular" mediaType="application/xml" accept="application/json">
+        <con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="getEvents" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/temperature" searchProperties="true" id="ff3088da-9632-428e-8009-da5e23ab5117">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get temperature data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getTemperatureData" resourcePath="/findmyapp/locations/{id}/temperature" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get temperature data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/usercount" searchProperties="true" id="9c70e595-c24b-4291-957b-c93ce2fc8f70">
+      <con:settings/>
+      <con:testStep type="restrequest" name="getUserCount">
+        <con:settings/>
+        <con:config service="FindMyApp" resourcePath="/findmyapp/locations/{id}/usercount" methodName="getUserCount" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="getUserCount" mediaType="application/xml" accept="application/json">
             <con:settings>
               <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
             </con:settings>
@@ -1675,15 +1996,108 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
-            <con:parameters/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="getEvents"><con:settings/><con:config service="FindMyApp" methodName="getEvents" resourcePath="/findmyapp/users/{id}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getEvents" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/noise" searchProperties="true" id="7fe828e2-2d41-4ef6-862f-fb44b538c1fb">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get noise data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getNoiseData" resourcePath="/findmyapp/locations/{id}/noise" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get noise data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/humidity" searchProperties="true" id="eaf1f102-9073-44d5-8e73-9201bb6a1ed7">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get humidity data">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getHumidityData" resourcePath="/findmyapp/locations/{id}/humidity" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get humidity data" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users/id" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="restrequest" name="Get the location of a user">
+        <con:settings/>
+        <con:config service="FindMyApp" methodName="getUserLocation" resourcePath="/findmyapp/locations/users/{id}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="Get the location of a user" mediaType="application/xml" accept="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://findmyapp.net</con:endpoint>
+            <con:request/>
+            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:username xsi:nil="true"/>
+              <con:password xsi:nil="true"/>
+              <con:domain xsi:nil="true"/>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:properties/>
   </con:testSuite>
   <con:properties/>
   <con:wssContainer/>

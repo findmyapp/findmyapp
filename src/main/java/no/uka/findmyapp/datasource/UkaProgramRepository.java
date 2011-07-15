@@ -24,14 +24,14 @@ public class UkaProgramRepository {
 	
 	public List<Event> getUkaProgram(Date startDate, Date endDate) {
 		List<Event> eventList = jdbcTemplate.query(
-				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=?",
+				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=?",
 				new EventRowMapper(),startDate, endDate  );
 
 		return eventList;
 	}
 	public List<Event> getUkaProgram(Date startDate, Date endDate, String place) {
 		List<Event> eventList = jdbcTemplate.query(
-				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND showing_time>=? AND showing_time<=? AND place =?",
+				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=? AND place =?",
 				new EventRowMapper(),startDate, endDate , place );
 
 		return eventList;
@@ -39,36 +39,36 @@ public class UkaProgramRepository {
 
 	public List<Event> getUkaProgram(){
 		List<Event> eventList = jdbcTemplate.query(
-				"SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id",
+				"SELECT * FROM UKA_EVENTS",
 				new EventRowMapper());
 		return eventList;
 	}
 
 	public List<Event> getUkaProgram(String place){
-		return jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND place = ?", new EventRowMapper(), place);
+		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE place = ?", new EventRowMapper(), place);
 	}
 	
 	public List<String> getUkaPlaces(){
-		return jdbcTemplate.queryForList("SELECT DISTINCT place FROM event_showing_real", String.class);
+		return jdbcTemplate.queryForList("SELECT place FROM UKA_EVENTS", String.class);
 	}
 	public List<String> getUkaPlaces(Date from, Date to) {
-		return jdbcTemplate.queryForList("SELECT DISTINCT place FROM event_showing_real WHERE showing_time >= ? AND showing_time <= ?", String.class, from, to);
+		return jdbcTemplate.queryForList("SELECT DISTINCT place FROM UKA_EVENTS WHERE showing_time >= ? AND showing_time <= ?", String.class, from, to);
 	}
 	
 	public Event getUkaEventById(int id){
-		return jdbcTemplate.queryForObject("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND s.id=?", new EventRowMapper(),id);
+		return jdbcTemplate.queryForObject("SELECT * FROM UKA_EVENTS WHERE id=?", new EventRowMapper(),id);
 	}
 	public Event getUkaEventById(int id, Date from, Date to) {
-		return jdbcTemplate.queryForObject("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id AND s.id=? AND showing_time>=? AND showing_time<=?", new EventRowMapper(), id, from, to);
+		return jdbcTemplate.queryForObject("SELECT * FROM UKA_EVENTS WHERE id=? AND showing_time>=? AND showing_time<=?", new EventRowMapper(), id, from, to);
 	}
 	
 	public Event getNextUkaEvent(String place) {
-		return jdbcTemplate.queryForObject("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id " +
-				"AND s.place = ? AND s.showing_time > (now()) ORDER BY s.showing_time LIMIT 1", new EventRowMapper(), place);
+		return jdbcTemplate.queryForObject("SELECT * FROM UKA_EVENTS WHERE " +
+				"AND place = ? AND showing_time > (now()) ORDER BY showing_time LIMIT 1", new EventRowMapper(), place);
 	}
 
 	public Event getNextUkaEvent(String place, Date from, Date to) {
-		return jdbcTemplate.queryForObject("SELECT * FROM event_showing_real AS s, events_event AS e WHERE s.event_id=e.id " +
-				"AND s.place = ? AND s.showing_time > (now()) AND s.showing_time >= ? AND s.showing_time <= ? ORDER BY s.showing_time LIMIT 1", new EventRowMapper(), place, from, to);
+		return jdbcTemplate.queryForObject("SELECT * FROM UKA_EVENTS WHERE " +
+				"place = ? AND showing_time > (now()) AND showing_time >= ? AND showing_time <= ? ORDER BY showing_time LIMIT 1", new EventRowMapper(), place, from, to);
 	}
 }

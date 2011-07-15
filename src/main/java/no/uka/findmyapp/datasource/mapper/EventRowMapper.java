@@ -30,10 +30,10 @@ public class EventRowMapper implements RowMapper<Event> {
 		event.setEventType(rs.getString("event_type"));
 		event.setImage(rs.getString("image"));
 		event.setThumbnail(rs.getString("thumbnail"));
-		event.setHiddenFromListing(rs.getBoolean("hidden_from_listing"));
-		event.setSlug(rs.getString("slug"));
+		//event.setHiddenFromListing(rs.getBoolean("hidden_from_listing"));
+		//event.setSlug(rs.getString("slug"));
 		event.setAgeLimit(rs.getInt("age_limit"));
-		event.setDetailPhotoId(rs.getInt("detail_photo_id"));
+		//event.setDetailPhotoId(rs.getInt("detail_photo_id"));
 		return event;
 	}
 
