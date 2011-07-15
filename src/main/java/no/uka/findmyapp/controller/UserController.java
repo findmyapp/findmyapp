@@ -48,4 +48,26 @@ public class UserController {
 		model.addAttribute(events);
 		return model;
 	}
+	
+	
+	@RequestMapping(value = "/testing", method = RequestMethod.GET)
+	public ModelAndView testForPrivacyMethods() {
+		
+		boolean success = true; 
+		success = service.testingForUserServiceOne();
+
+		logger.info("testresult is " + success);
+		return new ModelAndView("test", "result", success); 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -90,27 +90,41 @@ public class UserRepository {
 	}
 
 	
-//	Henter data, ok testet i db
-	public UserPrivacy retrievePrivacy(int userId) {
+//	Henter data
+	public UserPrivacy retrievePrivacy(int privacyId) {
 		UserPrivacy privacy = jdbcTemplate.queryForObject(
-				"SELECT USER_PRIVACY_SETTINGS.* FROM USER, USER_PRIVACY_SETTINGS " + 
-				"WHERE USER.user_id = "+ userId + " AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+				"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
+				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = "+ privacyId + "", 
 				new UserPrivacyRowMapper());
 		return privacy;
 	}
+	
+	
+//	"SELECT USER_PRIVACY_SETTINGS.* FROM USER, USER_PRIVACY_SETTINGS " + 
+//	"WHERE USER.user_id = "+ userId + " AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+//	new UserPrivacyRowMapper());
 
 	
 //	update, ok testet i db
-	public void updatePrivacy(int userId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
+	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
 		int temp = jdbcTemplate.update(
-				"UPDATE USER, USER_PRIVACY_SETTINGS " + 
+				"UPDATE USER_PRIVACY_SETTINGS " + 
 				"SET USER_PRIVACY_SETTINGS.position = ? ," +
 				"USER_PRIVACY_SETTINGS.events = ? ," +
 				"USER_PRIVACY_SETTINGS.money = ? ," +
 				"USER_PRIVACY_SETTINGS.media = ? " +
-				"WHERE USER.user_id = ? AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
-				PrivacySetting.toInt(newPosition), PrivacySetting.toInt(newEvents), PrivacySetting.toInt(newMoney), PrivacySetting.toInt(newMedia), userId);
+				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
+				PrivacySetting.toInt(newPosition), PrivacySetting.toInt(newEvents), PrivacySetting.toInt(newMoney), PrivacySetting.toInt(newMedia), userPrivacyId);
 	}
+	
+	
+//	"UPDATE USER, USER_PRIVACY_SETTINGS " + 
+//	"SET USER_PRIVACY_SETTINGS.position = ? ," +
+//	"USER_PRIVACY_SETTINGS.events = ? ," +
+//	"USER_PRIVACY_SETTINGS.money = ? ," +
+//	"USER_PRIVACY_SETTINGS.media = ? " +
+//	"WHERE USER.user_id = ? AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
+	
 	
 	
 // Lager defaults settings, ok testet i db
