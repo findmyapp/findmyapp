@@ -793,7 +793,13 @@
               <con:params/>
               <con:element xmlns:even="http://findmyapp.net/findmyapp/program/uka11/events">even:Response</con:element>
             </con:representation>
-          <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
+            <con:representation type="RESPONSE">
+              <con:mediaType xsi:nil="true"/>
+              <con:status>0</con:status>
+              <con:params/>
+              <con:element>data</con:element>
+            </con:representation>
+          </con:method>
         </con:resource>
         <con:resource name="places" path="/places">
           <con:description>Places with events in uka</con:description>
@@ -828,7 +834,43 @@
                   <con:params/>
                   <con:element>data</con:element>
                 </con:representation>
-              <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500 404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
+                <con:representation type="FAULT">
+                  <con:mediaType>text/html</con:mediaType>
+                  <con:status>500 404</con:status>
+                  <con:params/>
+                  <con:element>html</con:element>
+                </con:representation>
+                <con:representation type="RESPONSE">
+                  <con:mediaType xsi:nil="true"/>
+                  <con:status>204</con:status>
+                  <con:params/>
+                  <con:element>data</con:element>
+                </con:representation>
+                <con:representation type="RESPONSE">
+                  <con:mediaType xsi:nil="true"/>
+                  <con:status>204</con:status>
+                  <con:params/>
+                  <con:element>data</con:element>
+                </con:representation>
+                <con:representation type="RESPONSE">
+                  <con:mediaType xsi:nil="true"/>
+                  <con:status>204</con:status>
+                  <con:params/>
+                  <con:element>data</con:element>
+                </con:representation>
+                <con:representation type="RESPONSE">
+                  <con:mediaType xsi:nil="true"/>
+                  <con:status>204</con:status>
+                  <con:params/>
+                  <con:element>data</con:element>
+                </con:representation>
+                <con:representation type="RESPONSE">
+                  <con:mediaType xsi:nil="true"/>
+                  <con:status>204</con:status>
+                  <con:params/>
+                  <con:element>data</con:element>
+                </con:representation>
+              </con:method>
             </con:resource>
           </con:resource>
           <con:method name="getAllPlaces" method="GET">
@@ -1578,7 +1620,11 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration><token>"events"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
+              <con:configuration>
+                <token>"events"</token>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -1623,9 +1669,9 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-  <con:entry key="ukaYear" value="uka11"/>
-  <con:entry key="place" value="samfundet"/>
-</con:parameters>
+              <con:entry key="ukaYear" value="uka11"/>
+              <con:entry key="place" value="samfundet"/>
+            </con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -1644,13 +1690,6 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
-            <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>eventId</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
-            </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
               <con:password xsi:nil="true"/>
@@ -1659,9 +1698,9 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-  <con:entry key="ukaYear" value="uka11"/>
-  <con:entry key="date" value="2011-10-03"/>
-</con:parameters>
+              <con:entry key="ukaYear" value="uka11"/>
+              <con:entry key="date" value="2011-10-06"/>
+            </con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
@@ -1844,7 +1883,11 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration><token>Samfundet</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
+              <con:configuration>
+                <token>Samfundet</token>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -1871,10 +1914,16 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration><codes>200</codes></con:configuration>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration><token>"samfundet"</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration>
+              <con:configuration>
+                <token>"samfundet"</token>
+                <ignoreCase>true</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -1884,9 +1933,9 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-  <con:entry key="ukaYear" value="uka11"/>
-  <con:entry key="place" value="samfundet"/>
-</con:parameters>
+              <con:entry key="ukaYear" value="uka11"/>
+              <con:entry key="place" value="samfundet"/>
+            </con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
