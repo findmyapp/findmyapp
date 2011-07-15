@@ -45,12 +45,10 @@ public class LocationController {
 			.getLogger(LocationController.class);
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelMap getAllLocations() {
+	public ModelAndView getAllLocations() {
 		logger.info("getAllLocations");
-		ModelMap model = new ModelMap();
 		List<Location> locations = service.getAllLocations();
-		model.addAttribute(locations);
-		return model;
+		return new ModelAndView("json", "location", locations);
 	}
 
 	/*
