@@ -1,16 +1,17 @@
 package no.uka.findmyapp.model;
 
 public class UserPrivacy {
-	private int id;
+	private int userPrivacyId;
 	private PrivacySetting positionPrivacySetting;
 	private PrivacySetting eventsPrivacySetting;
 	private PrivacySetting moneyPrivacySetting;
 	private PrivacySetting mediaPrivacySetting;
-	public int getId() {
-		return id;
+
+	public int getUserPrivacyId() {
+		return userPrivacyId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int userPrivacyId) {
+		this.userPrivacyId = userPrivacyId;
 	}
 	public PrivacySetting getPositionPrivacySetting() {
 		return positionPrivacySetting;

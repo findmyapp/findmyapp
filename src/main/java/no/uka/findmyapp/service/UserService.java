@@ -1,6 +1,8 @@
 package no.uka.findmyapp.service;
 
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
@@ -41,16 +43,16 @@ public class UserService {
 	
 	
 
-	public UserPrivacy retrievePrivacy(int userId){
-		return data.retrievePrivacy(userId);
+	public UserPrivacy retrievePrivacy(int userPrivacyId){
+		return data.retrievePrivacy(userPrivacyId);
 
 	}
 	
 
 	// We recommend using retrievePrivacy instead.
-	public PrivacySetting retrieveOnePrivacy(int userId, String privacyType) throws IllegalArgumentException{
+	public PrivacySetting retrieveOnePrivacy(int userPrivacyId, String privacyType) throws IllegalArgumentException{
 		// We could try to make an enum out of privacyType also, would this give two nested enum classes?
-		UserPrivacy privacy =  data.retrievePrivacy(userId);
+		UserPrivacy privacy =  data.retrievePrivacy(userPrivacyId);
 		privacyType = privacyType.toLowerCase();
 		
 		if (privacyType.equals("position")){
@@ -72,12 +74,12 @@ public class UserService {
 
 
 		
-	public void updatePrivacy(int userId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia){		
-		 data.updatePrivacy(userId, newPosition, newEvents, newMoney, newMedia);
+	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia){		
+		 data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
 	}	
 	
-	public void updatePrivacy(int userId, UserPrivacy userPrivacy){	
-		 data.updatePrivacy(userId, userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
+	public void updatePrivacy(UserPrivacy userPrivacy){	
+		 data.updatePrivacy(userPrivacy.getUserPrivacyId(), userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
 	}
 	
 	
@@ -101,6 +103,53 @@ public class UserService {
 		Facebook facebook = new FacebookTemplate(accessToken);
 		List<String> friendIds = facebook.friendOperations().getFriendIds();
 		return friendIds;
+	}
+
+	
+	
+	public boolean testingForUserServiceOne() {
+		// vaar test
+		boolean success = true;
+				
+		// 1. sette inn defaults verdier og sjekke i databasen at det er blitt endringen (2, 2, 2, 2)
+		
+		int userPrivacyId; 
+		userPrivacyId = data.createDefaultPrivacySettingsEntry();
+		//privacyId =200
+		
+		UserPrivacy privacy; 
+		privacy = data.retrievePrivacy(userPrivacyId);
+		// få ut privacy
+
+
+		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.FRIENDS);
+		success = success && (privacy.getEventsPrivacySetting() == PrivacySetting.FRIENDS);
+		logger.info("2 tests done");
+		success = success && (privacy.getMediaPrivacySetting() == PrivacySetting.FRIENDS);
+		success = success && (privacy.getMoneyPrivacySetting() == PrivacySetting.FRIENDS);
+		logger.info("4 tests done");
+		
+		
+		//Test for update
+		PrivacySetting newPosition = PrivacySetting.ANYONE;
+		PrivacySetting newEvents = PrivacySetting.ONLY_ME;
+		PrivacySetting newMedia = PrivacySetting.ONLY_ME;
+		PrivacySetting newMoney= PrivacySetting.ANYONE;
+		data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
+		
+
+		privacy = data.retrievePrivacy(userPrivacyId);
+		// få ut privacy
+
+		
+		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE); 
+		success = success && (privacy.getEventsPrivacySetting() == PrivacySetting.ONLY_ME);
+		logger.info("6 tests done");
+		success = success && (privacy.getMediaPrivacySetting() == PrivacySetting.ONLY_ME);
+		success = success && (privacy.getMoneyPrivacySetting() == PrivacySetting.ANYONE);
+		
+		
+		return success;
 	}
 }
 
