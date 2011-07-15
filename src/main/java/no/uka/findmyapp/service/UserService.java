@@ -107,20 +107,19 @@ public class UserService {
 
 	
 	
+	
+	// Testing privacy settings: create defaultSettings, update and retrieve 
 	public boolean testingForUserServiceOne() {
-		// vaar test
+	
 		boolean success = true;
 				
-		// 1. sette inn defaults verdier og sjekke i databasen at det er blitt endringen (2, 2, 2, 2)
-		
+		// Use default settings and verify changes (friends, friends, friends, friends)
 		int userPrivacyId; 
 		userPrivacyId = data.createDefaultPrivacySettingsEntry();
-		//privacyId =200
+	
 		
 		UserPrivacy privacy; 
 		privacy = data.retrievePrivacy(userPrivacyId);
-		// faa ut privacy
-
 
 		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.FRIENDS);
 		success = success && (privacy.getEventsPrivacySetting() == PrivacySetting.FRIENDS);
@@ -139,7 +138,6 @@ public class UserService {
 		
 
 		privacy = data.retrievePrivacy(userPrivacyId);
-		// faa ut privacy
 
 		
 		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE); 

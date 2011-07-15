@@ -90,7 +90,9 @@ public class UserRepository {
 	}
 
 	
-//	Henter data
+	
+	
+//	Retrieving data
 	public UserPrivacy retrievePrivacy(int privacyId) {
 		UserPrivacy privacy = jdbcTemplate.queryForObject(
 				"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
@@ -99,13 +101,8 @@ public class UserRepository {
 		return privacy;
 	}
 	
-	
-//	"SELECT USER_PRIVACY_SETTINGS.* FROM USER, USER_PRIVACY_SETTINGS " + 
-//	"WHERE USER.user_id = "+ userId + " AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
-//	new UserPrivacyRowMapper());
 
-	
-//	update, ok testet i db
+//	Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
 		int temp = jdbcTemplate.update(
 				"UPDATE USER_PRIVACY_SETTINGS " + 
@@ -118,16 +115,7 @@ public class UserRepository {
 	}
 	
 	
-//	"UPDATE USER, USER_PRIVACY_SETTINGS " + 
-//	"SET USER_PRIVACY_SETTINGS.position = ? ," +
-//	"USER_PRIVACY_SETTINGS.events = ? ," +
-//	"USER_PRIVACY_SETTINGS.money = ? ," +
-//	"USER_PRIVACY_SETTINGS.media = ? " +
-//	"WHERE USER.user_id = ? AND USER.user_privacy_id = USER_PRIVACY_SETTINGS.user_privacy_id", 
-	
-	
-	
-// Lager defaults settings, ok testet i db
+// Create defaults settings
 	public int createDefaultPrivacySettingsEntry() {
 		jdbcTemplate.execute(
 				"INSERT INTO USER_PRIVACY_SETTINGS " + 
@@ -137,6 +125,9 @@ public class UserRepository {
 		return user_privacy_id;
 	}
 
+	
+	
+	
 	public List<User> getRegisteredFacebookFriends(List<String> friendIds) {
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
