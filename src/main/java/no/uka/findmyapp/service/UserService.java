@@ -119,7 +119,7 @@ public class UserService {
 		
 		UserPrivacy privacy; 
 		privacy = data.retrievePrivacy(userPrivacyId);
-		// få ut privacy
+		// faa ut privacy
 
 
 		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.FRIENDS);
@@ -139,7 +139,7 @@ public class UserService {
 		
 
 		privacy = data.retrievePrivacy(userPrivacyId);
-		// få ut privacy
+		// faa ut privacy
 
 		
 		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE); 
