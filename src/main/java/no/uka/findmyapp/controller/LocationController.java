@@ -10,6 +10,7 @@ import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 import no.uka.findmyapp.service.LocationService;
 
 import org.slf4j.Logger;
@@ -19,13 +20,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -59,79 +58,64 @@ public class LocationController {
 	public ModelAndView getPosition(@RequestBody Signal[] signals)
 			throws LocationNotFoundException {
 		logger.info("getCurrentLocation ( " + signals.length + " )");
-		ModelAndView mav = new ModelAndView("pos");
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentLocation(signalList);
 		logger.info("getCurrentPosition ( " + location + " )");
-		mav.addObject("room", location); // model name, model object
-
-		return mav;
+		return new ModelAndView("json", "location", location);
 	}
 
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
-		ModelAndView mav = new ModelAndView();
 		List<User> users = service.getUsersAtLocation(locationId);
-		mav.addObject("usersAtLocation", users);
-		return mav;
+		return new ModelAndView("json", "users_at_location", users);
 	}
 	
 	@RequestMapping(value = "/{id}/usercount", method = RequestMethod.GET)
 	public ModelAndView getUserCountAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUserCountAtLocation ( " + locationId + ")");
 		int count = service.getUserCountAtLocation(locationId);
-		return new ModelAndView("pos","usercount", count);
+		return new ModelAndView("json","usercount", count);
 	}
 
 	@RequestMapping(value = "/sample", method = RequestMethod.POST)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
-		ModelAndView mav = new ModelAndView("registerPositionSample");
 		boolean regSample = service.registerSample(sample);
 		logger.info("registerSample ( " + regSample + " )");
-		mav.addObject("regSample", regSample); // model name, model object
-
-		return mav;
+		return new ModelAndView("json", "regSample", regSample);
 	}
 
 	@RequestMapping(value = "{locationId}/users/{userId}", method = RequestMethod.POST)
 	public ModelAndView registerUserLocation(@PathVariable int userId,
 			@PathVariable int locationId) {
-		ModelAndView mav = new ModelAndView("registerUserPosition");
 		boolean regUserPos = service.registerUserLocation(userId, locationId);
 		logger.info("registerUserPosition ( " + regUserPos + " )");
-		mav.addObject("regUserPos", regUserPos); // model name, model object
-		return mav;
+		return new ModelAndView("json", "regUserPos", regUserPos);
 	}
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public ModelMap getUserLocation(@PathVariable("id") int userId,
-			ModelMap model) {
+	public ModelAndView getUserLocation(@PathVariable("id") int userId) {
 		Location location = service.getUserLocation(userId);
-		model.addAttribute(location);
-		return model;
+		return new ModelAndView("json", "location", location);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public void getAllUserLocations(ModelMap model) {
-		model.addAttribute(service.getLocationOfAllUsers());
+	public ModelAndView getAllUserLocations() {
+		List<UserPosition> pos = service.getLocationOfAllUsers();
+		return new ModelAndView("json", "user_position", pos);
 	}
 
 	@RequestMapping(value = "/friends/{id}", method = RequestMethod.GET)
-	public ModelMap getLocationOfFriend(@PathVariable("id") int friendId,
-			ModelMap model) {
+	public ModelAndView getLocationOfFriend(@PathVariable("id") int friendId) {
 		Location friendLocation = service.getLocationOfFriend(friendId);
-		model.addAttribute(friendLocation);
-		return model;
+		return new ModelAndView("json", "friend_location", friendLocation);
 	}
 
 	@RequestMapping(value = "/friends", method = RequestMethod.GET)
-	public ModelMap getLocationOfFriends(@PathVariable int userId,
-			ModelMap model) {
+	public ModelAndView getLocationOfFriends(@PathVariable int userId) {
 		Map<Integer, Integer> friendsPositions = service
 				.getLocationOfFriends(userId);
-		model.addAttribute(friendsPositions);
-		return model;
+		return new ModelAndView("json", "friends_positions", friendsPositions);
 	}
 
 	/*
@@ -139,20 +123,16 @@ public class LocationController {
 	 */
 
 	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
-	public ModelMap getAllFacts(@PathVariable("id") int locationId) {
+	public ModelAndView getAllFacts(@PathVariable("id") int locationId) {
 		logger.info("getAllFacts ( " + locationId + " )");
-		ModelMap model = new ModelMap();
 		List<Fact> facts = service.getAllFacts(locationId);
-		model.addAttribute(facts);
-		return model;
+		return new ModelAndView("json", "facts", facts);
 	}
 
 	@RequestMapping(value = "/{id}/facts/random", method = RequestMethod.GET)
-	public ModelMap getRandomFact(@PathVariable("id") int locationId) {
-		ModelMap model = new ModelMap();
+	public ModelAndView getRandomFact(@PathVariable("id") int locationId) {
 		Fact fact = service.getRandomFact(locationId);
-		model.addAttribute(fact);
-		return model;
+		return new ModelAndView("json", "random_fact", fact);
 	}
 
 	@SuppressWarnings("unused")
