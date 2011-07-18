@@ -4,8 +4,10 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
+import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
+import no.uka.findmyapp.model.serviceinfo.ServiceModel;
 import no.uka.findmyapp.service.AppStoreService;
 
 import org.slf4j.Logger;
@@ -44,13 +46,13 @@ public class AppStoreController {
 	 * @throws URISyntaxException 
 	 */
 	@RequestMapping(value = "/appstore/{platform}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = AppStoreList.class)
 	public String getAppStoreListForPlatform(
 			@PathVariable int platform,
 			@RequestParam(required=true) int listType,
 			@RequestParam(required=true) int count, Model model) throws URISyntaxException {
 
 		//TODO check values, throw exception
-
 		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
 		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
 				count, 

@@ -5,7 +5,9 @@ import java.util.List;
 
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
+import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
@@ -41,8 +43,10 @@ public class UkaProgramController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
+
 	// We do not use ukaYear
+	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaProgram.class)
 	public ModelAndView getUkaProgramForDate(
 			@PathVariable String ukaYear,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
@@ -57,9 +61,10 @@ public class UkaProgramController {
 		return new ModelAndView("json", "program", program);
 	
 	}
-	
-	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
+
 	// We do not use ukaYear
+	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaProgram.class)
 	public ModelAndView searchForUkaProgramByName(
 			@PathVariable String ukaYear,
 			@RequestParam(required=true) String eventName)
@@ -73,6 +78,7 @@ public class UkaProgramController {
 	}
 
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=String.class, isList=true)
 	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(
 			@PathVariable String ukaYear)
@@ -85,6 +91,7 @@ public class UkaProgramController {
 	}
 	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/next", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Event.class)
 	// We do not use ukaYear
 	public ModelAndView getNextUkaEvent(
 			@PathVariable String ukaYear, @PathVariable String place)
@@ -97,6 +104,7 @@ public class UkaProgramController {
 	}
 	
 	@RequestMapping(value = "/program/{ukaYear}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaProgramConfiguration.class)
 	public ModelAndView getUkaProgramStartEndDate(
 			@PathVariable String ukaYear)
 			throws UkaYearNotFoundException {
@@ -106,6 +114,7 @@ public class UkaProgramController {
 		return new ModelAndView("json", "ukaProgram", config);
 	}
 	@RequestMapping(value = "/program", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaProgramConfiguration.class, isList=true)
 	public ModelAndView getUkaProgramStartEndDate() {
 		logger.info("get all ukaprograms");
 		List<UkaProgramConfiguration> configs = ukaProgramService.getUkaProgramConfiguration();
@@ -115,6 +124,7 @@ public class UkaProgramController {
 	
 
 	@RequestMapping(value = "/events/{id}/friends", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=User.class, isList=true)
 	public ModelAndView getFriendsAttendingEvent(
 			@PathVariable("id") int eventId,
 			@RequestParam String accessToken){
@@ -125,6 +135,7 @@ public class UkaProgramController {
 	}
 
 	@RequestMapping(value = "/program/{ukaYear}/events/{id}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Event.class)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
 			@PathVariable int id, @PathVariable String ukaYear) 

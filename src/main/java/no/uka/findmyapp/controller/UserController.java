@@ -26,9 +26,6 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserController.class);
-
-	
-	
 	
 	@RequestMapping(value = "/friends")
 	public ModelAndView getRegisteredFacebookFriends(@RequestParam String accessToken) {
