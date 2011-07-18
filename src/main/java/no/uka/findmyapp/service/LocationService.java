@@ -1,5 +1,6 @@
 package no.uka.findmyapp.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationStatus;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -127,6 +129,9 @@ public class LocationService {
 	/*
 	 * **************** FACT *****************
 	 */
+	public void addData(LocationStatus locationStatus, int locationId){
+		data.addData(locationId, locationStatus);
+	}
 
 	public List<Fact> getAllFacts(int locationId) {
 		return data.getAllFacts(locationId);
@@ -134,6 +139,63 @@ public class LocationService {
 
 	public Fact getRandomFact(int locationId) {
 		return data.getRandomFact(locationId);
+	}
+
+	public Location getData(int locationId) {//Still doesn't take into account noise, humidity and so on.
+		List <LocationStatus> locationData = data.getData(locationId);
+		LocationStatus locationStatus = aggregateData(locationData);
+		Location locale = new Location();
+		locale.setLocationId(locationId);
+		//TODO: locale.setLocationName(locationName);
+		locale.setLocationStatus(locationStatus);
+		return locale;
+	}
+	
+	private LocationStatus aggregateData(List<LocationStatus> dataList){//Takes average over the last 5 minutes
+		LocationStatus aggregatedData = new LocationStatus();
+		float queueLength = -1,funFactor = -1,chatFactor = -1,danceFactor= -1,flirtFactor = -1;
+		int qlCount = 0, ffCount =0, cfCount = 0,dfCount = 0,flirtfCount = 0;
+		Iterator<LocationStatus> li = dataList.iterator();
+		while(li.hasNext()){
+			LocationStatus current =  li.next();
+			if(current.getQueueLength()!=-1){
+				qlCount = qlCount+1;
+				queueLength = queueLength + current.getQueueLength();
+			}
+			if(current.getFunFactor()!=-1){
+				ffCount  = ffCount+1;
+				funFactor = funFactor + current.getFunFactor();
+			}
+			if(current.getChatFactor()!=-1){
+				cfCount = cfCount +1;
+				chatFactor = chatFactor +current.getChatFactor();
+			}	
+			if(current.getDanceFactor()!=-1){
+				dfCount = dfCount+1;
+				danceFactor = danceFactor + current.getDanceFactor();
+			}
+			if(current.getFlirtFactor()!=-1){
+				flirtfCount = flirtfCount +1;
+				flirtFactor = flirtFactor + current.getFlirtFactor();
+			}
+			
+		}
+		if (qlCount !=0){
+			aggregatedData.setQueueLegth(queueLength/qlCount);
+		}
+		if(ffCount !=0){
+			aggregatedData.setFunFactor(funFactor/ffCount);
+		}
+		if(cfCount !=0){
+			aggregatedData.setChatFactor(chatFactor/cfCount);
+		}
+		if(dfCount !=0){
+			aggregatedData.setDanceFactor(danceFactor/dfCount);
+		}
+		if(flirtfCount !=0){
+			aggregatedData.setFlirtFactor(flirtFactor/flirtfCount);
+		}
+		return aggregatedData;
 	}
 
 }

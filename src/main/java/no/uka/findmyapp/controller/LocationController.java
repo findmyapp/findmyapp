@@ -7,6 +7,7 @@ import java.util.Map;
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationStatus;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -121,6 +122,23 @@ public class LocationController {
 	/*
 	 * **************** FACT *****************
 	 */
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.POST)//Adds subjective user reported data, such as fun factor or queue length,on a location
+	public ModelAndView addData(@PathVariable("id") int locationId,
+			@RequestBody LocationStatus locationStatus){
+		
+		ModelAndView mav = new ModelAndView("ok_respons");
+		logger.info("Status data logged for location: " + locationId);
+		service.addData(locationStatus, locationId);
+		mav.addObject("respons",locationStatus);
+		return mav;
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public ModelAndView getData(@PathVariable("id") int locationId){
+		Location locale = service.getData(locationId);
+		return new ModelAndView("json","location_real_time", locale);
+	}
 
 	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
 	public ModelAndView getAllFacts(@PathVariable("id") int locationId) {

@@ -19,6 +19,7 @@ import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationStatus;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -314,4 +315,16 @@ public class LocationRepository {
 						new FactRowMapper(), locationId);
 	}
 
+	public List<LocationStatus> getData(int locationId) {
+		
+		return null;
+	}
+
+	public void addData(int locationId, LocationStatus ls) {
+		jdbcTemplate.execute("INSERT INTO LOCATION_STATUS (position_location_id ,queue_length, fun_factor," +
+				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+ls.getQueueLength()+","
+				+ls.getFunFactor() +","+ ls.getDanceFactor() +", " + ls.getChatFactor()+","
+				+ls.getFlirtFactor());
+		logger.info("Data logged: " + ls.toString());
+	}
 }
