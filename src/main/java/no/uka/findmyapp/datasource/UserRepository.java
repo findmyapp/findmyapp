@@ -89,6 +89,16 @@ public class UserRepository {
 		return events;
 	}
 
+
+	
+	public UserPrivacy getUserPrivacyForUserId(int userId) {
+		//fetch UserPrivacy by user id;
+
+		UserPrivacy privacy = jdbcTemplate.queryForObject(
+				"SELECT PRIV.* FROM USER_PRIVACY_SETTINGS AS PRIV JOIN USER ON user_privacy_id WHERE USER.user_id = ?", 
+				new UserPrivacyRowMapper(), userId);
+		return privacy;
+	}
 	
 	
 	

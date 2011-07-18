@@ -29,6 +29,31 @@ public class UserService {
 	@Autowired
 	private UserRepository data;
 
+	public PrivacySetting getPrivacySettingForUserId(int userId, String privacyType) {
+		UserPrivacy privacy = this.getUserPrivacyForUserId(userId);
+		
+		if (privacyType.equals("position")){
+			return privacy.getPositionPrivacySetting();
+		}
+		else if (privacyType.equals("events")){
+			return privacy.getEventsPrivacySetting();
+		}
+		else if (privacyType.equals("money")){
+			return privacy.getMoneyPrivacySetting();
+		}
+		else if (privacyType.equals("media")){
+			return privacy.getMediaPrivacySetting();
+		}
+		else{
+			throw new IllegalArgumentException("Function retreiveOnePrivacy was called with illegal input"); 
+		}
+	}
+	
+	public UserPrivacy getUserPrivacyForUserId(int userId) {
+		return data.getUserPrivacyForUserId(userId);
+		
+	}
+	
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
@@ -49,29 +74,6 @@ public class UserService {
 	}
 	
 
-	// We recommend using retrievePrivacy instead.
-	public PrivacySetting retrieveOnePrivacy(int userPrivacyId, String privacyType) throws IllegalArgumentException{
-		// We could try to make an enum out of privacyType also, would this give two nested enum classes?
-		UserPrivacy privacy =  data.retrievePrivacy(userPrivacyId);
-		privacyType = privacyType.toLowerCase();
-		
-		if (privacyType.equals("position")){
-			return privacy.getPositionPrivacySetting();
-		}
-		else if (privacyType.equals("events")){
-			return privacy.getEventsPrivacySetting();
-		}
-		else if (privacyType.equals("money")){
-			return privacy.getMoneyPrivacySetting();
-		}
-		else if (privacyType.equals("media")){
-			return privacy.getMediaPrivacySetting();
-		}
-		else{
-			throw new IllegalArgumentException("Function retreiveOnePrivacy was called with illegal input"); 
-		}
-	}
-
 
 		
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia){		
@@ -83,8 +85,15 @@ public class UserService {
 	}
 	
 	
-	public int createDefaultPrivacySettingsEntry(){
-		return data.createDefaultPrivacySettingsEntry();
+	public UserPrivacy createDefaultPrivacySettingsEntry(){
+		int privacyId = data.createDefaultPrivacySettingsEntry();
+		UserPrivacy userPrivacy = new UserPrivacy();
+		userPrivacy.setId(privacyId);
+		userPrivacy.setEventsPrivacySetting(PrivacySetting.FRIENDS);
+		userPrivacy.setMediaPrivacySetting(PrivacySetting.FRIENDS);
+		userPrivacy.setMoneyPrivacySetting(PrivacySetting.FRIENDS);
+		userPrivacy.setPositionPrivacySetting(PrivacySetting.FRIENDS);
+		return userPrivacy;
 	}
 
 	public List<User> getRegisteredFacebookFriends(String accessToken) {

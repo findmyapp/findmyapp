@@ -2,49 +2,72 @@ package no.uka.findmyapp.model;
 
 import java.sql.Timestamp;
 
+import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.service.UserService;
+
 public class User {
 
-	private String facebookUserId; 
-	private String localUserId; 
+	private int facebookUserId; 
+	private int localUserId; 
 	private Timestamp userRegistered; 
 	private Timestamp lastLogon;
 	private Location lastKnownPosition;
+	private UserPrivacy userPrivacy;
 	
 	public User() {}
 	
-	public User(String facebookId) {
+	public User(int facebookId) {
 		this.facebookUserId = facebookId; 
 	}
 	
-	public User(String facebookId, String localId, Timestamp registerTimestamp, Timestamp lastLogon) {
+	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, UserPrivacy userPrivacy ) {
 		this.facebookUserId = facebookId; 
 		this.localUserId = localId; 
 		this.userRegistered = registerTimestamp; 
 		this.lastLogon = lastLogon; 
+		this.userPrivacy = userPrivacy;
 	}
 	
-	public String getFacebookUserId() {
+	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, int userPrivacyId ) {
+		this.facebookUserId = facebookId; 
+		this.localUserId = localId; 
+		this.userRegistered = registerTimestamp; 
+		this.lastLogon = lastLogon;
+		UserService data = new UserService();
+		this.userPrivacy = data.retrievePrivacy(userPrivacyId);
+	}
+	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon) {
+		this.facebookUserId = facebookId; 
+		this.localUserId = localId; 
+		this.userRegistered = registerTimestamp; 
+		this.lastLogon = lastLogon;
+		UserService data = new UserService();
+		this.userPrivacy = data.createDefaultPrivacySettingsEntry();
+	}
+	
+
+	public int getFacebookUserId() {
 		return facebookUserId;
 	}
 
-	public void setFacebookUserId(String facebookUserId) {
+	public void setFacebookUserId(int facebookUserId) {
 		this.facebookUserId = facebookUserId;
 	}
 
-	public String getLocalUserId() {
+	public int getLocalUserId() {
 		return localUserId;
 	}
 
-	public void setLocalUserId(String localUserId) {
+	public void setLocalUserId(int localUserId) {
 		this.localUserId = localUserId;
 	}
-	
-	public Timestamp getUserRegisteredTimestamp() {
+
+	public Timestamp getUserRegistered() {
 		return userRegistered;
 	}
 
-	public void setUserRegistered(Timestamp ts) {
-		this.userRegistered = ts;
+	public void setUserRegistered(Timestamp userRegistered) {
+		this.userRegistered = userRegistered;
 	}
 
 	public Timestamp getLastLogon() {
@@ -63,4 +86,15 @@ public class User {
 		this.lastKnownPosition = lastKnownPosition;
 	}
 
+	public UserPrivacy getUserPrivacy() {
+		return userPrivacy;
+	}
+
+	public void setUserPrivacy(UserPrivacy userPrivacy) {
+		this.userPrivacy = userPrivacy;
+	}
+	
+	
+	
+	
 }
