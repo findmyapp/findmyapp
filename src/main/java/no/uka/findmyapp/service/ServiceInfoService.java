@@ -43,9 +43,9 @@ public class ServiceInfoService {
 		for(Method m : clazz.getDeclaredMethods()) {
 
 			ServiceModelMapping smm = m.getAnnotation(ServiceModelMapping.class);
-			//TODO
 			RequestMapping req = m.getAnnotation(RequestMapping.class);
-			if(req != null) {
+			if(smm != null && req != null) {
+				
 				String location = replaceInLocationString(req.value()[0]);
 				String requestType = req.method()[0].toString();
 				String localIdentifier = m.getName();
@@ -55,18 +55,17 @@ public class ServiceInfoService {
 				System.out.println(localIdentifier);
 				System.out.println(controllerName);
 				System.out.println(controllerLocationPrefix + location);
-				
-				//no.uka.findmyapp.android.rest.providers
-				
-				ServiceModel sm = new ServiceModel(
-						new URI("http://10.0.2.2:8080/findmyapp/" + location),
+				smm.returnType();
+				/*
+				new ServiceModel(new URI("http://10.0.2.2:8080/findmyapp/" + location),
 						HttpType.valueOf(requestType), 
-						ServiceDataFormat.JSON,
-						null,
-						new URI("no.uka.findmyapp.android.rest.providers/" + controllerName) ,
+						ServiceDataFormat.JSON, 
+						smm.returnType(), 
+						null, 
+						new URI("no.uka.findmyapp.android.rest.providers/" + controllerName), 
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
-						new TypeToken<UkaEvent>(){}.getClass()
 						localIdentifier);
+						*/
 			}
 		}
 	}
