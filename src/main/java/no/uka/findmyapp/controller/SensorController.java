@@ -9,6 +9,7 @@ import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Temperature;
+import no.uka.findmyapp.model.appstore.AppStoreList;
 import no.uka.findmyapp.service.SensorService;
 
 import org.slf4j.Logger;
@@ -119,6 +120,7 @@ public class SensorController {
 	 * Simply selects the sensor view to return a confirmation.
 	 */
 	@RequestMapping(value = "/{locationId}/temperature", method = RequestMethod.POST)
+	@ServiceModelMapping(returnType = Temperature.class)
 	public ModelAndView setTemperatureData(
 			@PathVariable int locationId,
 			@RequestBody Temperature temperature) {
