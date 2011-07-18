@@ -65,7 +65,7 @@ public class FacebookAuthenticationController
 		//if(data.userExists(1234)) {
 			return false; 
 		}
-		data.saveUser(fbp);
+		data.createUser(fbp);
 		return true; 
 	}
 	

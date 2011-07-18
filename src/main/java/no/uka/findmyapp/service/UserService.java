@@ -86,13 +86,18 @@ public class UserService {
 	
 	
 	public UserPrivacy createDefaultPrivacySettingsEntry(){
+		
+		// create a new entry in the database
 		int privacyId = data.createDefaultPrivacySettingsEntry();
+		
+		// Create object to return, with PrivacySetting.FRIENDS as default
 		UserPrivacy userPrivacy = new UserPrivacy();
 		userPrivacy.setId(privacyId);
 		userPrivacy.setEventsPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setMediaPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setMoneyPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setPositionPrivacySetting(PrivacySetting.FRIENDS);
+		
 		return userPrivacy;
 	}
 
