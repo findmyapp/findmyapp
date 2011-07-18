@@ -3,6 +3,7 @@ package no.uka.findmyapp.datasource.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setFacebookUserId(rs.getInt("facebook_id"));
 		user.setUserRegistered(rs.getTimestamp("registered_date"));
 		user.setLastLogon(rs.getTimestamp("last_logon"));
-		
+		user.setUserPrivacy( null );
 		return user; 
 	}
 }
