@@ -83,8 +83,15 @@ public class UserService {
 	}
 	
 	
-	public int createDefaultPrivacySettingsEntry(){
-		return data.createDefaultPrivacySettingsEntry();
+	public UserPrivacy createDefaultPrivacySettingsEntry(){
+		int privacyId = data.createDefaultPrivacySettingsEntry();
+		UserPrivacy userPrivacy = new UserPrivacy();
+		userPrivacy.setId(privacyId);
+		userPrivacy.setEventsPrivacySetting(PrivacySetting.FRIENDS);
+		userPrivacy.setMediaPrivacySetting(PrivacySetting.FRIENDS);
+		userPrivacy.setMoneyPrivacySetting(PrivacySetting.FRIENDS);
+		userPrivacy.setPositionPrivacySetting(PrivacySetting.FRIENDS);
+		return userPrivacy;
 	}
 
 	public List<User> getRegisteredFacebookFriends(String accessToken) {

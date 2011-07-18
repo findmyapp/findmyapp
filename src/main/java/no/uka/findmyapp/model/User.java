@@ -2,6 +2,9 @@ package no.uka.findmyapp.model;
 
 import java.sql.Timestamp;
 
+import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.service.UserService;
+
 public class User {
 
 	private int facebookUserId; 
@@ -17,12 +20,31 @@ public class User {
 		this.facebookUserId = facebookId; 
 	}
 	
-	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon) {
+	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, UserPrivacy userPrivacy ) {
 		this.facebookUserId = facebookId; 
 		this.localUserId = localId; 
 		this.userRegistered = registerTimestamp; 
 		this.lastLogon = lastLogon; 
+		this.userPrivacy = userPrivacy;
 	}
+	
+	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, int userPrivacyId ) {
+		this.facebookUserId = facebookId; 
+		this.localUserId = localId; 
+		this.userRegistered = registerTimestamp; 
+		this.lastLogon = lastLogon;
+		UserService data = new UserService();
+		this.userPrivacy = data.retrievePrivacy(userPrivacyId);
+	}
+	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon) {
+		this.facebookUserId = facebookId; 
+		this.localUserId = localId; 
+		this.userRegistered = registerTimestamp; 
+		this.lastLogon = lastLogon;
+		UserService data = new UserService();
+		this.userPrivacy = data.createDefaultPrivacySettingsEntry();
+	}
+	
 
 	public int getFacebookUserId() {
 		return facebookUserId;
