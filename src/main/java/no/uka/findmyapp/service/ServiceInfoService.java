@@ -3,12 +3,18 @@ package no.uka.findmyapp.service;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import no.uka.findmyapp.controller.AppStoreController;
+import no.uka.findmyapp.controller.LocationController;
+import no.uka.findmyapp.controller.PingController;
 import no.uka.findmyapp.controller.SensorController;
+import no.uka.findmyapp.controller.UkaProgramController;
+import no.uka.findmyapp.controller.UserController;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.serviceinfo.HttpType;
 import no.uka.findmyapp.model.serviceinfo.ServiceDataFormat;
@@ -20,16 +26,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Service
 public class ServiceInfoService {
 	
-	public List<ServiceModel> getAllServices() {
+	public List<ServiceModel> getAllServices() throws URISyntaxException {
 		Class controller = SensorController.class;
-		ServiceModel sm = parseController(controller);
+		List<ServiceModel> list = parseController(controller);
+		list.addAll(parseController(AppStoreController.class));
+		list.addAll(parseController(LocationController.class));
+		list.addAll(parseController(PingController.class));
+		list.addAll(parseController(UkaProgramController.class));
+		list.addAll(parseController(UserController.class));
 		
-		return null;
+		return list;
 	}
 	
-	private ServiceModel parseController(Class clazz) {
+	private List<ServiceModel> parseController(Class clazz) throws URISyntaxException {
 		Annotation[] as =  clazz.getAnnotations();
 		String controllerLocationPrefix = "";
+		List<ServiceModel> list = new ArrayList<ServiceModel>();
 		for(Annotation a : as) {
 			if(a.annotationType() == RequestMapping.class) {
 				//System.out.println("isRM");
@@ -56,19 +68,18 @@ public class ServiceInfoService {
 				System.out.println(controllerName);
 				System.out.println(controllerLocationPrefix + location);
 				smm.returnType();
-				/*
-				new ServiceModel(new URI("http://10.0.2.2:8080/findmyapp/" + location),
+				list.add(new ServiceModel(new URI("http://10.0.2.2:8080/findmyapp/" + location),
 						HttpType.valueOf(requestType), 
 						ServiceDataFormat.JSON, 
 						smm.returnType(), 
 						null, 
 						new URI("no.uka.findmyapp.android.rest.providers/" + controllerName), 
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
-						localIdentifier);
-						*/
+						localIdentifier));
+				
 			}
 		}
-		return null;
+		return list;
 	}
 	
 	private String replaceInLocationString(String orig) {
@@ -84,12 +95,4 @@ public class ServiceInfoService {
 		return orig;
 	}
 	
-	/*
-	 * Hack to be fixed
-	 */
-	private Map<String, String> tempMapper = new LinkedHashMap<String, String>();
-	
-	private void generateTempMapper() {
-		tempMapper.put(key, value)
-	}
 }

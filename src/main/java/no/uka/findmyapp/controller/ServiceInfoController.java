@@ -41,7 +41,7 @@ public class ServiceInfoController {
 	private Gson gson;
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public String getServiceInfo(Model model) {
+	public String getServiceInfo(Model model) throws URISyntaxException {
 	 	List<ServiceModel> list = serviceInfoService.getAllServices();
 		return "json";
 	}

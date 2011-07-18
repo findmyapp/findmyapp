@@ -3,6 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.Date;
 import java.util.List;
 
+import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
@@ -42,6 +43,7 @@ public class SensorController {
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
 	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Temperature.class)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId) {
 		
