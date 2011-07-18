@@ -68,6 +68,7 @@ public class ServiceInfoService {
 						*/
 			}
 		}
+		return null;
 	}
 	
 	private String replaceInLocationString(String orig) {
