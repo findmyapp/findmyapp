@@ -154,8 +154,14 @@ public class UserRepository {
 		Map<String, Object> namedParameters = new HashMap<String, Object>();
 		namedParameters.put("eventid", eventId);
 		namedParameters.put("ids", friendIds);
-		
-		List<User> users = namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, USER_EVENT e WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)", namedParameters, new UserRowMapper());
+		//Original code:
+		//List<User> users = namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, USER_EVENT e WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)", namedParameters, new UserRowMapper());
+		//Code taking privacy settings into account: (author: Haakon Bakka) (SQL has been tested manually)
+		List<User> users = namedParameterJdbcTemplate.query(
+				"SELECT u.* FROM USER u, USER_EVENT e, USER_PRIVACY_SETTINGS p"+
+				" WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)"+
+				" AND u.user_privacy_id = p.user_privacy_id AND p.events != 3"
+				, namedParameters, new UserRowMapper());
 		return users;
 	}
 
