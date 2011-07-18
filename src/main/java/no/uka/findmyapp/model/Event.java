@@ -1,7 +1,6 @@
 package no.uka.findmyapp.model;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 @JsonAutoDetect
@@ -58,12 +57,15 @@ public class Event {
 	public void setBilligId(int billigId) {
 		this.billigId = billigId;
 	}
+	/*
 	public long getEventId() {
 		return eventId;
 	}
+	*/
 	public void setEventId(long eventId) {
 		this.eventId = eventId;
 	}
+	
 	public Timestamp getNetsaleFrom() {
 		return netsaleFrom;
 	}
