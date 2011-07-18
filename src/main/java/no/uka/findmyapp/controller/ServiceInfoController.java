@@ -39,10 +39,19 @@ public class ServiceInfoController {
 	
 	@Autowired
 	private Gson gson;
+	
+	
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public String getServiceInfo(Model model) throws URISyntaxException {
+		logger.info("getting service info for all services");
 	 	List<ServiceModel> list = serviceInfoService.getAllServices();
+	 	for(ServiceModel s : list) {
+	 		System.out.println(s);
+	 	}
+
+		logger.info("returning : " + list.size() + " ServiceModels");
+		model.addAttribute("json", gson.toJson(list));
 		return "json";
 	}
 	

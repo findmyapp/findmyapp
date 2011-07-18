@@ -53,7 +53,6 @@ public class AppStoreController {
 			@RequestParam(required=true) int count, Model model) throws URISyntaxException {
 
 		//TODO check values, throw exception
-
 		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
 		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
 				count, 
