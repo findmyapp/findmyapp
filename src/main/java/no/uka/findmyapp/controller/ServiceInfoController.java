@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 @RequestMapping("/serviceinfo")
@@ -37,9 +38,7 @@ public class ServiceInfoController {
 	@Autowired
 	private ServiceInfoService serviceInfoService;
 	
-	@Autowired
-	private Gson gson;
-	
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 	
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
