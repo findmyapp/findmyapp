@@ -650,7 +650,7 @@
           <con:params/>
           <con:element xmlns:loc="http://findmyapp.net/findmyapp/location">loc:Response</con:element>
         </con:representation>
-      </con:method>
+      <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation></con:method>
       <con:method name="getAllLocations" method="GET">
         <con:description>Get all locations</con:description>
         <con:settings/>
@@ -1152,7 +1152,7 @@
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location TestCase" searchProperties="true">
       <con:description>TestCase generated for REST Resource [position] located at [/position]</con:description>
       <con:settings/>
-      <con:testStep type="restrequest" name="Determine location">
+      <con:testStep type="restrequest" name="Determine location" disabled="true">
         <con:settings/>
         <con:config service="FindMyApp" resourcePath="/findmyapp/locations" methodName="getCurrentLocation" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <con:restRequest name="Determine location" mediaType="application/json" postQueryString="false" accept="application/json">
@@ -1654,13 +1654,7 @@
                 <codes>200</codes>
               </con:configuration>
             </con:assertion>
-            <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>eventId</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
-            </con:assertion>
+            
             <con:credentials>
               <con:username xsi:nil="true"/>
               <con:password xsi:nil="true"/>
@@ -1720,11 +1714,7 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>eventId</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>event</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -1756,11 +1746,7 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>eventId</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>event</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
