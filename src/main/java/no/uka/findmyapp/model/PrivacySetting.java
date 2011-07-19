@@ -2,9 +2,9 @@ package no.uka.findmyapp.model;
 
 public enum PrivacySetting {
 //	With which group I will share my information:
-	ONLY_ME,
+	ANYONE,
 	FRIENDS,
-	ANYONE;
+	ONLY_ME;
 	
 	
 	public static PrivacySetting getSetting(int a){
