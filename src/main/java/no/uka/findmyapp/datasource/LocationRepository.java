@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
-import no.uka.findmyapp.datasource.mapper.LocationStatusRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
@@ -20,7 +20,7 @@ import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
-import no.uka.findmyapp.model.LocationStatus;
+import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -316,18 +316,18 @@ public class LocationRepository {
 						new FactRowMapper(), locationId);
 	}
 
-	public List<LocationStatus> getData(int locationId) {//NEEDS TO GET ADDITIONAL DATA FROM NOISE ETC
+	public List<LocationReport> getUserReportedData(int locationId) {
 		logger.info("Fetching data ");
 		return jdbcTemplate.query("SELECT * FROM POSITION_LOCATION_STATUS" +
-				"WHERE position_location_id = ?", new LocationStatusRowMapper(),locationId);
+				"WHERE position_location_id = ?", new LocationReportRowMapper(),locationId);
 	
 	}
 
-	public void addData(int locationId, LocationStatus ls) {//getComments returns a list of strings. how does this work?
+	public void addData(LocationReport locationReport, int locationId) {
 		jdbcTemplate.execute("INSERT INTO POSITION_LOCATION_STATUS (position_location_id ,comment, fun_factor," +
-				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+ls.getComments()+","
-				+ls.getFunFactor() +","+ ls.getDanceFactor() +", " + ls.getChatFactor()+","
-				+ls.getFlirtFactor());
-		logger.info("Data logged: " + ls.toString());
+				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+locationReport.getComment()+","
+				+locationReport.getFunFactor() +","+ locationReport.getDanceFactor() +", " + locationReport.getChatFactor()+","
+				+locationReport.getFlirtFactor());
+		logger.info("Data logged: " + locationReport.toString());
 	}
 }

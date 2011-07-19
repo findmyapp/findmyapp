@@ -1,23 +1,30 @@
 package no.uka.findmyapp.datasource.mapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-import no.uka.findmyapp.model.LocationStatus;
+import no.uka.findmyapp.model.LocationReport;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class LocationStatusRowMapper implements RowMapper<LocationStatus> {
+public class LocationReportRowMapper implements RowMapper<LocationReport> {
+
+
+
+
+
 	
-	public LocationStatus mapRow(ResultSet rs, int arg1) throws SQLException {
-		LocationStatus localeNow = new LocationStatus();
+	public LocationReport mapRow(ResultSet rs, int arg1) throws SQLException {
+		LocationReport localeNow = new LocationReport();
 		localeNow.setDanceFactor(rs.getInt("dance_factor"));
 		localeNow.setChatFactor(rs.getInt("chat_factor"));
 		localeNow.setFlirtFactor(rs.getInt("flirt_factor"));
 		localeNow.setFunFactor(rs.getInt("fun_factor"));
+		localeNow.setComment(rs.getString("comment"));
+		localeNow.setHeadCount(rs.getInt("headcount"));
 		return localeNow;
-		//ADD MORE METHODS,HARDER SINCE THEY ARE OBJECTS OR LISTS
-	}
+		}
 
 }
 

@@ -16,13 +16,18 @@ public class LocationStatus {
 	private float headCount;
 	
 	public LocationStatus(){//Setting default values upon construction
+		
 		this.funFactor = -1;
 		this.danceFactor = -1;
 		this.flirtFactor = -1;
 		this.chatFactor = -1;
 		this.headCount = -1;
-				
+		this.noise = -1;
+		this.temp = -1;
+		this.hum = -1;
+		this.beerTap = -1;
 	}
+	
 	public void setComment(List<String> comments){
 		this.comments = comments;
 	}

@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import no.uka.findmyapp.datasource.LocationRepository;
+import no.uka.findmyapp.datasource.SensorRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
+import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationStatus;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
@@ -22,6 +25,8 @@ public class LocationService {
 
 	@Autowired
 	private LocationRepository data;
+	@Autowired
+	private SensorRepository sensor;
 
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
@@ -129,8 +134,8 @@ public class LocationService {
 	/*
 	 * **************** FACT *****************
 	 */
-	public void addData(LocationStatus locationStatus, int locationId){
-		data.addData(locationId, locationStatus);
+	public void addData(LocationReport locationReport, int locationId){
+		data.addData(locationReport, locationId);
 	}
 
 	public List<Fact> getAllFacts(int locationId) {
@@ -141,30 +146,36 @@ public class LocationService {
 		return data.getRandomFact(locationId);
 	}
 
-	public Location getData(int locationId) {//Still doesn't take into account noise, humidity and so on.
-		List <LocationStatus> locationData = data.getData(locationId);
-		LocationStatus locationStatus = aggregateData(locationData);
-		Location locale = new Location();
-		locale.setLocationId(locationId);
-		//TODO: locale.setLocationName(locationName);
-		locale.setLocationStatus(locationStatus);
-		return locale;
+	public Location getData(int locationId) {//Creates and returns a location object with all the latest data on the location
+		Location locationOfInterest = data.getLocation(locationId);
+		//Fetching data:
+		List <LocationReport> UserReportedData = data.getUserReportedData(locationId);
+		// From, to? Noise locationNoise = sensor.getNoiseData(from, to, locationId);
+		//Temperature locationTemp = sensor.getTemperatureData(from, to, locationId);
+		//Humidity locationHumidity = sensor.getHumidityData(from, to, locationId);
+		//List<BeerTap> beerTappedOnLocation = sensor.getBeertapData(locationId);
+		//Creating location status from all data
+		LocationStatus statusAtLocation = prepareData(UserReportedData);//Also needs to send noise, humidity and so on
+		
+		
+		locationOfInterest.setLocationStatus(statusAtLocation);
+		return locationOfInterest;
 	}
 	
-	private LocationStatus aggregateData(List<LocationStatus> dataList){//Takes average over the last 5 minutes
-		
-		LocationStatus aggregatedData = new LocationStatus();
-		float funFactor = -1, chatFactor = -1, danceFactor= -1, flirtFactor = -1;
+	private LocationStatus prepareData(List<LocationReport> userDataList){
+		//What happens of No data is retrieved? Null pointer exception?
+		LocationStatus preparedData = new LocationStatus();
+		float funFactor = -1, chatFactor = -1, danceFactor= -1, flirtFactor = -1, headCount = 0;
 		int ffCount =0, cfCount = 0,dfCount = 0,flirtfCount = 0;
-		
-		Iterator<LocationStatus> li = dataList.iterator();
+		//Takes average of the last minutes of data.
+		Iterator<LocationReport> li = userDataList.iterator();
 		while(li.hasNext()){
-			LocationStatus current =  li.next();
-			Iterator<String> currentCommentsIterator = current.getComments().iterator(); 
-			while(currentCommentsIterator.hasNext()){
-				aggregatedData.addComment(currentCommentsIterator.next());
+			LocationReport current =  li.next();
+			headCount = headCount+current.getHeadCount();
+			if (current.getComment()!=null){
+				preparedData.addComment(current.getComment());
 			}
-			 
+			
 			if(current.getFunFactor()!=-1){
 				ffCount  = ffCount+1;
 				funFactor = funFactor + current.getFunFactor();
@@ -182,21 +193,23 @@ public class LocationService {
 				flirtFactor = flirtFactor + current.getFlirtFactor();
 			}
 			
+			
 		}
 		
 		if(ffCount !=0){
-			aggregatedData.setFunFactor(funFactor/ffCount);
+			preparedData.setFunFactor(funFactor/ffCount);
 		}
 		if(cfCount !=0){
-			aggregatedData.setChatFactor(chatFactor/cfCount);
+			preparedData.setChatFactor(chatFactor/cfCount);
 		}
 		if(dfCount !=0){
-			aggregatedData.setDanceFactor(danceFactor/dfCount);
+			preparedData.setDanceFactor(danceFactor/dfCount);
 		}
 		if(flirtfCount !=0){
-			aggregatedData.setFlirtFactor(flirtFactor/flirtfCount);
+			preparedData.setFlirtFactor(flirtFactor/flirtfCount);
 		}
-		return aggregatedData;
+		preparedData.setHeadCount(headCount);
+		return preparedData;
 	}
 
 }
