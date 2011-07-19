@@ -66,8 +66,8 @@ public class UserController {
 	
 	
 
-	@RequestMapping(value = "/{userPrivacyId}/updatePrivacy", method = RequestMethod.GET)
-	public ModelMap setPrivacy(@PathVariable("userPrivacyId") int userPrivacyId, ModelMap model,
+	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.POST)
+	public ModelAndView postPrivacy(@PathVariable("userId") int userId,
 			@RequestParam (defaultValue = "0") int privacySettingPosition,
 			@RequestParam (defaultValue = "0") int privacySettingEvents,
 			@RequestParam (defaultValue = "0") int privacySettingMoney,
@@ -76,27 +76,24 @@ public class UserController {
 		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
 				 + " " +  privacySettingMoney + " " + privacySettingMedia);
 		
+		int userPrivacyId = service.findUserPrivacyId(userId);
 		UserPrivacy userPrivacy = service.updatePrivacy(userPrivacyId, privacySettingPosition, privacySettingEvents, privacySettingMoney, privacySettingMedia );
 		logger.info("userPrivacy ut");
-		model.addAttribute(userPrivacy.getPositionPrivacySetting());
-		model.addAttribute(userPrivacy.getEventsPrivacySetting());
-		model.addAttribute(userPrivacy.getMoneyPrivacySetting());
-		model.addAttribute(userPrivacy.getMediaPrivacySetting());
-				
-//		model.addAttribute(updatePrivacy);
-		return model;
+
+		return new ModelAndView("json", "privacy", userPrivacy);
 		
 	}
 	
 	
-	@RequestMapping(value = "/{userPrivacyId}/retrievePrivacy", method = RequestMethod.GET)
+	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=String.class, isList=true)
 	
-	public ModelAndView retrievePrivacy(
-			@PathVariable int userPrivacyId){
+	public ModelAndView getPrivacy(
+			@PathVariable int userId){
 //			throws userPrivacyIdNotFoundException {
 		UserPrivacy privacy;
 		logger.info("privacy");
+		int userPrivacyId = service.findUserPrivacyId(userId);
 		privacy = service.retrievePrivacy(userPrivacyId);
 
 		return new ModelAndView("json", "privacy", privacy);

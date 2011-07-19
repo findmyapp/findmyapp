@@ -107,8 +107,8 @@ public class UserRepository {
 		try{
 		UserPrivacy privacy = jdbcTemplate.queryForObject(
 				"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
-				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = "+ privacyId + "", 
-				new UserPrivacyRowMapper());
+				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
+				new UserPrivacyRowMapper(), privacyId);
 		return privacy;
 		}
 		catch (Exception e){
@@ -171,6 +171,20 @@ public class UserRepository {
 				" AND u.user_privacy_id = p.user_privacy_id AND p.events != 3"
 				, namedParameters, new UserRowMapper());
 		return users;
+	}
+
+
+	public int findUserPrivacyId(int userId) {
+		try{
+			int userPrivacyId = jdbcTemplate.queryForInt(
+					"SELECT USER.USER_PRIVACY_ID FROM USER " + "WHERE USER.user_id = ? ", 
+					 userId);
+			return userPrivacyId;
+			}
+			catch (Exception e){
+				return -1;
+			}
+		
 	}
 
 }
