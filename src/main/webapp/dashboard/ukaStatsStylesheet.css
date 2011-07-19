@@ -1,0 +1,20 @@
+/* UkaStats 2011 HTML5 css */
+article,aside,figure,footer,header,hgroup,nav,section{display:block}
+
+html{background:white;color:black}
+
+header{background:black;color:white;margin:0;padding:2.0em; text-align:center;}
+h1 a{color:white !important}
+h1{font-size:large}
+h1{font-family:Lucida Console}
+h1{letter-spacing:1em;text-align:center;margin:0}
+
+body{padding:0;margin:0 auto;width:100%;line-height:1.75;}
+article header,section header{background:white;color:black;margin:0;padding:0}
+article h1,section h1{letter-spacing:0;text-align:left;margin:1.75em 0}
+
+footer{background:black;margin:0;padding:1.0em;}
+
+footer ul{background:black;margin:0;padding:0;text-align:center; letter-spacing:3em}
+footer li{display:inline;padding-left:1em}
+

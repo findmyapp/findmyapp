@@ -54,10 +54,7 @@
 	
 	function processData(responseText, responseStatus) {
 	  if (responseStatus==200) {
-		//alert(responseText);
-		for (var i = 0; i < responseText.length; i++) {
-			alert(responseText.getJSONObject(i).locationName + ' ' + responseText.getJSONObject(i).locationId;
-		}
+		alert(responseText);
 	  } else {
 		alert(responseStatus + ' -- Error Processing Request');
 	  }
@@ -112,7 +109,7 @@
 				context.stroke();
 				
 				// make json request
-				var myRequest = new ajaxObject('http://findmyapp.net/findmyapp/locations', processData);
+				var myRequest = new ajaxObject('http://localhost:8080/findmyapp/locations', processData);
 				//myRequest.update('id=1234&color=blue');  // Server is contacted here.
 				myRequest.update('');  // Server is contacted here.
 	};
