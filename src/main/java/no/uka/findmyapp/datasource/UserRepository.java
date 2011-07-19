@@ -104,11 +104,17 @@ public class UserRepository {
 	
 //	Retrieving data
 	public UserPrivacy retrievePrivacy(int privacyId) {
+		try{
 		UserPrivacy privacy = jdbcTemplate.queryForObject(
 				"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
 				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = "+ privacyId + "", 
 				new UserPrivacyRowMapper());
 		return privacy;
+		}
+		catch (Exception e){
+			return null;
+		}
+		
 	}
 	
 

@@ -2,6 +2,8 @@ package no.uka.findmyapp.controller;
 
 import java.util.List;
 
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
+import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
@@ -63,7 +65,7 @@ public class UserController {
 	}
 	
 	
-//	hvis jeg tar vekk method = RequestMethod.GET endres ikke status 404 seg 
+
 	@RequestMapping(value = "/{userPrivacyId}/updatePrivacy", method = RequestMethod.GET)
 	public ModelMap setPrivacy(@PathVariable("userPrivacyId") int userPrivacyId, ModelMap model,
 			@RequestParam (defaultValue = "0") int privacySettingPosition,
@@ -87,13 +89,18 @@ public class UserController {
 	}
 	
 	
+	@RequestMapping(value = "/{userPrivacyId}/retrievePrivacy", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=String.class, isList=true)
 	
+	public ModelAndView retrievePrivacy(
+			@PathVariable int userPrivacyId){
+//			throws userPrivacyIdNotFoundException {
+		UserPrivacy privacy;
+		logger.info("privacy");
+		privacy = service.retrievePrivacy(userPrivacyId);
+
+		return new ModelAndView("json", "privacy", privacy);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 }

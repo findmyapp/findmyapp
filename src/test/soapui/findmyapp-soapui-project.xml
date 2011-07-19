@@ -35,8 +35,8 @@
   <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="FindMyApp" type="rest" basePath="/findmyapp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:description>REST API for FindMyApp - UKA-11 student festival</con:description>
     <con:settings/>
-    <con:definitionCache type="TEXT" rootPart=""/>
-    <con:endpoints>
+    
+    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
       <con:endpoint>http://findmyapp.net</con:endpoint>
       <con:endpoint>http://localhost:8080</con:endpoint>
     </con:endpoints>
@@ -745,7 +745,7 @@
                 <con:params/>
                 <con:element xmlns:ns="http://findmyapp.net/findmyapp/program/uka11/events/11">ns:Response</con:element>
               </con:representation>
-            </con:method>
+            <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation></con:method>
           </con:resource>
           <con:method name="getUkaEventsInUkaYear" method="GET">
             <con:description>Get the events from uka</con:description>
@@ -1006,7 +1006,7 @@
               <con:params/>
               <con:element>Response</con:element>
             </con:representation>
-          </con:method>
+          <con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation></con:method>
         </con:resource>
       </con:resource>
     </con:resource>
@@ -1118,7 +1118,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/list TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/list TestCase" searchProperties="true" id="b6ca67fa-ee3a-4665-b692-b345bcdccaa1">
       <con:description>TestCase generated for REST Resource [list] located at [/appstore/list]</con:description>
       <con:settings/>
       <con:testStep type="restrequest" name="Get list of applications">
@@ -1149,7 +1149,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location TestCase" searchProperties="true" id="24027e42-a39c-41fa-bf59-ae8f518e705d">
       <con:description>TestCase generated for REST Resource [position] located at [/position]</con:description>
       <con:settings/>
       <con:testStep type="restrequest" name="Determine location" disabled="true">
@@ -1302,7 +1302,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/friend TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/friend TestCase" searchProperties="true" id="90177436-6a62-47ad-aa15-46611994a143">
       <con:settings/>
       <con:testStep type="restrequest" name="Get position of a friend">
         <con:settings/>
@@ -1400,7 +1400,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/beertap" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/beertap" searchProperties="true" id="70c3cbd7-8ed8-47af-947b-d17633d55c63">
       <con:settings/>
       <con:testStep type="restrequest" name="Get beer tap data">
         <con:settings/>
@@ -1526,7 +1526,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program TestCase" searchProperties="true" id="d3345c4e-340a-4a9f-8037-7db5bfe36a9b">
       <con:settings/>
       <con:testStep type="restrequest" name="Get info about all Ukas">
         <con:settings/>
@@ -1563,7 +1563,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear TestCase" searchProperties="true" id="29c7aa00-523c-4872-ab2f-cbfb329e1701">
       <con:settings/>
       <con:testStep type="restrequest" name="Get info about specific Uka">
         <con:settings/>
@@ -1602,7 +1602,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear/events" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear/events" searchProperties="true" id="ed7169fa-39c1-4952-9ea7-55a2f11be924">
       <con:settings/>
       <con:testStep type="restrequest" name="Get all events in ukaYear">
         <con:settings/>
@@ -1756,15 +1756,19 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="id" value="11"/>
-              <con:entry key="ukaYear" value="uka11"/>
-            </con:parameters>
+  <con:entry key="id" value="392"/>
+  <con:entry key="ukaYear" value="uka11"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
-      <con:properties/>
+      <con:testStep type="restrequest" name="Get events from and to date"><con:settings/><con:config service="FindMyApp" methodName="getUkaEventsInUkaYear" resourcePath="/findmyapp/program/{ukaYear}/events" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get events from and to date" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>"id"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="to" value="2012-01-01"/>
+  <con:entry key="from" value="2010-01-01"/>
+  <con:entry key="ukaYear" value="uka11"/>
+</con:parameters></con:restRequest></con:config></con:testStep><con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/latest/ TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/latest/ TestCase" searchProperties="true" id="6e3b7994-2786-4242-bb11-950c7fce219a">
       <con:settings/>
       <con:testStep type="restrequest" name="get  latest application">
         <con:settings/>
@@ -1793,7 +1797,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/SetFeaturedApp TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/SetFeaturedApp TestCase" searchProperties="true" id="d1673754-658f-4eec-8d93-39de5e61017e">
       <con:settings/>
       <con:testStep type="restrequest" name="get - set new featured app">
         <con:settings/>
@@ -1822,7 +1826,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true" id="429cb5de-ce28-4bca-b2f3-49b84445057c">
       <con:settings/>
       <con:testStep type="restrequest" name="get - mostPopular">
         <con:settings/>
@@ -1851,7 +1855,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear/places" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear/places" searchProperties="true" id="16588606-1aa1-4e07-89e4-9bc69b9d1cd8">
       <con:settings/>
       <con:testStep type="restrequest" name="Get all places in uka">
         <con:settings/>
@@ -1869,11 +1873,7 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>Samfundet</token>
-                <ignoreCase>false</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>storsalen</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -1905,11 +1905,7 @@
               </con:configuration>
             </con:assertion>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>"samfundet"</token>
-                <ignoreCase>true</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>"storsalen"</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -1919,15 +1915,15 @@
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:jmsPropertyConfig/>
             <con:parameters>
-              <con:entry key="ukaYear" value="uka11"/>
-              <con:entry key="place" value="samfundet"/>
-            </con:parameters>
+  <con:entry key="ukaYear" value="uka11"/>
+  <con:entry key="place" value="storsalen"/>
+</con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/appOfTheDay TestCase" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/appOfTheDay TestCase" searchProperties="true" id="0827fffa-4432-440f-b237-5ba402d05471">
       <con:settings/>
       <con:testStep type="restrequest" name="set new featured app by id">
         <con:settings/>
@@ -1956,7 +1952,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true" id="af6a50a2-6b26-4a0b-87ee-b1e71f08be6d">
       <con:settings/>
       <con:testStep type="restrequest" name="getEvents">
         <con:settings/>
@@ -2100,7 +2096,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users/id" searchProperties="true">
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/users/id" searchProperties="true" id="7c011f5e-2c8b-43a5-9f7a-d293c29241be">
       <con:settings/>
       <con:testStep type="restrequest" name="Get the location of a user">
         <con:settings/>
