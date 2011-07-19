@@ -2,6 +2,7 @@ package no.uka.findmyapp.controller;
 
 import java.util.List;
 
+import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Event;
@@ -13,12 +14,15 @@ import no.uka.findmyapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -66,41 +70,57 @@ public class UserController {
 	
 	
 
-	@RequestMapping(value = "/{userPrivacyId}/updatePrivacy", method = RequestMethod.GET)
-	public ModelMap setPrivacy(@PathVariable("userPrivacyId") int userPrivacyId, ModelMap model,
+	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.POST)
+	public ModelAndView postPrivacy(@PathVariable("userId") int userId,
 			@RequestParam (defaultValue = "0") int privacySettingPosition,
 			@RequestParam (defaultValue = "0") int privacySettingEvents,
 			@RequestParam (defaultValue = "0") int privacySettingMoney,
-			@RequestParam (defaultValue = "0") int privacySettingMedia) {
+			@RequestParam (defaultValue = "0") int privacySettingMedia,
+			@RequestParam (defaultValue = "0") int accessToken) throws InvalidUserIdOrAccessTokenException {
 		
 		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
 				 + " " +  privacySettingMoney + " " + privacySettingMedia);
+		boolean accessVerified = service.verifyAccessToken(userId, accessToken);
 		
+		if (!accessVerified){
+			throw new InvalidUserIdOrAccessTokenException("Invalid access token");
+		}
+		
+		int userPrivacyId = service.findUserPrivacyId(userId);
 		UserPrivacy userPrivacy = service.updatePrivacy(userPrivacyId, privacySettingPosition, privacySettingEvents, privacySettingMoney, privacySettingMedia );
 		logger.info("userPrivacy ut");
-		model.addAttribute(userPrivacy.getPositionPrivacySetting());
-		model.addAttribute(userPrivacy.getEventsPrivacySetting());
-		model.addAttribute(userPrivacy.getMoneyPrivacySetting());
-		model.addAttribute(userPrivacy.getMediaPrivacySetting());
-				
-//		model.addAttribute(updatePrivacy);
-		return model;
+
+		return new ModelAndView("json", "privacy", userPrivacy);
 		
 	}
 	
 	
-	@RequestMapping(value = "/{userPrivacyId}/retrievePrivacy", method = RequestMethod.GET)
+	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=String.class, isList=true)
 	
-	public ModelAndView retrievePrivacy(
-			@PathVariable int userPrivacyId){
+	public ModelAndView getPrivacy(
+			@PathVariable int userId,
+			@RequestParam (defaultValue = "0") int accessToken) throws InvalidUserIdOrAccessTokenException{
 //			throws userPrivacyIdNotFoundException {
 		UserPrivacy privacy;
 		logger.info("privacy");
+		boolean accessVerified = service.verifyAccessToken(userId, accessToken);
+		
+		if (!accessVerified){
+			throw new InvalidUserIdOrAccessTokenException("Invalid access token");
+		}
+		
+		int userPrivacyId = service.findUserPrivacyId(userId);
 		privacy = service.retrievePrivacy(userPrivacyId);
 
 		return new ModelAndView("json", "privacy", privacy);
 	}
 	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(InvalidUserIdOrAccessTokenException.class)
+	private void handleInvalidUserIdOrAccessTokenException(InvalidUserIdOrAccessTokenException e) {
+		logger.info("InvalidUserIdOrAccessTokenException ( "+e.getLocalizedMessage()+ " )");
+	}
 
 }

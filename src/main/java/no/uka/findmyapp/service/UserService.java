@@ -7,6 +7,7 @@ import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
@@ -82,7 +83,8 @@ public class UserService {
 		
 		logger.info("before updating position" + userPrivacyId + " and " + newPosition );
 		if (newPosition == 1 || newPosition == 2 || newPosition == 3){
-		userPrivacy.setPositionPrivacySetting(PrivacySetting.getSetting(newPosition));} 
+			userPrivacy.setPositionPrivacySetting(PrivacySetting.getSetting(newPosition));
+		} 
 		logger.info("after updating position" + userPrivacyId + " and " +  newPosition  );
 		
 		logger.info("before updating events" + userPrivacyId + " and " + newEvents );
@@ -185,6 +187,15 @@ public class UserService {
 		
 		
 		return success;
+	}
+
+	public int findUserPrivacyId(int userId) throws InvalidUserIdOrAccessTokenException {
+		return data.findUserPrivacyId(userId);
+	}
+
+	public boolean verifyAccessToken(int userId, int accessToken) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }
 
