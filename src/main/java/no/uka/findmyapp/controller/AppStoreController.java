@@ -102,7 +102,7 @@ public class AppStoreController {
 		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
 		fullList.add(androidList);
 		fullList.add(iosList);
-		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", fullList);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class AppStoreController {
 		fullList.add(iosList);
 
 		//TODO check values, throw exception
-		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", fullList);
 	}
 
 
@@ -147,7 +147,7 @@ public class AppStoreController {
 		fullList.add(iosList);
 
 		//TODO check values, throw exception
-		return new ModelAndView("appstoreweb", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", fullList);
 	}
 
 	@RequestMapping(value = "/appstore/mostPopular/", method = RequestMethod.GET)
