@@ -6,6 +6,7 @@ import java.util.Map;
 
 import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.datasource.SensorRepository;
+import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Fact;
@@ -17,6 +18,8 @@ import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,9 @@ public class LocationService {
 	@Autowired
 	private SensorRepository sensor;
 
+	private static final Logger logger = LoggerFactory
+	.getLogger(UkaProgramRepository.class);
+	
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
 	}
@@ -187,8 +193,10 @@ public class LocationService {
 			if(current.getDanceFactor()!=-1){
 				dfCount = dfCount+1;
 				danceFactor = danceFactor + current.getDanceFactor();
-			}
+			}	
+			
 			if(current.getFlirtFactor()!=-1){
+				
 				flirtfCount = flirtfCount +1;
 				flirtFactor = flirtFactor + current.getFlirtFactor();
 			}
@@ -197,19 +205,20 @@ public class LocationService {
 		}
 		
 		if(ffCount !=0){
-			preparedData.setFunFactor(funFactor/ffCount);
+			preparedData.setFunFactor((funFactor+1)/ffCount);
 		}
 		if(cfCount !=0){
-			preparedData.setChatFactor(chatFactor/cfCount);
+			preparedData.setChatFactor((chatFactor+1)/cfCount);
 		}
 		if(dfCount !=0){
-			preparedData.setDanceFactor(danceFactor/dfCount);
+			preparedData.setDanceFactor((danceFactor+1)/dfCount);
 		}
 		if(flirtfCount !=0){
-			preparedData.setFlirtFactor(flirtFactor/flirtfCount);
+			preparedData.setFlirtFactor((flirtFactor+1)/flirtfCount);
 		}
 		preparedData.setHeadCount(headCount);
-		return preparedData;
+			return preparedData;
+		
 	}
 
 }

@@ -318,13 +318,13 @@ public class LocationRepository {
 
 	public List<LocationReport> getUserReportedData(int locationId) {
 		logger.info("Fetching data ");
-		return jdbcTemplate.query("SELECT * FROM POSITION_LOCATION_STATUS" +
+		return jdbcTemplate.query("SELECT * FROM POSITION_LOCATION_STATUS " +
 				"WHERE position_location_id = ?", new LocationReportRowMapper(),locationId);
 	
 	}
 
 	public void addData(LocationReport locationReport, int locationId) {
-		jdbcTemplate.execute("INSERT INTO POSITION_LOCATION_STATUS (position_location_id ,comment, fun_factor," +
+		jdbcTemplate.execute("INSERT INTO POSITION_LOCATION_STATUS (position_location_id ,comment," +
 				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+locationReport.getComment()+","
 				+locationReport.getFunFactor() +","+ locationReport.getDanceFactor() +", " + locationReport.getChatFactor()+","
 				+locationReport.getFlirtFactor());
