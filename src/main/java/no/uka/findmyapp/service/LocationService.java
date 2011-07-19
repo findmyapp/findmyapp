@@ -152,16 +152,19 @@ public class LocationService {
 	}
 	
 	private LocationStatus aggregateData(List<LocationStatus> dataList){//Takes average over the last 5 minutes
+		
 		LocationStatus aggregatedData = new LocationStatus();
-		float queueLength = -1,funFactor = -1,chatFactor = -1,danceFactor= -1,flirtFactor = -1;
-		int qlCount = 0, ffCount =0, cfCount = 0,dfCount = 0,flirtfCount = 0;
+		float funFactor = -1, chatFactor = -1, danceFactor= -1, flirtFactor = -1;
+		int ffCount =0, cfCount = 0,dfCount = 0,flirtfCount = 0;
+		
 		Iterator<LocationStatus> li = dataList.iterator();
 		while(li.hasNext()){
 			LocationStatus current =  li.next();
-			if(current.getQueueLength()!=-1){
-				qlCount = qlCount+1;
-				queueLength = queueLength + current.getQueueLength();
+			Iterator<String> currentCommentsIterator = current.getComments().iterator(); 
+			while(currentCommentsIterator.hasNext()){
+				aggregatedData.addComment(currentCommentsIterator.next());
 			}
+			 
 			if(current.getFunFactor()!=-1){
 				ffCount  = ffCount+1;
 				funFactor = funFactor + current.getFunFactor();
@@ -180,9 +183,7 @@ public class LocationService {
 			}
 			
 		}
-		if (qlCount !=0){
-			aggregatedData.setQueueLegth(queueLength/qlCount);
-		}
+		
 		if(ffCount !=0){
 			aggregatedData.setFunFactor(funFactor/ffCount);
 		}

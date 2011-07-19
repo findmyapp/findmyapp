@@ -1,39 +1,39 @@
 package no.uka.findmyapp.model;
 
+import java.util.List;
+
 public class LocationStatus {
 	
-	private	float queueLength;
+	private	List<String> comments;
 	private float funFactor;
 	private float danceFactor;
 	private float flirtFactor;
 	private float chatFactor;
-	private Noise noise;
-	private Temperature temperature;
-	private Humidity humidity;
-	private BeerTap beerTap;
+	private float noise;
+	private float temp;
+	private float hum;
+	private float beerTap;
 	private float headCount;
 	
 	public LocationStatus(){//Setting default values upon construction
-		this.queueLength = -1;
 		this.funFactor = -1;
 		this.danceFactor = -1;
 		this.flirtFactor = -1;
 		this.chatFactor = -1;
-		this.humidity = new Humidity();
-		this.noise = new Noise();
-		this.temperature = new Temperature();
-		this.beerTap = new BeerTap();
 		this.headCount = -1;
 				
 	}
-	public void setQueueLegth(float queueLength){
-		this.queueLength = queueLength;
+	public void setComment(List<String> comments){
+		this.comments = comments;
 	}
 	
-	public float getQueueLength(){
-		return this.queueLength;
+	public List<String> getComments(){
+		return this.comments;
 	}
-
+	public void addComment(String comment) {
+		comments.add(comment);
+		
+	}
 	public void setFunFactor(float ff){
 		this.funFactor = ff;
 	}
@@ -65,28 +65,29 @@ public class LocationStatus {
 	public float getHeadCount(){
 		return this.headCount;
 	}
-	public void setNoise(Noise noise){
+	public void setNoise(float noise){
 		this.noise = noise;
 	}
-	public Noise getNoise (){
+	public float getNoise (){
 		return this.noise;
 	}
-	public void setHumidity(Humidity hum){
-		this.humidity = hum;
+	public void setHumidity(float hum){
+		this.hum = hum;
 	}
-	public Humidity getHumidity (){
-		return this.humidity;
+	public float getHumidity (){
+		return this.hum;
 	}
-	public void setTemperature(Temperature temp){
-		this.temperature = temp;
+	public void setTemperature(float temp){
+		this.temp = temp;
 	}
-	public Temperature getTemperature(){
-		return temperature;
+	public float getTemperature(){
+		return temp;
 	}
-	public void setBeerTap(BeerTap bt){
+	public void setBeerTap(float bt){
 		this.beerTap = bt;
 	}
-	public BeerTap getBeerTap(){
+	public float getBeerTap(){
 		return this.beerTap;
 	}
+	
 }

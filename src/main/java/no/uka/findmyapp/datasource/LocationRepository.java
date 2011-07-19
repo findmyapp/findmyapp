@@ -11,6 +11,7 @@ import java.util.Map;
 
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationStatusRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
@@ -315,14 +316,16 @@ public class LocationRepository {
 						new FactRowMapper(), locationId);
 	}
 
-	public List<LocationStatus> getData(int locationId) {
-		
-		return null;
+	public List<LocationStatus> getData(int locationId) {//NEEDS TO GET ADDITIONAL DATA FROM NOISE ETC
+		logger.info("Fetching data ");
+		return jdbcTemplate.query("SELECT * FROM POSITION_LOCATION_STATUS" +
+				"WHERE position_location_id = ?", new LocationStatusRowMapper(),locationId);
+	
 	}
 
-	public void addData(int locationId, LocationStatus ls) {
-		jdbcTemplate.execute("INSERT INTO LOCATION_STATUS (position_location_id ,queue_length, fun_factor," +
-				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+ls.getQueueLength()+","
+	public void addData(int locationId, LocationStatus ls) {//getComments returns a list of strings. how does this work?
+		jdbcTemplate.execute("INSERT INTO POSITION_LOCATION_STATUS (position_location_id ,comment, fun_factor," +
+				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+ls.getComments()+","
 				+ls.getFunFactor() +","+ ls.getDanceFactor() +", " + ls.getChatFactor()+","
 				+ls.getFlirtFactor());
 		logger.info("Data logged: " + ls.toString());
