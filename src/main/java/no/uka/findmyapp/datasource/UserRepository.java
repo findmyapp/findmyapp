@@ -104,16 +104,23 @@ public class UserRepository {
 	
 //	Retrieving data
 	public UserPrivacy retrievePrivacy(int privacyId) {
+		try{
 		UserPrivacy privacy = jdbcTemplate.queryForObject(
 				"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
-				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = "+ privacyId + "", 
-				new UserPrivacyRowMapper());
+				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
+				new UserPrivacyRowMapper(), privacyId);
 		return privacy;
+		}
+		catch (Exception e){
+			return null;
+		}
+		
 	}
 	
 
 //	Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
+		logger.info("before db call with" + userPrivacyId + " and " + newPosition.toString()+  newEvents.toString() );
 		int temp = jdbcTemplate.update(
 				"UPDATE USER_PRIVACY_SETTINGS " + 
 				"SET USER_PRIVACY_SETTINGS.position = ? ," +
@@ -122,6 +129,7 @@ public class UserRepository {
 				"USER_PRIVACY_SETTINGS.media = ? " +
 				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
 				PrivacySetting.toInt(newPosition), PrivacySetting.toInt(newEvents), PrivacySetting.toInt(newMoney), PrivacySetting.toInt(newMedia), userPrivacyId);
+		logger.info("after db call");
 	}
 	
 	
@@ -163,6 +171,20 @@ public class UserRepository {
 				" AND u.user_privacy_id = p.user_privacy_id AND p.events != 3"
 				, namedParameters, new UserRowMapper());
 		return users;
+	}
+
+
+	public int findUserPrivacyId(int userId) {
+		try{
+			int userPrivacyId = jdbcTemplate.queryForInt(
+					"SELECT USER.USER_PRIVACY_ID FROM USER " + "WHERE USER.user_id = ? ", 
+					 userId);
+			return userPrivacyId;
+			}
+			catch (Exception e){
+				return -1;
+			}
+		
 	}
 
 }

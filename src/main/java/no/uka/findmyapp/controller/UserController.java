@@ -2,8 +2,12 @@ package no.uka.findmyapp.controller;
 
 import java.util.List;
 
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
+import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPrivacy;
 import no.uka.findmyapp.service.UserService;
 
 import org.slf4j.Logger;
@@ -61,13 +65,39 @@ public class UserController {
 	}
 	
 	
+
+	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.POST)
+	public ModelAndView postPrivacy(@PathVariable("userId") int userId,
+			@RequestParam (defaultValue = "0") int privacySettingPosition,
+			@RequestParam (defaultValue = "0") int privacySettingEvents,
+			@RequestParam (defaultValue = "0") int privacySettingMoney,
+			@RequestParam (defaultValue = "0") int privacySettingMedia) {
+		
+		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
+				 + " " +  privacySettingMoney + " " + privacySettingMedia);
+		
+		int userPrivacyId = service.findUserPrivacyId(userId);
+		UserPrivacy userPrivacy = service.updatePrivacy(userPrivacyId, privacySettingPosition, privacySettingEvents, privacySettingMoney, privacySettingMedia );
+		logger.info("userPrivacy ut");
+
+		return new ModelAndView("json", "privacy", userPrivacy);
+		
+	}
 	
 	
+	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=String.class, isList=true)
 	
+	public ModelAndView getPrivacy(
+			@PathVariable int userId){
+//			throws userPrivacyIdNotFoundException {
+		UserPrivacy privacy;
+		logger.info("privacy");
+		int userPrivacyId = service.findUserPrivacyId(userId);
+		privacy = service.retrievePrivacy(userPrivacyId);
+
+		return new ModelAndView("json", "privacy", privacy);
+	}
 	
-	
-	
-	
-	
-	
+
 }
