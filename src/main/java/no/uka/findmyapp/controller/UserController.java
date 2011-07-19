@@ -3,7 +3,9 @@ package no.uka.findmyapp.controller;
 import java.util.List;
 
 import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPrivacy;
 import no.uka.findmyapp.service.UserService;
 
 import org.slf4j.Logger;
@@ -58,6 +60,30 @@ public class UserController {
 
 		logger.info("testresult is " + success);
 		return new ModelAndView("test", "result", success); 
+	}
+	
+	
+//	hvis jeg tar vekk method = RequestMethod.GET endres ikke status 404 seg 
+	@RequestMapping(value = "/{userPrivacyId}/updatePrivacy", method = RequestMethod.GET)
+	public ModelMap setPrivacy(@PathVariable("userPrivacyId") int userPrivacyId, ModelMap model,
+			@RequestParam (defaultValue = "0") int privacySettingPosition,
+			@RequestParam (defaultValue = "0") int privacySettingEvents,
+			@RequestParam (defaultValue = "0") int privacySettingMoney,
+			@RequestParam (defaultValue = "0") int privacySettingMedia) {
+		
+		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
+				 + " " +  privacySettingMoney + " " + privacySettingMedia);
+		
+		UserPrivacy userPrivacy = service.updatePrivacy(userPrivacyId, privacySettingPosition, privacySettingEvents, privacySettingMoney, privacySettingMedia );
+		logger.info("userPrivacy ut");
+		model.addAttribute(userPrivacy.getPositionPrivacySetting());
+		model.addAttribute(userPrivacy.getEventsPrivacySetting());
+		model.addAttribute(userPrivacy.getMoneyPrivacySetting());
+		model.addAttribute(userPrivacy.getMediaPrivacySetting());
+				
+//		model.addAttribute(updatePrivacy);
+		return model;
+		
 	}
 	
 	

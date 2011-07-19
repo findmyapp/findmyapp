@@ -76,9 +76,32 @@ public class UserService {
 
 
 		
-	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia){		
-		 data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
+	public UserPrivacy updatePrivacy(int userPrivacyId, int newPosition, int newEvents, int newMoney, int newMedia){		
+		 
+		UserPrivacy userPrivacy = data.retrievePrivacy(userPrivacyId);
+		
+		logger.info("before updating position" + userPrivacyId + " and " + newPosition );
+		if (newPosition == 1 || newPosition == 2 || newPosition == 3){
+		userPrivacy.setPositionPrivacySetting(PrivacySetting.getSetting(newPosition));} 
+		logger.info("after updating position" + userPrivacyId + " and " +  newPosition  );
+		
+		logger.info("before updating events" + userPrivacyId + " and " + newEvents );
+		if (newEvents == 1 || newEvents == 2 || newEvents == 3){
+			userPrivacy.setEventsPrivacySetting(PrivacySetting.getSetting(newEvents));} 
+		logger.info("after updating events" + userPrivacyId + " and " + newEvents );
+		
+		if (newMoney == 1 || newMoney == 2 || newMoney == 3){
+			userPrivacy.setMoneyPrivacySetting(PrivacySetting.getSetting(newMoney));} 
+		
+		if (newMedia == 1 || newMedia == 2 || newMedia == 3){
+			userPrivacy.setMediaPrivacySetting(PrivacySetting.getSetting(newMedia));} 
+		
+		updatePrivacy(userPrivacy);
+		
+		return userPrivacy;
 	}	
+	
+	
 	
 	public void updatePrivacy(UserPrivacy userPrivacy){	
 		 data.updatePrivacy(userPrivacy.getUserPrivacyId(), userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
