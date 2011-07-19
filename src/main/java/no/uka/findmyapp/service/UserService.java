@@ -7,6 +7,7 @@ import java.util.List;
 
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
@@ -188,8 +189,13 @@ public class UserService {
 		return success;
 	}
 
-	public int findUserPrivacyId(int userId) {
+	public int findUserPrivacyId(int userId) throws InvalidUserIdOrAccessTokenException {
 		return data.findUserPrivacyId(userId);
+	}
+
+	public boolean verifyAccessToken(int userId, int accessToken) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }
 

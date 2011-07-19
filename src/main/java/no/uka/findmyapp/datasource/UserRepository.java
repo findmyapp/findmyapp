@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
+import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
@@ -174,7 +176,7 @@ public class UserRepository {
 	}
 
 
-	public int findUserPrivacyId(int userId) {
+	public int findUserPrivacyId(int userId) throws InvalidUserIdOrAccessTokenException {
 		try{
 			int userPrivacyId = jdbcTemplate.queryForInt(
 					"SELECT USER.USER_PRIVACY_ID FROM USER " + "WHERE USER.user_id = ? ", 
@@ -182,7 +184,8 @@ public class UserRepository {
 			return userPrivacyId;
 			}
 			catch (Exception e){
-				return -1;
+				throw new InvalidUserIdOrAccessTokenException("Invalid user id ");
+				
 			}
 		
 	}
