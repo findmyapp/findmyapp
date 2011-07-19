@@ -114,6 +114,7 @@ public class UserRepository {
 
 //	Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
+		logger.info("before db call with" + userPrivacyId + " and " + newPosition.toString()+  newEvents.toString() );
 		int temp = jdbcTemplate.update(
 				"UPDATE USER_PRIVACY_SETTINGS " + 
 				"SET USER_PRIVACY_SETTINGS.position = ? ," +
@@ -122,6 +123,7 @@ public class UserRepository {
 				"USER_PRIVACY_SETTINGS.media = ? " +
 				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
 				PrivacySetting.toInt(newPosition), PrivacySetting.toInt(newEvents), PrivacySetting.toInt(newMoney), PrivacySetting.toInt(newMedia), userPrivacyId);
+		logger.info("after db call");
 	}
 	
 	
