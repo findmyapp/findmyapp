@@ -322,12 +322,36 @@ public class LocationRepository {
 				"WHERE position_location_id = ?", new LocationReportRowMapper(),locationId);
 	
 	}
-
+/*
 	public void addData(LocationReport locationReport, int locationId) {
 		jdbcTemplate.execute("INSERT INTO POSITION_LOCATION_STATUS (position_location_id ,comment," +
 				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+locationReport.getComment()+","
 				+locationReport.getFunFactor() +","+ locationReport.getDanceFactor() +", " + locationReport.getChatFactor()+","
 				+locationReport.getFlirtFactor());
 		logger.info("Data logged: " + locationReport.toString());
+	}*/
+
+	public List<LocationReport> getLastUserReportedData(int locationId,
+			int numberOfelements, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<LocationReport> getUserReportedDataFromTo(int locationId,
+			Date from, Date to, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<LocationReport> getUserReportedDataFrom(int locationId,
+			Date from, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<LocationReport> getUserReportedData(int locationId,
+			String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

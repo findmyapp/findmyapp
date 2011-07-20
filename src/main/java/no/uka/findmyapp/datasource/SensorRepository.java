@@ -79,6 +79,14 @@ public class SensorRepository {
 		return temperatureList;
 	}
 
+	public Noise getLatestNoiseData(int location) {
+
+		Noise noise = jdbcTemplate.queryForObject(
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
+				new SensorNoiseRowMapper(), location);
+		logger.info("received temperature list");
+		return noise;
+	}
 	public List<Noise> getNoiseData(int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
@@ -91,7 +99,7 @@ public class SensorRepository {
 	public List<Noise> getNoiseData(Date from, int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date <=? ORDER BY date DESC",
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date >=? ORDER BY date DESC",
 				new SensorNoiseRowMapper(), location, from);
 		logger.info("received noise list");
 		return noiseList;
@@ -100,7 +108,7 @@ public class SensorRepository {
 	public List<Noise> getNoiseDataTo(Date to, int location) {
 
 		List<Noise> noiseList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  =? AND date >=? ORDER BY date DESC",
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  =? AND date <=? ORDER BY date DESC",
 				new SensorNoiseRowMapper(), location, to);
 		logger.info("received noise list");
 		return noiseList;
@@ -114,7 +122,16 @@ public class SensorRepository {
 		logger.info("received noise list");
 		return noiseList;
 	}
+	
+	public Humidity getLatestHumidityData(int location) {
 
+		Humidity hum = jdbcTemplate.queryForObject(
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
+				new SensorHumidityRowMapper(), location);
+		logger.info("received temperature list");
+		return hum;
+	}
+	
 	public List<Humidity> getHumidityData(int location) {
 
 		List<Humidity> humidityList = jdbcTemplate.query(
@@ -150,6 +167,7 @@ public class SensorRepository {
 		logger.info("received humidity list");
 		return humidityList;
 	}
+
 
 	public List<BeerTap> getBeertapData(int location) {
 		List<BeerTap> beertapList = jdbcTemplate

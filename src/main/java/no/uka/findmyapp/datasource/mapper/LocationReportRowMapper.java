@@ -9,20 +9,12 @@ import no.uka.findmyapp.model.LocationReport;
 import org.springframework.jdbc.core.RowMapper;
 
 public class LocationReportRowMapper implements RowMapper<LocationReport> {
-
-
-
-
-
 	
 	public LocationReport mapRow(ResultSet rs, int arg1) throws SQLException {
 		LocationReport localeNow = new LocationReport();
-		localeNow.setDanceFactor(rs.getInt("dance_factor"));
-		localeNow.setChatFactor(rs.getInt("chat_factor"));
-		localeNow.setFlirtFactor(rs.getInt("flirt_factor"));
-		//localeNow.setFunFactor(rs.getInt("fun_factor"));
-		localeNow.setComment(rs.getString("comment"));
-		localeNow.setHeadCount(rs.getInt("headcount"));
+		localeNow.setParameterName(rs.getString("parameter_name"));
+		localeNow.setParameterTextValue(rs.getString("parameter_text_value"));
+		localeNow.setParameterNumberValue(rs.getFloat("paramter_number_value"));
 		return localeNow;
 		}
 

@@ -1,5 +1,8 @@
 package no.uka.findmyapp.service;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -8,15 +11,18 @@ import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.datasource.SensorRepository;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
-import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Fact;
+import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationStatus;
+import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
+import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,9 +146,14 @@ public class LocationService {
 	/*
 	 * **************** FACT *****************
 	 */
-	public void addData(LocationReport locationReport, int locationId){
-		data.addData(locationReport, locationId);
-	}
+	/*public void addData(List<LocationReport> reportList, int locationId){
+		Iterator<LocationReport> reportIterator = reportList.iterator();
+		while(reportIterator.hasNext()){
+			LocationReport locationReport = reportIterator.next();
+			data.addData(locationReport, locationId);
+		}
+		
+	}*/
 
 	public List<Fact> getAllFacts(int locationId) {
 		return data.getAllFacts(locationId);
@@ -152,73 +163,126 @@ public class LocationService {
 		return data.getRandomFact(locationId);
 	}
 
-	public Location getData(int locationId) {//Creates and returns a location object with all the latest data on the location
+	public Location getAllData(int locationId) {//Creates and returns a location object with all the latest data on the location
 		Location locationOfInterest = data.getLocation(locationId);
+		int time = -10;
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE,time);
+		Date tenminago = cal.getTime();
+		
 		//Fetching data:
-		List <LocationReport> UserReportedData = data.getUserReportedData(locationId);
-		// From, to? Noise locationNoise = sensor.getNoiseData(from, to, locationId);
-		//Temperature locationTemp = sensor.getTemperatureData(from, to, locationId);
-		//Humidity locationHumidity = sensor.getHumidityData(from, to, locationId);
-		//List<BeerTap> beerTappedOnLocation = sensor.getBeertapData(locationId);
+		List <LocationReport> last10usercomments = getReports(locationId,null,10,null,null,"comment");
+		List <LocationReport> averagefun = getReports(locationId,"average",0,tenminago,null,"fun_factor");
+		List <LocationReport> averagechat = getReports(locationId,"average",0,tenminago,null,"chat_factor");
+		List <LocationReport> averagedance = getReports(locationId,"average",0,tenminago,null,"dance_factor");
+		List <LocationReport> averageflirt = getReports(locationId,"average",0,tenminago,null,"flirt_factor");
+		
+		Noise noise = sensor.getLatestNoiseData(locationId);
+		Temperature temp = sensor.getLatestTemperatureData(locationId);
+		Humidity hum = sensor.getLatestHumidityData(locationId);
+		int beerTappedOnLocation = sensor.getBeertapSum(locationId);
+		int headcount = data.getUserCountAtLocation(locationId);
+		
 		//Creating location status from all data
-		LocationStatus statusAtLocation = prepareData(UserReportedData);//Also needs to send noise, humidity and so on
+		LocationStatus statusAtLocation = new LocationStatus();
+		statusAtLocation.setBeerTap(beerTappedOnLocation);
+		statusAtLocation.setNoise((float)noise.getAverage());
+		statusAtLocation.setHumidity(hum.getValue());
+		statusAtLocation.setTemperature(temp.getValue());
+		statusAtLocation.setHeadCount(headcount);
+		statusAtLocation.setChatFactor(averagechat.get(0).getParameterNumberValue());
+		statusAtLocation.setFlirtFactor(averageflirt.get(0).getParameterNumberValue());
+		statusAtLocation.setFunFactor(averagefun.get(0).getParameterNumberValue());
+		statusAtLocation.setDanceFactor(averagedance.get(0).getParameterNumberValue());
+		Iterator<LocationReport> comments = last10usercomments.iterator();
+		while (comments.hasNext()){
+			statusAtLocation.addComment(comments.next().getParameterTextValue());
+		}
 		
-		
+		//Fill location with status
 		locationOfInterest.setLocationStatus(statusAtLocation);
+		
 		return locationOfInterest;
 	}
 	
-	private LocationStatus prepareData(List<LocationReport> userDataList){
-		//What happens of No data is retrieved? Null pointer exception?
-		LocationStatus preparedData = new LocationStatus();
-		float funFactor = -1, chatFactor = -1, danceFactor= -1, flirtFactor = -1, headCount = 0;
-		int ffCount =0, cfCount = 0,dfCount = 0,flirtfCount = 0;
-		//Takes average of the last minutes of data.
-		Iterator<LocationReport> li = userDataList.iterator();
-		while(li.hasNext()){
-			LocationReport current =  li.next();
-			headCount = headCount+current.getHeadCount();
-			if (current.getComment()!=null){
-				preparedData.addComment(current.getComment());
-			}
-			
-			if(current.getFunFactor()!=-1){
-				ffCount  = ffCount+1;
-				funFactor = funFactor + current.getFunFactor();
-			}
-			if(current.getChatFactor()!=-1){
-				cfCount = cfCount +1;
-				chatFactor = chatFactor +current.getChatFactor();
-			}	
-			if(current.getDanceFactor()!=-1){
-				dfCount = dfCount+1;
-				danceFactor = danceFactor + current.getDanceFactor();
-			}	
-			
-			if(current.getFlirtFactor()!=-1){
+
+	  
+
+	  
+
+	 
+	
+
+	public List<LocationReport> getReports(int locationId, String action, int numberOfelements, Date from, Date to, String parName)throws IllegalArgumentException {
+		List <LocationReport> reportedData =null;
 				
-				flirtfCount = flirtfCount +1;
-				flirtFactor = flirtFactor + current.getFlirtFactor();
-			}
-			
-			
+		if(numberOfelements >0 && from ==null && to ==null){
+			 reportedData = data.getLastUserReportedData(locationId, numberOfelements,parName);
+		}else  if(from != null){
+			if(to != null){
+			 reportedData = data.getUserReportedDataFromTo(locationId, from,to,parName);
+			}else{reportedData = data.getUserReportedDataFrom(locationId, from,parName);}
+		
+		}else if(from ==null && to == null && numberOfelements ==0){
+			reportedData = data.getUserReportedData(locationId,parName);
+		}
+		else{
+			throw new IllegalArgumentException("Read API for what arguments are allowed");
+		}
+		if(action.equals("average")){//find average
+			List <LocationReport> averageData = averageData(reportedData,parName);
+			return averageData;
+		}//Return the data raw
+		else if(action.equals(null)){
+			return reportedData;
+		}//something is wrong if you get here.
+		else{
+			throw new IllegalArgumentException("Read API for what arguments are allowed");
 		}
 		
-		if(ffCount !=0){
-			preparedData.setFunFactor((funFactor+1)/ffCount);
-		}
-		if(cfCount !=0){
-			preparedData.setChatFactor((chatFactor+1)/cfCount);
-		}
-		if(dfCount !=0){
-			preparedData.setDanceFactor((danceFactor+1)/dfCount);
-		}
-		if(flirtfCount !=0){
-			preparedData.setFlirtFactor((flirtFactor+1)/flirtfCount);
-		}
-		preparedData.setHeadCount(headCount);
-			return preparedData;
 		
 	}
+	/**
+	 * Finds the average of the number value of a list of LocationReports
+	 * @param reportedData
+	 * @param parName
+	 * @return averageData
+	 */
 
+	private List<LocationReport> averageData(List<LocationReport> reportedData,String parName) {
+		if(reportedData == null){//No data was acquired from DB
+			return null;
+		}
+		List<LocationReport> averageData = new ArrayList<LocationReport>();//DOES THIS WORK?
+		LocationReport averageReport = new LocationReport();
+		Iterator<LocationReport> reports = reportedData.iterator();
+		int counter = 1;
+		float paramvalue =0;
+		
+		while(reports.hasNext()){//iterates through 
+		 	LocationReport current=reports.next();
+		 	if(current.getParameterNumberValue()!= -1){//-1 means value is not set.
+		 		float value = current.getParameterNumberValue();
+		 		paramvalue = paramvalue + value; 
+			 	counter++;
+		 	}
+		 }
+		float finalvalue = -1;
+		if(paramvalue !=-1){finalvalue = paramvalue/counter; }//check that value has been changed from default
+		averageReport.setParameterName(parName);
+		averageReport.setParameterNumberValue(finalvalue);
+		averageData.add(averageReport);
+		return averageData;
+	}
+
+	
+	public void manageParams(String action, String parName) throws IllegalArgumentException{
+		if(action.equals("add")){
+		}else if(action.equals("remove")){
+			
+		}else if(action.equals("clean")){
+			
+		}
+	}
+	
 }

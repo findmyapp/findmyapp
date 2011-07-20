@@ -1,6 +1,7 @@
 package no.uka.findmyapp.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -122,24 +126,6 @@ public class LocationController {
 	/*
 	 * **************** FACT *****************
 	 */
-	
-	@RequestMapping(value="/{id}", method = RequestMethod.POST)//Adds subjective user reported data, such as fun factor or queue length,on a location
-	public ModelAndView addData(@PathVariable("id") int locationId,
-			@RequestBody LocationReport locationReport){
-		
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Status data logged for location: " + locationId);
-		service.addData(locationReport, locationId);
-		mav.addObject("respons",locationReport);
-		return mav;
-	}
-	
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public ModelAndView getData(@PathVariable("id") int locationId){
-		Location locale = service.getData(locationId);
-		return new ModelAndView("json","location_real_time", locale);
-	}
-
 	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
 	public ModelAndView getAllFacts(@PathVariable("id") int locationId) {
 		logger.info("getAllFacts ( " + locationId + " )");
@@ -152,6 +138,7 @@ public class LocationController {
 		Fact fact = service.getRandomFact(locationId);
 		return new ModelAndView("json", "random_fact", fact);
 	}
+
 
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -178,5 +165,56 @@ public class LocationController {
 		logger.info("handleLocationNotFoundException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
+/*
+ * -------------------------------UserReporting-------------------------
+ */
 
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public ModelAndView getData(@PathVariable("id") int locationId){
+		Location locale = service.getAllData(locationId);
+		return new ModelAndView("json","location_real_time", locale);
+	}
+	
+	/*@RequestMapping(value = "/{id}/userreport", method = RequestMethod.POST)// add max limit per user.
+	public ModelAndView addReport(@PathVariable("id") int locationId,
+			@RequestBody LocationReport[] locationReport){
+		
+		ModelAndView mav = new ModelAndView("ok_respons");
+		logger.info("Status data logged for location: " + locationId);
+		List<LocationReport> reportList = Arrays.asList(locationReport);
+		service.addData(reportList, locationId);
+		mav.addObject("respons",reportList);
+		return mav;
+	}*/
+	
+	@RequestMapping(value="/{id}/userreports", method = RequestMethod.GET)//if no params given: returns the last 10 min of official findmyapp params by default.
+	public ModelAndView getReports(@PathVariable("id") int locationId,//ADD ERROR HANDLING
+			@RequestParam (required = false) String action,//average 
+			@RequestParam (required = false, defaultValue = "0") int numberOfelements,//If want to pick out the last elements
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
+			@RequestParam (required = false) String parName1
+		){
+			List<LocationReport> reports= service.getReports(locationId,
+					action,
+					numberOfelements,
+					from,
+					to,
+					parName1
+					);
+			
+			return new ModelAndView("json","location_real_time", reports);
+	}
+	
+	
+
+	@RequestMapping(value="/{id}/userreports/develop", method = RequestMethod.GET)
+	public ModelAndView addParameter(//ADD ERROR HANDLING, max elem
+			@RequestParam  String action,//Has to be either addparam, removeparam or removedata
+			@RequestParam  String parName){
+				
+			
+		service.manageParams(action,parName);
+		return new ModelAndView("ok_respons");
+	}
 }
