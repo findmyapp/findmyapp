@@ -1,0 +1,182 @@
+Status: FAILED
+Time Taken: 251
+Size: 16323
+Timestamp: Wed Jul 20 15:15:41 CEST 2011
+TestStep: getEvents
+
+----------------- Messages ------------------------------
+[Valid HTTP Status Codes] Response status code:500 is not in acceptable list of status codes
+
+----------------- Properties ------------------------------
+StatusCode: 500
+Encoding: UTF-8
+Method: GET
+HTTP Version: HTTP/1.1
+Endpoint: http://findmyapp.net
+URL: http://findmyapp.net/findmyapp/users/1/events
+
+---------------- Request ---------------------------
+Host: [findmyapp.net]
+Accept-Encoding: [gzip,deflate]
+User-Agent: [Jakarta Commons-HttpClient/3.1]
+Accept: [application/json]
+Proxy-Connection: [Keep-Alive]
+
+- missing request / garbage collected -
+
+---------------- Response --------------------------
+Transfer-Encoding: [chunked]
+Date: [Wed, 20 Jul 2011 13:15:40 GMT]
+#status#: [HTTP/1.1 500 Internal Server Error]
+Connection: [Keep-Alive]
+Content-Type: [text/html;charset=utf-8]
+Server: [Apache-Coyote/1.1]
+Proxy-Connection: [Keep-Alive]
+
+<html><head><title>Apache Tomcat/6.0.32 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 500 - </h1><HR size="1" noshade="noshade"><p><b>type</b> Exception report</p><p><b>message</b> <u></u></p><p><b>description</b> <u>The server encountered an internal error () that prevented it from fulfilling this request.</u></p><p><b>exception</b> <pre>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?]; nested exception is java.sql.SQLException: Column 'lowest_price' not found.
+	org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:656)
+	org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:549)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:328)
+	org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:116)
+	org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:83)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:95)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:100)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:79)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:54)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:35)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilter(BasicAuthenticationFilter.java:119)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:91)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:187)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:105)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:175)
+	org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:237)
+	org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:167)
+</pre></p><p><b>root cause</b> <pre>org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?]; nested exception is java.sql.SQLException: Column 'lowest_price' not found.
+	org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:98)
+	org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:72)
+	org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:80)
+	org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:80)
+	org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:602)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:636)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:665)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:673)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:717)
+	no.uka.findmyapp.datasource.UserRepository.getEvents(UserRepository.java:88)
+	no.uka.findmyapp.service.UserService.getEvents(UserService.java:67)
+	no.uka.findmyapp.controller.UserController.getEvents(UserController.java:55)
+	sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	java.lang.reflect.Method.invoke(Method.java:597)
+	org.springframework.web.bind.annotation.support.HandlerMethodInvoker.invokeHandlerMethod(HandlerMethodInvoker.java:176)
+	org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter.invokeHandlerMethod(AnnotationMethodHandlerAdapter.java:426)
+	org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter.handle(AnnotationMethodHandlerAdapter.java:414)
+	org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:790)
+	org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:719)
+	org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:644)
+	org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:549)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:328)
+	org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:116)
+	org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:83)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:95)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:100)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:79)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:54)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:35)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilter(BasicAuthenticationFilter.java:119)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:91)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:187)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:105)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:175)
+	org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:237)
+	org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:167)
+</pre></p><p><b>root cause</b> <pre>java.sql.SQLException: Column 'lowest_price' not found.
+	com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1055)
+	com.mysql.jdbc.SQLError.createSQLException(SQLError.java:956)
+	com.mysql.jdbc.SQLError.createSQLException(SQLError.java:926)
+	com.mysql.jdbc.ResultSetImpl.findColumn(ResultSetImpl.java:1093)
+	com.mysql.jdbc.ResultSetImpl.getInt(ResultSetImpl.java:2734)
+	org.apache.commons.dbcp.DelegatingResultSet.getInt(DelegatingResultSet.java:275)
+	org.apache.commons.dbcp.DelegatingResultSet.getInt(DelegatingResultSet.java:275)
+	no.uka.findmyapp.datasource.mapper.EventRowMapper.mapRow(EventRowMapper.java:27)
+	no.uka.findmyapp.datasource.mapper.EventRowMapper.mapRow(EventRowMapper.java:9)
+	org.springframework.jdbc.core.RowMapperResultSetExtractor.extractData(RowMapperResultSetExtractor.java:92)
+	org.springframework.jdbc.core.RowMapperResultSetExtractor.extractData(RowMapperResultSetExtractor.java:1)
+	org.springframework.jdbc.core.JdbcTemplate$1.doInPreparedStatement(JdbcTemplate.java:648)
+	org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:586)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:636)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:665)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:673)
+	org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:717)
+	no.uka.findmyapp.datasource.UserRepository.getEvents(UserRepository.java:88)
+	no.uka.findmyapp.service.UserService.getEvents(UserService.java:67)
+	no.uka.findmyapp.controller.UserController.getEvents(UserController.java:55)
+	sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	java.lang.reflect.Method.invoke(Method.java:597)
+	org.springframework.web.bind.annotation.support.HandlerMethodInvoker.invokeHandlerMethod(HandlerMethodInvoker.java:176)
+	org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter.invokeHandlerMethod(AnnotationMethodHandlerAdapter.java:426)
+	org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter.handle(AnnotationMethodHandlerAdapter.java:414)
+	org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:790)
+	org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:719)
+	org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:644)
+	org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:549)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:328)
+	org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:116)
+	org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:83)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:95)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:100)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:79)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:54)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:35)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilter(BasicAuthenticationFilter.java:119)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:91)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:187)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:105)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:340)
+	org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:175)
+	org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:237)
+	org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:167)
+</pre></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat/6.0.32 logs.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/6.0.32</h3></body></html>

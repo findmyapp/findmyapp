@@ -85,8 +85,8 @@ public class UserRepository {
 	}
 
 	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
-				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", 
+		List<Event> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue "
+				+ "WHERE e.id = ue.event_id AND ue.user_id = ?", 
 				new EventRowMapper(), userId);
 		return events;
 	}
@@ -173,6 +173,20 @@ public class UserRepository {
 				" AND u.user_privacy_id = p.user_privacy_id AND p.events != 3"
 				, namedParameters, new UserRowMapper());
 		return users;
+	}
+	
+	/**
+	 * Adds a user with a Facebook Id. This is the only information added to DB.
+	 * 
+	 * @param facebookId id of user in Facebook
+	 */
+	public void addUserWithFacebookId(String facebookId) {
+		jdbcTemplate.update("INSERT INTO USER (facebook_id) VALUES (?)", facebookId);
+	}
+
+	public int isExistingUser(String userId) {
+		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER WHERE facebook_id=?", userId);
+		return count;
 	}
 
 

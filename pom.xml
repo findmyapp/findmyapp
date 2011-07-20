@@ -10,9 +10,10 @@
 	<properties>
 		<java-version>1.6</java-version>
 		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
-		<org.springframework.security-version>3.1.0.RC2</org.springframework.security-version>
 		<org.springframework.roo-version>1.0.2.RELEASE</org.springframework.roo-version>
 		<org.springframework.social-version>1.0.0.RC1</org.springframework.social-version>
+		<org.springframework.security-version>3.0.3.RELEASE</org.springframework.security-version>
+		<org.springframework.security.oauth-version>1.0.0.M3</org.springframework.security.oauth-version>
 		<org.aspectj-version>1.6.9</org.aspectj-version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>
 	</properties>
@@ -71,6 +72,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${org.springframework.security-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth</artifactId>
+			<version>${org.springframework.security.oauth-version}</version>
 		</dependency>
 
 		<!-- Spring Social -->

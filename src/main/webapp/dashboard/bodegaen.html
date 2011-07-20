@@ -1,43 +1,73 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<html>
+<head>
+   <title>FindMyApp</title>
+   <link rel="stylesheet" type="text/css" href="ukaStatsStylesheet.css" />
+    <meta charset="utf-8" /> 
+    <meta name="robots" content="noindex" /> 
+	<script type="text/javascript" src="ajaxobject.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(getData);
+    var info; // data from server
+    
+  	function processData(responseText, responseStatus) {
+  	  if (responseStatus==200) {
+  		  info = eval(responseText);
+  		  drawChart();  		
+  	  } else {
+  		alert(responseStatus + ' -- Error Processing Request');
+  	  }
+  	}
+  	
+    function getData() {// get json data from server
+    	
+    	var myRequest = new ajaxObject('http://findmyapp.net/findmyapp/locations/2/beertap/31', processData);
+    	//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+    	myRequest.update('');  // Server is contacted here.
+    	
+    }
+    
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Klokkeslett');
+        data.addColumn('number', 'Solgte øl');
+        
+        data.addRows(info.length);
+		var i=0;
+		for(i=0;i<info.length; i++) {
+			data.setValue(i, 0, info[i].time);
+			data.setValue(i, 1, info[i].value);
+		}
+        
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Ølhistorikk'});
+        
+    }
+    
  
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
-  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script src="kinetic.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  
-  <script type="text/javascript">
-	  function draw(){
-		  var kin = new Kinetic("ukaCanvas", "2d");
- 
-			kin.setDrawStage(function(){
-			kin.clear();
-			var canvas = kin.getCanvas();
-			var context = kin.getContext();
-	}
-  </script>
-   
-</head> 
+    </script>
+</head>
+<!-- Defining Header -->
+	<header>
+        <h1 id="findMyApp">FindMyApp</h1>
+	</header>
 
-<body onload="draw();"> 
-  <header> 
-     <h1>FindMyApp</h1>
-  </header>
-  
-  <article> 
-		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
-  </article> 
- 
-</body> 
-
-<footer>
-      <ul> 
-      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
-      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
-      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
-      </ul> 
-</footer>
-</html>
+<div id="content">
+	<!-- Defining Sidebar / Aside -->
+	<aside>
+		<section>
+			<ul id="aside_nav">
+		        <li><a href='http://elg.no/' class='awesomeButton'>Temperatur</a></li>
+				<li><a href='http://sau.no/' class='awesomeButton'>Folk</a></li>
+				<li><a href='http://ulv.no/' class='awesomeButton'>Osv</a></li>
+		     </ul>
+		</section>
+	</aside>
+	
+	<div id="mcontent">
+		<!-- Defining Content Section -->
+		<div id="chart_div"></div>
+	</div>
+</div>
