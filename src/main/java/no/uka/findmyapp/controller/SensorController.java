@@ -54,7 +54,7 @@ public class SensorController {
 			return new ModelAndView("fail_respons");
 		}
 		else{
-			return new ModelAndView("sensor","sensor",temp);
+			return new ModelAndView("json","temperature",temp);
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class SensorController {
 			return new ModelAndView("fail_respons");
 		}
 		else{
-			return new ModelAndView("sensor","sensor",temperatureList);
+			return new ModelAndView("json","temperature",temperatureList);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class SensorController {
 
 		
 		noiseList = service.getNoiseData(from, to, locationId);
-		return new ModelAndView("sensor","sensor",noiseList);
+		return new ModelAndView("json","noise",noiseList);
 	}
 	
 	@RequestMapping(value="/{locationId}/humidity",method = RequestMethod.GET)
@@ -97,7 +97,7 @@ public class SensorController {
 		humidityList = service.getHumidityData(from, to, locationId);
 		logger.info("Got humidity data");
 		
-		return new ModelAndView("sensor","sensor",humidityList);
+		return new ModelAndView("json","humidity",humidityList);
 	}
 
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
@@ -109,10 +109,10 @@ public class SensorController {
 			@PathVariable int tapNr){
 		if (sum == true){
 			int total = service.getBeertapSum(locationId,tapNr, from, to);
-			return new ModelAndView("sensor","sensor", total);
+			return new ModelAndView("json","beers", total);
 		} else {
 			beertapList = service.getBeertapData(locationId,tapNr, from, to);
-			return new ModelAndView("sensor","sensor", beertapList);
+			return new ModelAndView("json","beers", beertapList);
 		}
 	}
 

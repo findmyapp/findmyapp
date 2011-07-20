@@ -7,25 +7,26 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 public class Event {
 	private int id;
 	private Timestamp showingTime;
-	private Timestamp publishTime;
 	private String place;
 	private int billigId;
-	private long eventId;
-	private Timestamp netsaleFrom;
-	private Timestamp netsaleTo;
 	private boolean free;
 	private boolean canceled;
-	private int entranceId;
 	private String title;
 	private String lead;
 	private String text;
 	private String eventType;
 	private String image;
 	private String thumbnail;
-	private Boolean hiddenFromListing;
-	private String slug;
 	private int ageLimit;
-	private int detailPhotoId;
+	private int lowestPrice;
+	//private Timestamp publishTime;
+	//private long eventId;
+	//private Timestamp netsaleFrom;
+	//private Timestamp netsaleTo;
+	//private int entranceId;
+	//private Boolean hiddenFromListing;
+	//private String slug;
+	//private int detailPhotoId;
 	
 	public int getId() {
 		return id;
@@ -39,12 +40,6 @@ public class Event {
 	public void setShowingTime(Timestamp showingTime) {
 		this.showingTime = showingTime;
 	}
-	public Timestamp getPublishTime() {
-		return publishTime;
-	}
-	public void setPublishTime(Timestamp publishTime) {
-		this.publishTime = publishTime;
-	}
 	public String getPlace() {
 		return place;
 	}
@@ -57,27 +52,6 @@ public class Event {
 	public void setBilligId(int billigId) {
 		this.billigId = billigId;
 	}
-	/*
-	public long getEventId() {
-		return eventId;
-	}
-	*/
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
-	}
-	
-	public Timestamp getNetsaleFrom() {
-		return netsaleFrom;
-	}
-	public void setNetsaleFrom(Timestamp netsaleFrom) {
-		this.netsaleFrom = netsaleFrom;
-	}
-	public Timestamp getNetsaleTo() {
-		return netsaleTo;
-	}
-	public void setNetsaleTo(Timestamp netsaleTo) {
-		this.netsaleTo = netsaleTo;
-	}
 	public boolean isFree() {
 		return free;
 	}
@@ -89,12 +63,6 @@ public class Event {
 	}
 	public void setCanceled(boolean canceled) {
 		this.canceled = canceled;
-	}
-	public int getEntranceId() {
-		return entranceId;
-	}
-	public void setEntranceId(int entranceId) {
-		this.entranceId = entranceId;
 	}
 	public String getTitle() {
 		return title;
@@ -132,6 +100,49 @@ public class Event {
 	public void setThumbnail(String thumbnail) {
 		this.thumbnail = thumbnail;
 	}
+	public int getAgeLimit() {
+		return ageLimit;
+	}
+	public void setAgeLimit(int ageLimit) {
+		this.ageLimit = ageLimit;
+	}
+	public void setLowestPrice(int lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+	public int getLowestPrice() {
+		return lowestPrice;
+	}
+	/*
+	public Timestamp getPublishTime() {
+		return publishTime;
+	}
+	public void setPublishTime(Timestamp publishTime) {
+		this.publishTime = publishTime;
+	}
+	public long getEventId() {
+		return eventId;
+	}	
+	public void setEventId(long eventId) {
+		this.eventId = eventId;
+	}
+	public Timestamp getNetsaleFrom() {
+		return netsaleFrom;
+	}
+	public void setNetsaleFrom(Timestamp netsaleFrom) {
+		this.netsaleFrom = netsaleFrom;
+	}
+	public Timestamp getNetsaleTo() {
+		return netsaleTo;
+	}
+	public void setNetsaleTo(Timestamp netsaleTo) {
+		this.netsaleTo = netsaleTo;
+	}
+	public int getEntranceId() {
+		return entranceId;
+	}
+	public void setEntranceId(int entranceId) {
+		this.entranceId = entranceId;
+	}
 	public Boolean getHiddenFromListing() {
 		return hiddenFromListing;
 	}
@@ -144,17 +155,11 @@ public class Event {
 	public void setSlug(String slug) {
 		this.slug = slug;
 	}
-	public int getAgeLimit() {
-		return ageLimit;
-	}
-	public void setAgeLimit(int ageLimit) {
-		this.ageLimit = ageLimit;
-	}
 	public int getDetailPhotoId() {
 		return detailPhotoId;
 	}
 	public void setDetailPhotoId(int detailPhotoId) {
 		this.detailPhotoId = detailPhotoId;
 	}
-
+	*/
 }

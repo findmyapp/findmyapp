@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
+import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
@@ -31,7 +33,7 @@ public class UserRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	private static final Logger logger = LoggerFactory
-			.getLogger(UserRepository.class);
+	.getLogger(UserRepository.class);
 
 	@Autowired
 	DataSource dataSource;
@@ -40,21 +42,21 @@ public class UserRepository {
 		final int id1 = userId1;
 		final int id2 = userId2;
 		int friends = jdbcTemplate
-				.queryForInt(
-						"SELECT COUNT(*) FROM ("
-								+ "SELECT * FROM FRIENDS f "
-								+ "WHERE f.user1_id = ? AND f.user2_id = ? "
-								+ "UNION "
-								+ "SELECT * FROM FRIENDS f WHERE f.user1_id = ? AND f.user2_id = ?) AS areFriends",
-						new PreparedStatementSetter() {
-							public void setValues(PreparedStatement ps)
-									throws SQLException {
-								ps.setInt(1, id1);
-								ps.setInt(2, id2);
-								ps.setInt(3, id2);
-								ps.setInt(4, id1);
-							}
-						});
+		.queryForInt(
+				"SELECT COUNT(*) FROM ("
+				+ "SELECT * FROM FRIENDS f "
+				+ "WHERE f.user1_id = ? AND f.user2_id = ? "
+				+ "UNION "
+				+ "SELECT * FROM FRIENDS f WHERE f.user1_id = ? AND f.user2_id = ?) AS areFriends",
+				new PreparedStatementSetter() {
+					public void setValues(PreparedStatement ps)
+					throws SQLException {
+						ps.setInt(1, id1);
+						ps.setInt(2, id2);
+						ps.setInt(3, id2);
+						ps.setInt(4, id1);
+					}
+				});
 		if (friends > 0)
 			return true;
 		else
@@ -70,7 +72,7 @@ public class UserRepository {
 					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
-								throws SQLException {
+						throws SQLException {
 							ps.setInt(1, user_id);
 							ps.setLong(2, event_id);
 						}
@@ -83,14 +85,14 @@ public class UserRepository {
 	}
 
 	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate.query("SELECT * FROM event_showing_real AS s, events_event AS e, USER_EVENT ue "
-				+ "WHERE s.event_id=e.id AND e.id = ue.event_id AND ue.user_id = ?", 
+		List<Event> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue "
+				+ "WHERE e.id = ue.event_id AND ue.user_id = ?", 
 				new EventRowMapper(), userId);
 		return events;
 	}
 
 
-	
+
 	public UserPrivacy getUserPrivacyForUserId(int userId) {
 		//fetch UserPrivacy by user id;
 
@@ -99,21 +101,28 @@ public class UserRepository {
 				new UserPrivacyRowMapper(), userId);
 		return privacy;
 	}
-	
-	
-	
-//	Retrieving data
-	public UserPrivacy retrievePrivacy(int privacyId) {
-		UserPrivacy privacy = jdbcTemplate.queryForObject(
-				"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
-				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = "+ privacyId + "", 
-				new UserPrivacyRowMapper());
-		return privacy;
-	}
-	
 
-//	Updating data
+
+
+	//	Retrieving data
+	public UserPrivacy retrievePrivacy(int privacyId) {
+		try{
+			UserPrivacy privacy = jdbcTemplate.queryForObject(
+					"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS " + 
+					"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
+					new UserPrivacyRowMapper(), privacyId);
+			return privacy;
+		}
+		catch (Exception e){
+			return null;
+		}
+
+	}
+
+
+	//	Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia) {
+		logger.info("before db call with" + userPrivacyId + " and " + newPosition.toString()+  newEvents.toString() );
 		int temp = jdbcTemplate.update(
 				"UPDATE USER_PRIVACY_SETTINGS " + 
 				"SET USER_PRIVACY_SETTINGS.position = ? ," +
@@ -122,29 +131,30 @@ public class UserRepository {
 				"USER_PRIVACY_SETTINGS.media = ? " +
 				"WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ", 
 				PrivacySetting.toInt(newPosition), PrivacySetting.toInt(newEvents), PrivacySetting.toInt(newMoney), PrivacySetting.toInt(newMedia), userPrivacyId);
+		logger.info("after db call");
 	}
-	
-	
-// Create defaults settings
+
+
+	// Create defaults settings
 	public int createDefaultPrivacySettingsEntry() {
 		jdbcTemplate.execute(
 				"INSERT INTO USER_PRIVACY_SETTINGS " + 
-				"(position, events, money, media) VALUES (2, 2, 2, 2)");
+		"(position, events, money, media) VALUES (2, 2, 2, 2)");
 		int user_privacy_id = jdbcTemplate.queryForInt(
-				"SELECT user_privacy_id FROM USER_PRIVACY_SETTINGS ORDER BY user_privacy_id DESC LIMIT 1");
+		"SELECT user_privacy_id FROM USER_PRIVACY_SETTINGS ORDER BY user_privacy_id DESC LIMIT 1");
 		return user_privacy_id;
 	}
 
-	
-	
-	
+
+
+
 	public List<User> getRegisteredFacebookFriends(List<String> friendIds) {
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
 		List<User> users = namedParameterJdbcTemplate
-				.query("SELECT * FROM USER WHERE facebook_id IN (:ids)",
-						Collections.singletonMap("ids", friendIds),
-						new UserRowMapper());
+		.query("SELECT * FROM USER WHERE facebook_id IN (:ids)",
+				Collections.singletonMap("ids", friendIds),
+				new UserRowMapper());
 		return users;
 	}
 
@@ -177,6 +187,21 @@ public class UserRepository {
 	public int isExistingUser(String userId) {
 		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER WHERE facebook_id=?", userId);
 		return count;
+	}
+
+
+	public int findUserPrivacyId(int userId) throws InvalidUserIdOrAccessTokenException {
+		try{
+			int userPrivacyId = jdbcTemplate.queryForInt(
+					"SELECT USER.USER_PRIVACY_ID FROM USER " + "WHERE USER.user_id = ? ", 
+					userId);
+			return userPrivacyId;
+		}
+		catch (Exception e){
+			throw new InvalidUserIdOrAccessTokenException("Invalid user id ");
+
+		}
+
 	}
 
 }
