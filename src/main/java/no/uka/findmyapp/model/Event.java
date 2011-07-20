@@ -18,6 +18,7 @@ public class Event {
 	private String image;
 	private String thumbnail;
 	private int ageLimit;
+	private int lowestPrice;
 	//private Timestamp publishTime;
 	//private long eventId;
 	//private Timestamp netsaleFrom;
@@ -104,6 +105,12 @@ public class Event {
 	}
 	public void setAgeLimit(int ageLimit) {
 		this.ageLimit = ageLimit;
+	}
+	public void setLowestPrice(int lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+	public int getLowestPrice() {
+		return lowestPrice;
 	}
 	/*
 	public Timestamp getPublishTime() {
