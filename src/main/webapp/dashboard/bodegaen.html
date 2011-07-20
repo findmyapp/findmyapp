@@ -1,43 +1,118 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
-  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script src="kinetic.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  
-  <script type="text/javascript">
-	  function draw(){
-		  var kin = new Kinetic("ukaCanvas", "2d");
- 
-			kin.setDrawStage(function(){
-			kin.clear();
-			var canvas = kin.getCanvas();
-			var context = kin.getContext();
-	}
-  </script>
-   
-</head> 
+<html>
+<head>
+   <title>FindMyApp</title>
+   <link rel="stylesheet" type="text/css" href="ukaStatsStylesheet.css" />
+    <meta charset="utf-8" /> 
+    <meta name="robots" content="noindex" /> 
+	
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+    function ajaxObject(url, callbackFunction) {
+  	  var that=this;      
+  	  this.updating = false;
+  	  this.abort = function() {
+  		if (that.updating) {
+  		  that.updating=false;
+  		  that.AJAX.abort();
+  		  that.AJAX=null;
+  		}
+  	  }
+  	  this.update = function(passData,postMethod) { 
+  		if (that.updating) { return false; }
+  		that.AJAX = null;                          
+  		if (window.XMLHttpRequest) {              
+  		  that.AJAX=new XMLHttpRequest();              
+  		} else {                                  
+  		  that.AJAX=new ActiveXObject("Microsoft.XMLHTTP");
+  		}                                             
+  		if (that.AJAX==null) {                             
+  		  return false;                               
+  		} else {
+  		  that.AJAX.onreadystatechange = function() {  
+  			if (that.AJAX.readyState==4) {             
+  			  that.updating=false;                
+  			  that.callback(that.AJAX.responseText,that.AJAX.status,that.AJAX.responseXML);        
+  			  that.AJAX=null;                                         
+  			}                                                      
+  		  }                                                        
+  		  that.updating = new Date();                              
+  		  if (/post/i.test(postMethod)) {
+  			var uri=urlCall+'?'+that.updating.getTime();
+  			that.AJAX.open("POST", uri, true);
+  			that.AJAX.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  			that.AJAX.setRequestHeader("Content-Length", passData.length);
+  			that.AJAX.send(passData);
+  		  } else {
+  			var uri=urlCall+'?'+passData+'&timestamp='+(that.updating.getTime()); 
+  			that.AJAX.open("GET", uri, true);                             
+  			that.AJAX.send(null);                                         
+  		  }              
+  		  return true;                                             
+  		}                                                                           
+  	  }
+  	  var urlCall = url;        
+  	  this.callback = callbackFunction || function () { };
+  	}
+  	
+  	function processData(responseText, responseStatus) {
+  	  if (responseStatus==200) {
+  		alert(responseText);
+  	  } else {
+  		alert(responseStatus + ' -- Error Processing Request');
+  	  }
+  	}
+      
+  	google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+      
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Klokkeslett');
+        data.addColumn('number', 'Temperatur');
+        data.addRows(5);
+        data.setValue(0, 0, '18:00');
+        data.setValue(0, 1, 14);
+        data.setValue(1, 0, '20:00');
+        data.setValue(1, 1, 18);
+        data.setValue(2, 0, '22:00');
+        data.setValue(2, 1, 22);
+        data.setValue(3, 0, '24:00');
+        data.setValue(3, 1, 33);
+		data.setValue(3, 0, '02:00');
+        data.setValue(3, 1, 37);
 
-<body onload="draw();"> 
-  <header> 
-     <h1>FindMyApp</h1>
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 700, height:440, title: 'Bodegaen - Temperaturhistorikk'});
+      }
+    
+ // make json request
+	var myRequest = new ajaxObject('http://localhost:8080/findmyapp/locations/1/temperature', processData);
+	//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+	myRequest.update('');  // Server is contacted here.
+    </script>
+</head>
+<!-- Defining Header -->
+  <header>
+        <h1 id="findMyApp">FindMyApp</h1>
   </header>
-  
-  <article> 
-		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
-  </article> 
- 
-</body> 
 
-<footer>
-      <ul> 
-      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
-      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
-      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
-      </ul> 
-</footer>
-</html>
+<div id="content">
+<!-- Defining Sidebar / Aside -->
+<aside>
+<section>
+	<ul id="aside_nav">
+        <li><a href='http://elg.no/' class='awesomeButton'>Temperatur</a></li>
+		<li><a href='http://sau.no/' class='awesomeButton'>Folk</a></li>
+		<li><a href='http://ulv.no/' class='awesomeButton'>Osv</a></li>
+     </ul>
+</section>
+
+
+</aside>
+<div id="mcontent">
+
+<!-- Defining Content Section -->
+<div id="chart_div"></div>
+</div>
+</div>

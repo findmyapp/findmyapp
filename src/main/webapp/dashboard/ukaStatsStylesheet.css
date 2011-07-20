@@ -1,20 +1,115 @@
 /* UkaStats 2011 HTML5 css */
-article,aside,figure,footer,header,hgroup,nav,section{display:block}
 
-html{background:white;color:black}
+  * {
+   margin:0;
+   padding:0;
+   }
+   body
+   {
+   margin:0 auto;
+   width:960px;
+   font-family:Arial, Helvetica, sans-serif;
+   }
+   a {color:#000000; text-shadow:1px 1px 1px #cccccc;}
+   p {text-align:justify;}
+     header, aside, section {display:block;}
+   h1 {
+   font-size:26px;
+   line-height:40px;
+   padding:18px 0;
+   text-align:center;
+   }
 
-header{background:black;color:white;margin:0;padding:2.0em; text-align:center;}
-h1 a{color:white !important}
-h1{font-size:large}
-h1{font-family:Lucida Console}
-h1{letter-spacing:1em;text-align:center;margin:0}
+#ukaCanvas {
+	margin: 0;
+}
+#content {
+margin-top:40px;
+}
+#mcontent {
+padding-right:22px;
+width:620px;
+}
+aside {
+float: right;
+width:250px;
+height: 400px;
+background:#f3f3f3;
+}
 
-body{padding:0;margin:0 auto;width:100%;line-height:1.75;}
-article header,section header{background:white;color:black;margin:0;padding:0}
-article h1,section h1{letter-spacing:0;text-align:left;margin:1.75em 0}
+aside section {
+-moz-border-radius:11px;
+-webkit-border-radius:11px;
+background:#e0e0e0;
+margin: 30px auto;
+padding:11px 22px;
+width:50%;
+}
 
-footer{background:black;margin:0;padding:1.0em;}
+#aside_nav {
+list-style: none;
+}
 
-footer ul{background:black;margin:0;padding:0;text-align:center; letter-spacing:3em}
-footer li{display:inline;padding-left:1em}
+#aside_nav li {
+margin-bottom: 10px;
+width:130px;
+text-align:center;
+background: #222 url(/images/alert-overlay.png) repeat-x;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+border-bottom: 1px solid rgba(0,0,0,0.25);
+position: relative;
+cursor: pointer;
+}
+
+#findMyApp { 
+	content: url(ukemannen.JPG), contents; 
+    width: 60%;
+    background-repeat:no-repeat;
+	margin-left: auto;
+    margin-right: auto;
+	}
+	
+.awesomeButton{
+color: #fff;
+text-decoration: none;
+font-weight: bold;
+line-height: 2;
+
+}
+
+/* Sizes ---------- */
+.small.awesomeButton {
+font-size: 11px;
+}
+.medium.awesomeButton {
+font-size: 13px;
+}
+.large.awesomeButton {
+font-size: 14px;
+padding: 8px 14px 9px;
+}
+ 
+/* Colors ---------- */
+.blue.awesomeButton {
+background-color: #2daebf;
+}
+.red.awesomeButton {
+background-color: #e33100;
+}
+.magenta.awesomeButton {
+background-color: #a9014b;
+}
+.orange.awesomeButton {
+background-color: #ff5c00;
+}
+.yellow.awesomeButton {
+background-color: #ffb515;
+}
+
+
+
 
