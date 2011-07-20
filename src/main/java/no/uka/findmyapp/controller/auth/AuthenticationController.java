@@ -3,7 +3,6 @@ package no.uka.findmyapp.controller.auth;
 import no.uka.findmyapp.service.auth.AuthenticationService;
 import no.uka.findmyapp.service.auth.CouldNotRetreiveUserIdException;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
