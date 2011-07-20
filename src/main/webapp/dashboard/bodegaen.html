@@ -4,115 +4,70 @@
    <link rel="stylesheet" type="text/css" href="ukaStatsStylesheet.css" />
     <meta charset="utf-8" /> 
     <meta name="robots" content="noindex" /> 
-	
+	<script type="text/javascript" src="ajaxobject.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
     
-    function ajaxObject(url, callbackFunction) {
-  	  var that=this;      
-  	  this.updating = false;
-  	  this.abort = function() {
-  		if (that.updating) {
-  		  that.updating=false;
-  		  that.AJAX.abort();
-  		  that.AJAX=null;
-  		}
-  	  }
-  	  this.update = function(passData,postMethod) { 
-  		if (that.updating) { return false; }
-  		that.AJAX = null;                          
-  		if (window.XMLHttpRequest) {              
-  		  that.AJAX=new XMLHttpRequest();              
-  		} else {                                  
-  		  that.AJAX=new ActiveXObject("Microsoft.XMLHTTP");
-  		}                                             
-  		if (that.AJAX==null) {                             
-  		  return false;                               
-  		} else {
-  		  that.AJAX.onreadystatechange = function() {  
-  			if (that.AJAX.readyState==4) {             
-  			  that.updating=false;                
-  			  that.callback(that.AJAX.responseText,that.AJAX.status,that.AJAX.responseXML);        
-  			  that.AJAX=null;                                         
-  			}                                                      
-  		  }                                                        
-  		  that.updating = new Date();                              
-  		  if (/post/i.test(postMethod)) {
-  			var uri=urlCall+'?'+that.updating.getTime();
-  			that.AJAX.open("POST", uri, true);
-  			that.AJAX.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  			that.AJAX.setRequestHeader("Content-Length", passData.length);
-  			that.AJAX.send(passData);
-  		  } else {
-  			var uri=urlCall+'?'+passData+'&timestamp='+(that.updating.getTime()); 
-  			that.AJAX.open("GET", uri, true);                             
-  			that.AJAX.send(null);                                         
-  		  }              
-  		  return true;                                             
-  		}                                                                           
-  	  }
-  	  var urlCall = url;        
-  	  this.callback = callbackFunction || function () { };
-  	}
-  	
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(getData);
+    var info; // data from server
+    
   	function processData(responseText, responseStatus) {
   	  if (responseStatus==200) {
-  		alert(responseText);
+  		  info = eval(responseText);
+  		  drawChart();  		
   	  } else {
   		alert(responseStatus + ' -- Error Processing Request');
   	  }
   	}
-      
-  	google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-      
+  	
+    function getData() {// get json data from server
+    	
+    	var myRequest = new ajaxObject('http://findmyapp.net/findmyapp/locations/2/beertap/31', processData);
+    	//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+    	myRequest.update('');  // Server is contacted here.
+    	
+    }
+    
     function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Klokkeslett');
-        data.addColumn('number', 'Temperatur');
-        data.addRows(5);
-        data.setValue(0, 0, '18:00');
-        data.setValue(0, 1, 14);
-        data.setValue(1, 0, '20:00');
-        data.setValue(1, 1, 18);
-        data.setValue(2, 0, '22:00');
-        data.setValue(2, 1, 22);
-        data.setValue(3, 0, '24:00');
-        data.setValue(3, 1, 33);
-		data.setValue(3, 0, '02:00');
-        data.setValue(3, 1, 37);
-
+        data.addColumn('number', 'Solgte øl');
+        
+        data.addRows(info.length);
+		var i=0;
+		for(i=0;i<info.length; i++) {
+			data.setValue(i, 0, info[i].time);
+			data.setValue(i, 1, info[i].value);
+		}
+        
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, {width: 700, height:440, title: 'Bodegaen - Temperaturhistorikk'});
-      }
+        chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Ølhistorikk'});
+        
+    }
     
- // make json request
-	var myRequest = new ajaxObject('http://localhost:8080/findmyapp/locations/1/temperature', processData);
-	//myRequest.update('id=1234&color=blue');  // Server is contacted here.
-	myRequest.update('');  // Server is contacted here.
+ 
     </script>
 </head>
 <!-- Defining Header -->
-  <header>
+	<header>
         <h1 id="findMyApp">FindMyApp</h1>
-  </header>
+	</header>
 
 <div id="content">
-<!-- Defining Sidebar / Aside -->
-<aside>
-<section>
-	<ul id="aside_nav">
-        <li><a href='http://elg.no/' class='awesomeButton'>Temperatur</a></li>
-		<li><a href='http://sau.no/' class='awesomeButton'>Folk</a></li>
-		<li><a href='http://ulv.no/' class='awesomeButton'>Osv</a></li>
-     </ul>
-</section>
-
-
-</aside>
-<div id="mcontent">
-
-<!-- Defining Content Section -->
-<div id="chart_div"></div>
-</div>
+	<!-- Defining Sidebar / Aside -->
+	<aside>
+		<section>
+			<ul id="aside_nav">
+		        <li><a href='http://elg.no/' class='awesomeButton'>Temperatur</a></li>
+				<li><a href='http://sau.no/' class='awesomeButton'>Folk</a></li>
+				<li><a href='http://ulv.no/' class='awesomeButton'>Osv</a></li>
+		     </ul>
+		</section>
+	</aside>
+	
+	<div id="mcontent">
+		<!-- Defining Content Section -->
+		<div id="chart_div"></div>
+	</div>
 </div>
