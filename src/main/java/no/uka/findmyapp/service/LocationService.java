@@ -146,14 +146,14 @@ public class LocationService {
 	/*
 	 * **************** FACT *****************
 	 */
-	/*public void addData(List<LocationReport> reportList, int locationId){
+	public void addData(List<LocationReport> reportList, int locationId){
 		Iterator<LocationReport> reportIterator = reportList.iterator();
 		while(reportIterator.hasNext()){
 			LocationReport locationReport = reportIterator.next();
 			data.addData(locationReport, locationId);
 		}
 		
-	}*/
+	}
 
 	public List<Fact> getAllFacts(int locationId) {
 		return data.getAllFacts(locationId);
@@ -276,13 +276,14 @@ public class LocationService {
 	}
 
 	
-	public void manageParams(String action, String parName) throws IllegalArgumentException{
+	public void manageParams(String action, String parName) throws IllegalArgumentException{//must also check dev id, and clean string.
 		if(action.equals("add")){
+			data.addParameter(parName);
 		}else if(action.equals("remove")){
-			
+			data.removeParameter(parName);
 		}else if(action.equals("clean")){
-			
-		}
+			data.cleanParameter(parName);
+		}else{throw new IllegalArgumentException("Read API for what arguments are allowed");}
 	}
 	
 }

@@ -316,42 +316,55 @@ public class LocationRepository {
 						new FactRowMapper(), locationId);
 	}
 
-	public List<LocationReport> getUserReportedData(int locationId) {
-		logger.info("Fetching data ");
-		return jdbcTemplate.query("SELECT * FROM POSITION_LOCATION_STATUS " +
-				"WHERE position_location_id = ?", new LocationReportRowMapper(),locationId);
 	
-	}
-/*
+
 	public void addData(LocationReport locationReport, int locationId) {
-		jdbcTemplate.execute("INSERT INTO POSITION_LOCATION_STATUS (position_location_id ,comment," +
-				" dance_factor, chat_factor, flirt_factor, ) VALUES ("+locationId+","+locationReport.getComment()+","
-				+locationReport.getFunFactor() +","+ locationReport.getDanceFactor() +", " + locationReport.getChatFactor()+","
-				+locationReport.getFlirtFactor());
+		jdbcTemplate.execute("INSERT INTO CUSTOM_PARAMETER_VALUE (position_location_id ,parameter_name,parameter_number_value, " +
+				"parameter_text, time) VALUES ("+locationId+","+locationReport.getParameterName()+","
+				+locationReport.getParameterNumberValue() +","+ locationReport.getParameterTextValue()+",now())");
 		logger.info("Data logged: " + locationReport.toString());
-	}*/
+	}
 
 	public List<LocationReport> getLastUserReportedData(int locationId,
-			int numberOfelements, String string) {
-		// TODO Auto-generated method stub
-		return null;
+			int numberOfelements, String parName) {
+		logger.info("Fetching data ");
+		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER_VALUE " +
+				"WHERE position_location_id = ? AND parameter_name = ? ORDER BY date DESC LIMIT 0,? ", new LocationReportRowMapper(),locationId,parName,numberOfelements);
 	}
 
 	public List<LocationReport> getUserReportedDataFromTo(int locationId,
-			Date from, Date to, String string) {
-		// TODO Auto-generated method stub
-		return null;
+			Date from, Date to, String parName) {
+		logger.info("Fetching data ");
+		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER_VALUE " +
+				"WHERE position_location_id = ? AND parameter_name = ? AND time >= ? AND time <= ?", new LocationReportRowMapper(),locationId,parName,from,to);
 	}
 
 	public List<LocationReport> getUserReportedDataFrom(int locationId,
-			Date from, String string) {
-		// TODO Auto-generated method stub
-		return null;
+			Date from, String parName) {
+		logger.info("Fetching data ");
+		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER_VALUE " +
+				"WHERE position_location_id = ? AND parameter_name = ? AND time >= ? ", new LocationReportRowMapper(),locationId,parName,from);
 	}
 
 	public List<LocationReport> getUserReportedData(int locationId,
-			String string) {
+			String parName) {
+			logger.info("Fetching data ");
+			return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER_VALUE " +
+					"WHERE position_location_id = ? AND parameter_name = ?", new LocationReportRowMapper(),locationId,parName);
+	}
+
+	public void addParameter(String parName) {
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	public void cleanParameter(String parName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeParameter(String parName) {
+		// TODO Auto-generated method stub
+		
 	}
 }

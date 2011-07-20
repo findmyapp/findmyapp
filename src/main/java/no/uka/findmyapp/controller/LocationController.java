@@ -175,7 +175,7 @@ public class LocationController {
 		return new ModelAndView("json","location_real_time", locale);
 	}
 	
-	/*@RequestMapping(value = "/{id}/userreport", method = RequestMethod.POST)// add max limit per user.
+	@RequestMapping(value = "/{id}/userreport", method = RequestMethod.POST)// add max limit per user.
 	public ModelAndView addReport(@PathVariable("id") int locationId,
 			@RequestBody LocationReport[] locationReport){
 		
@@ -185,7 +185,7 @@ public class LocationController {
 		service.addData(reportList, locationId);
 		mav.addObject("respons",reportList);
 		return mav;
-	}*/
+	}
 	
 	@RequestMapping(value="/{id}/userreports", method = RequestMethod.GET)//if no params given: returns the last 10 min of official findmyapp params by default.
 	public ModelAndView getReports(@PathVariable("id") int locationId,//ADD ERROR HANDLING
