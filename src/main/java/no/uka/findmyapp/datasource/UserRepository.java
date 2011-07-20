@@ -164,5 +164,19 @@ public class UserRepository {
 				, namedParameters, new UserRowMapper());
 		return users;
 	}
+	
+	/**
+	 * Adds a user with a Facebook Id. This is the only information added to DB.
+	 * 
+	 * @param facebookId id of user in Facebook
+	 */
+	public void addUserWithFacebookId(String facebookId) {
+		jdbcTemplate.update("INSERT INTO USER (facebook_id) VALUES (?)", facebookId);
+	}
+
+	public int isExistingUser(String userId) {
+		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER WHERE facebook_id=?", userId);
+		return count;
+	}
 
 }
