@@ -29,12 +29,22 @@
 		 
 			context.beginPath();
 			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-		 
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+		 	
+			var grd = context.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+		    grd.addColorStop(0, "#FFFFDD"); 
+		    grd.addColorStop(0.3, "#8F0000"); 
+		    grd.addColorStop(0.7, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); 
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
+			context.restore(); // restore to original state
+			context.lineWidth = 1;
+			context.strokeStyle = "#AAAAAA";
 			context.stroke();
  
             kin.addRegionEventListener("onmousedown", function(){
@@ -43,14 +53,11 @@
  
             kin.closeRegion();
 				
-			context.font = "20pt comic sans ms";
+			context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("STORSALEN", 2.2*centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("STORSALEN", 2.2*centerX, centerY);
 			
 			// draw Rundhallen
             kin.beginRegion();
@@ -59,17 +66,26 @@
 			centerY = 0.45*canvas.height;
 			radius = 0.1*canvas.height;
 		 
-			//context.translate(canvas.width / 2, canvas.height / 2);
 			context.scale(2.2, 1);
 		 
 			context.beginPath();
 			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 		 
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+		    grd.addColorStop(0, "#FFFFDD"); 
+		    grd.addColorStop(0.3, "#8F0000"); 
+		    grd.addColorStop(0.7, "#8F0000"); 
+		    grd.addColorStop(1, "#FFFFDD"); 
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
+			context.restore(); // restore to original state
+			context.lineWidth = 1;
+			context.strokeStyle = "#AAAAAA";
 			context.stroke();
  
             kin.addRegionEventListener("onmousedown", function(){
@@ -78,14 +94,11 @@
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("RUNDHALLEN", 2.2*centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("RUNDHALLEN", 2.2*centerX, centerY);
 			
 			// draw Bodegaen
             kin.beginRegion();
@@ -94,17 +107,26 @@
 			centerY = 0.7*canvas.height;
 			radius = 0.1*canvas.height;
 		 
-			//context.translate(canvas.width / 2, canvas.height / 2);
 			context.scale(2.2, 1);
 		 
 			context.beginPath();
 			context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 		 
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+		    grd.addColorStop(0, "#FFFFDD"); 
+		    grd.addColorStop(0.3, "#8F0000"); 
+		    grd.addColorStop(0.7, "#8F0000"); 
+		    grd.addColorStop(1, "#FFFFDD"); 
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
+			context.restore(); // restore to original state
+			context.lineWidth = 1;
+			context.strokeStyle = "#AAAAAA";
 			context.stroke();
  
             kin.addRegionEventListener("onmousedown", function(){
@@ -113,14 +135,11 @@
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("BODEGAEN", 2.2*centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("BODEGAEN", 2.2*centerX, centerY);
 			
 			// draw klubben 
             kin.beginRegion();
@@ -143,29 +162,33 @@
 			// apply custom transform
 			context.transform(1, sy, sx, 1, 0, 0);
 			context.beginPath();
-			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
+			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight); //context.rect(topLeftCornerX,topLeftCornerY,width,height);
 			
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(-rectWidth / 1.85, 0, rectWidth / 1.85, 0);
+			grd.addColorStop(0, "#FFFFDD"); // lighter red
+		    grd.addColorStop(0.1, "#8F0000"); // lighter red
+		    grd.addColorStop(0.9, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); // lighter red C30000
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
-			context.stroke();
- 
+			context.restore(); // restore to original state
+			
 			kin.addRegionEventListener("onmousedown", function(){
                window.location.href="klubben.html";
             });
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("KLUBBEN", centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("KLUBBEN", centerX, centerY);
 			
 			// draw selskapssiden 
             kin.beginRegion();
@@ -190,27 +213,31 @@
 			context.beginPath();
 			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
 			
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(-rectWidth / 1.85, 0, rectWidth / 1.85, 0);
+			grd.addColorStop(0, "#FFFFDD"); // lighter red
+		    grd.addColorStop(0.1, "#8F0000"); // lighter red
+		    grd.addColorStop(0.9, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); // lighter red C30000
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
-			context.stroke();
- 
+			context.restore(); // restore to original state
+			
 			kin.addRegionEventListener("onmousedown", function(){
                 window.location.href="selskapssiden.html";
             });
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("SELSKAPSSIDEN", centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("SELSKAPSSIDEN", centerX, centerY);
 			
 			// draw knaus 
             kin.beginRegion();
@@ -235,27 +262,31 @@
 			context.beginPath();
 			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
 			
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(-rectWidth / 1.85, 0, rectWidth / 1.85, 0);
+			grd.addColorStop(0, "#FFFFDD"); // lighter red
+		    grd.addColorStop(0.1, "#8F0000"); // lighter red
+		    grd.addColorStop(0.9, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); // lighter red C30000
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
-			context.stroke();
- 
+			context.restore(); // restore to original state
+			
 			kin.addRegionEventListener("onmousedown", function(){
                 window.location.href="knaus.html";
             });
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("KNAUS", centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("KNAUS", centerX, centerY);
 			
 			// draw edgar 
             kin.beginRegion();
@@ -280,12 +311,19 @@
 			context.beginPath();
 			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
 			
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(-rectWidth / 1.85, 0, rectWidth / 1.85, 0);
+			grd.addColorStop(0, "#FFFFDD"); // lighter red
+		    grd.addColorStop(0.1, "#8F0000"); // lighter red
+		    grd.addColorStop(0.9, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); // lighter red C30000
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
-			context.stroke();
+			context.restore(); // restore to original state
  
 			kin.addRegionEventListener("onmousedown", function(){
                 window.location.href="edgar.html";
@@ -293,14 +331,11 @@
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("EDGAR", centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("EDGAR", centerX, centerY);
 			
 			// draw lyche 
             kin.beginRegion();
@@ -325,27 +360,31 @@
 			context.beginPath();
 			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
 			
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(-rectWidth / 1.85, 0, rectWidth / 1.85, 0);
+			grd.addColorStop(0, "#FFFFDD"); // lighter red
+		    grd.addColorStop(0.1, "#8F0000"); // lighter red
+		    grd.addColorStop(0.9, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); // lighter red C30000
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
-			context.stroke();
- 
+			context.restore(); // restore to original state
+			
 			kin.addRegionEventListener("onmousedown", function(){
                 window.location.href="lyche.html";
             });
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("LYCHE", centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("LYCHE", centerX, centerY);
 						
 			// draw strossa 
             kin.beginRegion();
@@ -370,27 +409,31 @@
 			context.beginPath();
 			context.rect(-rectWidth / 2, -rectHeight / 2, rectWidth, rectHeight);
 			
-			context.restore(); // restore to original state
-			context.fillStyle = "#8F0000";
+			grd = context.createLinearGradient(-rectWidth / 1.85, 0, rectWidth / 1.85, 0);
+			grd.addColorStop(0, "#FFFFDD"); // lighter red
+		    grd.addColorStop(0.1, "#8F0000"); // lighter red
+		    grd.addColorStop(0.9, "#8F0000"); // uka red
+		    grd.addColorStop(1, "#FFFFDD"); // lighter red C30000
+		    context.fillStyle = grd;
+		    
+			context.shadowColor = "#AAAAAA";
+		    context.shadowBlur = 15;
+		    context.shadowOffsetX = 5;
+		    context.shadowOffsetY = 5;
 			context.fill();
-			context.lineWidth = 5;
-			context.strokeStyle = "black";
-			context.stroke();
- 
+			context.restore(); // restore to original state
+			
 			kin.addRegionEventListener("onmousedown", function(){
                 window.location.href="strossa.html";
             });
  
             kin.closeRegion();
 			
-			context.font = "20pt comic sans ms";
+            context.font = "20pt futura medium";
 			context.textAlign = "center";
 			context.textBaseline = "middle";
 			context.fillStyle = "white";
 			context.fillText("STROSSA", centerX, centerY);
-			context.lineWidth = 1;
-			context.strokeStyle = "black"; // stroke color
-			context.strokeText("STROSSA", centerX, centerY);
 			
         });
 	}
@@ -400,7 +443,7 @@
 
 <body onload="draw();"> 
   <header> 
-     <h1>FindMyApp</h1>
+     <h1>Overskrift</h1>
   </header>
   
   <article> 
