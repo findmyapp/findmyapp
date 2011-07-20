@@ -33,8 +33,8 @@ public class UserController {
 	private UserService service;
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(UserController.class);
-	
+	.getLogger(UserController.class);
+
 	@RequestMapping(value = "/friends")
 	public ModelAndView getRegisteredFacebookFriends(@RequestParam String accessToken) {
 		ModelAndView mav = new ModelAndView();
@@ -49,26 +49,38 @@ public class UserController {
 		model.addAttribute(addEvent);
 		return model;
 	}
-	
+
 	@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
 	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
 		List<Event> events = service.getEvents(userId);
 		model.addAttribute(events);
 		return model;
 	}
-	
-	
+
+
 	@RequestMapping(value = "/testing", method = RequestMethod.GET)
 	public ModelAndView testForPrivacyMethods() {
-		
+
 		boolean success = true; 
 		success = service.testingForUserServiceOne();
 
 		logger.info("testresult is " + success);
 		return new ModelAndView("test", "result", success); 
 	}
-	
-	
+
+
+	/**
+	 * POST method where it is possible to change privacy settings
+	 * Privacy settings: 1 = ANYONE, 2 = FRIENDS, 3 = ONLY ME 
+	 * @param userId is necessary to change privacy settings  
+	 * @param privacySettingPosition 
+	 * @param privacySettingEvents
+	 * @param privacySettingMoney
+	 * @param privacySettingMedia
+	 * @param accessToken for our local database 
+	 * @return
+	 * @throws InvalidUserIdOrAccessTokenException
+	 */
 
 	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.POST)
 	public ModelAndView postPrivacy(@PathVariable("userId") int userId,
@@ -77,45 +89,53 @@ public class UserController {
 			@RequestParam (defaultValue = "0") int privacySettingMoney,
 			@RequestParam (defaultValue = "0") int privacySettingMedia,
 			@RequestParam (defaultValue = "0") int accessToken) throws InvalidUserIdOrAccessTokenException {
-		
+
 		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
-				 + " " +  privacySettingMoney + " " + privacySettingMedia);
-		boolean accessVerified = service.verifyAccessToken(userId, accessToken);
+				+ " " +  privacySettingMoney + " " + privacySettingMedia);
 		
+		// verify if the access token is valid, if not, throw exception
+		boolean accessVerified = service.verifyAccessToken(userId, accessToken);
 		if (!accessVerified){
 			throw new InvalidUserIdOrAccessTokenException("Invalid access token");
 		}
-		
+
+		// If access token is valid, json view is returned 
 		int userPrivacyId = service.findUserPrivacyId(userId);
 		UserPrivacy userPrivacy = service.updatePrivacy(userPrivacyId, privacySettingPosition, privacySettingEvents, privacySettingMoney, privacySettingMedia );
-		logger.info("userPrivacy ut");
-
 		return new ModelAndView("json", "privacy", userPrivacy);
-		
+
 	}
-	
-	
+
+
+
+	/**
+	 * GET method where privacy settings is read 
+	 * @param userId is necessary to change privacy settings. UserId is our local Id  
+	 * @param accessToken for our local database 
+	 * @return
+	 * @throws InvalidUserIdOrAccessTokenException
+	 */
 	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=String.class, isList=true)
-	
+
 	public ModelAndView getPrivacy(
 			@PathVariable int userId,
 			@RequestParam (defaultValue = "0") int accessToken) throws InvalidUserIdOrAccessTokenException{
-//			throws userPrivacyIdNotFoundException {
 		UserPrivacy privacy;
-		logger.info("privacy");
+
+
+		// verify if the access token is valid, if not, throw exception
 		boolean accessVerified = service.verifyAccessToken(userId, accessToken);
-		
 		if (!accessVerified){
 			throw new InvalidUserIdOrAccessTokenException("Invalid access token");
 		}
-		
+
+		// If access token is valid, json view is returned 
 		int userPrivacyId = service.findUserPrivacyId(userId);
 		privacy = service.retrievePrivacy(userPrivacyId);
-
 		return new ModelAndView("json", "privacy", privacy);
 	}
-	
+
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(InvalidUserIdOrAccessTokenException.class)

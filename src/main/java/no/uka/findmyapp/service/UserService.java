@@ -25,14 +25,14 @@ public class UserService {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory
-			.getLogger(UserService.class);
+	.getLogger(UserService.class);
 
 	@Autowired
 	private UserRepository data;
 
 	public PrivacySetting getPrivacySettingForUserId(int userId, String privacyType) {
 		UserPrivacy privacy = this.getUserPrivacyForUserId(userId);
-		
+
 		if (privacyType.equals("position")){
 			return privacy.getPositionPrivacySetting();
 		}
@@ -49,16 +49,16 @@ public class UserService {
 			throw new IllegalArgumentException("Function retreiveOnePrivacy was called with illegal input"); 
 		}
 	}
-	
+
 	public UserPrivacy getUserPrivacyForUserId(int userId) {
 		return data.getUserPrivacyForUserId(userId);
-		
 	}
-	
+
+
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
-		
+
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
@@ -66,55 +66,67 @@ public class UserService {
 	public List<Event> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
-	
-	
 
+
+
+	// Retrieve privacy from database
 	public UserPrivacy retrievePrivacy(int userPrivacyId){
 		return data.retrievePrivacy(userPrivacyId);
-
 	}
-	
 
 
-		
+
+	/**
+	 * Method where it is possible to change privacy settings
+	 * @param userPrivacyId
+	 * @param newPosition
+	 * @param newEvents
+	 * @param newMoney
+	 * @param newMedia
+	 * @return
+	 */
 	public UserPrivacy updatePrivacy(int userPrivacyId, int newPosition, int newEvents, int newMoney, int newMedia){		
-		 
+
 		UserPrivacy userPrivacy = data.retrievePrivacy(userPrivacyId);
-		
-		logger.info("before updating position" + userPrivacyId + " and " + newPosition );
+
+		// there is only three types of privacy settings: ANYONE (1), FRIENDS (2) and ONLY ME (3)
+		// this method assures that the privacy settings only gets updated if the settings are valid (1,2 or 3)
 		if (newPosition == 1 || newPosition == 2 || newPosition == 3){
 			userPrivacy.setPositionPrivacySetting(PrivacySetting.getSetting(newPosition));
 		} 
-		logger.info("after updating position" + userPrivacyId + " and " +  newPosition  );
-		
-		logger.info("before updating events" + userPrivacyId + " and " + newEvents );
+
 		if (newEvents == 1 || newEvents == 2 || newEvents == 3){
-			userPrivacy.setEventsPrivacySetting(PrivacySetting.getSetting(newEvents));} 
-		logger.info("after updating events" + userPrivacyId + " and " + newEvents );
-		
+			userPrivacy.setEventsPrivacySetting(PrivacySetting.getSetting(newEvents));
+		} 
+
 		if (newMoney == 1 || newMoney == 2 || newMoney == 3){
-			userPrivacy.setMoneyPrivacySetting(PrivacySetting.getSetting(newMoney));} 
-		
+			userPrivacy.setMoneyPrivacySetting(PrivacySetting.getSetting(newMoney));
+		} 
+
 		if (newMedia == 1 || newMedia == 2 || newMedia == 3){
-			userPrivacy.setMediaPrivacySetting(PrivacySetting.getSetting(newMedia));} 
-		
+			userPrivacy.setMediaPrivacySetting(PrivacySetting.getSetting(newMedia));
+		} 
+
 		updatePrivacy(userPrivacy);
-		
+
 		return userPrivacy;
 	}	
-	
-	
-	
+
 	public void updatePrivacy(UserPrivacy userPrivacy){	
-		 data.updatePrivacy(userPrivacy.getUserPrivacyId(), userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
+		data.updatePrivacy(userPrivacy.getUserPrivacyId(), userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
 	}
+
+
 	
-	
+/**
+ * Default privacy settings is set. FRIENDS is default for every privacy setting
+ * @return
+ */
 	public UserPrivacy createDefaultPrivacySettingsEntry(){
-		
+
 		// create a new entry in the database
 		int privacyId = data.createDefaultPrivacySettingsEntry();
-		
+
 		// Create object to return, with PrivacySetting.FRIENDS as default
 		UserPrivacy userPrivacy = new UserPrivacy();
 		userPrivacy.setId(privacyId);
@@ -122,10 +134,12 @@ public class UserService {
 		userPrivacy.setMediaPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setMoneyPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setPositionPrivacySetting(PrivacySetting.FRIENDS);
-		
+
 		return userPrivacy;
 	}
 
+	
+	
 	public List<User> getRegisteredFacebookFriends(String accessToken) {
 		List<String> friendIds = getFacebookFriends(accessToken);
 		List<User> users = data.getRegisteredFacebookFriends(friendIds);
@@ -137,26 +151,26 @@ public class UserService {
 		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
 		return users;
 	}
-	
+
 	private List<String> getFacebookFriends(String accessToken) {
 		Facebook facebook = new FacebookTemplate(accessToken);
 		List<String> friendIds = facebook.friendOperations().getFriendIds();
 		return friendIds;
 	}
 
-	
-	
-	
+
+
+
 	// Testing privacy settings: create defaultSettings, update and retrieve 
 	public boolean testingForUserServiceOne() {
-	
+
 		boolean success = true;
-				
+
 		// Use default settings and verify changes (friends, friends, friends, friends)
 		int userPrivacyId; 
 		userPrivacyId = data.createDefaultPrivacySettingsEntry();
-	
-		
+
+
 		UserPrivacy privacy; 
 		privacy = data.retrievePrivacy(userPrivacyId);
 
@@ -166,26 +180,26 @@ public class UserService {
 		success = success && (privacy.getMediaPrivacySetting() == PrivacySetting.FRIENDS);
 		success = success && (privacy.getMoneyPrivacySetting() == PrivacySetting.FRIENDS);
 		logger.info("4 tests done");
-		
-		
+
+
 		//Test for update
 		PrivacySetting newPosition = PrivacySetting.ANYONE;
 		PrivacySetting newEvents = PrivacySetting.ONLY_ME;
 		PrivacySetting newMedia = PrivacySetting.ONLY_ME;
 		PrivacySetting newMoney= PrivacySetting.ANYONE;
 		data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
-		
+
 
 		privacy = data.retrievePrivacy(userPrivacyId);
 
-		
+
 		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE); 
 		success = success && (privacy.getEventsPrivacySetting() == PrivacySetting.ONLY_ME);
 		logger.info("6 tests done");
 		success = success && (privacy.getMediaPrivacySetting() == PrivacySetting.ONLY_ME);
 		success = success && (privacy.getMoneyPrivacySetting() == PrivacySetting.ANYONE);
-		
-		
+
+
 		return success;
 	}
 
