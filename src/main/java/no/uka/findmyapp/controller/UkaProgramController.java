@@ -6,8 +6,7 @@ import java.util.List;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
-import no.uka.findmyapp.model.Event;
-import no.uka.findmyapp.model.Temperature;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
@@ -46,7 +45,7 @@ public class UkaProgramController {
 
 	// We do not use ukaYear
 	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=UkaProgram.class)
+	@ServiceModelMapping(returnType=UkaEvent.class)
 	public ModelAndView getUkaProgramForDate(
 			@PathVariable String ukaYear,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
@@ -56,9 +55,10 @@ public class UkaProgramController {
 			throws UkaYearNotFoundException { 
 
 		logger.info("getUkaProgram - new");
+		//TODO FIX SERVICE TO RETURN A LIST TO REFLECT THE CONTROLLER
 		UkaProgram program = ukaProgramService.getUkaProgram(ukaYear, date, from, to, place);	
 		
-		return new ModelAndView("json", "program", program);
+		return new ModelAndView("json", "program", program.getEvents());
 	
 	}
 
@@ -91,14 +91,14 @@ public class UkaProgramController {
 	}
 	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/next", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=Event.class)
+	@ServiceModelMapping(returnType=UkaEvent.class)
 	// We do not use ukaYear
 	public ModelAndView getNextUkaEvent(
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
 		
 		logger.info("getNextUkaEvent");
-		Event event = ukaProgramService.getNextUkaEvent(ukaYear, place);
+		UkaEvent event = ukaProgramService.getNextUkaEvent(ukaYear, place);
 
 		return new ModelAndView("json", "event", event);
 	}
@@ -135,12 +135,12 @@ public class UkaProgramController {
 	}
 
 	@RequestMapping(value = "/program/{ukaYear}/events/{id}", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=Event.class)
+	@ServiceModelMapping(returnType=UkaEvent.class)
 	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
 			@PathVariable int id, @PathVariable String ukaYear) 
 			throws UkaYearNotFoundException {
-		Event event;
+		UkaEvent event;
 		logger.info("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(ukaYear, id);
 

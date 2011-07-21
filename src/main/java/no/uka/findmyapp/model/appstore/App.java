@@ -1,7 +1,6 @@
 package no.uka.findmyapp.model.appstore;
 
 import java.net.URI;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.joda.time.DateTime;

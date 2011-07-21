@@ -3,10 +3,8 @@ package no.uka.findmyapp.controller;
 import java.util.List;
 
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
-import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
-import no.uka.findmyapp.model.Event;
-import no.uka.findmyapp.model.UkaProgram;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPrivacy;
 import no.uka.findmyapp.service.UserService;
@@ -52,7 +50,7 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
 	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
-		List<Event> events = service.getEvents(userId);
+		List<UkaEvent> events = service.getEvents(userId);
 		model.addAttribute(events);
 		return model;
 	}

@@ -2,8 +2,8 @@ package no.uka.findmyapp.datasource.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import no.uka.findmyapp.model.User;
-import no.uka.findmyapp.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

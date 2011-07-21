@@ -7,7 +7,6 @@ import java.util.List;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppStoreList;
-import no.uka.findmyapp.model.serviceinfo.ServiceModel;
 import no.uka.findmyapp.service.AppStoreService;
 
 import org.slf4j.Logger;

@@ -1,9 +1,4 @@
 package no.uka.findmyapp.service;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,21 +7,15 @@ import no.uka.findmyapp.configuration.SearchConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
-
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
-
-import no.uka.findmyapp.datasource.UserRepository;
-import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.UkaProgram;
-import no.uka.findmyapp.model.User;
-import no.uka.findmyapp.model.facebook.FacebookUserProfile;
 import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 
 /**
@@ -69,8 +58,8 @@ public class UkaProgramService {
 		if (qry.replace(" ", "").length() < searchConfiguration.getMinLength()) {
 			throw new IllegalArgumentException("Query \""+qry+"\" too short, min length is "+searchConfiguration.getMinLength());
 		}
-		ArrayList<Event> allEvents = (ArrayList<Event>) data.getUkaProgram(from, to); //for test
-		ArrayList<Event> matchedEvents = new ArrayList<Event>();
+		ArrayList<UkaEvent> allEvents = (ArrayList<UkaEvent>) data.getUkaProgram(from, to); //for test
+		ArrayList<UkaEvent> matchedEvents = new ArrayList<UkaEvent>();
 		int index[] = new int[searchConfiguration.getDepth()]; //index for sorting
 
 		int ED;
@@ -106,7 +95,7 @@ public class UkaProgramService {
 	 * @param place is the event place you want to ask for
 	 * @return an event
 	 */
-	public Event getNextUkaEvent(String ukaYear, String place) 
+	public UkaEvent getNextUkaEvent(String ukaYear, String place) 
 		throws UkaYearNotFoundException {
 		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
 		if (config == null) {
@@ -123,7 +112,7 @@ public class UkaProgramService {
 	 * @return is the event with the given id. If there is no such event then null is returned.
 	 */
 
-	public Event getUkaEventById(String ukaYear, int id)
+	public UkaEvent getUkaEventById(String ukaYear, int id)
 		throws UkaYearNotFoundException {
 		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
 		if (config == null) {

@@ -3,7 +3,6 @@ package no.uka.findmyapp.datasource.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 import no.uka.findmyapp.model.Noise;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +16,6 @@ public class SensorNoiseRowMapper implements RowMapper<Noise> {
 		noise.setDate(rs.getDate("date"));
 		noise.setTime(rs.getTime("date"));
 		noise.setLocation(rs.getInt("position_location_id"));
-		//noise.setSample(rs.get)
 		return noise;
 	}
 

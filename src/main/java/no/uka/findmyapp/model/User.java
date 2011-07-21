@@ -2,9 +2,6 @@ package no.uka.findmyapp.model;
 
 import java.sql.Timestamp;
 
-import no.uka.findmyapp.datasource.UserRepository;
-import no.uka.findmyapp.service.UserService;
-
 public class User {
 
 	private int facebookUserId; 

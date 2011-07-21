@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UkaProgram {
-	private List<Event> events;
+	private List<UkaEvent> events;
 	
 	
 	public UkaProgram() {
-		events = new ArrayList<Event>();
+		events = new ArrayList<UkaEvent>();
 	}
-	public UkaProgram(List<Event> eventList) {
+	public UkaProgram(List<UkaEvent> eventList) {
 		this.events = eventList;
 	}
-	public void addEvent(Event e) {
+	public void addEvent(UkaEvent e) {
 		events.add(e);
 	}
-	public void removeEvent(Event e) {
+	public void removeEvent(UkaEvent e) {
 		events.remove(e);
 	}
 	public void removeEvent(int i) {
@@ -25,13 +25,13 @@ public class UkaProgram {
 	public int getEventSize() {
 		return events.size();
 	}
-	public Event getEvent(int i) {
+	public UkaEvent getEvent(int i) {
 		return events.get(i);
 	}
-	public List<Event> getEvents() {
+	public List<UkaEvent> getEvents() {
 		return events;
 	}
-	public void setEvents(List<Event> events) {
+	public void setEvents(List<UkaEvent> events) {
 		this.events = events;
 	}
 }

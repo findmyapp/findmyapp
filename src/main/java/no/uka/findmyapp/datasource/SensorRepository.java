@@ -15,7 +15,6 @@ import no.uka.findmyapp.model.Temperature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -44,6 +43,15 @@ public class SensorRepository {
 		return temp;
 	}
 	
+	public Noise getLatestNoiseData(int location) {
+
+		Noise noise = jdbcTemplate.queryForObject(
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
+				new SensorNoiseRowMapper(), location);
+		logger.info("received noise list");
+		return noise;
+	}
+
 	public List<Temperature> getTemperatureData(int location) {
 
 		List<Temperature> temperatureList = jdbcTemplate.query(
@@ -150,6 +158,14 @@ public class SensorRepository {
 		logger.info("received humidity list");
 		return humidityList;
 	}
+	
+	public Humidity getLatestHumidityData(int location) {
+		Humidity humi = jdbcTemplate.queryForObject(
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
+				new SensorHumidityRowMapper(), location);
+		logger.info("received humidity list");
+		return humi;
+	}
 
 	public List<BeerTap> getBeertapData(int location) {
 		List<BeerTap> beertapList = jdbcTemplate
@@ -232,5 +248,6 @@ public class SensorRepository {
 		logger.info("Data logged: " + beerTap.toString());
 		return beerTap;
 	}
+
 
 }

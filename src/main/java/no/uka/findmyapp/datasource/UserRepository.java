@@ -13,8 +13,7 @@ import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
-import no.uka.findmyapp.exception.UkaYearNotFoundException;
-import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPrivacy;
@@ -84,8 +83,8 @@ public class UserRepository {
 		}
 	}
 
-	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue "
+	public List<UkaEvent> getEvents(int userId) {
+		List<UkaEvent> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue "
 				+ "WHERE e.id = ue.event_id AND ue.user_id = ?", 
 				new EventRowMapper(), userId);
 		return events;

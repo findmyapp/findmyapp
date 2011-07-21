@@ -1,7 +1,5 @@
 package no.uka.findmyapp.model.facebook;
 
-import java.lang.reflect.Type;
-import java.util.Date; 
 
 public class FacebookUserProfile {
 	
