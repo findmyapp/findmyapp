@@ -68,7 +68,7 @@ public class ServiceInfoService {
 						ServiceDataFormat.JSON, 
 						returnType, 
 						null, 
-						new URI("no.uka.findmyapp.android.rest.providers." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
+						new URI("no.uka.findmyapp.android.rest.providers.?." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
 						localIdentifier));
 				
