@@ -7,6 +7,7 @@ import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -41,6 +42,10 @@ public class LocationService {
 
 	public int getUserCountAtLocation(int locationId){
 		return data.getUserCountAtLocation(locationId);
+	}
+	
+	public List<LocationCount> getUserCountAtAllLocations() {
+		return data.getUserCountAtAllLocations();
 	}
 	
 	public boolean registerSample(Sample sample) {
@@ -146,5 +151,6 @@ public class LocationService {
 	public Fact getRandomFact(int locationId) {
 		return data.getRandomFact(locationId);
 	}
+
 
 }

@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
@@ -22,6 +23,7 @@ import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -101,6 +103,14 @@ public class LocationRepository {
 	public int getUserCountAtLocation(int locationId) {
 		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ?", locationId);
 		return count;
+	}
+	
+	public List<LocationCount> getUserCountAtAllLocations() {
+		List<LocationCount> locationCounts = jdbcTemplate.query("SELECT l.name, COUNT(up.position_location_id) AS count " +
+				"FROM POSITION_LOCATION l, POSITION_USER_POSITION up " +
+				"WHERE l.position_location_id = up.position_location_id GROUP BY l.name",
+				new LocationCountRowMapper());
+		return locationCounts;
 	}
 
 	public List<Location> getAllLocations() {

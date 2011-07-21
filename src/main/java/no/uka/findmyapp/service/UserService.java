@@ -6,7 +6,7 @@ import java.util.List;
 
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
-import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPrivacy;
@@ -58,7 +58,7 @@ public class UserService {
 		return data.addEvent(userId, eventId);
 	}
 
-	public List<Event> getEvents(int userId) {
+	public List<UkaEvent> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
 
