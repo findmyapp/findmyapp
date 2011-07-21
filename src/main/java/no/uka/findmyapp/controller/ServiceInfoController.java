@@ -18,11 +18,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth.provider.ConsumerDetails;
+import org.springframework.security.oauth.provider.ConsumerDetailsService;
+import org.springframework.security.oauth.provider.token.OAuthProviderToken;
+import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.gson.Gson;
@@ -37,20 +43,37 @@ public class ServiceInfoController {
 	
 	@Autowired
 	private ServiceInfoService serviceInfoService;
-	
-	private Gson gson = new GsonBuilder().setPrettyPrinting().create();;
-	
 
+	@Autowired
+	private Gson gson;
+
+	@Autowired
+	private OAuthProviderTokenServices tokenServices;
+	
+	@Autowired
+	private ConsumerDetailsService consumerDetailsService;
+	
+	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public String getServiceInfo(Model model) throws URISyntaxException {
 		logger.info("getting service info for all services");
 	 	List<ServiceModel> list = serviceInfoService.getAllServices();
+	 	
 	 	for(ServiceModel s : list) {
 	 		System.out.println(s);
 	 	}
-
+	 	
+	 	/*
+	 	OAuthProviderToken providerToken = tokenServices.getToken(oauth_token);
+	    ConsumerDetails consumer = consumerDetailsService.loadConsumerByConsumerKey(providerToken.getConsumerKey());
+	    logger.info("providerToken " + providerToken.getConsumerKey());
+	    logger.info("consumer" + consumer);
+	    logger.info("consumerName " + consumer.getConsumerName());
+	    logger.info("consumerDetailsService key " + consumer.getConsumerKey());
+	    logger.info("consumerDetailsService auth " + consumer.getAuthorities());
+	   */
 		logger.info("returning : " + list.size() + " ServiceModels");
-		model.addAttribute("json", gson.toJson(list));
+		model.addAttribute("json", list);
 		return "json";
 	}
 	
