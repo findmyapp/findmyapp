@@ -53,7 +53,7 @@ public class ServiceInfoService {
 			ServiceModelMapping smm = m.getAnnotation(ServiceModelMapping.class);
 			RequestMapping req = m.getAnnotation(RequestMapping.class);
 			
-			if(smm != null && req != null) {
+			if(smm != null && req != null && req.value().length > 0) {
 				String location = replaceInLocationString(req.value()[0]);
 				String requestType = req.method()[0].toString();
 				String localIdentifier = m.getName();

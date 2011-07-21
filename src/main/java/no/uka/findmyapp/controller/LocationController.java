@@ -85,7 +85,7 @@ public class LocationController {
 	}
 	
 	@RequestMapping(value = "/{id}/usercount", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType = Integer.class)
+	@ServiceModelMapping(returnType = int.class)
 	public ModelAndView getUserCountAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUserCountAtLocation ( " + locationId + ")");
 		int count = service.getUserCountAtLocation(locationId);
@@ -93,7 +93,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "/sample", method = RequestMethod.POST)
-	@ServiceModelMapping(returnType = Boolean.class)
+	@ServiceModelMapping(returnType = boolean.class)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		boolean regSample = service.registerSample(sample);
 		logger.info("registerSample ( " + regSample + " )");
@@ -101,7 +101,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "{locationId}/users/{userId}", method = RequestMethod.POST)
-	@ServiceModelMapping(returnType = Boolean.class)
+	@ServiceModelMapping(returnType = boolean.class)
 	public ModelAndView registerUserLocation(@PathVariable int userId,
 			@PathVariable int locationId) {
 		boolean regUserPos = service.registerUserLocation(userId, locationId);

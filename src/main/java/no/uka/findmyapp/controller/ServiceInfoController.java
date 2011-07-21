@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
@@ -42,9 +43,8 @@ public class ServiceInfoController {
 	@Autowired
 	private ConsumerDetailsService consumerDetailsService;
 	
-	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public String getServiceInfo(Model model) throws URISyntaxException {
+	public ModelAndView getServiceInfo(Model model) throws URISyntaxException {
 		logger.info("getting service info for all services");
 	 	List<ServiceModel> list = serviceInfoService.getAllServices();
 	 	
@@ -61,9 +61,11 @@ public class ServiceInfoController {
 	    logger.info("consumerDetailsService key " + consumer.getConsumerKey());
 	    logger.info("consumerDetailsService auth " + consumer.getAuthorities());
 	   */
-		logger.info("returning : " + list.size() + " ServiceModels");
-		model.addAttribute("json", list);
-		return "json";
+		//logger.info("returning : " + list.size() + " ServiceModels");
+		//model.addAttribute("json", list);
+
+		return new ModelAndView("json", "list", list);
+		//return "json";
 	}
 	
 	
