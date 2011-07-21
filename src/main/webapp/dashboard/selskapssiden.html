@@ -31,7 +31,7 @@
     		request = new ajaxObject(url, processNoiseData);
     		request.update();  // Server is contacted here.
     	}  else if (datatype == "users") {
-    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
+    		url = 'http://localhost:8080/findmyapp/locations/usercount';
     		request = new ajaxObject(url, processUserData);
     		request.update();  // Server is contacted here.
     	} else if (datatype == "beersale") {
@@ -89,6 +89,7 @@
     	  if (responseStatus==200) {
     		  alert(responseText);
     		  info = eval(responseText);
+    		  drawUserDataChart();
     	  } else {
     		alert(responseStatus + ' -- Error Processing Request');
     	  }
@@ -158,7 +159,22 @@
           
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Fuktighet'});
-          
+      }
+      
+      function drawUserDataChart() {
+    	  var data = new google.visualization.DataTable();
+    	  data.addColumn('string', 'Lokasjon');
+    	  data.addColumn('number', 'Personer');
+    	  
+    	  data.addRows(info.length);
+    	  var i=0;
+    	  for(i=0;i<info.length; i++) {
+    			data.setValue(i, 0, info[i].locationName);
+    			data.setValue(i, 1, info[i].userCount);
+    		}
+            
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, {width: 700, height: 440, title: 'Personer på Samfundet'});
       }
  
     </script>
@@ -191,3 +207,4 @@
 	</div>
 	</div>
 </body> 
+</html>
