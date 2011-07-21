@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.token.Sha512DigestUtils;
+import org.springframework.security.oauth.provider.BaseConsumerDetails;
+import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.facebook.api.Facebook;
@@ -84,6 +86,11 @@ public class AuthenticationService {
 		String calculatedHash = calculateHash(base + authConfig.getTokenSecret());
 
 		return hash.equals(calculatedHash);
+	}
+
+	public ConsumerDetails loadConsumer(String consumerKey) {
+		User user = userRepository.getUserByConsumerKey(consumerKey);
+		
 	}
 
 }
