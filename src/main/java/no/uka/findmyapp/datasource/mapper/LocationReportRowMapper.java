@@ -13,8 +13,8 @@ public class LocationReportRowMapper implements RowMapper<LocationReport> {
 	public LocationReport mapRow(ResultSet rs, int arg1) throws SQLException {
 		LocationReport localeNow = new LocationReport();
 		localeNow.setParameterName(rs.getString("parameter_name"));
-		localeNow.setParameterTextValue(rs.getString("parameter_text_value"));
-		localeNow.setParameterNumberValue(rs.getFloat("paramter_number_value"));
+		localeNow.setParameterTextValue(rs.getString("string_value"));
+		localeNow.setParameterNumberValue(rs.getFloat("float_value"));
 		return localeNow;
 		}
 

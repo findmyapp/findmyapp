@@ -146,14 +146,7 @@ public class LocationService {
 	/*
 	 * **************** FACT *****************
 	 */
-	public void addData(List<LocationReport> reportList, int locationId){
-		Iterator<LocationReport> reportIterator = reportList.iterator();
-		while(reportIterator.hasNext()){
-			LocationReport locationReport = reportIterator.next();
-			data.addData(locationReport, locationId);
-		}
-		
-	}
+
 
 	public List<Fact> getAllFacts(int locationId) {
 		return data.getAllFacts(locationId);
@@ -162,7 +155,16 @@ public class LocationService {
 	public Fact getRandomFact(int locationId) {
 		return data.getRandomFact(locationId);
 	}
-
+	
+	public void addData(List<LocationReport> reportList, int locationId){
+		Iterator<LocationReport> reportIterator = reportList.iterator();
+		while(reportIterator.hasNext()){
+			LocationReport locationReport = reportIterator.next();
+			data.addData(locationReport, locationId);
+		}
+		
+	}
+	
 	public Location getAllData(int locationId) {//Creates and returns a location object with all the latest data on the location
 		Location locationOfInterest = data.getLocation(locationId);
 		int time = -10;
@@ -205,23 +207,24 @@ public class LocationService {
 		return locationOfInterest;
 	}
 	
-
-	  
-
-	  
-
 	 
 	
 
 	public List<LocationReport> getReports(int locationId, String action, int numberOfelements, Date from, Date to, String parName)throws IllegalArgumentException {
 		List <LocationReport> reportedData =null;
-				
+		logger.info("data:"+locationId+","+numberOfelements);
+		if(from!=null){logger.info("data:"+locationId+","+from.toString());}
+		
 		if(numberOfelements >0 && from ==null && to ==null){
+			logger.info("got in!");
 			 reportedData = data.getLastUserReportedData(locationId, numberOfelements,parName);
-		}else  if(from != null){
-			if(to != null){
+			 
+		}else  if(from != null&& numberOfelements ==0){logger.info("got in date!");
+			if(to != null){logger.info("got in from to!");
 			 reportedData = data.getUserReportedDataFromTo(locationId, from,to,parName);
-			}else{reportedData = data.getUserReportedDataFrom(locationId, from,parName);}
+			 
+			}else{logger.info("got in from to!");reportedData = data.getUserReportedDataFrom(locationId, from,parName);
+			}
 		
 		}else if(from ==null && to == null && numberOfelements ==0){
 			reportedData = data.getUserReportedData(locationId,parName);
@@ -229,12 +232,12 @@ public class LocationService {
 		else{
 			throw new IllegalArgumentException("Read API for what arguments are allowed");
 		}
-		if(action.equals("average")){//find average
+		if(action==null){
+			return reportedData;
+		}//Return the data raw
+		else if(action.equals("average")){//find average
 			List <LocationReport> averageData = averageData(reportedData,parName);
 			return averageData;
-		}//Return the data raw
-		else if(action.equals(null)){
-			return reportedData;
 		}//something is wrong if you get here.
 		else{
 			throw new IllegalArgumentException("Read API for what arguments are allowed");
@@ -276,9 +279,9 @@ public class LocationService {
 	}
 
 	
-	public void manageParams(String action, String parName) throws IllegalArgumentException{//must also check dev id, and clean string.
+	public void manageParams(String action, String parName,String devId) throws IllegalArgumentException{//must also check dev id, and clean string.
 		if(action.equals("add")){
-			data.addParameter(parName);
+			data.addParameter(parName, devId);
 		}else if(action.equals("remove")){
 			data.removeParameter(parName);
 		}else if(action.equals("clean")){

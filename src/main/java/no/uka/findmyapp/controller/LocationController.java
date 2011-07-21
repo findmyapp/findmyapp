@@ -175,7 +175,7 @@ public class LocationController {
 		return new ModelAndView("json","location_real_time", locale);
 	}
 	
-	@RequestMapping(value = "/{id}/userreport", method = RequestMethod.POST)// add max limit per user.
+	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)// add max limit per user.
 	public ModelAndView addReport(@PathVariable("id") int locationId,
 			@RequestBody LocationReport[] locationReport){
 		
@@ -193,14 +193,14 @@ public class LocationController {
 			@RequestParam (required = false, defaultValue = "0") int numberOfelements,//If want to pick out the last elements
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam (required = false) String parName1
+			@RequestParam (required = false) String parName
 		){
 			List<LocationReport> reports= service.getReports(locationId,
 					action,
 					numberOfelements,
 					from,
 					to,
-					parName1
+					parName
 					);
 			
 			return new ModelAndView("json","location_real_time", reports);
@@ -211,10 +211,12 @@ public class LocationController {
 	@RequestMapping(value="/{id}/userreports/develop", method = RequestMethod.GET)
 	public ModelAndView addParameter(//ADD ERROR HANDLING, max elem
 			@RequestParam  String action,//Has to be either addparam, removeparam or removedata
-			@RequestParam  String parName){
+			@RequestParam  String parName,
+			@RequestParam  String devId
+			){
 				
 			
-		service.manageParams(action,parName);
+		service.manageParams(action,parName,devId);
 		return new ModelAndView("ok_respons");
 	}
 }
