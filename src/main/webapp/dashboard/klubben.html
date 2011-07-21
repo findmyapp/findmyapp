@@ -1,0 +1,43 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+ 
+<head> 
+  <meta charset="utf-8" /> 
+  <meta name="robots" content="noindex" /> 
+  <title>Uka 2011</title> 
+  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+  <script src="kinetic.js"></script>
+  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
+  
+  <script type="text/javascript">
+	  function draw(){
+		  var kin = new Kinetic("ukaCanvas", "2d");
+ 
+			kin.setDrawStage(function(){
+			kin.clear();
+			var canvas = kin.getCanvas();
+			var context = kin.getContext();
+	}
+  </script>
+   
+</head> 
+
+<body onload="draw();"> 
+  <header> 
+     <h1>FindMyApp</h1>
+  </header>
+  
+  <article> 
+		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
+  </article> 
+ 
+</body> 
+
+<footer>
+      <ul> 
+      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
+      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
+      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
+      </ul> 
+</footer>
+</html> 

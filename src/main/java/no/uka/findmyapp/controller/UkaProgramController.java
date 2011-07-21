@@ -7,7 +7,6 @@ import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Event;
-import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;

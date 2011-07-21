@@ -11,9 +11,6 @@ import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,10 @@ public class LocationService {
 
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
+	}
+	
+	public Location getLocation(int locationId) {
+		return data.getLocation(locationId);
 	}
 
 	/*

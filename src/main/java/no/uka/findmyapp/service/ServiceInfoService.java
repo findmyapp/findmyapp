@@ -5,9 +5,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import no.uka.findmyapp.controller.AppStoreController;
 import no.uka.findmyapp.controller.LocationController;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
 public class ServiceInfoService {
+	
 	
 	public List<ServiceModel> getAllServices() throws URISyntaxException {
 		Class controller = SensorController.class;
@@ -66,9 +65,10 @@ public class ServiceInfoService {
 						ServiceDataFormat.JSON, 
 						returnType, 
 						null, 
-						new URI("no.uka.findmyapp.android.rest.providers/" + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
+						new URI("no.uka.findmyapp.android.rest.providers." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
 						localIdentifier));
+				
 			}
 		}
 		return list;
@@ -86,5 +86,7 @@ public class ServiceInfoService {
 		}
 		return orig;
 	}
+	
+	
 	
 }

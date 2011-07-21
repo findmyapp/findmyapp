@@ -1,12 +1,11 @@
 package no.uka.findmyapp.service;
 
-
 //import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Event;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
@@ -29,35 +28,32 @@ public class UserService {
 	@Autowired
 	private UserRepository data;
 
-	public PrivacySetting getPrivacySettingForUserId(int userId, String privacyType) {
+	public PrivacySetting getPrivacySettingForUserId(int userId,
+			String privacyType) {
 		UserPrivacy privacy = this.getUserPrivacyForUserId(userId);
-		
-		if (privacyType.equals("position")){
+
+		if (privacyType.equals("position")) {
 			return privacy.getPositionPrivacySetting();
-		}
-		else if (privacyType.equals("events")){
+		} else if (privacyType.equals("events")) {
 			return privacy.getEventsPrivacySetting();
-		}
-		else if (privacyType.equals("money")){
+		} else if (privacyType.equals("money")) {
 			return privacy.getMoneyPrivacySetting();
-		}
-		else if (privacyType.equals("media")){
+		} else if (privacyType.equals("media")) {
 			return privacy.getMediaPrivacySetting();
-		}
-		else{
-			throw new IllegalArgumentException("Function retreiveOnePrivacy was called with illegal input"); 
+		} else {
+			throw new IllegalArgumentException(
+					"Function retreiveOnePrivacy was called with illegal input");
 		}
 	}
-	
+
 	public UserPrivacy getUserPrivacyForUserId(int userId) {
 		return data.getUserPrivacyForUserId(userId);
-		
 	}
-	
+
 	public boolean areFriends(int userId1, int userId2) {
 		return data.areFriends(userId1, userId2);
 	}
-		
+
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
@@ -66,25 +62,81 @@ public class UserService {
 		return data.getEvents(userId);
 	}
 
-	public UserPrivacy retrievePrivacy(int userPrivacyId){
+	// Retrieve privacy from database
+	public UserPrivacy retrievePrivacy(int userPrivacyId) {
 		return data.retrievePrivacy(userPrivacyId);
+	}
 
+	/**
+	 * Method where it is possible to change privacy settings
+	 * 
+	 * @param userPrivacyId
+	 * @param newPosition
+	 * @param newEvents
+	 * @param newMoney
+	 * @param newMedia
+	 * @return
+	 */
+	public UserPrivacy updatePrivacy(int userPrivacyId, int newPosition,
+			int newEvents, int newMoney, int newMedia) {
+
+		UserPrivacy userPrivacy = data.retrievePrivacy(userPrivacyId);
+
+		// there is only three types of privacy settings: ANYONE (1), FRIENDS
+		// (2) and ONLY ME (3)
+		// this method assures that the privacy settings only gets updated if
+		// the settings are valid (1,2 or 3)
+		if (newPosition == 1 || newPosition == 2 || newPosition == 3) {
+			userPrivacy.setPositionPrivacySetting(PrivacySetting
+					.getSetting(newPosition));
+		}
+
+		if (newEvents == 1 || newEvents == 2 || newEvents == 3) {
+			userPrivacy.setEventsPrivacySetting(PrivacySetting
+					.getSetting(newEvents));
+		}
+
+		if (newMoney == 1 || newMoney == 2 || newMoney == 3) {
+			userPrivacy.setMoneyPrivacySetting(PrivacySetting
+					.getSetting(newMoney));
+		}
+
+		if (newMedia == 1 || newMedia == 2 || newMedia == 3) {
+			userPrivacy.setMediaPrivacySetting(PrivacySetting
+					.getSetting(newMedia));
+		}
+
+		updatePrivacy(userPrivacy);
+
+		return userPrivacy;
 	}
-		
-	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia){		
-		 data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
-	}	
-	
-	public void updatePrivacy(UserPrivacy userPrivacy){	
-		 data.updatePrivacy(userPrivacy.getUserPrivacyId(), userPrivacy.getPositionPrivacySetting(), userPrivacy.getEventsPrivacySetting(), userPrivacy.getMoneyPrivacySetting(), userPrivacy.getMediaPrivacySetting());
+
+	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition,
+			PrivacySetting newEvents, PrivacySetting newMoney,
+			PrivacySetting newMedia) {
+		data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney,
+				newMedia);
 	}
-	
-	
-	public UserPrivacy createDefaultPrivacySettingsEntry(){
-		
+
+	public void updatePrivacy(UserPrivacy userPrivacy) {
+		data.updatePrivacy(userPrivacy.getUserPrivacyId(),
+				userPrivacy.getPositionPrivacySetting(),
+				userPrivacy.getEventsPrivacySetting(),
+				userPrivacy.getMoneyPrivacySetting(),
+				userPrivacy.getMediaPrivacySetting());
+	}
+
+	/**
+	 * Default privacy settings is set. FRIENDS is default for every privacy
+	 * setting
+	 * 
+	 * @return
+	 */
+	public UserPrivacy createDefaultPrivacySettingsEntry() {
+
 		// create a new entry in the database
 		int privacyId = data.createDefaultPrivacySettingsEntry();
-		
+
 		// Create object to return, with PrivacySetting.FRIENDS as default
 		UserPrivacy userPrivacy = new UserPrivacy();
 		userPrivacy.setId(privacyId);
@@ -92,7 +144,7 @@ public class UserService {
 		userPrivacy.setMediaPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setMoneyPrivacySetting(PrivacySetting.FRIENDS);
 		userPrivacy.setPositionPrivacySetting(PrivacySetting.FRIENDS);
-		
+
 		return userPrivacy;
 	}
 
@@ -107,56 +159,67 @@ public class UserService {
 		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
 		return users;
 	}
-	
+
 	public List<String> getFacebookFriends(String accessToken) {
 		Facebook facebook = new FacebookTemplate(accessToken);
 		List<String> friendIds = facebook.friendOperations().getFriendIds();
 		return friendIds;
 	}
 
-	
-	
-	
-	// Testing privacy settings: create defaultSettings, update and retrieve 
+	// Testing privacy settings: create defaultSettings, update and retrieve
 	public boolean testingForUserServiceOne() {
-	
+
 		boolean success = true;
-				
-		// Use default settings and verify changes (friends, friends, friends, friends)
-		int userPrivacyId; 
+
+		// Use default settings and verify changes (friends, friends, friends,
+		// friends)
+		int userPrivacyId;
 		userPrivacyId = data.createDefaultPrivacySettingsEntry();
-	
-		
-		UserPrivacy privacy; 
+
+		UserPrivacy privacy;
 		privacy = data.retrievePrivacy(userPrivacyId);
 
-		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.FRIENDS);
-		success = success && (privacy.getEventsPrivacySetting() == PrivacySetting.FRIENDS);
+		success = success
+				&& (privacy.getPositionPrivacySetting() == PrivacySetting.FRIENDS);
+		success = success
+				&& (privacy.getEventsPrivacySetting() == PrivacySetting.FRIENDS);
 		logger.info("2 tests done");
-		success = success && (privacy.getMediaPrivacySetting() == PrivacySetting.FRIENDS);
-		success = success && (privacy.getMoneyPrivacySetting() == PrivacySetting.FRIENDS);
+		success = success
+				&& (privacy.getMediaPrivacySetting() == PrivacySetting.FRIENDS);
+		success = success
+				&& (privacy.getMoneyPrivacySetting() == PrivacySetting.FRIENDS);
 		logger.info("4 tests done");
-		
-		
-		//Test for update
+
+		// Test for update
 		PrivacySetting newPosition = PrivacySetting.ANYONE;
 		PrivacySetting newEvents = PrivacySetting.ONLY_ME;
 		PrivacySetting newMedia = PrivacySetting.ONLY_ME;
-		PrivacySetting newMoney= PrivacySetting.ANYONE;
-		data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
-		
+		PrivacySetting newMoney = PrivacySetting.ANYONE;
+		data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney,
+				newMedia);
 
 		privacy = data.retrievePrivacy(userPrivacyId);
 
-		
-		success = success && (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE); 
-		success = success && (privacy.getEventsPrivacySetting() == PrivacySetting.ONLY_ME);
+		success = success
+				&& (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE);
+		success = success
+				&& (privacy.getEventsPrivacySetting() == PrivacySetting.ONLY_ME);
 		logger.info("6 tests done");
-		success = success && (privacy.getMediaPrivacySetting() == PrivacySetting.ONLY_ME);
-		success = success && (privacy.getMoneyPrivacySetting() == PrivacySetting.ANYONE);
-		
-		
+		success = success
+				&& (privacy.getMediaPrivacySetting() == PrivacySetting.ONLY_ME);
+		success = success
+				&& (privacy.getMoneyPrivacySetting() == PrivacySetting.ANYONE);
+
 		return success;
 	}
-}
 
+	public int findUserPrivacyId(int userId)
+			throws InvalidUserIdOrAccessTokenException {
+		return data.findUserPrivacyId(userId);
+	}
+
+	public boolean verifyAccessToken(int userId, int accessToken) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+}

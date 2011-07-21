@@ -5,7 +5,6 @@ import java.util.List;
 
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.model.Event;
-import no.uka.findmyapp.model.UkaProgram;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

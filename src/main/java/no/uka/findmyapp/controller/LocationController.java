@@ -12,7 +12,6 @@ import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
-import no.uka.findmyapp.model.appstore.AppStoreList;
 import no.uka.findmyapp.service.LocationService;
 
 import org.slf4j.Logger;
@@ -54,6 +53,13 @@ public class LocationController {
 		return new ModelAndView("json", "location", locations);
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView getLocation(@PathVariable("id") int locationId) {
+		logger.debug("getLocation ( " + locationId + ")");
+		Location loc = service.getLocation(locationId);
+		return new ModelAndView("json", "location", loc);
+	}
+	
 	/*
 	 * ************* POSITIONING *************
 	 */
@@ -69,6 +75,7 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
+	
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = User.class)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {

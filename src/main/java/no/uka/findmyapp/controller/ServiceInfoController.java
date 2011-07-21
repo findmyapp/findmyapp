@@ -1,15 +1,9 @@
 package no.uka.findmyapp.controller;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
-import no.uka.findmyapp.helpers.ServiceModelMapping;
-import no.uka.findmyapp.model.UkaProgram;
-import no.uka.findmyapp.model.serviceinfo.HttpType;
-import no.uka.findmyapp.model.serviceinfo.ServiceDataFormat;
 import no.uka.findmyapp.model.serviceinfo.ServiceModel;
 import no.uka.findmyapp.service.ServiceInfoService;
 
@@ -18,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth.provider.ConsumerDetailsService;
+import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Controller
 @RequestMapping("/serviceinfo")
@@ -37,20 +32,37 @@ public class ServiceInfoController {
 	
 	@Autowired
 	private ServiceInfoService serviceInfoService;
-	
-	private Gson gson = new GsonBuilder().setPrettyPrinting().create();;
-	
 
+	@Autowired
+	private Gson gson;
+
+	@Autowired
+	private OAuthProviderTokenServices tokenServices;
+	
+	@Autowired
+	private ConsumerDetailsService consumerDetailsService;
+	
+	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public String getServiceInfo(Model model) throws URISyntaxException {
 		logger.info("getting service info for all services");
 	 	List<ServiceModel> list = serviceInfoService.getAllServices();
+	 	
 	 	for(ServiceModel s : list) {
 	 		System.out.println(s);
 	 	}
-
+	 	
+	 	/*
+	 	OAuthProviderToken providerToken = tokenServices.getToken(oauth_token);
+	    ConsumerDetails consumer = consumerDetailsService.loadConsumerByConsumerKey(providerToken.getConsumerKey());
+	    logger.info("providerToken " + providerToken.getConsumerKey());
+	    logger.info("consumer" + consumer);
+	    logger.info("consumerName " + consumer.getConsumerName());
+	    logger.info("consumerDetailsService key " + consumer.getConsumerKey());
+	    logger.info("consumerDetailsService auth " + consumer.getAuthorities());
+	   */
 		logger.info("returning : " + list.size() + " ServiceModels");
-		model.addAttribute("json", gson.toJson(list));
+		model.addAttribute("json", list);
 		return "json";
 	}
 	

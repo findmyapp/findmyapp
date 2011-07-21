@@ -7,9 +7,7 @@ import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
-import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Temperature;
-import no.uka.findmyapp.model.appstore.AppStoreList;
 import no.uka.findmyapp.service.SensorService;
 
 import org.slf4j.Logger;
@@ -20,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +51,7 @@ public class SensorController {
 			return new ModelAndView("fail_respons");
 		}
 		else{
-			return new ModelAndView("sensor","sensor",temp);
+			return new ModelAndView("json","temperature",temp);
 		}
 	}
 	
@@ -71,7 +68,7 @@ public class SensorController {
 			return new ModelAndView("fail_respons");
 		}
 		else{
-			return new ModelAndView("sensor","sensor",temperatureList);
+			return new ModelAndView("json","temperature",temperatureList);
 		}
 	}
 
@@ -83,7 +80,7 @@ public class SensorController {
 
 		
 		noiseList = service.getNoiseData(from, to, locationId);
-		return new ModelAndView("sensor","sensor",noiseList);
+		return new ModelAndView("json","noise",noiseList);
 	}
 	
 	@RequestMapping(value="/{locationId}/humidity",method = RequestMethod.GET)
@@ -97,7 +94,7 @@ public class SensorController {
 		humidityList = service.getHumidityData(from, to, locationId);
 		logger.info("Got humidity data");
 		
-		return new ModelAndView("sensor","sensor",humidityList);
+		return new ModelAndView("json","humidity",humidityList);
 	}
 
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
@@ -109,10 +106,10 @@ public class SensorController {
 			@PathVariable int tapNr){
 		if (sum == true){
 			int total = service.getBeertapSum(locationId,tapNr, from, to);
-			return new ModelAndView("sensor","sensor", total);
+			return new ModelAndView("json","beers", total);
 		} else {
 			beertapList = service.getBeertapData(locationId,tapNr, from, to);
-			return new ModelAndView("sensor","sensor", beertapList);
+			return new ModelAndView("json","beers", beertapList);
 		}
 	}
 
