@@ -11,6 +11,9 @@ import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ public class LocationService {
 
 	@Autowired
 	private LocationRepository data;
+	@Autowired
+	private UserService userService;
 
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
@@ -53,12 +58,17 @@ public class LocationService {
 		return data.getLocationOfAllUsers();
 	}
 
-	public Location getLocationOfFriend(int friendId) {
-		return data.getLocationOfFriend(friendId);
+	public Location getLocationOfFriend(int friendId, String accessToken) {
+		List<User> friends = userService.getRegisteredFacebookFriends(accessToken);
+		for (User u : friends) {
+			if(u.getLocalUserId() == friendId) return data.getLocationOfFriend(friendId);
+		}
+		return null;
 	}
 
-	public Map<Integer, Integer> getLocationOfFriends(int userId) {
-		return data.getLocationOfFriends(userId);
+	public Map<Integer, Integer> getLocationOfFriends(int userId, String accessToken) {
+		List<String> friendIds = userService.getFacebookFriends(accessToken);
+		return data.getLocationOfFriends(userId, friendIds);
 	}
 
 	public Location getCurrentLocation(List<Signal> signals)

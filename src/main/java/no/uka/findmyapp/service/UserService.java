@@ -65,16 +65,11 @@ public class UserService {
 	public List<Event> getEvents(int userId) {
 		return data.getEvents(userId);
 	}
-	
-	
 
 	public UserPrivacy retrievePrivacy(int userPrivacyId){
 		return data.retrievePrivacy(userPrivacyId);
 
 	}
-	
-
-
 		
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition, PrivacySetting newEvents, PrivacySetting newMoney, PrivacySetting newMedia){		
 		 data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney, newMedia);
@@ -113,7 +108,7 @@ public class UserService {
 		return users;
 	}
 	
-	private List<String> getFacebookFriends(String accessToken) {
+	public List<String> getFacebookFriends(String accessToken) {
 		Facebook facebook = new FacebookTemplate(accessToken);
 		List<String> friendIds = facebook.friendOperations().getFriendIds();
 		return friendIds;
