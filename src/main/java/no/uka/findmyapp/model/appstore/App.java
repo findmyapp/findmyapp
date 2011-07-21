@@ -10,9 +10,10 @@ public class App {
 	private String name;
 	private int id;
 	private String marketID;
-	private int platform;
+	private String platform;
 	private String description;
 	private String facebookAppID;
+	private String facebookSecret; //
 	private String developerID;
 	private URI thumbImage;
 	private List<URI> imageList;
@@ -20,6 +21,7 @@ public class App {
 	private int timesDownloaded;
 	private double ranking;
 	private String category;
+	
 	
 	@Override
 	public String toString() {
@@ -58,10 +60,10 @@ public class App {
 	public void setMarketID(String marketID) {
 		this.marketID = marketID;
 	}
-	public int getPlatform() {
+	public String getPlatform() {
 		return platform;
 	}
-	public void setPlatform(int platform) {
+	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
 	public String getDescription() {
@@ -117,5 +119,13 @@ public class App {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getFacebookSecret() {
+		return facebookSecret;
+	}
+
+	public void setFacebookSecret(String facebookSecret) {
+		this.facebookSecret = facebookSecret;
 	}
 }
