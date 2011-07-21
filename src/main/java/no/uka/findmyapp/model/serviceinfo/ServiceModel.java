@@ -64,7 +64,7 @@ public class ServiceModel implements Serializable{
 		this.uri = uri;
 		this.httpType = httpType;
 		this.dataformat = dataformat;
-		this.returnType = returnType.getName();
+		this.returnType = returnType.getSimpleName();
 		this.data = data;
 		this.contentProviderUri = contentProviderUri;
 		this.broadcastNotification = broadcastNotification;

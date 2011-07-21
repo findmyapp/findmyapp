@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import no.uka.findmyapp.model.Event;
+
 import org.springframework.jdbc.core.RowMapper;
 
 public class EventRowMapper implements RowMapper<Event> {

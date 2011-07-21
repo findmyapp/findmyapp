@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import no.uka.findmyapp.exception.LocationNotFoundException;
+import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.Sample;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,17 +46,26 @@ public class LocationController {
 			.getLogger(LocationController.class);
 
 	@RequestMapping(method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getAllLocations() {
 		logger.info("getAllLocations");
 		List<Location> locations = service.getAllLocations();
 		return new ModelAndView("json", "location", locations);
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView getLocation(@PathVariable("id") int locationId) {
+		logger.debug("getLocation ( " + locationId + ")");
+		Location loc = service.getLocation(locationId);
+		return new ModelAndView("json", "location", loc);
+	}
+	
 	/*
 	 * ************* POSITIONING *************
 	 */
 
 	@RequestMapping(method = RequestMethod.POST)
+	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getPosition(@RequestBody Signal[] signals)
 			throws LocationNotFoundException {
 		logger.info("getCurrentLocation ( " + signals.length + " )");
@@ -64,7 +75,9 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
+	
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = User.class)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
 		List<User> users = service.getUsersAtLocation(locationId);
@@ -72,6 +85,7 @@ public class LocationController {
 	}
 	
 	@RequestMapping(value = "/{id}/usercount", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = int.class)
 	public ModelAndView getUserCountAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUserCountAtLocation ( " + locationId + ")");
 		int count = service.getUserCountAtLocation(locationId);
@@ -79,6 +93,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "/sample", method = RequestMethod.POST)
+	@ServiceModelMapping(returnType = boolean.class)
 	public ModelAndView registerSample(@RequestBody Sample sample) {
 		boolean regSample = service.registerSample(sample);
 		logger.info("registerSample ( " + regSample + " )");
@@ -86,6 +101,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "{locationId}/users/{userId}", method = RequestMethod.POST)
+	@ServiceModelMapping(returnType = boolean.class)
 	public ModelAndView registerUserLocation(@PathVariable int userId,
 			@PathVariable int locationId) {
 		boolean regUserPos = service.registerUserLocation(userId, locationId);
@@ -94,27 +110,31 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getUserLocation(@PathVariable("id") int userId) {
 		Location location = service.getUserLocation(userId);
 		return new ModelAndView("json", "location", location);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getAllUserLocations() {
 		List<UserPosition> pos = service.getLocationOfAllUsers();
 		return new ModelAndView("json", "user_position", pos);
 	}
 
 	@RequestMapping(value = "/friends/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocationOfFriend(@PathVariable("id") int friendId) {
-		Location friendLocation = service.getLocationOfFriend(friendId);
+	@ServiceModelMapping(returnType = Location.class)
+	public ModelAndView getLocationOfFriend(@PathVariable("id") int friendId, @RequestParam String accessToken) {
+		Location friendLocation = service.getLocationOfFriend(friendId, accessToken);
 		return new ModelAndView("json", "friend_location", friendLocation);
 	}
 
 	@RequestMapping(value = "/friends", method = RequestMethod.GET)
-	public ModelAndView getLocationOfFriends(@PathVariable int userId) {
+	@ServiceModelMapping(returnType = Map.class)
+	public ModelAndView getLocationOfFriends(@PathVariable int userId, @RequestParam String accessToken) {
 		Map<Integer, Integer> friendsPositions = service
-				.getLocationOfFriends(userId);
+				.getLocationOfFriends(userId, accessToken);
 		return new ModelAndView("json", "friends_positions", friendsPositions);
 	}
 
@@ -123,6 +143,7 @@ public class LocationController {
 	 */
 
 	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = Fact.class)
 	public ModelAndView getAllFacts(@PathVariable("id") int locationId) {
 		logger.info("getAllFacts ( " + locationId + " )");
 		List<Fact> facts = service.getAllFacts(locationId);
@@ -130,6 +151,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "/{id}/facts/random", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = Fact.class)
 	public ModelAndView getRandomFact(@PathVariable("id") int locationId) {
 		Fact fact = service.getRandomFact(locationId);
 		return new ModelAndView("json", "random_fact", fact);
