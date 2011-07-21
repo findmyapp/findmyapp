@@ -63,7 +63,7 @@ public class ServiceInfoService {
 				String controllerName = clazz.getSimpleName().replace("Controller", "");
 				Class returnType = smm.returnType();
 				
-				list.add(new ServiceModel(new URI("http://10.0.2.2:8080/findmyapp/" + location),
+				list.add(new ServiceModel(new URI("http://findmyapp.net/findmyapp/" + location),
 						HttpType.valueOf(requestType), 
 						ServiceDataFormat.JSON, 
 						returnType, 
