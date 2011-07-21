@@ -350,7 +350,7 @@
         <con:resource name="humidity" path="humidity">
           <con:settings/>
           <con:parameters/>
-          <con:resource name="latest" path="latest"><con:settings/><con:parameters/><con:method name="getLatestHumidity" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400 500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource><con:method name="getHumidityData" method="GET">
+          <con:resource name="latest" path="latest"><con:settings/><con:parameters/><con:method name="getLatestHumidity" method="GET"><con:description>Get latest humidity data from a location</con:description><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400 500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation></con:method></con:resource><con:method name="getHumidityData" method="GET">
             <con:description>Get humidity data from a location</con:description>
             <con:settings/>
             <con:parameters/>
@@ -365,7 +365,7 @@
         <con:resource name="noise" path="noise">
           <con:settings/>
           <con:parameters/>
-          <con:resource name="latest noise" path="latest"><con:settings/><con:parameters/><con:method name="getLatestNoise" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:lat="http://findmyapp.net/findmyapp/locations/1/noise/latest">lat:Response</con:element></con:representation></con:method></con:resource><con:method name="getNoiseData" method="GET">
+          <con:resource name="latest noise" path="latest"><con:settings/><con:parameters/><con:method name="getLatestNoise" method="GET"><con:description>Get latest noise from a location</con:description><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:lat="http://findmyapp.net/findmyapp/locations/1/noise/latest">lat:Response</con:element></con:representation></con:method></con:resource><con:method name="getNoiseData" method="GET">
             <con:description>Get noise data from a location</con:description>
             <con:settings/>
             <con:parameters/>
@@ -386,7 +386,7 @@
         <con:resource name="temperature" path="temperature">
           <con:settings/>
           <con:parameters/>
-          <con:resource name="latest temperature" path="latest"><con:settings/><con:parameters/><con:method name="getLatestTemperature" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:lat="http://findmyapp.net/findmyapp/locations/1/temperature/latest">lat:Response</con:element></con:representation></con:method></con:resource><con:method name="getTemperatureData" method="GET">
+          <con:resource name="latest temperature" path="latest"><con:settings/><con:parameters/><con:method name="getLatestTemperature" method="GET"><con:description>get latest temperature from a location</con:description><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:lat="http://findmyapp.net/findmyapp/locations/1/temperature/latest">lat:Response</con:element></con:representation></con:method></con:resource><con:method name="getTemperatureData" method="GET">
             <con:description>Get temperature data from a location</con:description>
             <con:settings/>
             <con:parameters/>
@@ -1794,35 +1794,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/SetFeaturedApp TestCase" searchProperties="true" id="d1673754-658f-4eec-8d93-39de5e61017e">
-      <con:settings/>
-      <con:testStep type="restrequest" name="get - set new featured app">
-        <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/SetFeaturedApp//selectedAppIs" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="get - set new featured app" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:properties/>
-    </con:testCase>
+    
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true" id="429cb5de-ce28-4bca-b2f3-49b84445057c">
       <con:settings/>
       <con:testStep type="restrequest" name="get - mostPopular">
