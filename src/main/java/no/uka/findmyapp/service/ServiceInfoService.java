@@ -5,9 +5,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import no.uka.findmyapp.controller.AppStoreController;
 import no.uka.findmyapp.controller.LocationController;
@@ -16,7 +14,6 @@ import no.uka.findmyapp.controller.SensorController;
 import no.uka.findmyapp.controller.UkaProgramController;
 import no.uka.findmyapp.controller.UserController;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
-import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.serviceinfo.HttpType;
 import no.uka.findmyapp.model.serviceinfo.ServiceDataFormat;
 import no.uka.findmyapp.model.serviceinfo.ServiceModel;

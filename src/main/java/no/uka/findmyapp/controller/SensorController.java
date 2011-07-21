@@ -7,9 +7,7 @@ import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
-import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Temperature;
-import no.uka.findmyapp.model.appstore.AppStoreList;
 import no.uka.findmyapp.service.SensorService;
 
 import org.slf4j.Logger;
@@ -20,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

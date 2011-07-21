@@ -1,6 +1,7 @@
 package no.uka.findmyapp.model;
 
 import java.sql.Timestamp;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 @JsonAutoDetect

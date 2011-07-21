@@ -1,6 +1,6 @@
 package no.uka.findmyapp.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
 import org.junit.Before;

@@ -3,7 +3,6 @@ package no.uka.findmyapp.datasource.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 import no.uka.findmyapp.model.Noise;
 
 import org.springframework.jdbc.core.RowMapper;
