@@ -20,20 +20,20 @@ public class AppStoreService {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreService.class);
 
-	public AppStoreList getAppStoreListForPlatform(int count, int listType, int platform, String category) {
-		List<App> appList = data.getAppList(count, listType, platform, category);
+	public AppStoreList getAppStoreListForPlatform(int from, int to, int listType, String platform, String category) {
+		List<App> appList = data.getAppList(from, to, listType, platform, category);
 		
 		AppStoreList appStoreList = new AppStoreList();
 		appStoreList.setListType(listType);
 		appStoreList.setPlatform(platform);
 		appStoreList.setListCount(appList.size());
-		appStoreList.setRequestCount(count);
+		appStoreList.setRequestCount(((to-from)>0?(to-from):0)); //if to-from is greater than 0, the count is returned. If the count is below 0, 0 is returned.
 		appStoreList.setAppList(appList);
 		
 		return appStoreList;
 	}
-	public AppStoreList getAppStoreListForPlatform(int count, int listType, int platform){
-		return getAppStoreListForPlatform(count, listType, platform, default_category);
+	public AppStoreList getAppStoreListForPlatform(int from, int to, int listType, String platform){
+		return getAppStoreListForPlatform(from, to, listType, platform, default_category);
 	}
 	
 	public App getAppDetails(int appId) {
