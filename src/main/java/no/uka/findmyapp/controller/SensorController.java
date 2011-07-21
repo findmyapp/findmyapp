@@ -55,6 +55,21 @@ public class SensorController {
 		}
 	}
 	
+	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Noise.class)
+	public ModelAndView getNoiseData(
+			@PathVariable int locationId) {
+		
+		Noise noise = service.getLatestNoiseData(locationId);
+		
+		if(noise == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","noise",noise);
+		}
+	}
+	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,
@@ -83,6 +98,8 @@ public class SensorController {
 		return new ModelAndView("json","noise",noiseList);
 	}
 	
+	
+	
 	@RequestMapping(value="/{locationId}/humidity",method = RequestMethod.GET)
 	public ModelAndView getHumidityData(
 			@PathVariable int locationId,
@@ -96,6 +113,24 @@ public class SensorController {
 		
 		return new ModelAndView("json","humidity",humidityList);
 	}
+	
+	
+	@RequestMapping(value="/{locationId}/humidity/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Humidity.class)
+	public ModelAndView getHumidityData(
+			@PathVariable int locationId) {
+		
+		Humidity humi = service.getLatestHumidityData(locationId);
+		
+		if(humi == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","humidity",humi);
+		}
+	}
+	
+	
 
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
