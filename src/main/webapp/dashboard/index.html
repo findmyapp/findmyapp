@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Samfundet</title>
+	<!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+	<script type="text/javascript">
+
+	function ajaxObject(url, callbackFunction) {
+	  var that=this;      
+	  this.updating = false;
+	  this.abort = function() {
+		if (that.updating) {
+		  that.updating=false;
+		  that.AJAX.abort();
+		  that.AJAX=null;
+		}
+	  }
+	  this.update = function(passData,postMethod) { 
+		if (that.updating) { return false; }
+		that.AJAX = null;                          
+		if (window.XMLHttpRequest) {              
+		  that.AJAX=new XMLHttpRequest();              
+		} else {                                  
+		  that.AJAX=new ActiveXObject("Microsoft.XMLHTTP");
+		}                                             
+		if (that.AJAX==null) {                             
+		  return false;                               
+		} else {
+		  that.AJAX.onreadystatechange = function() {  
+			if (that.AJAX.readyState==4) {             
+			  that.updating=false;                
+			  that.callback(that.AJAX.responseText,that.AJAX.status,that.AJAX.responseXML);        
+			  that.AJAX=null;                                         
+			}                                                      
+		  }                                                        
+		  that.updating = new Date();                              
+		  if (/post/i.test(postMethod)) {
+			var uri=urlCall+'?'+that.updating.getTime();
+			that.AJAX.open("POST", uri, true);
+			that.AJAX.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			that.AJAX.setRequestHeader("Content-Length", passData.length);
+			that.AJAX.send(passData);
+		  } else {
+			var uri=urlCall+'?'+passData+'&timestamp='+(that.updating.getTime()); 
+			that.AJAX.open("GET", uri, true);                             
+			that.AJAX.send(null);                                         
+		  }              
+		  return true;                                             
+		}                                                                           
+	  }
+	  var urlCall = url;        
+	  this.callback = callbackFunction || function () { };
+	}
+	
+	function processData(responseText, responseStatus) {
+	  if (responseStatus==200) {
+		alert(responseText);
+	  } else {
+		alert(responseStatus + ' -- Error Processing Request');
+	  }
+	}
+	
+	window.onload = function(){
+                var canvas = document.getElementById("myCanvas");
+                var context = canvas.getContext("2d");
+	
+                for (var x = 0.5; x < 600; x += 10) {
+				  context.moveTo(x, 0);
+				  context.lineTo(x, 650);
+				}
+
+				for (var y = 0.5; y < 650; y += 10) {
+				  context.moveTo(0, y);
+				  context.lineTo(600, y);
+				}
+
+				context.strokeStyle = "#eee";
+				context.stroke();
+				
+				// circle
+				var centerX = 300;
+				var centerY = 200;
+				var radius = 150;
+				var startingAngle = 0 * Math.PI;
+				var endingAngle = 2 * Math.PI;
+				var counterclockwise = false; 
+				
+				context.beginPath();
+				context.arc(centerX, centerY, radius, startingAngle, 
+					endingAngle, counterclockwise);
+			 
+				context.lineWidth = 5;
+				context.strokeStyle = "black"; // line color
+				context.stroke();
+				
+				// large rectangle
+				var topLeftCornerX = 100;
+				var topLeftCornerY = 280;
+				var width = 400;
+				var height = 340;
+			 
+				context.beginPath();
+				context.rect(topLeftCornerX, topLeftCornerY, width, height);
+			 
+				context.fillStyle = "#FF0000";
+				context.fill();
+				context.lineWidth = 5;
+				context.strokeStyle = "black";
+				context.stroke();
+				
+				// make json request
+				var myRequest = new ajaxObject('http://localhost:8080/findmyapp/locations', processData);
+				//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+				myRequest.update('');  // Server is contacted here.
+	};
+	
+	</script>
+</head>
+
+<body>
+	<canvas id="myCanvas" width="600" height="650">
+	<p>Your browser doesn't support canvas.</p>
+	</canvas>
+</body>
+</html>

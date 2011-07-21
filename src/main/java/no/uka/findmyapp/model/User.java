@@ -28,22 +28,24 @@ public class User {
 		this.userPrivacy = userPrivacy;
 	}
 	
-	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, int userPrivacyId ) {
-		this.facebookUserId = facebookId; 
-		this.localUserId = localId; 
-		this.userRegistered = registerTimestamp; 
-		this.lastLogon = lastLogon;
-		UserService data = new UserService();
-		this.userPrivacy = data.retrievePrivacy(userPrivacyId);
-	}
-	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon) {
-		this.facebookUserId = facebookId; 
-		this.localUserId = localId; 
-		this.userRegistered = registerTimestamp; 
-		this.lastLogon = lastLogon;
-		UserService data = new UserService();
-		this.userPrivacy = data.createDefaultPrivacySettingsEntry();
-	}
+	//author: Haakon Bakka
+	// I could not use this code as it calls the repository layer, but someone may need these methods.
+//	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, int userPrivacyId ) {
+//		this.facebookUserId = facebookId; 
+//		this.localUserId = localId; 
+//		this.userRegistered = registerTimestamp; 
+//		this.lastLogon = lastLogon;
+//		UserService data = new UserService();
+//		this.userPrivacy = data.retrievePrivacy(userPrivacyId);
+//	}
+//	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon) {
+//		this.facebookUserId = facebookId; 
+//		this.localUserId = localId; 
+//		this.userRegistered = registerTimestamp; 
+//		this.lastLogon = lastLogon;
+//		UserService data = new UserService();
+//		this.userPrivacy = data.createDefaultPrivacySettingsEntry();
+//	}
 	
 
 	public int getFacebookUserId() {

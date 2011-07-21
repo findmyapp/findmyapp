@@ -12,7 +12,10 @@
 	
 	<!-- Application Loggers -->
 	<logger name="no.uka.findmyapp">
-		<level value="info" />
+		<level value="debug" />
+	</logger>
+	<logger name="no.uka.findmyapp.service.AuthenticationService">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -34,7 +37,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="info" />
+		<priority value="debug" />
 		<appender-ref ref="console" />
 	</root>
 	
