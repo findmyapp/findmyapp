@@ -19,12 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-	@Autowired
+	//@Autowired
 	AuthenticationRepository authRepo;
-	@Autowired
+	//@Autowired
 	UserRepository userRepo;
 
-	@Autowired
+	//@Autowired
 	AuthenticationConfiguration authConfig;
 
 	private static final Logger logger = LoggerFactory
