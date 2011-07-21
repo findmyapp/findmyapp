@@ -49,14 +49,14 @@
 			<value>${search.depth}</value>
 		</property>
 	</bean>
-
+<!-- 
 	<bean id="authenticationConfiguration"
 		class="no.uka.findmyapp.configuration.AuthenticationConfiguration">
 		<property name="tokenSecret">
 			<value>${token.secret}</value>
 		</property>
 	</bean>
-
+ -->
 	<import resource="classpath:uka-program.xml" />
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -74,10 +74,10 @@
 		require10a="false" />
 		
 		<oauth:consumer-details-service id="consumerDetails">
-<oauth:consumer name="ukappsConsumer" key="key" secret="secret"
-resourceName="ukappsServices" requiredToObtainAuthenticatedToken="false"
-authorities="ROLE_CONSUMER" />
-</oauth:consumer-details-service>
+			<oauth:consumer name="ukappsConsumer" key="key" secret="secret"
+				resourceName="ukappsServices" requiredToObtainAuthenticatedToken="false"
+				authorities="ROLE_CONSUMER" />
+		</oauth:consumer-details-service>
 		
 <!-- 
 	<bean id="consumerDetailsService"
