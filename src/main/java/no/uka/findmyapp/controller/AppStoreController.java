@@ -39,6 +39,7 @@ public class AppStoreController {
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
+	
 
 	/**
 	 * Returns a list of avaliable apps
@@ -47,14 +48,16 @@ public class AppStoreController {
 	@RequestMapping(value = "/appstore/{platform}", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = AppStoreList.class)
 	public String getAppStoreListForPlatform(
-			@PathVariable int platform,
+			@PathVariable String platform,
 			@RequestParam(required=true) int listType,
-			@RequestParam(required=true) int count, Model model) throws URISyntaxException {
+			@RequestParam(required=true) int from, 
+			@RequestParam(required=true) int to, Model model) throws URISyntaxException {
 
 		//TODO check values, throw exception
-		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". Count: " + count);
+		logger.info("AppStoreList requsted: " + platform + ". ListType: " + listType + ". From: " + from + ". To: " + to);
 		AppStoreList appStoreList = appStoreService.getAppStoreListForPlatform(
-				count, 
+				from,
+				to,
 				listType, 
 				platform);
 
@@ -79,8 +82,9 @@ public class AppStoreController {
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
-	@RequestMapping(value = "/appstore/SetFeaturedApp/selectedAppIs", method = RequestMethod.GET)
+	@RequestMapping(value = "/appstore/SetFeaturedApp/{platform}/selectedAppIs", method = RequestMethod.GET)
 	public ModelAndView  setNewFeaturedAppById(
+			@PathVariable String platform,
 			@RequestParam String marketID, Model model) throws URISyntaxException {
 		
 		System.out.println(marketID);
@@ -89,126 +93,88 @@ public class AppStoreController {
 		logger.info("The new featured app is:  ---------->    " + app.getName());
 		appStoreService.setNewFeaturedApp(app);
 		
-		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
-				10, 
+		AppStoreList appList = appStoreService.getAppStoreListForPlatform(
+				0,
+				1,
 				4, 
-				2, APP_OF_THE_DAY);
-		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				4, 
-				1, APP_OF_THE_DAY);
+				platform, APP_OF_THE_DAY);
 
-		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
-		fullList.add(androidList);
-		fullList.add(iosList);
-		return new ModelAndView("json", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", appList);
 	}
 
 	/**
 	 * Returns a list of avaliable apps
 	 * @throws URISyntaxException 
 	 */
-	@RequestMapping(value = "/appstore/list", method = RequestMethod.GET)
-	public ModelAndView getAppStoreListForPlatformOnWeb() throws URISyntaxException {
+	@RequestMapping(value = "/appstore/{platform}/list", method = RequestMethod.GET)
+	public ModelAndView getAppStoreListForPlatformOnWeb(
+			@RequestParam (required = true) int from, 
+			@RequestParam (required = true) int to, 
+			@PathVariable String platform, 
+			Model model) throws URISyntaxException {
 
-		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
-				10, 
+		AppStoreList appList = appStoreService.getAppStoreListForPlatform(
+				from, 
+				to,
 				1, 
-				2);
-		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				1, 
-				1);
+				platform);
 
-		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
-		fullList.add(androidList);
-		fullList.add(iosList);
 
 		//TODO check values, throw exception
-		return new ModelAndView("json", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", appList);
 	}
 
 
 
-	@RequestMapping(value = "/appstore/latest", method = RequestMethod.GET)
-	public ModelAndView getAppStoreLatestList() throws URISyntaxException {
+	@RequestMapping(value = "/appstore/{platform}/latest", method = RequestMethod.GET)
+	public ModelAndView getAppStoreLatestList(
+			@PathVariable String platform,
+			@RequestParam (required = true) int from, 
+			@RequestParam (required = true) int to, 
+			Model model) throws URISyntaxException {
 
-		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
-				10,
+		AppStoreList appList = appStoreService.getAppStoreListForPlatform(
+				from,
+				to,
 				3, 
-				2);
-		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				3, 
-				1);
-		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
-		fullList.add(androidList);
-		fullList.add(iosList);
+				platform);
 
 		//TODO check values, throw exception
-		return new ModelAndView("json", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", appList);
 	}
 
-	@RequestMapping(value = "/appstore/mostPopular", method = RequestMethod.GET)
-	public ModelAndView getAppStoreMostPopularList() throws URISyntaxException {
-
-		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
-				10, 
+	@RequestMapping(value = "/appstore/{platform}/mostPopular", method = RequestMethod.GET)
+	public ModelAndView getAppStoreMostPopularList(
+			@PathVariable String platform,
+			@RequestParam (required = true) int from, 
+			@RequestParam (required = true) int to, 
+			Model model) throws URISyntaxException {
+		
+		AppStoreList appList = appStoreService.getAppStoreListForPlatform(
+				from,
+				to, 
 				2, 
-				2);
-		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				2, 
-				1);
-
-		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
-		fullList.add(androidList);
-		fullList.add(iosList);
+				platform);
 
 		//TODO check values, throw exception
-		return new ModelAndView("json", "appstoreweb", fullList);
-	}
-
-	@RequestMapping(value = "/appstore/SetFeaturedApp", method = RequestMethod.GET)
-	public ModelAndView setFeaturedApp() throws URISyntaxException {
-
-		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				2, 
-				2, APP_OF_THE_DAY);
-		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				2, 
-				1, APP_OF_THE_DAY);
-
-		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
-		fullList.add(androidList);
-		fullList.add(iosList);
-
-		//TODO check values, throw exception
-		//return new ModelAndView("appstoreweb", "appstoreweb", fullList);
-		return new ModelAndView("json", "appstoreweb", fullList);
+		return new ModelAndView("json", "appstoreweb", appList);
 	}
 	
-	@RequestMapping(value = "/appstore/appOfTheDay", method = RequestMethod.GET)
-	public ModelAndView getFeaturedApp() throws URISyntaxException {
+	@RequestMapping(value = "/appstore/{platform}/appOfTheDay", method = RequestMethod.GET)
+	public ModelAndView getFeaturedApp(
+			@PathVariable String platform,
+			Model model) throws URISyntaxException {
 
-		AppStoreList androidList = appStoreService.getAppStoreListForPlatform(
-				10, 
+		AppStoreList appList = appStoreService.getAppStoreListForPlatform(
+				0,
+				1,
 				4, 
-				2, APP_OF_THE_DAY);
-		AppStoreList iosList = appStoreService.getAppStoreListForPlatform(
-				10, 
-				4, 
-				1, APP_OF_THE_DAY);
-
-		List<AppStoreList> fullList = new LinkedList<AppStoreList>();
-		fullList.add(androidList);
-		fullList.add(iosList);
+				platform, APP_OF_THE_DAY);
+		
 
 		//TODO check values, throw exception
-		return new ModelAndView("json", "appstoreweb", fullList);
-	}
+		return new ModelAndView("json", "appstoreweb", appList);
+	} 
 
 	@RequestMapping(value = "/appstore/form/", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody App newApp) {

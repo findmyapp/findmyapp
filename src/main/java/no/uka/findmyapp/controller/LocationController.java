@@ -8,6 +8,7 @@ import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -90,6 +91,13 @@ public class LocationController {
 		logger.debug("getUserCountAtLocation ( " + locationId + ")");
 		int count = service.getUserCountAtLocation(locationId);
 		return new ModelAndView("json","usercount", count);
+	}
+	
+	@RequestMapping(value = "/usercount", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = LocationCount.class)
+	public ModelAndView getUserCountAtAllLocations() {
+		List<LocationCount> count = service.getUserCountAtAllLocations();
+		return new ModelAndView("json", "locationCount", count);
 	}
 
 	@RequestMapping(value = "/sample", method = RequestMethod.POST)

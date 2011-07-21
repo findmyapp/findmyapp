@@ -7,7 +7,7 @@ public class AppStoreList {
 	private int requestCount;
 	private int listCount;
 	private List<App> appList;
-	private int platform;
+	private String platform;
 	
 	public AppStoreList() {
 		
@@ -41,10 +41,10 @@ public class AppStoreList {
 	public void setAppList(List<App> appList) {
 		this.appList = appList;
 	}
-	public int getPlatform() {
+	public String getPlatform() {
 		return platform;
 	}
-	public void setPlatform(int platform) {
+	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
 }
