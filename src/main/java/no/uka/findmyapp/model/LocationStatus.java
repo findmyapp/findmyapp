@@ -1,5 +1,6 @@
 package no.uka.findmyapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationStatus {
@@ -26,6 +27,7 @@ public class LocationStatus {
 		this.temp = -1;
 		this.hum = -1;
 		this.beerTap = -1;
+		this.comments = new ArrayList<String>();
 	}
 	
 	public void setComment(List<String> comments){

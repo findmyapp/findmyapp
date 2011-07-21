@@ -57,8 +57,9 @@ public class LocationController {
 		List<Location> locations = service.getAllLocations();
 		return new ModelAndView("json", "location", locations);
 	}
-
-	/*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	
+	/*OLD* REPLACED BY getLocationData
+	 * @RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView getLocation(@PathVariable("id") int locationId) {
 		logger.debug("getLocation ( " + locationId + ")");
 		Location loc = service.getLocation(locationId);
@@ -199,7 +200,7 @@ public class LocationController {
  */
 
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public ModelAndView getData(@PathVariable("id") int locationId){
+	public ModelAndView getLocationData(@PathVariable("id") int locationId){
 		Location locale = service.getAllData(locationId);
 		return new ModelAndView("json","location_real_time", locale);
 	}

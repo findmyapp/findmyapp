@@ -181,19 +181,19 @@ public class LocationService {
 		
 	}
 	
-	public Location getAllData(int locationId) {//Creates and returns a location object with all the latest data on the location
+	public Location getAllData(int locationId) {//Creates and returns a location object with average of all the latest data on the location
 		Location locationOfInterest = data.getLocation(locationId);
 		int time = -10;
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE,time);
-		Date tenminago = cal.getTime();
+		//Calendar cal = Calendar.getInstance();
+		//cal.add(Calendar.MINUTE,time);
+		//Date tenminago = cal.getTime();
 		
 		//Fetching data:
 		List <LocationReport> last10usercomments = getReports(locationId,null,10,null,null,"comment");
-		List <LocationReport> averagefun = getReports(locationId,"average",0,tenminago,null,"fun_factor");
-		List <LocationReport> averagechat = getReports(locationId,"average",0,tenminago,null,"chat_factor");
-		List <LocationReport> averagedance = getReports(locationId,"average",0,tenminago,null,"dance_factor");
-		List <LocationReport> averageflirt = getReports(locationId,"average",0,tenminago,null,"flirt_factor");
+		List <LocationReport> averagefun = getReports(locationId,"average",10,null,null,"fun_factor");
+		List <LocationReport> averagechat = getReports(locationId,"average",10,null,null,"chat_factor");
+		List <LocationReport> averagedance = getReports(locationId,"average",10,null,null,"dance_factor");
+		List <LocationReport> averageflirt = getReports(locationId,"average",10,null,null,"flirt_factor");
 		
 		Noise noise = sensor.getLatestNoiseData(locationId);
 		Temperature temp = sensor.getLatestTemperatureData(locationId);
@@ -272,10 +272,10 @@ public class LocationService {
 		if(reportedData == null){//No data was acquired from DB
 			return null;
 		}
-		List<LocationReport> averageData = new ArrayList<LocationReport>();//DOES THIS WORK?
+		List<LocationReport> averageData = new ArrayList<LocationReport>();
 		LocationReport averageReport = new LocationReport();
 		Iterator<LocationReport> reports = reportedData.iterator();
-		int counter = 1;
+		int counter = 0;
 		float paramvalue =0;
 		
 		while(reports.hasNext()){//iterates through 
@@ -283,11 +283,13 @@ public class LocationService {
 		 	if(current.getParameterNumberValue()!= -1){//-1 means value is not set.
 		 		float value = current.getParameterNumberValue();
 		 		paramvalue = paramvalue + value; 
+		 		
 			 	counter++;
+			 	
 		 	}
 		 }
 		float finalvalue = -1;
-		if(paramvalue !=-1){finalvalue = paramvalue/counter; }//check that value has been changed from default
+		if(paramvalue !=-1){finalvalue = (paramvalue)/counter; }//check that value has been changed from default
 		averageReport.setParameterName(parName);
 		averageReport.setParameterNumberValue(finalvalue);
 		averageData.add(averageReport);

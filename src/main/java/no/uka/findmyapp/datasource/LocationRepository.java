@@ -405,7 +405,7 @@ public class LocationRepository {
 
 	public List<LocationReport> getUserReportedData(int locationId,
 			String parName) {
-			logger.info("Fetching data ");
+			logger.info("Fetching data HEHR ");
 			try {
 				return jdbcTemplate.query("SELECT * FROM " +
 						"CUSTOM_PARAMETER_VALUE AS CPV " +
