@@ -71,195 +71,15 @@
     <con:resource name="appstore" path="appstore">
       <con:settings/>
       <con:parameters/>
-      <con:resource name="list" path="list">
-        <con:description>List of applications</con:description>
+      
+      
+      
+      
+      <con:resource name="featuredApp" path="featuredApp">
         <con:settings/>
         <con:parameters/>
-        <con:method name="get" method="GET">
-          <con:description>Get list of applications available in the appstore</con:description>
-          <con:settings/>
-          <con:parameters/>
-          <con:representation type="RESPONSE">
-            <con:mediaType>application/json</con:mediaType>
-            <con:status>200</con:status>
-            <con:params/>
-            <con:element xmlns:list="http://localhost/findmyapp/appstore/list">list:Response</con:element>
-          </con:representation>
-          <con:representation type="FAULT">
-            <con:mediaType>text/html</con:mediaType>
-            <con:status>500</con:status>
-            <con:params/>
-            <con:element>html</con:element>
-          </con:representation>
-          <con:request name="getAppList" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:request>
-        </con:method>
-      </con:resource>
-      <con:resource name="latest" path="/latest/">
-        <con:settings/>
-        <con:parameters/>
-        <con:method name="get" method="GET">
-          <con:settings/>
-          <con:parameters>
-            <con:parameter required="true">
-              <con:name>id</con:name>
-              <con:value>com.tunewiki.lyricplayer.android</con:value>
-              <con:style>TEMPLATE</con:style>
-              <con:default>com.tunewiki.lyricplayer.android</con:default>
-            </con:parameter>
-          </con:parameters>
-          <con:representation type="RESPONSE">
-            <con:mediaType>application/json</con:mediaType>
-            <con:status>200</con:status>
-            <con:params/>
-            <con:element>Response</con:element>
-          </con:representation>
-          <con:representation type="FAULT">
-            <con:mediaType>text/html</con:mediaType>
-            <con:status>500</con:status>
-            <con:params/>
-            <con:element>html</con:element>
-          </con:representation>
-          <con:request name="appstore/latest TestCase" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:request>
-        </con:method>
-      </con:resource>
-      <con:resource name="mostPopular" path="mostPopular/">
-        <con:settings/>
-        <con:parameters/>
-        <con:method name="get" method="GET">
-          <con:settings/>
-          <con:parameters/>
-          <con:representation type="FAULT">
-            <con:mediaType>text/html</con:mediaType>
-            <con:status>500</con:status>
-            <con:params/>
-            <con:element>html</con:element>
-          </con:representation>
-          <con:representation type="RESPONSE">
-            <con:mediaType>application/json</con:mediaType>
-            <con:status>200</con:status>
-            <con:params/>
-            <con:element>Response</con:element>
-          </con:representation>
-          <con:request name="mostPopular" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:request>
-        </con:method>
-      </con:resource>
-      <con:resource name="appOfTheDay" path="appOfTheDay/">
-        <con:settings/>
-        <con:parameters/>
-        <con:method name="get" method="GET">
-          <con:settings/>
-          <con:parameters/>
-          <con:representation type="RESPONSE">
-            <con:mediaType>application/json</con:mediaType>
-            <con:status>200</con:status>
-            <con:params/>
-            <con:element>Response</con:element>
-          </con:representation>
-          <con:request name="appOfTheDay" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:request>
-        </con:method>
-      </con:resource>
-      <con:resource name="setFeaturedApp" path="SetFeaturedApp/">
-        <con:settings/>
-        <con:parameters/>
-        <con:resource name="SelectedApp" path="/selectedAppIs">
-          <con:settings/>
-          <con:parameters/>
-          <con:method name="get" method="GET">
-            <con:settings/>
-            <con:parameters>
-              <con:parameter>
-                <con:name>marketID</con:name>
-                <con:value>com.KelliNoda.Battleheart</con:value>
-                <con:style>QUERY</con:style>
-                <con:default>com.KelliNoda.Battleheart</con:default>
-              </con:parameter>
-            </con:parameters>
-            <con:representation type="FAULT">
-              <con:mediaType>text/html</con:mediaType>
-              <con:status>400 500</con:status>
-              <con:params/>
-              <con:element>html</con:element>
-            </con:representation>
-            <con:representation type="RESPONSE">
-              <con:mediaType>application/json</con:mediaType>
-              <con:status>200</con:status>
-              <con:params/>
-              <con:element>Response</con:element>
-            </con:representation>
-            <con:request name="set new featured app" mediaType="application/xml" accept="application/json">
-              <con:settings>
-                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-              </con:settings>
-              <con:endpoint>http://findmyapp.net</con:endpoint>
-              <con:request/>
-              <con:credentials>
-                <con:username xsi:nil="true"/>
-                <con:password xsi:nil="true"/>
-                <con:domain xsi:nil="true"/>
-              </con:credentials>
-              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-              <con:jmsPropertyConfig/>
-              <con:parameters/>
-            </con:request>
-          </con:method>
-        </con:resource>
-      </con:resource>
+        
+      <con:method name="get" method="GET"><con:settings/><con:parameters><con:parameter><con:name>marketID</con:name><con:value>com.KelliNoda.Battleheart</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>com.KelliNoda.Battleheart</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="appstore/featuredApp TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource>
       <con:resource name="registerApp" path="form/">
         <con:settings/>
         <con:parameters/>
@@ -293,7 +113,7 @@
           </con:request>
         </con:method>
       </con:resource>
-    </con:resource>
+    <con:resource name="platform" path="{platform}"><con:settings/><con:parameters><con:parameter><con:name>platform</con:name><con:value>android</con:value><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>android</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:resource name="list" path="list"><con:settings/><con:parameters/><con:method name="get" method="GET"><con:settings/><con:parameters><con:parameter><con:name>platform</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>from</con:name><con:value>0</con:value><con:style>QUERY</con:style><con:default>0</con:default></con:parameter><con:parameter><con:name>to</con:name><con:value>10</con:value><con:style>QUERY</con:style><con:default>10</con:default></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404 400 500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:list="http://findmyapp.net/findmyapp/appstore/android/list">list:Response</con:element></con:representation><con:request name="appstore/android/list TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request><con:request name="appstore/iphone/list TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource><con:resource name="latest" path="latest"><con:settings/><con:parameters><con:parameter><con:name>platform</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="get" method="GET"><con:settings/><con:parameters><con:parameter><con:name>from</con:name><con:value>0</con:value><con:style>QUERY</con:style><con:default>0</con:default></con:parameter><con:parameter><con:name>to</con:name><con:value>10</con:value><con:style>QUERY</con:style><con:default>10</con:default></con:parameter><con:parameter><con:name>platform</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>500</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:lat="http://findmyapp.net/findmyapp/appstore/android/latest">lat:Response</con:element></con:representation><con:request name="appstore/android/latest TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request><con:request name="appstore/iphone/latest TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource><con:resource name="mostPopular" path="mostPopular"><con:settings/><con:parameters><con:parameter><con:name>platform</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="get" method="GET"><con:settings/><con:parameters><con:parameter><con:name>platform</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>from</con:name><con:value>0</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>0</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>to</con:name><con:value>10</con:value><con:style>QUERY</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default>10</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:mos="http://findmyapp.net/findmyapp/appstore/android/mostPopular">mos:Response</con:element></con:representation><con:request name="appstore/android/mostPopular TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request><con:request name="appstore/iPhone/mostPopular TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource><con:resource name="appOfTheDay" path="appOfTheDay"><con:settings/><con:parameters><con:parameter><con:name>platform</con:name><con:value/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type><con:default/><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="get" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:app="http://findmyapp.net/findmyapp/appstore/android/appOfTheDay">app:Response</con:element></con:representation><con:request name="appstore/android/appOfTheDay TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request><con:request name="appstore/iphone/appOfTheDay TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource></con:resource></con:resource>
     <con:resource name="locations" path="locations">
       <con:description/>
       <con:settings/>
@@ -1123,37 +943,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/list TestCase" searchProperties="true" id="b6ca67fa-ee3a-4665-b692-b345bcdccaa1">
-      <con:description>TestCase generated for REST Resource [list] located at [/appstore/list]</con:description>
-      <con:settings/>
-      <con:testStep type="restrequest" name="Get list of applications">
-        <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/list" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="Get list of applications" mediaType="application/xml" accept="application/json">
-            <con:description>Takes a list of signals as parameter. Contains bssid and signalStrength for all discovered end points.</con:description>
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:properties/>
-    </con:testCase>
+    
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location TestCase" searchProperties="true" id="24027e42-a39c-41fa-bf59-ae8f518e705d">
       <con:description>TestCase generated for REST Resource [position] located at [/position]</con:description>
       <con:settings/>
@@ -1765,65 +1555,9 @@
   <con:entry key="ukaYear" value="uka11"/>
 </con:parameters></con:restRequest></con:config></con:testStep><con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/latest/ TestCase" searchProperties="true" id="6e3b7994-2786-4242-bb11-950c7fce219a">
-      <con:settings/>
-      <con:testStep type="restrequest" name="get  latest application">
-        <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/latest/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="get  latest application" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:properties/>
-    </con:testCase>
     
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/mostPopular TestCase" searchProperties="true" id="429cb5de-ce28-4bca-b2f3-49b84445057c">
-      <con:settings/>
-      <con:testStep type="restrequest" name="get - mostPopular">
-        <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/mostPopular/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="get - mostPopular" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:properties/>
-    </con:testCase>
+    
+    
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="program/ukaYear/places" searchProperties="true" id="16588606-1aa1-4e07-89e4-9bc69b9d1cd8">
       <con:settings/>
       <con:testStep type="restrequest" name="Get all places in uka">
@@ -1892,35 +1626,7 @@
       </con:testStep>
       <con:properties/>
     </con:testCase>
-    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/appOfTheDay TestCase" searchProperties="true" id="0827fffa-4432-440f-b237-5ba402d05471">
-      <con:settings/>
-      <con:testStep type="restrequest" name="set new featured app by id">
-        <con:settings/>
-        <con:config service="FindMyApp" resourcePath="/findmyapp/appstore/appOfTheDay/" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="set new featured app by id" mediaType="application/xml" accept="application/json">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://findmyapp.net</con:endpoint>
-            <con:request/>
-            <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>200</codes>
-              </con:configuration>
-            </con:assertion>
-            <con:credentials>
-              <con:username xsi:nil="true"/>
-              <con:password xsi:nil="true"/>
-              <con:domain xsi:nil="true"/>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:properties/>
-    </con:testCase>
+    
     <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="users/events" searchProperties="true" id="af6a50a2-6b26-4a0b-87ee-b1e71f08be6d">
       <con:settings/>
       <con:testStep type="restrequest" name="getEvents">
@@ -2101,7 +1807,7 @@
   <con:entry key="privacySettingMedia" value="3"/>
   <con:entry key="privacySettingMoney" value="3"/>
   <con:entry key="privacySettingPosition" value="2"/>
-</con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="getPrivacy"><con:settings/><con:config service="FindMyApp" methodName="getPrivacy" resourcePath="/findmyapp/users/{id}/privacy" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getPrivacy" mediaType="application/xml" accept="application/json"><con:description>get Privacy Settings. Output in Json text: privacy settings for an spesific id. Privacy settings for position, events, money and media. Three levels of settings: only me, friends, anyone   </con:description><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>ONLY_ME</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/id/humidity/latest" searchProperties="true" id="49d2854b-4f06-475a-b280-4f319b679360"><con:settings/><con:testStep type="restrequest" name="Get humidity latest"><con:settings/><con:config service="FindMyApp" methodName="getLatestHumidity" resourcePath="/findmyapp/locations/{id}/humidity/latest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get humidity latest" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>id</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/id/noise/latest" searchProperties="true" id="a01b3fe6-9072-4015-acfd-dad887a085e2"><con:settings/><con:testStep type="restrequest" name="Get noise latest"><con:settings/><con:config service="FindMyApp" methodName="getLatestNoise" resourcePath="/findmyapp/locations/{id}/noise/latest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get noise latest" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>id</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/id/temperature/latest" searchProperties="true" id="6b8d6a55-b5c5-412d-af86-5e5c31261d3f"><con:settings/><con:testStep type="restrequest" name="Get temp latest"><con:settings/><con:config service="FindMyApp" methodName="getLatestTemperature" resourcePath="/findmyapp/locations/{id}/temperature/latest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get temp latest" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>id</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
+</con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="getPrivacy"><con:settings/><con:config service="FindMyApp" methodName="getPrivacy" resourcePath="/findmyapp/users/{id}/privacy" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="getPrivacy" mediaType="application/xml" accept="application/json"><con:description>get Privacy Settings. Output in Json text: privacy settings for an spesific id. Privacy settings for position, events, money and media. Three levels of settings: only me, friends, anyone   </con:description><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>ONLY_ME</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/id/humidity/latest" searchProperties="true" id="49d2854b-4f06-475a-b280-4f319b679360"><con:settings/><con:testStep type="restrequest" name="Get humidity latest"><con:settings/><con:config service="FindMyApp" methodName="getLatestHumidity" resourcePath="/findmyapp/locations/{id}/humidity/latest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get humidity latest" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>id</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/id/noise/latest" searchProperties="true" id="a01b3fe6-9072-4015-acfd-dad887a085e2"><con:settings/><con:testStep type="restrequest" name="Get noise latest"><con:settings/><con:config service="FindMyApp" methodName="getLatestNoise" resourcePath="/findmyapp/locations/{id}/noise/latest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get noise latest" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>id</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="location/id/temperature/latest" searchProperties="true" id="6b8d6a55-b5c5-412d-af86-5e5c31261d3f"><con:settings/><con:testStep type="restrequest" name="Get temp latest"><con:settings/><con:config service="FindMyApp" methodName="getLatestTemperature" resourcePath="/findmyapp/locations/{id}/temperature/latest" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get temp latest" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains"><con:configuration><token>id</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/featuredApp TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="set featuredApp"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/featuredApp" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/featuredApp TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/android/list TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get android appList"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/list" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/android/list TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/iphone/list TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get iPhone appList"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/list" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/iphone/list TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/android/latest TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get latest Android apps"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/latest" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/android/latest TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/iphone/latest TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get latest iPhone apps"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/latest" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/iphone/latest TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/android/mostPopular TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get most popular Android apps"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/mostPopular" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/android/mostPopular TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/iPhone/mostPopular TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get most popular iPhone apps"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/mostPopular" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/iPhone/mostPopular TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/android/appOfTheDay TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get featured (app of the day) android app"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/appOfTheDay" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/android/appOfTheDay TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="android" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="appstore/iphone/appOfTheDay TestCase" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="get featured (app of the day) iPhone app"><con:settings/><con:config service="FindMyApp" resourcePath="/findmyapp/appstore/{platform}/appOfTheDay" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="get - appstore/iphone/appOfTheDay TestCase" mediaType="application/xml" accept="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://findmyapp.net</con:endpoint><con:request/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="platform" value="iphone" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties/>
   </con:testSuite>
   <con:properties/>
   <con:wssContainer/>
