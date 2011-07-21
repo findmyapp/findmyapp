@@ -24,6 +24,10 @@ public class LocationService {
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
 	}
+	
+	public Location getLocation(int locationId) {
+		return data.getLocation(locationId);
+	}
 
 	/*
 	 * ************* POSITIONING *************

@@ -50,6 +50,13 @@ public class LocationController {
 		return new ModelAndView("json", "location", locations);
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView getLocation(@PathVariable("id") int locationId) {
+		logger.debug("getLocation ( " + locationId + ")");
+		Location loc = service.getLocation(locationId);
+		return new ModelAndView("json", "location", loc);
+	}
+	
 	/*
 	 * ************* POSITIONING *************
 	 */
@@ -64,6 +71,7 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
+	
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
