@@ -28,6 +28,11 @@ public class SensorService {
 	public Temperature getLatestTemperatureData(int location) {
 		return data.getLatestTemperatureData(location);
 	}
+	
+	public Noise getLatestNoiseData(int location) {
+		return data.getLatestNoiseData(location);
+	}
+
 
 	public List<Temperature> getTemperatureData(Date from, Date to, int location) {
 		List<Temperature> temp = null;
@@ -85,6 +90,11 @@ public class SensorService {
 
 		return hum;
 	}
+	
+	public Humidity getLatestHumidityData(int location) {	
+		return data.getLatestHumidityData(location);
+	}
+	
 
 	public List<BeerTap> getBeertapData(int locationId, int tapnr, Date from,
 			Date to) {
@@ -185,6 +195,8 @@ public class SensorService {
 		}
 		return min;
 	}
+
+
 	
 
 }
