@@ -72,12 +72,12 @@
 		authenticate-token-url="/oauth/authorize" authentication-failed-url="/oauth/confirm_access"
 		access-granted-url="/request_token_authorized.jsp" access-token-url="/oauth/access_token"
 		require10a="false" />
-
+<!-- 
 	<bean id="consumerDetailsService"
 		class="no.uka.findmyapp.service.auth.UKAppsConsumerDetailsService">
 		<property name="service" ref="authenticationService" />
 	</bean>
-
+-->
 	<!-- <oauth:consumer-details-service id="consumerDetails"> -->
 	<!-- <oauth:consumer name="ukappsConsumer" key="key" secret="secret" -->
 	<!-- resourceName="ukappsServices" requiredToObtainAuthenticatedToken="false" -->
