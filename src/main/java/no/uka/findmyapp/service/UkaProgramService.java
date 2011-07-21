@@ -8,7 +8,7 @@ import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
-import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.service.helper.EditDistanceHelper;
 
@@ -58,8 +58,8 @@ public class UkaProgramService {
 		if (qry.replace(" ", "").length() < searchConfiguration.getMinLength()) {
 			throw new IllegalArgumentException("Query \""+qry+"\" too short, min length is "+searchConfiguration.getMinLength());
 		}
-		ArrayList<Event> allEvents = (ArrayList<Event>) data.getUkaProgram(from, to); //for test
-		ArrayList<Event> matchedEvents = new ArrayList<Event>();
+		ArrayList<UkaEvent> allEvents = (ArrayList<UkaEvent>) data.getUkaProgram(from, to); //for test
+		ArrayList<UkaEvent> matchedEvents = new ArrayList<UkaEvent>();
 		int index[] = new int[searchConfiguration.getDepth()]; //index for sorting
 
 		int ED;
@@ -95,7 +95,7 @@ public class UkaProgramService {
 	 * @param place is the event place you want to ask for
 	 * @return an event
 	 */
-	public Event getNextUkaEvent(String ukaYear, String place) 
+	public UkaEvent getNextUkaEvent(String ukaYear, String place) 
 		throws UkaYearNotFoundException {
 		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
 		if (config == null) {
@@ -112,7 +112,7 @@ public class UkaProgramService {
 	 * @return is the event with the given id. If there is no such event then null is returned.
 	 */
 
-	public Event getUkaEventById(String ukaYear, int id)
+	public UkaEvent getUkaEventById(String ukaYear, int id)
 		throws UkaYearNotFoundException {
 		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
 		if (config == null) {

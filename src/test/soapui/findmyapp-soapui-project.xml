@@ -1320,11 +1320,7 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Simple Contains" name="Contains">
-              <con:configuration>
-                <token>strossa</token>
-                <ignoreCase>true</ignoreCase>
-                <useRegEx>false</useRegEx>
-              </con:configuration>
+              <con:configuration><token>strossa</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>

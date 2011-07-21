@@ -9,18 +9,9 @@
     <script type="text/javascript">
     
     google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"temperature"));
+    google.setOnLoadCallback(getData(2,"beersale"));
     
     var info; // data from server
-    
-  	function processBeerData(responseText, responseStatus) {
-  	  if (responseStatus==200) {
-  		  info = eval(responseText);
-  		  drawBeerChart();  		
-  	  } else {
-  		alert(responseStatus + ' -- Error Processing Request');
-  	  }
-  	}
     
     function getData(locationID, datatype) {// get json data from server
     
@@ -28,30 +19,79 @@
     	var request;
     	    
     	if (datatype == "temperature") {
-    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31';
-    		request = new ajaxObject(url, processBeerData);
-    		request.update('');  // Server is contacted here.
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature';
+    		request = new ajaxObject(url, processTemperatureData);
+    		request.update();  // Server is contacted here.
     	} else if (datatype == "humidity") {
     		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity';
-    		request = new ajaxObject(url, processTempData);
-    		request.update('');  // Server is contacted here.
+    		request = new ajaxObject(url, processHumidityData);
+    		request.update();  // Server is contacted here.
     	} else if (datatype == "noise") {
     		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/noise';
-    		request = new ajaxObject(url, processBeerData);
-    		request.update('');  // Server is contacted here.
+    		request = new ajaxObject(url, processNoiseData);
+    		request.update();  // Server is contacted here.
     	}  else if (datatype == "users") {
     		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
-    		request = new ajaxObject(url, processBeerData);
-    		request.update('');  // Server is contacted here.
+    		request = new ajaxObject(url, processUserData);
+    		request.update();  // Server is contacted here.
     	} else if (datatype == "beersale") {
     		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31';
     		request = new ajaxObject(url, processBeerData);
-    		request.update('');  // Server is contacted here.
+    		request.update();  // Server is contacted here.
     		// show sum as well
     	} else {
-    		//alert('No amtch');
-    	} 
-    	
+    		//alert('No match');
+    		//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+    	}    	
+    }
+    
+    function processBeerData(responseText, responseStatus) {
+    	  if (responseStatus==200) {
+    		  alert(responseText);
+    		  info = eval(responseText);
+    		  drawBeerChart();  		
+    	  } else {
+    		alert(responseStatus + ' -- Error Processing Request');
+    	  }
+    }
+    
+    function processNoiseData(responseText, responseStatus) {
+  	  if (responseStatus==200) {
+  		  alert(responseText);
+  		  info = eval(responseText);
+  		  drawNoiseChart();  		
+  	  } else {
+  		alert(responseStatus + ' -- Error Processing Request');
+  	  }
+  	}
+    
+    function processHumidityData(responseText, responseStatus) {
+  	  if (responseStatus==200) {
+  		alert(responseText);
+  		  info = eval(responseText);
+  		  drawHumidityChart();  		
+  	  } else {
+  		alert(responseStatus + ' -- Error Processing Request');
+  	  }
+  }
+    
+    function processTemperatureData(responseText, responseStatus) {
+    	  if (responseStatus==200) {
+    		  alert(responseText);
+    		  info = eval(responseText);
+    		  drawTemperatureChart();  		
+    	  } else {
+    		alert(responseStatus + ' -- Error Processing Request');
+    	  }
+    }
+    
+    function processUserData(responseText, responseStatus) {
+    	  if (responseStatus==200) {
+    		  alert(responseText);
+    		  info = eval(responseText);
+    	  } else {
+    		alert(responseStatus + ' -- Error Processing Request');
+    	  }
     }
     
     function drawBeerChart() {
@@ -71,27 +111,10 @@
         
     }
     
-    function processTempData(responseText, responseStatus) {
-    	  if (responseStatus==200) {
-    		  info = eval(responseText);
-    		  drawTempChart();  		
-    	  } else {
-    		alert(responseStatus + ' -- Error Processing Request');
-    	  }
-    	}
-    	
-      function getTempData() {// get json data from server
-      	
-      	var request = new ajaxObject('http://localhost:8080/findmyapp/locations/2/beertap/31', processTempData);
-      	//myRequest.update('id=1234&color=blue');  // Server is contacted here.
-      	request.update('');  // Server is contacted here.
-      	
-      }
-      
-      function drawTempChart() {
+      function drawTemperatureChart() {
           var data = new google.visualization.DataTable();
           data.addColumn('string', 'Klokkeslett');
-          data.addColumn('number', 'Solgte øl');
+          data.addColumn('number', 'Temperatur');
           
           data.addRows(info.length);
   		var i=0;
@@ -101,11 +124,42 @@
   		}
           
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-          chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Temperaturhistorikk'});
+          chart.draw(data, {width: 700, height: 440, title: 'Selskapssiden - Temperaturhistorikk'});    
+      }
+      
+      function drawNoiseChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Klokkeslett');
+          data.addColumn('number', 'Makstemperatur');
+          
+          data.addRows(info.length);
+  		var i=0;
+  		for(i=0;i<info.length; i++) {
+  			data.setValue(i, 0, info[i].time);
+  			data.setValue(i, 1, info[i].max);
+  		}
+          
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(data, {width: 700, height: 440, title: 'Selskapssiden - Temperatur'});
           
       }
       
-      
+      function drawHumidityChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Klokkeslett');
+          data.addColumn('number', 'Luftfuktighet i prosent');
+          
+          data.addRows(info.length);
+  		var i=0;
+  		for(i=0;i<info.length; i++) {
+  			data.setValue(i, 0, info[i].time);
+  			data.setValue(i, 1, info[i].value);
+  		}
+          
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Fuktighet'});
+          
+      }
  
     </script>
 </head>
@@ -123,10 +177,10 @@
 		<section>
 			<ul id="aside_nav">
 		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData();">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData();">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData();">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData();">Personer</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'beersale');">Ølsalg</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
 			 </ul>
 		</section>
 	</aside>
