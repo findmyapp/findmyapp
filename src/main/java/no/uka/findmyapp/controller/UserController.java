@@ -55,16 +55,16 @@ public class UserController {
 		return model;
 	}
 
-
-	@RequestMapping(value = "/testing", method = RequestMethod.GET)
-	public ModelAndView testForPrivacyMethods() {
-
-		boolean success = true; 
-		success = service.testingForUserServiceOne();
-
-		logger.info("testresult is " + success);
-		return new ModelAndView("test", "result", success); 
-	}
+//	Testing made i SoapUI 
+//	@RequestMapping(value = "/testing", method = RequestMethod.GET)
+//	public ModelAndView testForPrivacyMethods() {
+//
+//		boolean success = true; 
+//		success = service.testingForUserServiceOne();
+//
+//		logger.info("testresult is " + success);
+//		return new ModelAndView("test", "result", success); 
+//	}
 
 
 	/**
