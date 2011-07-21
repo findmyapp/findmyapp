@@ -4,13 +4,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
@@ -21,6 +25,7 @@ import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationReport;
+import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -31,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -38,6 +44,8 @@ public class LocationRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	DataSource dataSource;
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationRepository.class);
 
@@ -98,6 +106,14 @@ public class LocationRepository {
 		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ?", locationId);
 		return count;
 	}
+	
+	public List<LocationCount> getUserCountAtAllLocations() {
+		List<LocationCount> locationCounts = jdbcTemplate.query("SELECT l.name, COUNT(up.position_location_id) AS count " +
+				"FROM POSITION_LOCATION l, POSITION_USER_POSITION up " +
+				"WHERE l.position_location_id = up.position_location_id GROUP BY l.name",
+				new LocationCountRowMapper());
+		return locationCounts;
+	}
 
 	public List<Location> getAllLocations() {
 		List<Location> locations = jdbcTemplate.query(
@@ -121,18 +137,16 @@ public class LocationRepository {
 
 	// Returns a hashmap of the positions of the friends of the user, with
 	// userId as key and locationId as value
-	public Map<Integer, Integer> getLocationOfFriends(int userId) {
+	public Map<Integer, Integer> getLocationOfFriends(int userId, List<String> friendIds) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
 		Map<Integer, Integer> userLocations = new HashMap<Integer, Integer>();
-		jdbcTemplate
+		namedParameterJdbcTemplate
 				.query("SELECT DISTINCT u.user_id, pl.position_location_id "
 						+ "FROM POSITION_USER_POSITION pup, USER u, FRIENDS f, POSITION_LOCATION pl "
 						+ "WHERE pup.position_location_id = pl.position_location_id "
-						+ "AND u.user_id = pup.user_id AND pup.user_id IN (SELECT u.user_id FROM USER u, FRIENDS f "
-						+ "WHERE u.user_id=f.user1_id AND f.user2_id = ? "
-						+ "UNION "
-						+ "SELECT u.user_id FROM USER u, FRIENDS f WHERE u.user_id=f.user2_id AND f.user1_id = ?)",
-						new UserLocationRowMapper(userLocations), userId,
-						userId);
+						+ "AND u.user_id = pup.user_id AND pup.user_id IN (:ids)",
+						Collections.singletonMap("ids", friendIds), new UserLocationRowMapper(userLocations));
 		return userLocations;
 	}
 
@@ -401,7 +415,7 @@ public class LocationRepository {
 						"WHERE parameter_name = ? " +
 						"AND position_location_id=? ", new LocationReportRowMapper(),parName,locationId);
 						
-			} catch (Exception e) {logger.error("Could not get the requested data: " + e);
+			} catch (Exception e) {logger.error("Read API for what arguments are allowed " + e);
 				return null;}
 			
 	}

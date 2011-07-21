@@ -1,10 +1,11 @@
 package no.uka.findmyapp.model;
 
 import java.sql.Timestamp;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
 @JsonAutoDetect
-public class Event {
+public class UkaEvent {
 	private int id;
 	private Timestamp showingTime;
 	private String place;

@@ -3,12 +3,10 @@ package no.uka.findmyapp.datasource.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import no.uka.findmyapp.model.*;
-
-import org.springframework.jdbc.core.RowMapper;
 
 import no.uka.findmyapp.model.Location;
+
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  * 

@@ -1,43 +1,210 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<html>
+<head>
+   <title>FindMyApp</title>
+   <link rel="stylesheet" type="text/css" href="ukaStatsStylesheet.css" />
+    <meta charset="utf-8" /> 
+    <meta name="robots" content="noindex" /> 
+	<script type="text/javascript" src="ajaxobject.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(getData(2,"beersale"));
+    
+    var info; // data from server
+    
+    function getData(locationID, datatype) {// get json data from server
+    
+    	var url;
+    	var request;
+    	    
+    	if (datatype == "temperature") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature';
+    		request = new ajaxObject(url, processTemperatureData);
+    		request.update();  // Server is contacted here.
+    	} else if (datatype == "humidity") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity';
+    		request = new ajaxObject(url, processHumidityData);
+    		request.update();  // Server is contacted here.
+    	} else if (datatype == "noise") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/noise';
+    		request = new ajaxObject(url, processNoiseData);
+    		request.update();  // Server is contacted here.
+    	}  else if (datatype == "users") {
+    		url = 'http://localhost:8080/findmyapp/locations/usercount';
+    		request = new ajaxObject(url, processUserData);
+    		request.update();  // Server is contacted here.
+    	} else if (datatype == "beersale") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31';
+    		request = new ajaxObject(url, processBeerData);
+    		request.update();  // Server is contacted here.
+    		// show sum as well
+    	} else {
+    		//alert('No match');
+    		//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+    	}    	
+    }
+    
+    function processBeerData(responseText, responseStatus) {
+    	  if (responseStatus==200) {
+    		  alert(responseText);
+    		  info = eval(responseText);
+    		  drawBeerChart();  		
+    	  } else {
+    		alert(responseStatus + ' -- Error Processing Request');
+    	  }
+    }
+    
+    function processNoiseData(responseText, responseStatus) {
+  	  if (responseStatus==200) {
+  		  alert(responseText);
+  		  info = eval(responseText);
+  		  drawNoiseChart();  		
+  	  } else {
+  		alert(responseStatus + ' -- Error Processing Request');
+  	  }
+  	}
+    
+    function processHumidityData(responseText, responseStatus) {
+  	  if (responseStatus==200) {
+  		alert(responseText);
+  		  info = eval(responseText);
+  		  drawHumidityChart();  		
+  	  } else {
+  		alert(responseStatus + ' -- Error Processing Request');
+  	  }
+  }
+    
+    function processTemperatureData(responseText, responseStatus) {
+    	  if (responseStatus==200) {
+    		  alert(responseText);
+    		  info = eval(responseText);
+    		  drawTemperatureChart();  		
+    	  } else {
+    		alert(responseStatus + ' -- Error Processing Request');
+    	  }
+    }
+    
+    function processUserData(responseText, responseStatus) {
+    	  if (responseStatus==200) {
+    		  alert(responseText);
+    		  info = eval(responseText);
+    		  drawUserDataChart();
+    	  } else {
+    		alert(responseStatus + ' -- Error Processing Request');
+    	  }
+    }
+    
+    function drawBeerChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Klokkeslett');
+        data.addColumn('number', 'Solgte øl');
+        
+        data.addRows(info.length);
+		var i=0;
+		for(i=0;i<info.length; i++) {
+			data.setValue(i, 0, info[i].time);
+			data.setValue(i, 1, info[i].value);
+		}
+        
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Ølhistorikk'});
+        
+    }
+    
+      function drawTemperatureChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Klokkeslett');
+          data.addColumn('number', 'Temperatur');
+          
+          data.addRows(info.length);
+  		var i=0;
+  		for(i=0;i<info.length; i++) {
+  			data.setValue(i, 0, info[i].time);
+  			data.setValue(i, 1, info[i].value);
+  		}
+          
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(data, {width: 700, height: 440, title: 'Selskapssiden - Temperaturhistorikk'});    
+      }
+      
+      function drawNoiseChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Klokkeslett');
+          data.addColumn('number', 'Makstemperatur');
+          
+          data.addRows(info.length);
+  		var i=0;
+  		for(i=0;i<info.length; i++) {
+  			data.setValue(i, 0, info[i].time);
+  			data.setValue(i, 1, info[i].max);
+  		}
+          
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(data, {width: 700, height: 440, title: 'Selskapssiden - Temperatur'});
+          
+      }
+      
+      function drawHumidityChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Klokkeslett');
+          data.addColumn('number', 'Luftfuktighet i prosent');
+          
+          data.addRows(info.length);
+  		var i=0;
+  		for(i=0;i<info.length; i++) {
+  			data.setValue(i, 0, info[i].time);
+  			data.setValue(i, 1, info[i].value);
+  		}
+          
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Fuktighet'});
+      }
+      
+      function drawUserDataChart() {
+    	  var data = new google.visualization.DataTable();
+    	  data.addColumn('string', 'Lokasjon');
+    	  data.addColumn('number', 'Personer');
+    	  
+    	  data.addRows(info.length);
+    	  var i=0;
+    	  for(i=0;i<info.length; i++) {
+    			data.setValue(i, 0, info[i].locationName);
+    			data.setValue(i, 1, info[i].userCount);
+    		}
+            
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, {width: 700, height: 440, title: 'Personer på Samfundet'});
+      }
  
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
-  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script src="kinetic.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  
-  <script type="text/javascript">
-	  function draw(){
-		  var kin = new Kinetic("ukaCanvas", "2d");
- 
-			kin.setDrawStage(function(){
-			kin.clear();
-			var canvas = kin.getCanvas();
-			var context = kin.getContext();
-	}
-  </script>
-   
-</head> 
+    </script>
+</head>
 
-<body onload="draw();"> 
-  <header> 
-     <h1>FindMyApp</h1>
-  </header>
-  
-  <article> 
-		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
-  </article> 
- 
+<body> 
+	<div id="content">
+	<!-- Sidebar / Aside -->
+	<aside>
+		<section>
+			<ul id="main_nav">
+		        <li><a href='UkaStats.html' class='awesomeButton'>Hovedside</a></li>
+		    </ul>
+		</section>
+		
+		<section>
+			<ul id="aside_nav">
+		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'beersale');">Ølsalg</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
+			 </ul>
+		</section>
+	</aside>
+	
+	<div id="mcontent">
+		<!-- Content Section -->
+		<div id="chart_div"></div>
+	</div>
+	</div>
 </body> 
-
-<footer>
-      <ul> 
-      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
-      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
-      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
-      </ul> 
-</footer>
-</html> 
+</html>

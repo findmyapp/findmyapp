@@ -7,9 +7,7 @@ import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.BeerTap;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Noise;
-import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Temperature;
-import no.uka.findmyapp.model.appstore.AppStoreList;
 import no.uka.findmyapp.service.SensorService;
 
 import org.slf4j.Logger;
@@ -20,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +55,21 @@ public class SensorController {
 		}
 	}
 	
+	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Noise.class)
+	public ModelAndView getNoiseData(
+			@PathVariable int locationId) {
+		
+		Noise noise = service.getLatestNoiseData(locationId);
+		
+		if(noise == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","noise",noise);
+		}
+	}
+	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,
@@ -86,6 +98,8 @@ public class SensorController {
 		return new ModelAndView("json","noise",noiseList);
 	}
 	
+	
+	
 	@RequestMapping(value="/{locationId}/humidity",method = RequestMethod.GET)
 	public ModelAndView getHumidityData(
 			@PathVariable int locationId,
@@ -99,6 +113,24 @@ public class SensorController {
 		
 		return new ModelAndView("json","humidity",humidityList);
 	}
+	
+	
+	@RequestMapping(value="/{locationId}/humidity/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Humidity.class)
+	public ModelAndView getHumidityData(
+			@PathVariable int locationId) {
+		
+		Humidity humi = service.getLatestHumidityData(locationId);
+		
+		if(humi == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","humidity",humi);
+		}
+	}
+	
+	
 
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(

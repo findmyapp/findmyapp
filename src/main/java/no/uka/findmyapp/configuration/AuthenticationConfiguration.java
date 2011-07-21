@@ -11,5 +11,4 @@ public class AuthenticationConfiguration {
 	}
 
 	private String tokenSecret;
-	
 }

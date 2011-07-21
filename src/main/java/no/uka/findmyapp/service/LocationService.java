@@ -17,6 +17,7 @@ import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationStatus;
 import no.uka.findmyapp.model.Noise;
+import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.Temperature;
@@ -36,12 +37,18 @@ public class LocationService {
 	private LocationRepository data;
 	@Autowired
 	private SensorRepository sensor;
+	@Autowired
+	private UserService userService;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramRepository.class);
 	
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
+	}
+	
+	public Location getLocation(int locationId) {
+		return data.getLocation(locationId);
 	}
 
 	/*
@@ -54,6 +61,10 @@ public class LocationService {
 
 	public int getUserCountAtLocation(int locationId){
 		return data.getUserCountAtLocation(locationId);
+	}
+	
+	public List<LocationCount> getUserCountAtAllLocations() {
+		return data.getUserCountAtAllLocations();
 	}
 	
 	public boolean registerSample(Sample sample) {
@@ -72,12 +83,17 @@ public class LocationService {
 		return data.getLocationOfAllUsers();
 	}
 
-	public Location getLocationOfFriend(int friendId) {
-		return data.getLocationOfFriend(friendId);
+	public Location getLocationOfFriend(int friendId, String accessToken) {
+		List<User> friends = userService.getRegisteredFacebookFriends(accessToken);
+		for (User u : friends) {
+			if(u.getLocalUserId() == friendId) return data.getLocationOfFriend(friendId);
+		}
+		return null;
 	}
 
-	public Map<Integer, Integer> getLocationOfFriends(int userId) {
-		return data.getLocationOfFriends(userId);
+	public Map<Integer, Integer> getLocationOfFriends(int userId, String accessToken) {
+		List<String> friendIds = userService.getFacebookFriends(accessToken);
+		return data.getLocationOfFriends(userId, friendIds);
 	}
 
 	public Location getCurrentLocation(List<Signal> signals)
@@ -223,8 +239,8 @@ public class LocationService {
 			if(to != null){logger.info("got in from to!");
 			 reportedData = data.getUserReportedDataFromTo(locationId, from,to,parName);
 			 
-			}else{logger.info("got in from to!");reportedData = data.getUserReportedDataFrom(locationId, from,parName);
-			}
+			}else{logger.info("got in from!");reportedData = data.getUserReportedDataFrom(locationId, from,parName);
+		}
 		
 		}else if(from ==null && to == null && numberOfelements ==0){
 			reportedData = data.getUserReportedData(locationId,parName);

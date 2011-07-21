@@ -10,7 +10,6 @@ import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.AppStoreList;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,41 +27,41 @@ public class AppStoreRepository {
 	.getLogger(AppStoreRepository.class);
 
 
-	public List<App> getAppList(int count, int listType, int platform, String app_category) {
+	public List<App> getAppList(int from, int to, int listType, String platform, String app_category) {
 		List<App> appList;
 		switch (listType) {
 		case 1:
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? LIMIT 0,?",
-					new AppRowMapper(), platform, count);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? LIMIT ?,?",
+					new AppRowMapper(), platform, from, to);
 			logger.info(appList+ "");
 			logger.info("Listing 10 apps");
 			break;
 
 		case 2:
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? ORDER BY times_downloaded DESC LIMIT 0,? ",
-					new AppRowMapper(), platform, count);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? ORDER BY times_downloaded DESC LIMIT ?,? ",
+					new AppRowMapper(), platform, from, to);
 			logger.info(appList+ "");
 			logger.info("Sorting after most downloaded");
 			break;
 
 		case 3:			
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? ORDER BY publish_date DESC LIMIT 0,?",
-					new AppRowMapper(), platform, count);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? ORDER BY publish_date DESC LIMIT ?,?",
+					new AppRowMapper(), platform, from, to);
 			logger.info(appList+ "");
 			logger.info("Sorting after publish date");
 			break;
 
 		case 4:			
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? AND category=? ORDER BY publish_date DESC LIMIT 0,?",
-					new AppRowMapper(), platform, app_category, count);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? AND category=? ORDER BY publish_date DESC LIMIT ?,?",
+					new AppRowMapper(), platform, app_category, from, to);
 			logger.info(appList+ "");
 			logger.info("Getting apps by category");
 			break;
 
 
 		default:
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? LIMIT 0,?",
-					new AppRowMapper(), platform, count);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? LIMIT ?,?",
+					new AppRowMapper(), platform, from, to);
 			logger.info(appList + "  DEFAULT!");
 			break;
 		}
@@ -123,7 +122,7 @@ public class AppStoreRepository {
 						throws SQLException {
 							ps.setString(1, app.getName());
 							ps.setString(2, app.getMarketID());
-							ps.setInt(3, app.getPlatform());
+							ps.setString(3, app.getPlatform());
 							ps.setString(4, app.getDescription());
 							ps.setString(5, app.getFacebookAppID());
 							ps.setString(6, app.getDeveloperID());
@@ -147,7 +146,7 @@ public class AppStoreRepository {
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 						throws SQLException {
-							ps.setInt(1, featuredApp.getPlatform());
+							ps.setString(1, featuredApp.getPlatform());
 						}
 					});
 			logger.info("Category reset success!");

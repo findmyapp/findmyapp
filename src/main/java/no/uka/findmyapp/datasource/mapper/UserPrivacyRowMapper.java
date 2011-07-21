@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UserPrivacy;
+
 import org.springframework.jdbc.core.RowMapper;
 
 public class UserPrivacyRowMapper implements RowMapper<UserPrivacy> {

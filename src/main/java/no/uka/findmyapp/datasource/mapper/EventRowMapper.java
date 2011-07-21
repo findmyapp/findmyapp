@@ -3,14 +3,15 @@ package no.uka.findmyapp.datasource.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaEvent;
+
 import org.springframework.jdbc.core.RowMapper;
 
-public class EventRowMapper implements RowMapper<Event> {
+public class EventRowMapper implements RowMapper<UkaEvent> {
 
 
-	public Event mapRow(ResultSet rs, int arg1) throws SQLException {
-		Event event = new Event();
+	public UkaEvent mapRow(ResultSet rs, int arg1) throws SQLException {
+		UkaEvent event = new UkaEvent();
 		event.setId(rs.getInt("id"));//returnerer id fra event_showing_real
 		event.setShowingTime(rs.getTimestamp("showing_time"));
 		event.setPlace(rs.getString("place"));

@@ -1,7 +1,7 @@
 package no.uka.findmyapp.datasource;
 
-import java.util.Date; 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.User;

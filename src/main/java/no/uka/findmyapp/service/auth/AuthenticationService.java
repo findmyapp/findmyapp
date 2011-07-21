@@ -4,17 +4,14 @@ import java.util.GregorianCalendar;
 
 import no.uka.findmyapp.configuration.AuthenticationConfiguration;
 import no.uka.findmyapp.datasource.UserRepository;
-import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.auth.AppAuthInfo;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.core.token.Sha512DigestUtils;
-import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
-import org.springframework.social.NotAuthorizedException;
+import org.springframework.security.oauth.provider.BaseConsumerDetails;
+import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
@@ -22,10 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-	@Autowired
-	UserRepository userRepository;
+	//@Autowired
+	AuthenticationRepository authRepo;
+	//@Autowired
+	UserRepository userRepo;
 
-	@Autowired
+	//@Autowired
 	AuthenticationConfiguration authConfig;
 
 	private static final Logger logger = LoggerFactory
@@ -47,11 +46,11 @@ public class AuthenticationService {
 		String token = null;
 		logger.debug("Fetching user with facebook id: " + userId);
 		
-		int count = userRepository.isExistingUser(userId);
+		int count = userRepo.isExistingUser(userId);
 		if (count == 0) {
 			logger.debug("User not found. Adding user with facebook id: "
 					+ userId);
-			userRepository.addUserWithFacebookId(userId);
+			userRepo.addUserWithFacebookId(userId);
 		}
 		
 		token = generateToken(userId);
@@ -84,6 +83,17 @@ public class AuthenticationService {
 		String calculatedHash = calculateHash(base + authConfig.getTokenSecret());
 
 		return hash.equals(calculatedHash);
+	}
+
+	public UKAppsConsumerDetails loadConsumer(String consumerKey) throws ConsumerKeyNotFoundException {
+		AppAuthInfo authInfo = authRepo.getAppAuthInfoByConsumerKey(consumerKey);
+		
+		UKAppsConsumerDetails consumerDetails = new UKAppsConsumerDetails();
+		consumerDetails.setConsumerId(authInfo.getAppId());
+		consumerDetails.setConsumerKey(authInfo.getConsumerKey());
+		consumerDetails.setSignatureSecret(authInfo.getConsumerSecret());
+		
+		return consumerDetails;
 	}
 
 }
