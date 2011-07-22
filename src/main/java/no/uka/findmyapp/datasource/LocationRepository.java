@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
@@ -23,6 +24,7 @@ import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
@@ -327,5 +329,124 @@ public class LocationRepository {
 								+ "WHERE position_location_id = ? ORDER BY rand() limit 1;",
 						new FactRowMapper(), locationId);
 	}
+/*
+ * --------------------------------UserReports---------------------------------------
+ */
+	
 
+	public void addData(LocationReport locationReport, int locationId) {
+		Date now = new Date();
+		try {
+			jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER_VALUE " +
+				"(position_location_id ,custom_parameter_id,float_value, string_value, time) " +
+				"VALUES(?,(SELECT custom_parameter_id FROM CUSTOM_PARAMETER WHERE parameter_name = ?)," +
+				"?,?,?)",locationId,locationReport.getParameterName(),locationReport.getParameterNumberValue(),
+				 locationReport.getParameterTextValue(),now);
+			logger.info("Data logged: " + locationReport.toString());
+			
+			
+		} catch (Exception e) {logger.error("Could not clean the given parameter: " + e);}
+		
+	}
+
+	public List<LocationReport> getLastUserReportedData(int locationId,
+			int numberOfelements, String parName) {
+		logger.info("Fetching data ");
+		try {
+			return  jdbcTemplate.query("SELECT * FROM " +
+					"CUSTOM_PARAMETER_VALUE AS CPV " +
+					"JOIN CUSTOM_PARAMETER AS CP " +
+					"on CPV.custom_parameter_id = " +
+					"CP.custom_parameter_id " +
+					"WHERE parameter_name = ? " +
+					"AND position_location_id=? " +
+					"ORDER BY time DESC LIMIT 0,? ", new LocationReportRowMapper(),parName,locationId,numberOfelements);
+		
+			
+			
+		} catch (Exception e) {logger.error("Could get the last values of parameter: " + e); return null;}
+		
+	}
+
+	public List<LocationReport> getUserReportedDataFromTo(int locationId,
+			Date from, Date to, String parName) {
+		logger.info("Fetching data ");
+		try {
+			return jdbcTemplate.query("SELECT * FROM " +
+					"CUSTOM_PARAMETER_VALUE AS CPV " +
+					"JOIN CUSTOM_PARAMETER AS CP " +
+					"on CPV.custom_parameter_id = " +
+					"CP.custom_parameter_id " +
+					"WHERE parameter_name = ? " +
+					"AND position_location_id=? " +
+					"AND time >= ? AND time <= ?", new LocationReportRowMapper(),parName,locationId,from,to);
+			
+		} catch (Exception e) {logger.error("Could not parameter between dates: " + e); return null;}
+		
+
+	}
+
+	public List<LocationReport> getUserReportedDataFrom(int locationId,
+			Date from, String parName) {
+		logger.info("Fetching data ");
+		try {
+			return jdbcTemplate.query("SELECT * FROM " +
+					"CUSTOM_PARAMETER_VALUE AS CPV " +
+					"JOIN CUSTOM_PARAMETER AS CP " +
+					"on CPV.custom_parameter_id = " +
+					"CP.custom_parameter_id " +
+					"WHERE parameter_name = ? " +
+					"AND position_location_id=? " +
+					"AND time >= ?", new LocationReportRowMapper(),parName,locationId,from);
+			
+		} catch (Exception e) {logger.error("Could ni get parameter from date: " + e); return null;}
+	
+	}
+
+	public List<LocationReport> getUserReportedData(int locationId,
+			String parName) {
+			logger.info("Fetching data HEHR ");
+			try {
+				return jdbcTemplate.query("SELECT * FROM " +
+						"CUSTOM_PARAMETER_VALUE AS CPV " +
+						"JOIN CUSTOM_PARAMETER AS CP " +
+						"on CPV.custom_parameter_id = " +
+						"CP.custom_parameter_id " +
+						"WHERE parameter_name = ? " +
+						"AND position_location_id=? ", new LocationReportRowMapper(),parName,locationId);
+						
+			} catch (Exception e) {logger.error("Read API for what arguments are allowed " + e);
+				return null;}
+			
+	}
+/*
+ * ---------------------------ManageParameter-------------------------------------
+ */
+	public void addParameter(String parName,String devId) {
+		logger.info("Adding Parameter:"+parName);
+		try {jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER " +
+				"(parameter_name,appstore_developer_id)VALUES(?,?)",parName,devId);
+								
+		} catch (Exception e) {logger.error("Could not add given parameter: " + e);}
+			
+	}
+
+	public void cleanParameter(String parName) {//Must have access check in service
+		logger.info("Cleaning Parameter:"+parName);
+		try {
+			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE" +
+					" WHERE custom_parameter_id =" +
+					" (SELECT custom_parameter_id FROM CUSTOM_PARAMETER " +
+						"WHERE parameter_name = ?)",parName);
+					
+		} catch (Exception e) {logger.error("Could not clean the parameter: " + e);}
+	}
+
+	public void removeParameter(String parName) {//Must have access check in service
+		try {jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER WHERE " +
+				" parameter_name = ?",parName);
+								
+		} catch (Exception e) {logger.error("Could not remove given parameter: " + e);}
+		
+	}
 }
