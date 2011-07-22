@@ -25,12 +25,18 @@ public class SensorService {
 		return (float) 111.111;// Dummy method, will calculate decibel
 	}
 	
-	public Temperature getLatestTemperatureData(int location) {
-		return data.getLatestTemperatureData(location);
+	public List<Temperature> getLatestTemperatureData(int location, String limit) {
+		if (limit == null) {
+			return data.getLatestTemperatureData(location, 1);
+		}
+		return data.getLatestTemperatureData(location, Integer.parseInt(limit));
 	}
 	
-	public Noise getLatestNoiseData(int location) {
-		return data.getLatestNoiseData(location);
+	public List<Noise> getLatestNoiseData(int location, String limit) {
+		if (limit == null) {
+			return data.getLatestNoiseData(location, 1);
+		}
+		return data.getLatestNoiseData(location, Integer.parseInt(limit));
 	}
 
 
@@ -91,8 +97,11 @@ public class SensorService {
 		return hum;
 	}
 	
-	public Humidity getLatestHumidityData(int location) {	
-		return data.getLatestHumidityData(location);
+	public List<Humidity> getLatestHumidityData(int location, String limit) {	
+		if (limit == null) {
+			return data.getLatestHumidityData(location, 1);
+		}
+		return data.getLatestHumidityData(location, Integer.parseInt(limit));
 	}
 	
 
@@ -103,6 +112,13 @@ public class SensorService {
 		} else {
 			return data.getBeertapData(locationId, tapnr);
 		}
+	}
+	
+	public List<BeerTap> getLatestBeerTapData(int location, int tapNr, String limit) {	
+		if (limit == null) {
+			return data.getLatestBeerTapData(location, tapNr, 1);
+		}
+		return data.getLatestBeerTapData(location, tapNr, Integer.parseInt(limit));
 	}
 
 	public int getBeertapSum(int locationId, int tapnr, Date from, Date to) {

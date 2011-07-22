@@ -43,9 +43,10 @@ public class SensorController {
 	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=Temperature.class)
 	public ModelAndView getTemperatureData(
-			@PathVariable int locationId) {
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
 		
-		Temperature temp = service.getLatestTemperatureData(locationId);
+		List<Temperature> temp = service.getLatestTemperatureData(locationId, limit);
 		
 		if(temp == null){
 			return new ModelAndView("fail_respons");
@@ -58,9 +59,10 @@ public class SensorController {
 	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=Noise.class)
 	public ModelAndView getNoiseData(
-			@PathVariable int locationId) {
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
 		
-		Noise noise = service.getLatestNoiseData(locationId);
+		List<Noise> noise = service.getLatestNoiseData(locationId, limit);
 		
 		if(noise == null){
 			return new ModelAndView("fail_respons");
@@ -118,16 +120,18 @@ public class SensorController {
 	@RequestMapping(value="/{locationId}/humidity/latest",method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=Humidity.class)
 	public ModelAndView getHumidityData(
-			@PathVariable int locationId) {
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
 		
-		Humidity humi = service.getLatestHumidityData(locationId);
+		List<Humidity> humidity = service.getLatestHumidityData(locationId, limit);
 		
-		if(humi == null){
+		if(humidity == null){
 			return new ModelAndView("fail_respons");
 		}
 		else{
-			return new ModelAndView("json","humidity",humi);
+			return new ModelAndView("json","humidity",humidity);
 		}
+			
 	}
 	
 	
@@ -146,6 +150,23 @@ public class SensorController {
 			beertapList = service.getBeertapData(locationId,tapNr, from, to);
 			return new ModelAndView("json","beers", beertapList);
 		}
+	}
+	
+	@RequestMapping(value="/{locationId}/beertap/{tapNr}/latest",method = RequestMethod.GET)
+	public ModelAndView getBeerTapData(
+			@PathVariable int locationId,
+			@PathVariable int tapNr,
+			@RequestParam (required = false) String limit) {
+		
+		List<BeerTap> beertap = service.getLatestBeerTapData(locationId, tapNr, limit);
+		
+		if(beertap == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","beertap",beertap);
+		}
+			
 	}
 
 	/**
