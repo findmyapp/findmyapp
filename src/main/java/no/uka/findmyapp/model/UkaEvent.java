@@ -21,7 +21,7 @@ public class UkaEvent {
 	private int ageLimit;
 	private int lowestPrice;
 	//private Timestamp publishTime;
-	//private long eventId;
+	private long eventId;
 	//private Timestamp netsaleFrom;
 	//private Timestamp netsaleTo;
 	//private int entranceId;
@@ -113,18 +113,19 @@ public class UkaEvent {
 	public int getLowestPrice() {
 		return lowestPrice;
 	}
+
+	public long getEventId() {
+		return eventId;
+	}	
+	public void setEventId(long eventId) {
+		this.eventId = eventId;
+	}
 	/*
 	public Timestamp getPublishTime() {
 		return publishTime;
 	}
 	public void setPublishTime(Timestamp publishTime) {
 		this.publishTime = publishTime;
-	}
-	public long getEventId() {
-		return eventId;
-	}	
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
 	}
 	public Timestamp getNetsaleFrom() {
 		return netsaleFrom;

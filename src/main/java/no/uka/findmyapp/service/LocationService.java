@@ -196,9 +196,9 @@ public class LocationService {
 		List <LocationReport> averagedance = getReports(locationId,"average",10,null,null,"dance_factor");
 		List <LocationReport> averageflirt = getReports(locationId,"average",10,null,null,"flirt_factor");
 		
-		Noise noise = sensor.getLatestNoiseData(locationId);
-		Temperature temp = sensor.getLatestTemperatureData(locationId);
-		Humidity hum = sensor.getLatestHumidityData(locationId);
+		Noise noise = sensor.getLatestNoiseData(locationId, 1).get(0);
+		Temperature temp = sensor.getLatestTemperatureData(locationId, 1).get(0);
+		Humidity hum = sensor.getLatestHumidityData(locationId, 1).get(0);
 		int beerTappedOnLocation = sensor.getBeertapSum(locationId);
 		int headcount = data.getUserCountAtLocation(locationId);
 		

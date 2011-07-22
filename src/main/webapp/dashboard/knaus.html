@@ -11,17 +11,14 @@
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
   <script type="text/javascript">
     
-    google.load("visualization", "1", {packages:["corechart"]});
+    google.load('visualization', '1', {'packages':['corechart', 'gauge']});
     google.setOnLoadCallback(getData(2,"beersale"));
+    
+    function goHist(a) {
+  	  history.go(a); 
+  	}
+    
     </script>
-   
-   <script language="JavaScript">
-	<!--
-	function goHist(a) {
-	  history.go(a); 
-	}
-	//-->
-	</script>
    
 </head> 
 
