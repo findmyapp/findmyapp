@@ -116,7 +116,7 @@ public class AppStoreRepository {
 		final App app = newApp;
 		try{
 			jdbcTemplate.update(
-					"INSERT INTO APPSTORE_APPLICATION(name, market_identifier, platform, description, facebook_app_id, appstore_developer_id, publish_date) VALUES(?,?,?,?,?,?,NOW())",
+					"INSERT INTO APPSTORE_APPLICATION(name, market_identifier, platform, description, facebook_app_id, appstore_developer_id, publish_date, thumb_image, facebook_secret) VALUES(?,?,?,?,?,?,NOW(),?,?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 						throws SQLException {
@@ -126,6 +126,8 @@ public class AppStoreRepository {
 							ps.setString(4, app.getDescription());
 							ps.setString(5, app.getFacebookAppID());
 							ps.setString(6, app.getDeveloperID());
+							ps.setString(7, app.getThumbImage().toString());
+							ps.setString(8, app.getFacebookSecret());
 						}
 					});
 			
