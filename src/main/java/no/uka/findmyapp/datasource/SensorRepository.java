@@ -34,20 +34,20 @@ public class SensorRepository {
 	 */
 
 
-	public Temperature getLatestTemperatureData(int location) {
+	public List<Temperature> getLatestTemperatureData(int location, int limit) {
 
-		Temperature temp = jdbcTemplate.queryForObject(
-				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
-				new SensorTemperatureRowMapper(), location);
+		List<Temperature> temp = jdbcTemplate.query(
+				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,?",
+				new SensorTemperatureRowMapper(), location, limit);
 		logger.info("received temperature list");
 		return temp;
 	}
 	
-	public Noise getLatestNoiseData(int location) {
+	public List<Noise> getLatestNoiseData(int location, int limit) {
 
-		Noise noise = jdbcTemplate.queryForObject(
-				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
-				new SensorNoiseRowMapper(), location);
+		List<Noise> noise = jdbcTemplate.query(
+				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,?",
+				new SensorNoiseRowMapper(), location, limit);
 		logger.info("received noise list");
 		return noise;
 	}
@@ -163,12 +163,12 @@ public class SensorRepository {
 		return humidityList;
 	}
 	
-	public Humidity getLatestHumidityData(int location) {
-		Humidity humi = jdbcTemplate.queryForObject(
-				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,1",
-				new SensorHumidityRowMapper(), location);
+	public List<Humidity> getLatestHumidityData(int location, int limit) {
+		List<Humidity> humidity = jdbcTemplate.query(
+				"SELECT * FROM SENSOR_HUMIDITY WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,?",
+				new SensorHumidityRowMapper(), location, limit);
 		logger.info("received humidity list");
-		return humi;
+		return humidity;
 	}
 
 
@@ -194,6 +194,14 @@ public class SensorRepository {
 						new SensorBeertapRowMapper(), location, tapnr, from, to);
 		logger.info("received beertap list");
 		return beertapList;
+	}
+	
+	public List<BeerTap> getLatestBeerTapData(int location, int tapnr,  int limit) {
+		List<BeerTap> humidity = jdbcTemplate.query(
+				"SELECT * FROM SENSOR_BEERTAP WHERE position_location_id  = ? AND tapnr = ? ORDER BY date DESC LIMIT 0,?",
+				new SensorBeertapRowMapper(), location, tapnr, limit);
+		logger.info("received beertap list");
+		return humidity;
 	}
 
 	public int getBeertapSum(int location) {
