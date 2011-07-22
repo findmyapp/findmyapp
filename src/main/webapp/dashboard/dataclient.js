@@ -7,8 +7,8 @@
     	var request;
     	    
     	if (datatype == "temperature") {
-    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
-//    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/temperature/latest';
+//    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
+    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/temperature/latest';
     		request = new ajaxObject(url, processTemperatureData);
     		request.update();  // Server is contacted here.
     	} else if (datatype == "humidity") {
