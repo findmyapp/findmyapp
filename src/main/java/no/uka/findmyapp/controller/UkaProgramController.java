@@ -128,7 +128,7 @@ public class UkaProgramController {
 	public ModelAndView getFriendsAttendingEvent(
 			@PathVariable("id") int eventId,
 			@RequestParam String accessToken){
-		ModelAndView mav = new ModelAndView("friendsAtEvent");
+		ModelAndView mav = new ModelAndView("json");
 		List<User> users = userService.getFriendsAtEvent(eventId, accessToken);
 		mav.addObject("users", users);
 		return mav;

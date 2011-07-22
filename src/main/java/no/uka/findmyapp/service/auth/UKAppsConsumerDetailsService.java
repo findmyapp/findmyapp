@@ -10,7 +10,7 @@ import org.springframework.security.oauth.provider.ConsumerDetailsService;
 
 public class UKAppsConsumerDetailsService implements ConsumerDetailsService {
 
-	@Autowired 
+	//@Autowired 
 	AuthenticationService service;
 
 	public ConsumerDetails loadConsumerByConsumerKey(String consumerKey)

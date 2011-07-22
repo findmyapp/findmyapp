@@ -4,40 +4,49 @@
 <head> 
   <meta charset="utf-8" /> 
   <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
-  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script src="kinetic.js"></script>
+  <title>UKA 2011</title> 
+  <script type="text/javascript" src="ajaxobject.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="dataclient.js"></script>
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  
   <script type="text/javascript">
-	  function draw(){
-		  var kin = new Kinetic("ukaCanvas", "2d");
- 
-			kin.setDrawStage(function(){
-			kin.clear();
-			var canvas = kin.getCanvas();
-			var context = kin.getContext();
-	}
-  </script>
+    
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(getData(2,"beersale"));
+    
+    function goHist(a) {
+  	  history.go(a); 
+  	}
+    
+    </script>
    
 </head> 
 
-<body onload="draw();"> 
-  <header> 
-     <h1>FindMyApp</h1>
-  </header>
-  
-  <article> 
-		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
-  </article> 
- 
+<body> 
+	<div id="content">
+	<!-- Sidebar / Aside -->
+	<aside>
+		<section>
+			<ul id="main_nav">
+		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
+		    </ul>
+		</section>
+		
+		<section>
+			<ul id="aside_nav">
+		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
+				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
+			 </ul>
+		</section>
+	</aside>
+	
+	<div id="mcontent">
+		<!-- Content Section -->
+		<div id='chart_div'></div>
+	</div>
+	</div>
 </body> 
-
-<footer>
-      <ul> 
-      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
-      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
-      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
-      </ul> 
-</footer>
-</html> 
+</html>
