@@ -14,10 +14,6 @@
     google.load('visualization', '1', {'packages':['corechart', 'gauge']});
     google.setOnLoadCallback(getData(2,"beersale"));
     
-    function goHist(a) {
-  	  history.go(-1); 
-  	}
-    
     </script>
    
 </head> 
@@ -26,7 +22,7 @@
 	<aside>
 		<section>
 			<ul id="main_nav">
-		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
+		        <li><a href="javascript:history.go(-1);" class='awesomeButton'>Hovedside</a></li>
 		    </ul>
 		</section>
 		
