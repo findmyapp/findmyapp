@@ -23,7 +23,7 @@
   <con:entry key="Project Password" value=""/>
   <con:entry key="Export All" value="false"/>
   <con:entry key="Report Format(s)" value=""/>
-  <con:entry key="TestCase" value="&lt;all>"/>
+  <con:entry key="TestCase" value="ping TestCase"/>
   <con:entry key="Print Report" value="false"/>
   <con:entry key="Username" value=""/>
   <con:entry key="Root Folder" value=""/>
@@ -62,7 +62,7 @@
         </con:representation>
         <con:representation type="FAULT">
           <con:mediaType>text/html</con:mediaType>
-          <con:status>401 404</con:status>
+          <con:status>401 404 400</con:status>
           <con:params/>
           <con:element>html</con:element>
         </con:representation>
@@ -901,9 +901,7 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>401</codes>
-              </con:configuration>
+              <con:configuration><codes>401,400</codes></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
@@ -926,9 +924,7 @@
             <con:endpoint>http://findmyapp.net</con:endpoint>
             <con:request/>
             <con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes">
-              <con:configuration>
-                <codes>401</codes>
-              </con:configuration>
+              <con:configuration><codes>401,400</codes></con:configuration>
             </con:assertion>
             <con:credentials>
               <con:username xsi:nil="true"/>
