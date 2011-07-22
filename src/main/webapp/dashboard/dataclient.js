@@ -23,7 +23,7 @@
     		request.update();  // Server is contacted here.
     	}  else if (datatype == "users") {
     		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
-    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/usercount';
+    		url = 'http://findmyapp.net/findmyapp/locations/usercount';
     		request = new ajaxObject(url, processUserData);
     		request.update();  // Server is contacted here.
     	} else if (datatype == "beersale") {
