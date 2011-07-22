@@ -15,7 +15,7 @@
     google.setOnLoadCallback(getData(2,"beersale"));
     
     function goHist(a) {
-  	  history.go(a); 
+  	  history.go(-1); 
   	}
     
     </script>
@@ -23,8 +23,6 @@
 </head> 
 
 <body> 
-	<div id="content">
-	<!-- Sidebar / Aside -->
 	<aside>
 		<section>
 			<ul id="main_nav">
@@ -43,10 +41,8 @@
 		</section>
 	</aside>
 	
-	<div id="mcontent">
-		<!-- Content Section -->
+	<div id="content">
 		<div id='chart_div'></div>
-	</div>
 	</div>
 </body> 
 </html>

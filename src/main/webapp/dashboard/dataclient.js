@@ -145,10 +145,15 @@
           data.setValue(0, 0, 'Temperatur');
           data.setValue(0, 1, info[0].value);
 
+          
           var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
           var options = {width: 200, height: 320, redFrom: 90, redTo: 100,
               yellowFrom:75, yellowTo: 90, minorTicks: 5};
           chart.draw(data, options);
+          var d = document.getElementById('chart_div').firstChild;
+          d.style.marginLeft = 'auto';
+          d.style.marginRight = 'auto';
+   
       }
       
       function drawNoiseChart() {
