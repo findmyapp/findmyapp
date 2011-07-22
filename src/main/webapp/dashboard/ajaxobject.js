@@ -34,7 +34,7 @@ function ajaxObject(url, callbackFunction) {
   			that.AJAX.setRequestHeader("Content-Length", passData.length);
   			that.AJAX.send(passData);
   		  } else {
-  			var uri=urlCall+'?'+passData+'&timestamp='+(that.updating.getTime()); 
+  			var uri=urlCall+'?'+passData; 
   			that.AJAX.open("GET", uri, true);                             
   			that.AJAX.send(null);                                         
   		  }              
