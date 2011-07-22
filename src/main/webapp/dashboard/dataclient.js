@@ -7,10 +7,10 @@
     	var request;
     	    
     	if (datatype == "temperature") {
-    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature';
-    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/temperature/latest';
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
+//    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/temperature/latest';
     		request = new ajaxObject(url, processTemperatureData);
-    		request.update('limit=20');  // Server is contacted here.
+    		request.update();  // Server is contacted here.
     	} else if (datatype == "humidity") {
     		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity';
     		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/humidity/latest';
@@ -138,19 +138,17 @@
     }
     
       function drawTemperatureChart() {
-          var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Klokkeslett');
-          data.addColumn('number', 'Temperatur');
-          
-          data.addRows(info.length);
-  		var i=0;
-  		for(i=0;i<info.length; i++) {
-  			data.setValue(i, 0, info[i].time);
-  			data.setValue(i, 1, info[i].value);
-  		}
-          
-          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-          chart.draw(data, {width: 700, height: 440, title: 'Temperatur'});    
+    	  var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Label');
+          data.addColumn('number', 'Value');
+          data.addRows(1);
+          data.setValue(0, 0, 'Temperatur');
+          data.setValue(0, 1, info[0].value);
+
+          var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+          var options = {width: 200, height: 320, redFrom: 90, redTo: 100,
+              yellowFrom:75, yellowTo: 90, minorTicks: 5};
+          chart.draw(data, options);
       }
       
       function drawNoiseChart() {
