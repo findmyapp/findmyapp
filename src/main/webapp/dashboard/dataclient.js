@@ -94,7 +94,7 @@
 			data.setValue(i, 1, info[i].value);
 		}
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Salg'});
+        chart.draw(data, {width: 700, height: 440, title: 'Salg'});
         
     }
     
@@ -111,7 +111,7 @@
   		}
           
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-          chart.draw(data, {width: 700, height: 440, title: 'Selskapssiden - Temperatur'});    
+          chart.draw(data, {width: 700, height: 440, title: 'Temperatur'});    
       }
       
       function drawNoiseChart() {
@@ -127,7 +127,7 @@
   		}
           
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-          chart.draw(data, {width: 700, height: 440, title: 'Selskapssiden - Temperatur'});
+          chart.draw(data, {width: 700, height: 440, title: 'Temperatur'});
           
       }
       
@@ -144,6 +144,6 @@
   		}
           
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-          chart.draw(data, {width: 700, height: 440, title: 'Bodegaen - Fuktighet'});
+          chart.draw(data, {width: 700, height: 440, title: 'Fuktighet'});
           
       }
