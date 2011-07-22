@@ -12,9 +12,10 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
-import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
@@ -24,8 +25,9 @@ import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
-import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationCount;
+import no.uka.findmyapp.model.LocationReport;
+import no.uka.findmyapp.model.ManageParameterRespons;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -422,31 +424,62 @@ public class LocationRepository {
 /*
  * ---------------------------ManageParameter-------------------------------------
  */
-	public void addParameter(String parName,String devId) {
+	public ManageParameterRespons addParameter(String parName,String devId) {
 		logger.info("Adding Parameter:"+parName);
+				
 		try {jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER " +
 				"(parameter_name,appstore_developer_id)VALUES(?,?)",parName,devId);
-								
-		} catch (Exception e) {logger.error("Could not add given parameter: " + e);}
+			ManageParameterRespons respons = new ManageParameterRespons("parameter: "+parName+" was added", null,null);
+					return respons;		
+		}catch (org.springframework.dao.DuplicateKeyException e) {
+			logger.error("Could not clean the parameter: " + e);
+			ManageParameterRespons respons = new ManageParameterRespons("parameter: "+parName+" could not be added", " probably beacause " +
+					"this  parameter already exists, try with another nice name :) ! ",""+e);
+		return respons;	}
+		
+		catch (org.springframework.dao.DataIntegrityViolationException e) {
+			logger.error("Could not clean the parameter: " + e);
+			ManageParameterRespons respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " probably beacause " +
+					" you have not provided a valid developers id, try again:) ! ",""+e);
+
+				return respons;	}
+		catch (Exception e) {
+			ManageParameterRespons respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " See excepiton message"+
+					" for possible cause. Hopefully its not to hard to understand :)  ",""+e);
+			
+			logger.error("Could not add given parameter: " + e);
+			return respons;}
 			
 	}
 
-	public void cleanParameter(String parName) {//Must have access check in service
+	public ManageParameterRespons cleanParameter(String parName) {//Must have access check in service, add check if variables exist!!
 		logger.info("Cleaning Parameter:"+parName);
+		String respons;
+		
 		try {
 			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE" +
 					" WHERE custom_parameter_id =" +
 					" (SELECT custom_parameter_id FROM CUSTOM_PARAMETER " +
 						"WHERE parameter_name = ?)",parName);
-					
-		} catch (Exception e) {logger.error("Could not clean the parameter: " + e);}
+			return null;
+		} catch (Exception e) {logger.error("Could not clean the parameter: " + e);
+	
+		return null;	}
 	}
 
-	public void removeParameter(String parName) {//Must have access check in service
+	public ManageParameterRespons removeParameter(String parName) {//Must have access check in service, add check if variables exist!!
+		String respons;
 		try {jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER WHERE " +
 				" parameter_name = ?",parName);
+		return null;
 								
-		} catch (Exception e) {logger.error("Could not remove given parameter: " + e);}
+		} catch (Exception e) {logger.error("Could not remove given parameter: " + e);
+		return null;}
 		
+	}
+
+	public ManageParameterRespons findAllParameters() {
+		//TODO
+		return null;
 	}
 }

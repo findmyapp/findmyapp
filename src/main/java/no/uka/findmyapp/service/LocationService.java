@@ -16,6 +16,7 @@ import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationStatus;
+import no.uka.findmyapp.model.ManageParameterRespons;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.Sample;
@@ -242,7 +243,7 @@ public class LocationService {
 			}else{logger.info("got in from!");reportedData = data.getUserReportedDataFrom(locationId, from,parName);
 		}
 		
-		}else if(from ==null && to == null && numberOfelements ==0){
+		}else if(from ==null && to == null && numberOfelements ==0 && parName!=null){
 			reportedData = data.getUserReportedData(locationId,parName);
 		}
 		else{
@@ -297,14 +298,16 @@ public class LocationService {
 	}
 
 	
-	public void manageParams(String action, String parName,String devId) throws IllegalArgumentException{//must also check dev id, and clean string.
+	public ManageParameterRespons manageParams(String action, String parName,String devId) throws IllegalArgumentException{//must also check dev id, and clean string.
+		if(action==null){
+			return data.findAllParameters();}
 		if(action.equals("add")){
-			data.addParameter(parName, devId);
+			return data.addParameter(parName, devId);
 		}else if(action.equals("remove")){
-			data.removeParameter(parName);
+			return data.removeParameter(parName);
 		}else if(action.equals("clean")){
-			data.cleanParameter(parName);
-		}else{throw new IllegalArgumentException("Read API for what arguments are allowed");}
+			return data.cleanParameter(parName);
+		}else{throw new IllegalArgumentException("Read API for what arguments are allowed and required");}
 	}
 	
 }

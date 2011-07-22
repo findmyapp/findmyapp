@@ -55,18 +55,6 @@ public class UserController {
 		return model;
 	}
 
-//	Testing made i SoapUI 
-//	@RequestMapping(value = "/testing", method = RequestMethod.GET)
-//	public ModelAndView testForPrivacyMethods() {
-//
-//		boolean success = true; 
-//		success = service.testingForUserServiceOne();
-//
-//		logger.info("testresult is " + success);
-//		return new ModelAndView("test", "result", success); 
-//	}
-
-
 	/**
 	 * POST method where it is possible to change privacy settings
 	 * Privacy settings: 1 = ANYONE, 2 = FRIENDS, 3 = ONLY ME 
