@@ -63,13 +63,14 @@ public class ServiceInfoService {
 				String localIdentifier = m.getName();
 				String controllerName = clazz.getSimpleName().replace("Controller", "");
 				Class returnType = smm.returnType();
+				//new URI("no.uka.findmyapp.android.rest.providers." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
 				
 				list.add(new ServiceModel(new URI("http://findmyapp.net/findmyapp/" + controllerLocationPrefix + location),
 						HttpType.valueOf(requestType), 
 						ServiceDataFormat.JSON, 
 						returnType, 
 						null, 
-						new URI("no.uka.findmyapp.android.rest.providers." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
+						new URI("no.uka.findmyapp.android.rest.providers/" + returnType.getSimpleName().toLowerCase()), 
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
 						localIdentifier));
 				
