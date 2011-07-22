@@ -9,8 +9,9 @@ import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
-import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.model.LocationCount;
+import no.uka.findmyapp.model.LocationReport;
+import no.uka.findmyapp.model.ManageParameterRespons;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
@@ -217,22 +218,22 @@ public class LocationController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/{id}/userreports", method = RequestMethod.GET)//if no params given: returns the last 10 min of official findmyapp params by default.
+	@RequestMapping(value="/{id}/userreports", method = RequestMethod.GET)
 	public ModelAndView getReports(@PathVariable("id") int locationId,//ADD ERROR HANDLING
 			@RequestParam (required = false) String action,//average 
-			@RequestParam (required = false, defaultValue = "0") int numberOfelements,//If want to pick out the last elements
+			@RequestParam (required = false, defaultValue = "0") int noe,//If want to pick out the last noe nr of elements
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam (required = false) String parName
+			@RequestParam (required = false) String parname
 		){
 			try{
 				List<LocationReport> reports= service.getReports(locationId,
 			
 					action,
-					numberOfelements,
+					noe,
 					from,
 					to,
-					parName
+					parname
 					);
 			
 			return new ModelAndView("json","location_real_time", reports);}
@@ -243,15 +244,15 @@ public class LocationController {
 	
 	
 
-	@RequestMapping(value="/{id}/userreports/develop", method = RequestMethod.GET)
-	public ModelAndView addParameter(//ADD ERROR HANDLING, max elem
+	@RequestMapping(value="/developer", method = RequestMethod.GET)
+	public ModelAndView manageParameter(//ADD ERROR HANDLING, max elem
 			@RequestParam  String action,//Has to be either addparam, removeparam or removedata
-			@RequestParam  String parName,
-			@RequestParam  String devId
+			@RequestParam  String parname,
+			@RequestParam  String devid
 			){
 				
 			
-		service.manageParams(action,parName,devId);
-		return new ModelAndView("ok_respons");
+		ManageParameterRespons respons = service.manageParams(action,parname,devid);
+		return new ModelAndView("json","reponse", respons);
 	}
 }
