@@ -2,23 +2,17 @@ package no.uka.findmyapp.service;
 
 import java.util.GregorianCalendar;
 
-import javax.security.auth.login.LoginException;
-
 import no.uka.findmyapp.configuration.AuthenticationConfiguration;
 import no.uka.findmyapp.datasource.AuthenticationRepository;
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.auth.AppAuthInfo;
 import no.uka.findmyapp.model.auth.UKAppsConsumerDetails;
 import no.uka.findmyapp.service.auth.ConsumerKeyNotFoundException;
-import no.uka.findmyapp.service.auth.ErrorLoadingUserAssociatedWithTokenException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.security.oauth.provider.BaseConsumerDetails;
-import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
