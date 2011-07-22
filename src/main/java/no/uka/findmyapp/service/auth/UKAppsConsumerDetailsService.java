@@ -1,6 +1,8 @@
 package no.uka.findmyapp.service.auth;
 
 
+import no.uka.findmyapp.service.AuthenticationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth.common.OAuthException;
 import org.springframework.security.oauth.provider.ConsumerDetails;

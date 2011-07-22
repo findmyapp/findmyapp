@@ -26,8 +26,17 @@ public class AppAuthInfo {
 		this.appId = appId;
 	}
 
+	public String getConsumerRole() {
+		return consumerRole;
+	}
+	
+	public void setConsumerRole(String consumerRole) {
+		this.consumerRole = consumerRole;
+	}
+
 	private int appId;
 	private String consumerKey;
 	private String consumerSecret;
+	private String consumerRole;
 
 }
