@@ -4,7 +4,7 @@
 <head> 
   <meta charset="utf-8" /> 
   <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
+  <title>UKA 2011</title> 
   <script type="text/javascript" src="ajaxobject.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="dataclient.js"></script>
@@ -13,6 +13,11 @@
     
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(getData(2,"beersale"));
+    
+    function goHist(a) {
+  	  history.go(a); 
+  	}
+    
     </script>
    
 </head> 
@@ -23,7 +28,7 @@
 	<aside>
 		<section>
 			<ul id="main_nav">
-		        <li><a href='UkaStats.html' class='awesomeButton'>Hovedside</a></li>
+		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
 		    </ul>
 		</section>
 		

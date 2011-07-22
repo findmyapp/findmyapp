@@ -1,5 +1,7 @@
 package no.uka.findmyapp.datasource.mapper;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,10 +17,13 @@ public class AppRowMapper implements RowMapper<App> {
 		app.setName(rs.getString("name"));
 		app.setCategory(rs.getString("category"));
 		app.setDescription(rs.getString("description"));
-		app.setPlatform(rs.getString("platform"));
-		app.setFacebookAppID(rs.getString("facebook_app_id"));	
+		app.setPlatform(rs.getString("platform"));	
 		app.setDeveloperName(rs.getString("fullname"));
-		app.setFacebookSecret(rs.getString("facebook_secret"));
+		try {
+			app.setThumbImage(new URI(rs.getString(("thumb_image"))));
+		} catch (URISyntaxException e) {
+			app.setThumbImage(null);
+		} 
 		return app;
 	}
 }
