@@ -70,10 +70,10 @@ public class ServiceInfoService {
 						ServiceDataFormat.JSON, 
 						returnType, 
 						null, 
-						new URI("no.uka.findmyapp.android.rest.providers/" + returnType.getSimpleName().toLowerCase()), 
+						null,
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
 						localIdentifier));
-				
+				//new URI("no.uka.findmyapp.android.rest.providers/" + returnType.getSimpleName().toLowerCase()), 
 			}
 		}
 		return list;
