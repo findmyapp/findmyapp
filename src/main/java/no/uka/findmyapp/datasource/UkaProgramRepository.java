@@ -70,4 +70,8 @@ public class UkaProgramRepository {
 		return jdbcTemplate.queryForObject("SELECT * FROM UKA_EVENTS WHERE " +
 				"place = ? AND showing_time > (now()) AND showing_time >= ? AND showing_time <= ? ORDER BY showing_time LIMIT 1", new EventRowMapper(), place, from, to);
 	}
+	public List<UkaEvent> getEventsOnPlace(String place) {
+		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE " +
+				"place = ?", new EventRowMapper(), place);
+	}
 }

@@ -90,6 +90,19 @@ public class UkaProgramController {
 		return new ModelAndView("json", "places", places);
 	}
 	
+	@RequestMapping(value = "/program/{ukaYear}/places/{place}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaEvent.class)
+	// We do not use ukaYear
+	public ModelAndView getEventsOnPlace(
+			@PathVariable String ukaYear, @PathVariable String place)
+			throws UkaYearNotFoundException {
+		
+		logger.info("getEventsOnPlace");
+		List<UkaEvent> events = ukaProgramService.getEventsOnPlace(ukaYear, place);
+
+		return new ModelAndView("json", "event", events);
+	}
+	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/next", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
 	// We do not use ukaYear
