@@ -173,14 +173,13 @@ public class SensorController {
 	@ServiceModelMapping(returnType = Temperature.class)
 	public ModelAndView setTemperatureData(
 			@PathVariable int locationId,
-			@RequestBody Temperature temperature) {
+			@RequestBody float value) {
 
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Temperature data logged for location: " + locationId  + ", Value: "+ temperature.getValue()  );
-		service.setTemperatureData(temperature);
-		mav.addObject("respons", temperature); // model name, model object
 		
-		return mav; 
+		logger.info("Temperature data logged for location: " + locationId  + ", Value: "+ value  );
+		
+		boolean dataReg = service.setTemperatureData(locationId, value);
+		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
 
@@ -188,33 +187,22 @@ public class SensorController {
 	public ModelAndView setNoiseData(
 			@PathVariable int locationId,
 			@RequestBody int[] samples){
-		
-		ModelAndView mav = new ModelAndView("ok_respons");
+	
 		logger.info("Noise data logged for location: " + locationId );
-		
-		Noise noise = service.setNoiseData(locationId, samples);
 			
-		//mav.addObject("respons",noise );
-		mav.addObject("respons","OK" );
-		
-		return mav;
+		boolean dataReg = service.setNoiseData(locationId, samples);
+		return new ModelAndView("json", "dataReg", dataReg);
 	}
 	
 	
 	@RequestMapping(value = "/{locationId}/humidity", method = RequestMethod.POST)
 	public ModelAndView setHumidityData(
 			@PathVariable int locationId,
-			@RequestBody Humidity humidity){
+			@RequestBody float value){
 
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Humidity data logged for location: " + locationId + ", Value: "+ humidity.getValue()  );
-
-		service.setHumidityData(humidity);
-		mav.addObject("respons", humidity); // model name, model object
-		
-		return mav; 
-
-
+		logger.info("Humidity data logged for location: " + locationId + ", Value: "+ value  );	
+		boolean dataReg = service.setHumidityData(locationId, value);
+		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
 	@RequestMapping(value = "/{locationId}/beertap/{tapNr}", method = RequestMethod.POST)
@@ -222,13 +210,10 @@ public class SensorController {
 			@PathVariable int  locationId,
 			@PathVariable int  tapNr,
 			@RequestBody float value){
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: " + tapNr  );
 		
-		BeerTap beerTap = service.setBeertapData(locationId, value, tapNr);
-		mav.addObject("respons", beerTap); // model name, model object
-		return mav;
-
+		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: " + tapNr  );	
+		boolean dataReg = service.setBeertapData(locationId, value, tapNr);
+		return new ModelAndView("json", "dataReg", dataReg);
 
 	}
 	
