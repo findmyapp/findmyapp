@@ -228,7 +228,7 @@ public class LocationService {
 	
 
 	public List<LocationReport> getReports(int locationId, String action, int numberOfelements, Date from, Date to, String parName)throws IllegalArgumentException {
-		List <LocationReport> reportedData =null;
+		List <LocationReport> reportedData = new ArrayList<LocationReport>();
 		logger.info("data:"+locationId+","+numberOfelements);
 		if(from!=null){logger.info("data:"+locationId+","+from.toString());}
 		
@@ -299,15 +299,34 @@ public class LocationService {
 
 	
 	public ManageParameterRespons manageParams(String action, String parName,String devId) throws IllegalArgumentException{//must also check dev id, and clean string.
-		if(action==null){
-			return data.findAllParameters();}
+		ManageParameterRespons respons;
+		if(action==null && devId == null){
+			respons =  data.findAllParameters();}
 		if(action.equals("add")){
-			return data.addParameter(parName, devId);
+			respons = data.addParameter(parName, devId);
+			
 		}else if(action.equals("remove")){
-			return data.removeParameter(parName);
+			respons =  data.removeParameter(parName, devId);
+			if (respons.getNumberOfRowsAffected() ==0){
+				respons.setRespons("Nothing happened!");
+				respons.setStatus(false);
+				respons.setSuggestion("This might be because the parameter never existed,  is already removed, or you do not have the proper authorization");
+			}else{
+				respons.setRespons("Parameter: "+ parName+" was removed");
+				respons.setStatus(true);
+			}
 		}else if(action.equals("clean")){
-			return data.cleanParameter(parName);
+			respons =  data.cleanParameter(parName,devId);
+			if (respons.getNumberOfRowsAffected() ==0){
+				respons.setRespons("Nothing happened!");
+				respons.setSuggestion("This might be because the parameter does not exist, or all the data on the parameter have already been deleted, or you do not have the proper authorization");
+				respons.setStatus(false);
+			}else{
+				respons.setRespons("Parameter: "+ parName+" was cleaned");
+				respons.setStatus(true);
+			}
 		}else{throw new IllegalArgumentException("Read API for what arguments are allowed and required");}
+		return respons;
 	}
 	
 }
