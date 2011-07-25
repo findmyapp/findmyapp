@@ -1,0 +1,47 @@
+package no.uka.findmyapp.service;
+
+import java.util.List;
+
+import no.uka.findmyapp.datasource.DeveloperRepository;
+import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.Developer;
+import no.uka.findmyapp.utils.NumberUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DeveloperService {
+	@Autowired
+	DeveloperRepository developerRepository;
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(DeveloperService.class);
+	
+	public Developer getDeveloperForWpId(int wpId) {
+		return developerRepository.getDeveloperForWpId(wpId);
+	}
+	
+	public int registerDeveloper(Developer developer) {
+		return developerRepository.registerDeveloper(developer);
+	}
+
+	public List<App> getAppsFromDeveloperId(int developer_id) {
+		return developerRepository.getAppsFromDeveloperId(developer_id);
+	}
+	
+	public int registerApp(int developer_id, App app) {
+		return developerRepository.registerApp(developer_id, app, generateConsumerKey(), generateConsumerSecret());
+	}
+	
+	//TODO FIX GENERATION OF KEY/SECRET
+	private String generateConsumerKey() {
+		return "key" + NumberUtils.generateRandomInteger(1000000, 9999999);
+	}
+	
+	private String generateConsumerSecret() {
+		return "secret" + NumberUtils.generateRandomInteger(1000000, 9999999);
+	}
+}
