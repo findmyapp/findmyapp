@@ -17,6 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -169,6 +170,7 @@ public class SensorController {
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/temperature", method = RequestMethod.POST)
 	@ServiceModelMapping(returnType = Temperature.class)
 	public ModelAndView setTemperatureData(
@@ -182,7 +184,7 @@ public class SensorController {
 		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
-
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/noise", method = RequestMethod.POST)
 	public ModelAndView setNoiseData(
 			@PathVariable int locationId,
@@ -194,7 +196,7 @@ public class SensorController {
 		return new ModelAndView("json", "dataReg", dataReg);
 	}
 	
-	
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/humidity", method = RequestMethod.POST)
 	public ModelAndView setHumidityData(
 			@PathVariable int locationId,
@@ -205,6 +207,7 @@ public class SensorController {
 		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/beertap/{tapNr}", method = RequestMethod.POST)
 	public ModelAndView setBeertapData(
 			@PathVariable int  locationId,

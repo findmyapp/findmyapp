@@ -9,6 +9,7 @@ public class UkaEvent {
 	private int id;
 	private Timestamp showingTime;
 	private String place;
+	private String placeString;
 	private int billigId;
 	private boolean free;
 	private boolean canceled;
@@ -46,6 +47,12 @@ public class UkaEvent {
 	}
 	public void setPlace(String place) {
 		this.place = place;
+	}
+	public void setPlaceString(String placeString) {
+		this.placeString = placeString;
+	}
+	public String getPlaceString() {
+		return placeString;
 	}
 	public int getBilligId() {
 		return billigId;

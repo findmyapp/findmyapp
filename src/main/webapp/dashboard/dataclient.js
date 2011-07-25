@@ -6,62 +6,29 @@
     	var url;
     	var request;
     	    
-    	if (datatype == "temperature") {
-//    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
-    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/temperature/latest';
-    		request = new ajaxObject(url, processTemperatureData);
-    		request.update();  // Server is contacted here.
-    	} else if (datatype == "humidity") {
-    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity';
-    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/humidity/latest';
-    		request = new ajaxObject(url, processHumidityData);
-    		request.update('limit=20');  // Server is contacted here.
-    	} else if (datatype == "noise") {
-    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/noise';
-    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/noise/latest';
-    		request = new ajaxObject(url, processNoiseData);
-    		request.update('limit=20');  // Server is contacted here.
-    	}  else if (datatype == "users") {
-    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
-    		url = 'http://findmyapp.net/findmyapp/locations/usercount';
-    		request = new ajaxObject(url, processUserData);
-    		request.update();  // Server is contacted here.
-    	} else if (datatype == "beersale") {
-    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31';
-    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/beertap/31/latest';
-    		request = new ajaxObject(url, processBeerData);
-    		request.update('limit=20');  // Server is contacted here.
-    		// show sum as well
-    	} else {
-    		//alert('No match');
-    		//myRequest.update('id=1234&color=blue');  // Server is contacted here.
-    	}    	
-    }
-    	
-//    	//Used for testing on localhost
 //    	if (datatype == "temperature") {
-//    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature';
-//    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
+////    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
+//    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/temperature/latest';
 //    		request = new ajaxObject(url, processTemperatureData);
-//    		request.update('limit=20');  // Server is contacted here.
+//    		request.update();  // Server is contacted here.
 //    	} else if (datatype == "humidity") {
-//    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity';
-//    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity/latest';
+//    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity/latest';
+//    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/humidity/latest';
 //    		request = new ajaxObject(url, processHumidityData);
 //    		request.update('limit=20');  // Server is contacted here.
 //    	} else if (datatype == "noise") {
 //    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/noise';
-//    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/noise/latest';
+//    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/noise/latest';
 //    		request = new ajaxObject(url, processNoiseData);
 //    		request.update('limit=20');  // Server is contacted here.
 //    	}  else if (datatype == "users") {
 //    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
-//    		url = 'http://localhost:8080/findmyapp/locations/usercount';
+//    		url = 'http://findmyapp.net/findmyapp/locations/usercount';
 //    		request = new ajaxObject(url, processUserData);
 //    		request.update();  // Server is contacted here.
 //    	} else if (datatype == "beersale") {
 //    		//url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31';
-//    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31/latest';
+//    		url = 'http://findmyapp.net/findmyapp/locations/' + locationID + '/beertap/31/latest';
 //    		request = new ajaxObject(url, processBeerData);
 //    		request.update('limit=20');  // Server is contacted here.
 //    		// show sum as well
@@ -70,6 +37,34 @@
 //    		//myRequest.update('id=1234&color=blue');  // Server is contacted here.
 //    	}    	
 //    }
+    	
+    	//Used for testing on localhost
+    	if (datatype == "temperature") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/temperature/latest';
+    		request = new ajaxObject(url, processTemperatureData);
+    		request.update('limit=20');  // Server is contacted here.
+    	} else if (datatype == "humidity") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/humidity/latest';
+    		request = new ajaxObject(url, processHumidityData);
+    		request.update('limit=20');  // Server is contacted here.
+    	} else if (datatype == "noise") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/noise/latest';
+    		request = new ajaxObject(url, processNoiseData);
+    		request.update('limit=20');  // Server is contacted here.
+    	}  else if (datatype == "users") {
+    		url = 'http://localhost:8080/findmyapp/locations/usercount';
+    		request = new ajaxObject(url, processUserData);
+    		request.update();  // Server is contacted here.
+    	} else if (datatype == "beersale") {
+    		url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/beertap/31/latest';
+    		request = new ajaxObject(url, processBeerData);
+    		request.update('limit=20');  // Server is contacted here.
+    		// show sum as well
+    	} else {
+    		//alert('No match');
+    		//myRequest.update('id=1234&color=blue');  // Server is contacted here.
+    	}    	
+    }
     
     function processBeerData(responseText, responseStatus) {
     	  if (responseStatus==200) {

@@ -13,10 +13,10 @@ function getData(locationID, datatype) {// get json data from server
 
 // populate temperature chart
 function requestTemperature(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
-			+ '/temperature/latest';
-	// url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
-	// '/temperature/latest';
+//	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+//			+ '/temperature/latest';
+	 url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
+	 '/temperature/latest';
 	request = new ajaxObject(url, processTemperatureData);
 	request.update(); // Server is contacted here.
 }
@@ -58,10 +58,10 @@ function drawTemperatureChart() {
 
 // populate humidity chart
 function requestHumidity(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
-			+ '/humidity/latest';
-	// url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
-	// '/humidity/latest';
+//	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+//			+ '/humidity/latest';
+	 url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
+	 '/humidity/latest';
 	request = new ajaxObject(url, processHumidityData);
 	request.update();
 }

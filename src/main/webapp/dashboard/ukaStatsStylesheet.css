@@ -1,82 +1,107 @@
+* {
+	margin: 0;
+	padding: 0;
+}
 
-  * {
-   margin:0;
-   padding:0;
-   }
-   body
-   {
-   margin:0 auto;
-   height: 100%;
-   width:960px;
-   font-family:Arial, Helvetica, sans-serif;
-   }
-   a {color:#000000; text-shadow:1px 1px 1px #cccccc;}
-   p {text-align:justify;}
-     header, aside, section, footer {display:block;}
-   h1 {
-   font-size:26px;
-   line-height:40px;
-   padding:18px 0;
-   text-align:center;
-   }
+body {
+	margin: 0 auto;
+	height: 100%;
+	width: 100%;
+	position:relative;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+	color: #000000;
+	text-shadow: 1px 1px 1px #cccccc;
+}
+
+p {
+	text-align: justify;
+}
+
+header,aside,section,footer {
+	display: block;
+}
+
+h1 {
+	font-size: 26px;
+	line-height: 40px;
+	padding: 18px 0;
+	text-align: center;
+}
+
+#ukaCanvasDiv {
+     width: 1000px;
+     height:500px;
+     margin: 0px auto;
+}
 
 #ukaCanvas {
-	margin: 0;
+	width: 100%;
+	height: 100%;
 }
+
 #content {
-margin-top:40px;
+	margin-top: 40px;
 }
+
 #mcontent {
-padding-left:62px;
+	padding-left: 62px;
 }
 
 #left_aside {
-float: left;
-width:250px;
-height: 600px;
-background:#f3f3f3;
-
+	float: left;
+	width: 250px;
+	height: 450px;
+	background: #f3f3f3;
+	margin-left: 30px;
 }
 
 #left_aside section {
--moz-border-radius:11px;
--webkit-border-radius:11px;
-background:#e0e0e0;
-margin: 30px auto;
-padding:11px 42px;
-width:50%;
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	background: #e0e0e0;
+	margin: 30px auto;
+	padding: 11px 42px;
+	width: 50%;
 }
 
 #right_aside {
-float: right;
-width:250px;
-height: 600px;
-background:#f3f3f3;
-
+	float: right;
+	width: 250px;
+	height: 600px;
 }
 
 #right_aside section {
--moz-border-radius:11px;
--webkit-border-radius:11px;
-background:#e0e0e0;
-margin: 30px auto;
-padding:11px 42px;
-width:50%;
+	-moz-border-radius: 11px;
+	margin: 30px auto;
+	padding: 11px 42px;
+	width: 50%;
+	margin-right: 30px;
 }
 
-#findMyApp { 
-	content: url(ukemannen.JPG), contents; 
-    width: 60%;
-    background-repeat:no-repeat;
+#findMyApp {
+	content: url(ukalogo.png), contents;
+	background-repeat: no-repeat;
 	margin-left: auto;
-    margin-right: auto;
-	}
-
-
-iframe {
-    background-color: transparent;
-    border: 0px none transparent;
-    padding: 0px;
-    overflow: hidden;
+	margin-right: auto;
 }
 
+#back_button {
+	position: absolute;
+	left: 80px;
+	width: 150px;
+	height: 150px;
+	padding: 40px auto;
+}
+
+#mainContent {
+	width: 1280px;
+	height: 520px;	
+}
+
+footer {
+	position: absolute;
+	bottom: 70px;
+}
