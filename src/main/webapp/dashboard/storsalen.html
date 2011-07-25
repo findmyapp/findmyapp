@@ -16,7 +16,8 @@
     //google.load("visualization", "1", {packages:["corechart"]});
     //google.setOnLoadCallback(getData(2,"beersale"));
     
-   	var info;
+   	var todaysEvents;
+   	var tomorrowsEvents;
     
     window.onload = function(){
     	var url = 'http://localhost:8080/findmyapp/program/uka11/places/storsalen';
@@ -36,25 +37,25 @@
 		if (responseStatus==200) {
   		
 			console.log(responseText);
-  		  	info = eval(responseText);
+  		  	todaysEvents = eval(responseText);
   		  	
   		    var table = document.getElementById ("event-table-today");
 	  		var i=0;
 	  		
-	  		console.log('no of events: ' + info.length)
-			for(i=0; i<info.length; i++) {
+	  		console.log('no of events: ' + todaysEvents.length)
+			for(i=0; i<todaysEvents.length; i++) {
 				
 				row = table.insertRow (-1);
 				var arg = "showEvent(" + i +");";
 		        row.setAttribute("onClick",arg);
 		        
 		        cell = row.insertCell (0);
-		        var date = new Date(info[i].showingTime); 
+		        var date = new Date(todaysEvents[i].showingTime); 
 		        console.log(date);
 		        cell.innerHTML = date.format("HH:MM"); 
 		        
 		        cell = row.insertCell (1);
-		       	cell.innerHTML = info[i].title;
+		       	cell.innerHTML = todaysEvents[i].title;
 		       	
 			}
 		}
@@ -68,36 +69,64 @@
 		if (responseStatus==200) {
   		
 			console.log(responseText);
-  		  	info = eval(responseText);
+			tomorrowsEvents = eval(responseText);
   		  	
   		    var table = document.getElementById ("event-table-tomorrow");
 	  		var i=0;
 	  		
-	  		console.log('no of events: ' + info.length)
-			for(i=0; i<info.length; i++) {
+	  		console.log('no of events: ' + tomorrowsEvents.length)
+			for(i=0; i<tomorrowsEvents.length; i++) {
 				
 				row = table.insertRow (-1);
-				var arg = "showEvent(" + i +");";
+				var arg = "showTomorrowsEvent(" + i +");";
 		        row.setAttribute("onClick",arg);
 		        
 		        cell = row.insertCell (0);
-		        var date = new Date(info[i].showingTime); 
+		        var date = new Date(tomorrowsEvents[i].showingTime); 
 		        console.log(date);
 		        cell.innerHTML = date.format("HH:MM"); 
 		        
 		        cell = row.insertCell (1);
-		       	cell.innerHTML = info[i].title;
+		       	cell.innerHTML = tomorrowsEvents[i].title;
 		       	
 			}
 		}
 	}
 	
-	function showEvent(index) {
-		var div = document.getElementById ("middle-div");
-		var title = "<h1>" + info[index].title + "</h1>" + "<p>" + info[index].lead + "</p>";
-		div.innerHTML = title;
+	function showtodaysEventsPage() {
+		//var div = document.getElementById ("middle-div");
+		//var title = "<p>" + Storsalen er selve hjertet av Samfundet. Lokalet har gjestet alt fra Dalai Lama til Sex Pistols – og det meste i mellom. + "</p>"
+		//div.innerHTML = title;
 	}
 	
+	
+	function showEvent(index) {
+		
+		console.log("showing event with index: " + index);
+		var div = document.getElementById ("middle-div");
+		div.innerHTML = "";
+		var h1 = document.createElement("h1");
+		h1.innerHTML = todaysEvents[index].title;
+		div.appendChild(h1);
+		var p = document.createElement("p");
+		p.innerHTML = todaysEvents[index].lead;
+		div.appendChild(p);
+		
+	}
+
+	function showTomorrowsEvent(index) {
+		
+		console.log("showing event with index: " + index);
+		var div = document.getElementById ("middle-div");
+		div.innerHTML = "";
+		var h1 = document.createElement("h1");
+		h1.innerHTML = tomorrowsEvents[index].title;
+		div.appendChild(h1);
+		var p = document.createElement("p");
+		p.innerHTML = tomorrowsEvents[index].lead;
+		div.appendChild(p);
+		
+	}
     </script>
 
 </head>
