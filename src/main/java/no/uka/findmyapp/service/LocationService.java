@@ -25,7 +25,6 @@ import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +41,12 @@ public class LocationService {
 	private UserService userService;
 
 	private static final Logger logger = LoggerFactory
-	.getLogger(UkaProgramRepository.class);
-	
+			.getLogger(UkaProgramRepository.class);
+
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
 	}
-	
+
 	public Location getLocation(int locationId) {
 		return data.getLocation(locationId);
 	}
@@ -60,14 +59,14 @@ public class LocationService {
 		return data.getUsersAtLocation(locationId);
 	}
 
-	public int getUserCountAtLocation(int locationId){
+	public int getUserCountAtLocation(int locationId) {
 		return data.getUserCountAtLocation(locationId);
 	}
-	
+
 	public List<LocationCount> getUserCountAtAllLocations() {
 		return data.getUserCountAtAllLocations();
 	}
-	
+
 	public boolean registerSample(Sample sample) {
 		return data.registerSample(sample);
 	}
@@ -85,14 +84,17 @@ public class LocationService {
 	}
 
 	public Location getLocationOfFriend(int friendId, String accessToken) {
-		List<User> friends = userService.getRegisteredFacebookFriends(accessToken);
+		List<User> friends = userService
+				.getRegisteredFacebookFriends(accessToken);
 		for (User u : friends) {
-			if(u.getLocalUserId() == friendId) return data.getLocationOfFriend(friendId);
+			if (u.getLocalUserId() == friendId)
+				return data.getLocationOfFriend(friendId);
 		}
 		return null;
 	}
 
-	public Map<Integer, Integer> getLocationOfFriends(int userId, String accessToken) {
+	public Map<Integer, Integer> getLocationOfFriends(int userId,
+			String accessToken) {
 		List<String> friendIds = userService.getFacebookFriends(accessToken);
 		return data.getLocationOfFriends(userId, friendIds);
 	}
@@ -164,7 +166,6 @@ public class LocationService {
 	 * **************** FACT *****************
 	 */
 
-
 	public List<Fact> getAllFacts(int locationId) {
 		return data.getAllFacts(locationId);
 	}
@@ -172,161 +173,233 @@ public class LocationService {
 	public Fact getRandomFact(int locationId) {
 		return data.getRandomFact(locationId);
 	}
-	
-	public void addData(List<LocationReport> reportList, int locationId){
+
+	public void addData(List<LocationReport> reportList, int locationId) {
 		Iterator<LocationReport> reportIterator = reportList.iterator();
-		while(reportIterator.hasNext()){
+		while (reportIterator.hasNext()) {
 			LocationReport locationReport = reportIterator.next();
 			data.addData(locationReport, locationId);
 		}
-		
+
 	}
-	
-	public Location getAllData(int locationId) {//Creates and returns a location object with average of all the latest data on the location
+
+	public Location getAllData(int locationId) {// Creates and returns a
+												// location object with average
+												// of all the latest data on the
+												// location
 		Location locationOfInterest = data.getLocation(locationId);
 		int time = -10;
-		//Calendar cal = Calendar.getInstance();
-		//cal.add(Calendar.MINUTE,time);
-		//Date tenminago = cal.getTime();
-		
-		//Fetching data:
-		List <LocationReport> last10usercomments = getReports(locationId,null,10,null,null,"comment");
-		List <LocationReport> averagefun = getReports(locationId,"average",10,null,null,"fun_factor");
-		List <LocationReport> averagechat = getReports(locationId,"average",10,null,null,"chat_factor");
-		List <LocationReport> averagedance = getReports(locationId,"average",10,null,null,"dance_factor");
-		List <LocationReport> averageflirt = getReports(locationId,"average",10,null,null,"flirt_factor");
-		
-		Noise noise = sensor.getLatestNoiseData(locationId, 1).get(0);
-		Temperature temp = sensor.getLatestTemperatureData(locationId, 1).get(0);
-		Humidity hum = sensor.getLatestHumidityData(locationId, 1).get(0);
+		// Calendar cal = Calendar.getInstance();
+		// cal.add(Calendar.MINUTE,time);
+		// Date tenminago = cal.getTime();
+
+		// Fetching data:
+		List<LocationReport> last10usercomments = getReports(locationId, null,
+				10, null, null, "comment");
+		List<LocationReport> averagefun = getReports(locationId, "average", 10,
+				null, null, "fun_factor");
+		List<LocationReport> averagechat = getReports(locationId, "average",
+				10, null, null, "chat_factor");
+		List<LocationReport> averagedance = getReports(locationId, "average",
+				10, null, null, "dance_factor");
+		List<LocationReport> averageflirt = getReports(locationId, "average",
+				10, null, null, "flirt_factor");
+
+		List<Noise> noiselist = sensor.getLatestNoiseData(locationId, 1);
+		List<Temperature> templist = sensor.getLatestTemperatureData(
+				locationId, 1);
+		List<Humidity> humlist = sensor.getLatestHumidityData(locationId, 1);
+		Noise noise = null;
+		Humidity hum = null;
+		Temperature temp = null;
 		int beerTappedOnLocation = sensor.getBeertapSum(locationId);
 		int headcount = data.getUserCountAtLocation(locationId);
-		
-		//Creating location status from all data
-		LocationStatus statusAtLocation = new LocationStatus();
-		statusAtLocation.setBeerTap(beerTappedOnLocation);
-		statusAtLocation.setNoise((float)noise.getAverage());
-		statusAtLocation.setHumidity(hum.getValue());
-		statusAtLocation.setTemperature(temp.getValue());
-		statusAtLocation.setHeadCount(headcount);
-		statusAtLocation.setChatFactor(averagechat.get(0).getParameterNumberValue());
-		statusAtLocation.setFlirtFactor(averageflirt.get(0).getParameterNumberValue());
-		statusAtLocation.setFunFactor(averagefun.get(0).getParameterNumberValue());
-		statusAtLocation.setDanceFactor(averagedance.get(0).getParameterNumberValue());
-		Iterator<LocationReport> comments = last10usercomments.iterator();
-		while (comments.hasNext()){
-			statusAtLocation.addComment(comments.next().getParameterTextValue());
+
+		if (!noiselist.isEmpty()) {
+			noise = noiselist.get(0);
 		}
-		
-		//Fill location with status
+		if (!humlist.isEmpty()) {
+			hum = humlist.get(0);
+		}
+		if (!templist.isEmpty()) {
+			temp = templist.get(0);
+		}
+
+		// Creating location status from all data
+		LocationStatus statusAtLocation = new LocationStatus();
+		if (beerTappedOnLocation != -1) {
+			statusAtLocation.setBeerTap(beerTappedOnLocation);
+		}
+		if (noise != null) {
+			statusAtLocation.setNoise((float) noise.getAverage());
+		}
+		if (hum != null) {
+			statusAtLocation.setHumidity(hum.getValue());
+		}
+		if (temp != null) {
+			statusAtLocation.setTemperature(temp.getValue());
+		}
+		if (headcount != -1) {
+			statusAtLocation.setHeadCount(headcount);
+		}
+		if (averagechat != null) {
+			statusAtLocation.setChatFactor(averagechat.get(0)
+					.getParameterNumberValue());
+		}
+		if (averageflirt != null) {
+			statusAtLocation.setFlirtFactor(averageflirt.get(0)
+					.getParameterNumberValue());
+		}
+		if (averagefun != null) {
+			statusAtLocation.setFunFactor(averagefun.get(0)
+					.getParameterNumberValue());
+		}
+		if (averagedance != null) {
+			statusAtLocation.setDanceFactor(averagedance.get(0)
+					.getParameterNumberValue());
+		}
+		if (last10usercomments != null) {
+			Iterator<LocationReport> comments = last10usercomments.iterator();
+			while (comments.hasNext()) {
+				statusAtLocation.addComment(comments.next()
+						.getParameterTextValue());
+			}
+		}
+
+		// Fill location with status
 		locationOfInterest.setLocationStatus(statusAtLocation);
-		
+
 		return locationOfInterest;
 	}
-	
-	 
-	
 
-	public List<LocationReport> getReports(int locationId, String action, int numberOfelements, Date from, Date to, String parName)throws IllegalArgumentException {
-		List <LocationReport> reportedData = new ArrayList<LocationReport>();
-		logger.info("data:"+locationId+","+numberOfelements);
-		if(from!=null){logger.info("data:"+locationId+","+from.toString());}
-		
-		if(numberOfelements >0 && from ==null && to ==null){
+
+	public List<LocationReport> getReports(int locationId, String action,
+			int numberOfelements, Date from, Date to, String parName)
+			throws IllegalArgumentException {
+
+		List<LocationReport> reportedData = new ArrayList<LocationReport>();
+		logger.info("data:" + locationId + "," + numberOfelements);
+
+		if (numberOfelements > 0 && from == null && to == null) {
+			// Fetch latest reports with paraName x
 			logger.info("got in!");
-			 reportedData = data.getLastUserReportedData(locationId, numberOfelements,parName);
-			 
-		}else  if(from != null&& numberOfelements ==0){logger.info("got in date!");
-			if(to != null){logger.info("got in from to!");
-			 reportedData = data.getUserReportedDataFromTo(locationId, from,to,parName);
-			 
-			}else{logger.info("got in from!");reportedData = data.getUserReportedDataFrom(locationId, from,parName);
+			reportedData = data.getLastUserReportedData(locationId,
+					numberOfelements, parName);
+
+		} else if (from != null && numberOfelements == -1) {
+			logger.info("got in date!");
+			if (to != null) {
+				logger.info("got in from to!");
+				reportedData = data.getUserReportedDataFromTo(locationId, from,
+						to, parName);
+			} else {
+				logger.info("got in from!");
+				reportedData = data.getUserReportedDataFrom(locationId, from,
+						parName);
+			}
+
+		} else if (from == null && to == null && numberOfelements == -1
+				&& parName != null) {
+			reportedData = data.getUserReportedData(locationId, parName);
+		} else {
+			throw new IllegalArgumentException(
+					"Read API for what arguments are allowed");
 		}
-		
-		}else if(from ==null && to == null && numberOfelements ==0 && parName!=null){
-			reportedData = data.getUserReportedData(locationId,parName);
-		}
-		else{
-			throw new IllegalArgumentException("Read API for what arguments are allowed");
-		}
-		if(action==null){
+		if (action == null) {
 			return reportedData;
-		}//Return the data raw
-		else if(action.equals("average")){//find average
-			List <LocationReport> averageData = averageData(reportedData,parName);
+		}// Return the data raw
+		else if (action.equals("average")) {// find average
+			List<LocationReport> averageData = averageData(reportedData,
+					parName);
 			return averageData;
-		}//something is wrong if you get here.
-		else{
-			throw new IllegalArgumentException("Read API for what arguments are allowed");
+		}// something is wrong if you get here.
+		else {
+			throw new IllegalArgumentException(
+					"Read API for what arguments are allowed");
 		}
-		
-		
+
 	}
+
 	/**
 	 * Finds the average of the number value of a list of LocationReports
+	 * 
 	 * @param reportedData
 	 * @param parName
 	 * @return averageData
 	 */
 
-	private List<LocationReport> averageData(List<LocationReport> reportedData,String parName) {
-		if(reportedData == null){//No data was acquired from DB
+	private List<LocationReport> averageData(List<LocationReport> reportedData,
+			String parName) {
+		if (reportedData == null) {// No data was acquired from DB
+			return null;
+		}
+		if (reportedData.isEmpty()) {// Making sure we don't proceed when no
+										// data was acquired from DB
 			return null;
 		}
 		List<LocationReport> averageData = new ArrayList<LocationReport>();
 		LocationReport averageReport = new LocationReport();
 		Iterator<LocationReport> reports = reportedData.iterator();
 		int counter = 0;
-		float paramvalue =0;
-		
-		while(reports.hasNext()){//iterates through 
-		 	LocationReport current=reports.next();
-		 	if(current.getParameterNumberValue()!= -1){//-1 means value is not set.
-		 		float value = current.getParameterNumberValue();
-		 		paramvalue = paramvalue + value; 
-		 		
-			 	counter++;
-			 	
-		 	}
-		 }
+		float paramvalue = 0;
+
+		while (reports.hasNext()) {// iterates through
+			LocationReport current = reports.next();
+			if (current.getParameterNumberValue() != -1) {// -1 means value is
+															// not set.
+				float value = current.getParameterNumberValue();
+				paramvalue = paramvalue + value;
+
+				counter++;
+
+			}
+		}
 		float finalvalue = -1;
-		if(paramvalue !=-1){finalvalue = (paramvalue)/counter; }//check that value has been changed from default
+		if (paramvalue != -1) {
+			finalvalue = (paramvalue) / counter;
+		}// check that value has been changed from default
 		averageReport.setParameterName(parName);
 		averageReport.setParameterNumberValue(finalvalue);
 		averageData.add(averageReport);
 		return averageData;
 	}
 
-	
-	public ManageParameterRespons manageParams(String action, String parName,String devId) throws IllegalArgumentException{//must also check dev id, and clean string.
+	public ManageParameterRespons manageParams(String action, String parName,
+			String devId) throws IllegalArgumentException {// must also check
+															// dev id, and clean
+															// string.
 		ManageParameterRespons respons;
-		if(action==null && devId == null){
-			respons =  data.findAllParameters();}
-		if(action.equals("add")){
+		if (action == null && devId == null) {
+			respons = data.findAllParameters();
+		}
+		if (action.equals("add")) {
 			respons = data.addParameter(parName, devId);
-			
-		}else if(action.equals("remove")){
-			respons =  data.removeParameter(parName, devId);
-			if (respons.getNumberOfRowsAffected() ==0){
+
+		} else if (action.equals("remove")) {
+			respons = data.removeParameter(parName, devId);
+			if (respons.getNumberOfRowsAffected() == 0) {
 				respons.setRespons("Nothing happened!");
 				respons.setStatus(false);
 				respons.setSuggestion("This might be because the parameter never existed,  is already removed, or you do not have the proper authorization");
-			}else{
-				respons.setRespons("Parameter: "+ parName+" was removed");
+			} else {
+				respons.setRespons("Parameter: " + parName + " was removed");
 				respons.setStatus(true);
 			}
-		}else if(action.equals("clean")){
-			respons =  data.cleanParameter(parName,devId);
-			if (respons.getNumberOfRowsAffected() ==0){
+		} else if (action.equals("clean")) {
+			respons = data.cleanParameter(parName, devId);
+			if (respons.getNumberOfRowsAffected() == 0) {
 				respons.setRespons("Nothing happened!");
 				respons.setSuggestion("This might be because the parameter does not exist, or all the data on the parameter have already been deleted, or you do not have the proper authorization");
 				respons.setStatus(false);
-			}else{
-				respons.setRespons("Parameter: "+ parName+" was cleaned");
+			} else {
+				respons.setRespons("Parameter: " + parName + " was cleaned");
 				respons.setStatus(true);
 			}
-		}else{throw new IllegalArgumentException("Read API for what arguments are allowed and required");}
+		} else {
+			throw new IllegalArgumentException(
+					"Read API for what arguments are allowed and required");
+		}
 		return respons;
 	}
-	
+
 }
