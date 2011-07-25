@@ -210,4 +210,12 @@ public class UkaProgramService {
 		
 	}
 
+	public List<UkaEvent> getEventsOnPlace(String ukaYear, String place) throws UkaYearNotFoundException {
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new UkaYearNotFoundException("ukaYear "+ukaYear+" not found ");
+		}
+		return data.getEventsOnPlace(place);
+	}
+
 }
