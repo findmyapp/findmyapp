@@ -1,44 +1,56 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>UKA 2011</title> 
-  <script type="text/javascript" src="ajaxobject.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  <script type="text/javascript">
-    
-    google.load('visualization', '1', {'packages':['corechart', 'gauge']});
-    google.setOnLoadCallback(getData(2,"beersale"));
-    
-    </script>
-   
-</head> 
+<!DOCTYPE html>
+<html lang="en">
 
-<body> 
-	<aside>
-		<section>
-			<ul id="main_nav">
-		        <li><a href="javascript:history.go(-1);" class='awesomeButton'>Hovedside</a></li>
-		    </ul>
-		</section>
-		
-		<section>
-			<ul id="aside_nav">
-		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
-			 </ul>
-		</section>
-	</aside>
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>UKA 2011</title>
+<script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="dataclient2.js"></script>
+<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(1));
+
+	function goHist(a) {
+		history.go(a);
+	}
+</script>
+
+</head>
+
+<body>
+	<header>
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
+	<section id="mainContent">
+		<!-- Sidebars / Aside -->
+		<aside id="right_aside">
+			<section>
+				<div id='temp_chart'></div>
+				<div id='humidity_chart'></div>
+			</section>
+		</aside>
+
+		<div id="mcontent">
+			<!-- Content Section -->
+		</div>
+
+		<aside id="left_aside">
+			<section>
+				<div>'Insert event info here..'</div>
+			</section>
+		</aside>
+	</section>
 	
-	<div id="content">
-		<div id='chart_div'></div>
-	</div>
-</body> 
+	<footer>
+		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+	</footer>
+</body>
+
 </html>
