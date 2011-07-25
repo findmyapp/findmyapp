@@ -13,8 +13,7 @@ import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
-import no.uka.findmyapp.exception.UkaYearNotFoundException;
-import no.uka.findmyapp.model.Event;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPrivacy;
@@ -84,8 +83,8 @@ public class UserRepository {
 		}
 	}
 
-	public List<Event> getEvents(int userId) {
-		List<Event> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue WHERE e.id = ue.event_id AND ue.user_id = ?", 
+	public List<UkaEvent> getEvents(int userId) {
+		List<UkaEvent> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue WHERE e.id = ue.event_id AND ue.user_id = ?", 
 				new EventRowMapper(), userId);
 		return events;
 	}
@@ -172,6 +171,20 @@ public class UserRepository {
 				" AND u.user_privacy_id = p.user_privacy_id AND p.events != 3"
 				, namedParameters, new UserRowMapper());
 		return users;
+	}
+	
+	/**
+	 * Adds a user with a Facebook Id. This is the only information added to DB.
+	 * 
+	 * @param facebookId id of user in Facebook
+	 */
+	public void addUserWithFacebookId(String facebookId) {
+		jdbcTemplate.update("INSERT INTO USER (facebook_id) VALUES (?)", facebookId);
+	}
+
+	public int isExistingUser(String userId) {
+		int count = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM USER WHERE facebook_id=?", userId);
+		return count;
 	}
 
 

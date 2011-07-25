@@ -2,7 +2,9 @@ package no.uka.findmyapp.datasource.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import no.uka.findmyapp.model.Humidity;
+
 import org.springframework.jdbc.core.RowMapper;
 
 public class SensorHumidityRowMapper implements RowMapper<Humidity> {

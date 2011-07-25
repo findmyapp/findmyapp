@@ -15,9 +15,10 @@ public class AppRowMapper implements RowMapper<App> {
 		app.setName(rs.getString("name"));
 		app.setCategory(rs.getString("category"));
 		app.setDescription(rs.getString("description"));
-		app.setPlatform(rs.getInt("platform"));
+		app.setPlatform(rs.getString("platform"));
 		app.setFacebookAppID(rs.getString("facebook_app_id"));	
 		app.setDeveloperName(rs.getString("fullname"));
+		app.setFacebookSecret(rs.getString("facebook_secret"));
 		return app;
 	}
 }
