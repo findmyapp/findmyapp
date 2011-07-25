@@ -188,7 +188,7 @@ public class LocationService {
 												// of all the latest data on the
 												// location
 		Location locationOfInterest = data.getLocation(locationId);
-		int time = -10;
+		//int time = -10;
 		// Calendar cal = Calendar.getInstance();
 		// cal.add(Calendar.MINUTE,time);
 		// Date tenminago = cal.getTime();
