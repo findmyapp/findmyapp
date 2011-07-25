@@ -201,12 +201,14 @@ public class LocationController {
  */
 
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getLocationData(@PathVariable("id") int locationId){
 		Location locale = service.getAllData(locationId);
 		return new ModelAndView("json","location_real_time", locale);
 	}
 	
 	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)// add max limit per user.
+	@ServiceModelMapping(returnType = LocationReport.class)
 	public ModelAndView addReport(@PathVariable("id") int locationId,
 			@RequestBody LocationReport[] locationReport){
 		
@@ -219,6 +221,7 @@ public class LocationController {
 	}
 	
 	@RequestMapping(value="/{id}/userreports", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = LocationReport.class)
 	public ModelAndView getReports(@PathVariable("id") int locationId,//ADD ERROR HANDLING
 			@RequestParam (required = false) String action,//average 
 			@RequestParam (required = false, defaultValue = "0") int noe,//If want to pick out the last noe nr of elements
