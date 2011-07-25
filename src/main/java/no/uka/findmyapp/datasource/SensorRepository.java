@@ -38,21 +38,23 @@ public class SensorRepository {
 
 
 	public List<Temperature> getLatestTemperatureData(int location, int limit) {
-
+		try{
 		List<Temperature> temp = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_TEMPERATURE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,?",
 				new SensorTemperatureRowMapper(), location, limit);
 		logger.info("received temperature list");
-		return temp;
+		return temp;}
+		catch(Exception e){logger.info("Something went wrong when fetchind data from database");return null;}
 	}
 	
 	public List<Noise> getLatestNoiseData(int location, int limit) {
-
+		try{
 		List<Noise> noise = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,?",
 				new SensorNoiseRowMapper(), location, limit);
 		logger.info("received noise list");
 		return noise;
+		}catch(Exception e){logger.info("Something went wrong when fetchind data from database");return null;}
 	}
 	
 
@@ -208,9 +210,10 @@ public class SensorRepository {
 	}
 
 	public int getBeertapSum(int location) {
-		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ?", location);
+		try{int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ?", location);
 		logger.info("received beertap sum: " + sum);
-		return sum;
+		return sum;}
+		catch(Exception e){logger.info("Something went wrong when fetchind data from database");return -1;}
 	}
 	
 	public int getBeertapSum(int location, int tapnr) {
@@ -220,9 +223,11 @@ public class SensorRepository {
 	}
 	
 	public int getBeertapSum(int location, int tapnr, Date from, Date to) {
-		int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=?", location, tapnr, from, to);
+		try{int sum = jdbcTemplate.queryForInt("SELECT SUM(value) FROM SENSOR_BEERTAP WHERE position_location_id = ? AND tapnr = ? AND date >=? AND date <=?", location, tapnr, from, to);
 		logger.info("received beertap sum: " + sum);
-		return sum;
+		return sum;}
+		catch(Exception e){logger.info("Something went wrong when fetchind data from database");return -1;}
+		
 	}
 
 	/**
