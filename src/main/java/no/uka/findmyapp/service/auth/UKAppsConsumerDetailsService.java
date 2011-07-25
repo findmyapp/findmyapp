@@ -1,6 +1,8 @@
 package no.uka.findmyapp.service.auth;
 
 
+import no.uka.findmyapp.service.AuthenticationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth.common.OAuthException;
 import org.springframework.security.oauth.provider.ConsumerDetails;
@@ -8,7 +10,7 @@ import org.springframework.security.oauth.provider.ConsumerDetailsService;
 
 public class UKAppsConsumerDetailsService implements ConsumerDetailsService {
 
-	@Autowired 
+	//@Autowired 
 	AuthenticationService service;
 
 	public ConsumerDetails loadConsumerByConsumerKey(String consumerKey)

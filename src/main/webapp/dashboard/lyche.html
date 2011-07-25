@@ -4,40 +4,43 @@
 <head> 
   <meta charset="utf-8" /> 
   <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
-  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script src="kinetic.js"></script>
+  <title>UKA 2011</title> 
+  <script type="text/javascript" src="ajaxobject.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="dataclient2.js"></script>
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  
   <script type="text/javascript">
-	  function draw(){
-		  var kin = new Kinetic("ukaCanvas", "2d");
- 
-			kin.setDrawStage(function(){
-			kin.clear();
-			var canvas = kin.getCanvas();
-			var context = kin.getContext();
-	}
+    
+    google.load('visualization', '1', {'packages':['corechart', 'gauge']});
+    google.setOnLoadCallback(getData(1));
+    
+    function goHist(a) {
+  	  history.go(a); 
+  	}
   </script>
    
 </head> 
 
-<body onload="draw();"> 
-  <header> 
-     <h1>FindMyApp</h1>
-  </header>
-  
-  <article> 
-		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
-  </article> 
- 
-</body> 
+<body> 
+	<div id="content">
+	<!-- Sidebars / Aside -->
+	<aside id="right_aside">	
+ 		<section>
+			<div id='temp_chart'></div>
+			<div id='humidity_chart'></div>
+		</section>
+	</aside>
+	
+	<aside id="left_aside">	
+ 		<section>
+			<div>'Insert event info here..'</div>
+		</section>
+	</aside>
+	
+	<div id="mcontent">
+		<!-- Content Section -->
+	</div>
+	</div>
+</body>
 
-<footer>
-      <ul> 
-      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
-      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
-      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
-      </ul> 
-</footer>
-</html>  
+</html>

@@ -14,6 +14,12 @@
 	<logger name="no.uka.findmyapp">
 		<level value="info" />
 	</logger>
+	<logger name="no.uka.findmyapp.service">
+		<level value="debug" />
+	</logger>
+	<logger name="no.uka.findmyapp.controller">
+		<level value="debug" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
@@ -31,6 +37,12 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+	
+	<logger name="org.springframework.security.oauth">
+		<level value="debug" />
+	</logger>
+	
+	
 
 	<!-- Root Logger -->
 	<root>

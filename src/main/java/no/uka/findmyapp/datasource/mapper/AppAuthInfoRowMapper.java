@@ -14,6 +14,7 @@ public class AppAuthInfoRowMapper implements RowMapper<AppAuthInfo>{
 		authInfo.setAppId(rs.getInt("appstore_application_id"));
 		authInfo.setConsumerKey(rs.getString("consumer_key"));
 		authInfo.setConsumerSecret(rs.getString("consumer_secret"));
+		authInfo.setConsumerRole(rs.getString("consumer_role"));
 		return authInfo;
 	}
 	

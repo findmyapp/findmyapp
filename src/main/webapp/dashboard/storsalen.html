@@ -4,46 +4,72 @@
 <head> 
   <meta charset="utf-8" /> 
   <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
-  <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-  <script src="kinetic.js"></script>
+  <title>UKA 2011</title> 
+  <script type="text/javascript" src="ajaxobject.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="dataclient.js"></script>
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  
   <script type="text/javascript">
-	
-  window.onload = function(){
-	  
-	  draw();
-  }
-	function draw(){
-		var kin = new Kinetic("ukaCanvas", "2d");
+    
+    //google.load("visualization", "1", {packages:["corechart"]});
+    //google.setOnLoadCallback(getData(2,"beersale"));
+    
+    function goHist(a) {
+  	  history.go(a); 
+  	}
+    
+    window.onload = function(){
+    	var url = 'http://findmyapp.net/findmyapp/program/uka11/places/storsalen';
+    	var request = new ajaxObject(url, processEvents);
+    	request.update();  // Server is contacted here
+    }
+    
+	function processEvents(){
+		var event;
+		console.log('processing events');
 		
-		kin.setDrawStage(function(){
-			kin.clear();
-			var canvas = kin.getCanvas();
-			var context = kin.getContext();
-        }
+		var table = document.getElementById ("event-table-today");
+        var row = table.insertRow (-1);
+        
+        var datecell = row.insertCell (0);
+        datecell.innerHTML = "21:00";
+        
+        var titlecell = row.insertCell (1);
+        titlecell.innerHTML = "Dagens kjempekule event";
+		
+        var table = document.getElementById ("event-table-tomorrow");
+        var row = table.insertRow (-1);
+        
+        var datecell = row.insertCell (0);
+        datecell.innerHTML = "21:00";
+        
+        var titlecell = row.insertCell (1);
+        titlecell.innerHTML = "Morgendagens kjempekule event";
 	}
-  </script>
+	
+    </script>
    
 </head> 
 
-<body onload="draw();"> 
-  <header> 
-     <h1>FindMyApp</h1>
+<body> 
+	<header>
+        <h1 id="findMyApp">FindMyApp</h1>
   </header>
   
-  <article> 
-		 <canvas id="ukaCanvas" width="1200" height="600"></canvas>
-  </article> 
- 
+	<div id="content">
+	
+	<div id="mcontent">
+		<table class='event-table' id='event-table-today'> 
+				<tr class='event-table-header'><th colspan="2">I dag</th></tr>
+		</table>
+		
+		<table class='event-table' id='event-table-tomorrow'> 
+				<tr class='event-table-header'><th colspan="2">I morgen</th></tr>
+		</table>
+		
+		
+	</div>
+	
+	</div>
 </body> 
-
-<footer>
-      <ul> 
-      	<li><a href="UkaStats.html"><img src="kart-knapp.png" alt="Kart" /></a></li>
-      	<li><a href="Statistikk.html"><img src="statistikk-knapp.png" alt="Statistikk" /></a></li>
-      	<li><a href="Historikk.html"><img src="historikk-knapp.png" alt="Historikk" /></a></li>
-      </ul> 
-</footer>
-</html> 
+</html>

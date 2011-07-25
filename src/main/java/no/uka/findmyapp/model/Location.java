@@ -8,6 +8,8 @@ public class Location {
 
 	private String locationName;
 	private int locationId;
+	private LocationStatus locationStatus;
+	
 	
 	public Location() {}
 	
@@ -32,4 +34,11 @@ public class Location {
 		this.locationId = locationId;
 	}
 	
+	public void setLocationStatus(LocationStatus ls){
+		this.locationStatus = ls;
+	}
+	
+	public LocationStatus getLocationStatus(){
+		return locationStatus;
+	}
 }

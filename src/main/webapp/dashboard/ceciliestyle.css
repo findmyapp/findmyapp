@@ -1,0 +1,14 @@
+.event-table th {
+	padding: 6px 8px;
+	vertical-align: middle;
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 1px solid #CCC;
+}
+
+.event-table td {
+	padding: 6px 8px;
+	vertical-align: middle;
+	text-align: left;
+	border-bottom: 1px solid #EEE;
+}

@@ -4,26 +4,25 @@
 <head> 
   <meta charset="utf-8" /> 
   <meta name="robots" content="noindex" /> 
-  <title>Uka 2011</title> 
+  <title>UKA 2011</title> 
   <script type="text/javascript" src="ajaxobject.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="dataclient.js"></script>
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
   <script type="text/javascript">
     
-    google.load("visualization", "1", {packages:["corechart"]});
+    google.load('visualization', '1', {'packages':['corechart', 'gauge']});
     google.setOnLoadCallback(getData(2,"beersale"));
+    
     </script>
    
 </head> 
 
 <body> 
-	<div id="content">
-	<!-- Sidebar / Aside -->
 	<aside>
 		<section>
 			<ul id="main_nav">
-		        <li><a href='UkaStats.html' class='awesomeButton'>Hovedside</a></li>
+		        <li><a href="javascript:history.go(-1);" class='awesomeButton'>Hovedside</a></li>
 		    </ul>
 		</section>
 		
@@ -38,10 +37,8 @@
 		</section>
 	</aside>
 	
-	<div id="mcontent">
-		<!-- Content Section -->
+	<div id="content">
 		<div id='chart_div'></div>
-	</div>
 	</div>
 </body> 
 </html>

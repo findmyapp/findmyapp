@@ -166,59 +166,12 @@ public class UserService {
 		return friendIds;
 	}
 
-	// Testing privacy settings: create defaultSettings, update and retrieve
-	public boolean testingForUserServiceOne() {
-
-		boolean success = true;
-
-		// Use default settings and verify changes (friends, friends, friends,
-		// friends)
-		int userPrivacyId;
-		userPrivacyId = data.createDefaultPrivacySettingsEntry();
-
-		UserPrivacy privacy;
-		privacy = data.retrievePrivacy(userPrivacyId);
-
-		success = success
-				&& (privacy.getPositionPrivacySetting() == PrivacySetting.FRIENDS);
-		success = success
-				&& (privacy.getEventsPrivacySetting() == PrivacySetting.FRIENDS);
-		logger.info("2 tests done");
-		success = success
-				&& (privacy.getMediaPrivacySetting() == PrivacySetting.FRIENDS);
-		success = success
-				&& (privacy.getMoneyPrivacySetting() == PrivacySetting.FRIENDS);
-		logger.info("4 tests done");
-
-		// Test for update
-		PrivacySetting newPosition = PrivacySetting.ANYONE;
-		PrivacySetting newEvents = PrivacySetting.ONLY_ME;
-		PrivacySetting newMedia = PrivacySetting.ONLY_ME;
-		PrivacySetting newMoney = PrivacySetting.ANYONE;
-		data.updatePrivacy(userPrivacyId, newPosition, newEvents, newMoney,
-				newMedia);
-
-		privacy = data.retrievePrivacy(userPrivacyId);
-
-		success = success
-				&& (privacy.getPositionPrivacySetting() == PrivacySetting.ANYONE);
-		success = success
-				&& (privacy.getEventsPrivacySetting() == PrivacySetting.ONLY_ME);
-		logger.info("6 tests done");
-		success = success
-				&& (privacy.getMediaPrivacySetting() == PrivacySetting.ONLY_ME);
-		success = success
-				&& (privacy.getMoneyPrivacySetting() == PrivacySetting.ANYONE);
-
-		return success;
-	}
-
 	public int findUserPrivacyId(int userId)
 			throws InvalidUserIdOrAccessTokenException {
 		return data.findUserPrivacyId(userId);
 	}
 
-	public boolean verifyAccessToken(int userId, int accessToken) {
+	public boolean verifyAccessToken(int userId, String accessToken) {
 		// TODO Auto-generated method stub
 		return true;
 	}

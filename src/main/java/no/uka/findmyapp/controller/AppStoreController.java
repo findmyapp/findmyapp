@@ -82,9 +82,8 @@ public class AppStoreController {
 		//return new ModelAndView("appstore", "appstore", gson.toJson(app));
 	}
 	
-	@RequestMapping(value = "/appstore/SetFeaturedApp/{platform}/selectedAppIs", method = RequestMethod.GET)
+	@RequestMapping(value = "/appstore/featuredApp", method = RequestMethod.GET)
 	public ModelAndView  setNewFeaturedAppById(
-			@PathVariable String platform,
 			@RequestParam String marketID, Model model) throws URISyntaxException {
 		
 		System.out.println(marketID);
@@ -97,7 +96,7 @@ public class AppStoreController {
 				0,
 				1,
 				4, 
-				platform, APP_OF_THE_DAY);
+				app.getPlatform(), APP_OF_THE_DAY);
 
 		return new ModelAndView("json", "appstoreweb", appList);
 	}

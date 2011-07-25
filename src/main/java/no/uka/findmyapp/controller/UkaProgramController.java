@@ -90,6 +90,19 @@ public class UkaProgramController {
 		return new ModelAndView("json", "places", places);
 	}
 	
+	@RequestMapping(value = "/program/{ukaYear}/places/{place}", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaEvent.class)
+	// We do not use ukaYear
+	public ModelAndView getEventsOnPlace(
+			@PathVariable String ukaYear, @PathVariable String place)
+			throws UkaYearNotFoundException {
+		
+		logger.info("getEventsOnPlace");
+		List<UkaEvent> events = ukaProgramService.getEventsOnPlace(ukaYear, place);
+
+		return new ModelAndView("json", "event", events);
+	}
+	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/next", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
 	// We do not use ukaYear
@@ -101,6 +114,32 @@ public class UkaProgramController {
 		UkaEvent event = ukaProgramService.getNextUkaEvent(ukaYear, place);
 
 		return new ModelAndView("json", "event", event);
+	}
+	
+	@RequestMapping(value = "/program/{ukaYear}/places/{place}/today", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaEvent.class)
+	// We do not use ukaYear
+	public ModelAndView getUkaEventsToday(
+			@PathVariable String ukaYear, @PathVariable String place)
+			throws UkaYearNotFoundException {
+		
+		logger.info("getUkaEventsToday");
+		List<UkaEvent> events = ukaProgramService.getEventsToday(ukaYear, place);
+
+		return new ModelAndView("json", "event", events);
+	}
+	
+	@RequestMapping(value = "/program/{ukaYear}/places/{place}/tomorrow", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=UkaEvent.class)
+	// We do not use ukaYear
+	public ModelAndView getUkaEventsTomorrow(
+			@PathVariable String ukaYear, @PathVariable String place)
+			throws UkaYearNotFoundException {
+		
+		logger.info("getUkaEventsTomorrow");
+		List<UkaEvent> events = ukaProgramService.getEventsTomorrow(ukaYear, place);
+
+		return new ModelAndView("json", "event", events);
 	}
 	
 	@RequestMapping(value = "/program/{ukaYear}", method = RequestMethod.GET)
@@ -128,7 +167,7 @@ public class UkaProgramController {
 	public ModelAndView getFriendsAttendingEvent(
 			@PathVariable("id") int eventId,
 			@RequestParam String accessToken){
-		ModelAndView mav = new ModelAndView("friendsAtEvent");
+		ModelAndView mav = new ModelAndView("json");
 		List<User> users = userService.getFriendsAtEvent(eventId, accessToken);
 		mav.addObject("users", users);
 		return mav;

@@ -26,8 +26,8 @@ public class EventRowMapper implements RowMapper<UkaEvent> {
 		event.setThumbnail( rs.getString("thumbnail") );
 		event.setAgeLimit( rs.getInt("age_limit") );
 		event.setLowestPrice( rs.getInt("lowest_price") );
+		event.setEventId(rs.getLong("event_id"));
 		//event.setPublishTime(rs.getTimestamp("publish_time"));
-		//event.setEventId(rs.getLong("event_id"));
 		//event.setNetsaleFrom(rs.getTimestamp("netsale_from"));
 		//event.setNetsaleTo(rs.getTimestamp("netsale_to"));
 		//event.setEntranceId(rs.getInt("entrance_id"));

@@ -53,19 +53,24 @@ public class ServiceInfoService {
 			ServiceModelMapping smm = m.getAnnotation(ServiceModelMapping.class);
 			RequestMapping req = m.getAnnotation(RequestMapping.class);
 			
-			if(smm != null && req != null && req.value().length > 0) {
-				String location = replaceInLocationString(req.value()[0]);
+			if(smm != null && req != null) {
+				String location = "";
+				if(req.value().length > 0) {
+					location = replaceInLocationString(req.value()[0]);
+				}
+				
 				String requestType = req.method()[0].toString();
 				String localIdentifier = m.getName();
 				String controllerName = clazz.getSimpleName().replace("Controller", "");
 				Class returnType = smm.returnType();
+				//new URI("no.uka.findmyapp.android.rest.providers." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
 				
-				list.add(new ServiceModel(new URI("http://findmyapp.net/findmyapp/" + location),
+				list.add(new ServiceModel(new URI("http://findmyapp.net/findmyapp/" + controllerLocationPrefix + location),
 						HttpType.valueOf(requestType), 
 						ServiceDataFormat.JSON, 
 						returnType, 
 						null, 
-						new URI("no.uka.findmyapp.android.rest.providers." + controllerName.toLowerCase() + "/" + returnType.getSimpleName().toLowerCase()), 
+						new URI("no.uka.findmyapp.android.rest.providers/" + returnType.getSimpleName().toLowerCase()), 
 						"no.uka.findmyapp.android.demo.BROADCAST_INTENT_TOKEN", 
 						localIdentifier));
 				

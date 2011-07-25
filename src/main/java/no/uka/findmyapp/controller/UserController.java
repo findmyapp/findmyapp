@@ -55,18 +55,6 @@ public class UserController {
 		return model;
 	}
 
-
-	@RequestMapping(value = "/testing", method = RequestMethod.GET)
-	public ModelAndView testForPrivacyMethods() {
-
-		boolean success = true; 
-		success = service.testingForUserServiceOne();
-
-		logger.info("testresult is " + success);
-		return new ModelAndView("test", "result", success); 
-	}
-
-
 	/**
 	 * POST method where it is possible to change privacy settings
 	 * Privacy settings: 1 = ANYONE, 2 = FRIENDS, 3 = ONLY ME 
@@ -86,7 +74,7 @@ public class UserController {
 			@RequestParam (defaultValue = "0") int privacySettingEvents,
 			@RequestParam (defaultValue = "0") int privacySettingMoney,
 			@RequestParam (defaultValue = "0") int privacySettingMedia,
-			@RequestParam (defaultValue = "0") int accessToken) throws InvalidUserIdOrAccessTokenException {
+			@RequestParam (defaultValue = "0") String accessToken) throws InvalidUserIdOrAccessTokenException {
 
 		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
 				+ " " +  privacySettingMoney + " " + privacySettingMedia);
@@ -118,7 +106,7 @@ public class UserController {
 
 	public ModelAndView getPrivacy(
 			@PathVariable int userId,
-			@RequestParam (defaultValue = "0") int accessToken) throws InvalidUserIdOrAccessTokenException{
+			@RequestParam (defaultValue = "0") String accessToken) throws InvalidUserIdOrAccessTokenException{
 		UserPrivacy privacy;
 
 
