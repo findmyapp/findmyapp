@@ -43,7 +43,7 @@ public class UkaProgramController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 
-	// We do not use ukaYear
+
 	@RequestMapping(value = "/program/{ukaYear}/events", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
 	public ModelAndView getUkaProgramForDate(
@@ -62,7 +62,7 @@ public class UkaProgramController {
 	
 	}
 
-	// We do not use ukaYear
+
 	@RequestMapping(value = "/program/{ukaYear}/events/search", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaProgram.class)
 	public ModelAndView searchForUkaProgramByName(
@@ -79,7 +79,6 @@ public class UkaProgramController {
 
 	@RequestMapping(value = "/program/{ukaYear}/places", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=String.class, isList=true)
-	// We do not use ukaYear
 	public ModelAndView getUkaProgramPlaces(
 			@PathVariable String ukaYear)
 			throws UkaYearNotFoundException {
@@ -92,7 +91,6 @@ public class UkaProgramController {
 	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
-	// We do not use ukaYear
 	public ModelAndView getEventsOnPlace(
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
@@ -105,7 +103,6 @@ public class UkaProgramController {
 	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/next", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
-	// We do not use ukaYear
 	public ModelAndView getNextUkaEvent(
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
@@ -118,7 +115,6 @@ public class UkaProgramController {
 	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/today", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
-	// We do not use ukaYear
 	public ModelAndView getUkaEventsToday(
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
@@ -131,7 +127,6 @@ public class UkaProgramController {
 	
 	@RequestMapping(value = "/program/{ukaYear}/places/{place}/tomorrow", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
-	// We do not use ukaYear
 	public ModelAndView getUkaEventsTomorrow(
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
@@ -175,7 +170,6 @@ public class UkaProgramController {
 
 	@RequestMapping(value = "/program/{ukaYear}/events/{id}", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
-	// We do not use ukaYear
 	public ModelAndView getUkaEventById(
 			@PathVariable int id, @PathVariable String ukaYear) 
 			throws UkaYearNotFoundException {
