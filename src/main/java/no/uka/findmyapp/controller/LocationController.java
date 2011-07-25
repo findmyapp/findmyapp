@@ -249,7 +249,7 @@ public class LocationController {
 
 	@RequestMapping(value="/developer", method = RequestMethod.GET)
 	public ModelAndView manageParameter(//ADD ERROR HANDLING, max elem
-			@RequestParam  String action,//Has to be either addparam, removeparam or removedata
+			@RequestParam  String action,//Has to be either add, removeparam or removedata
 			@RequestParam  String parname,
 			@RequestParam  String devid
 			){

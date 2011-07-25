@@ -86,9 +86,7 @@ public class UserRepository {
 	}
 
 	public List<UkaEvent> getEvents(int userId) {
-		List<UkaEvent> events = jdbcTemplate.query(
-				"SELECT * FROM UKA_EVENTS e, USER_EVENT ue "
-						+ "WHERE e.id = ue.event_id AND ue.user_id = ?",
+		List<UkaEvent> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue WHERE e.id = ue.event_id AND ue.user_id = ?", 
 				new EventRowMapper(), userId);
 		return events;
 	}

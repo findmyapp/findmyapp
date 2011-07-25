@@ -15,6 +15,7 @@ public class EventRowMapper implements RowMapper<UkaEvent> {
 		event.setId(rs.getInt("id"));//returnerer id fra event_showing_real
 		event.setShowingTime(rs.getTimestamp("showing_time"));
 		event.setPlace(rs.getString("place"));
+		event.setPlaceString(rs.getString("place_string"));
 		event.setBilligId(rs.getInt("billig_id"));
 		event.setFree(rs.getBoolean("free"));
 		event.setCanceled(rs.getBoolean("canceled"));

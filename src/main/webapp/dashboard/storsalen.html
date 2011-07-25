@@ -1,52 +1,134 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>UKA 2011</title> 
-  <script type="text/javascript" src="ajaxobject.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  <script type="text/javascript">
-    
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"beersale"));
-    
-    function goHist(a) {
-  	  history.go(a); 
-  	}
-    
-    </script>
-   
-</head> 
+<!DOCTYPE html>
+<html lang="en">
 
-<body> 
-	<div id="content">
-	<!-- Sidebar / Aside -->
-	<aside>
-		<section>
-			<ul id="main_nav">
-		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
-		    </ul>
-		</section>
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>UKA 2011</title>
+<script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="dataclient.js"></script>
+<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+<link rel="stylesheet" href="ceciliestyle.css" />
+<script type="text/javascript">
+    
+    //google.load("visualization", "1", {packages:["corechart"]});
+    //google.setOnLoadCallback(getData(2,"beersale"));
+    
+   	var info;
+    
+    window.onload = function(){
+    	var url = 'http://localhost:8080/findmyapp/program/uka11/places/storsalen';
+    	var request = new ajaxObject(url, processEvents);
+    	request.update();  // Server is contacted here
+    	
+    	url = 'http://localhost:8080/findmyapp/program/uka11/places/dodensdal';
+    	request = new ajaxObject(url, processTomorrowsEvents);
+    	request.update();  // Server is contacted here
+    }
+    
+	function processEvents(responseText, responseStatus){
 		
-		<section>
-			<ul id="aside_nav">
-		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
-			 </ul>
-		</section>
-	</aside>
+		var row;
+		var cell;
+		
+		if (responseStatus==200) {
+  		
+			console.log(responseText);
+  		  	info = eval(responseText);
+  		  	
+  		    var table = document.getElementById ("event-table-today");
+	  		var i=0;
+	  		
+	  		console.log('no of events: ' + info.length)
+			for(i=0; i<info.length; i++) {
+				
+				row = table.insertRow (-1);
+				var arg = "showEvent(" + i +");";
+		        row.setAttribute("onClick",arg);
+		        
+		        cell = row.insertCell (0);
+		        var date = new Date(info[i].showingTime); 
+		        console.log(date);
+		        cell.innerHTML = date.format("HH:MM"); 
+		        
+		        cell = row.insertCell (1);
+		       	cell.innerHTML = info[i].title;
+		       	
+			}
+		}
+	}
 	
-	<div id="mcontent">
-		<!-- Content Section -->
-		<div id='chart_div'></div>
+	function processTomorrowsEvents(responseText, responseStatus){
+		
+		var row;
+		var cell;
+		
+		if (responseStatus==200) {
+  		
+			console.log(responseText);
+  		  	info = eval(responseText);
+  		  	
+  		    var table = document.getElementById ("event-table-tomorrow");
+	  		var i=0;
+	  		
+	  		console.log('no of events: ' + info.length)
+			for(i=0; i<info.length; i++) {
+				
+				row = table.insertRow (-1);
+				var arg = "showEvent(" + i +");";
+		        row.setAttribute("onClick",arg);
+		        
+		        cell = row.insertCell (0);
+		        var date = new Date(info[i].showingTime); 
+		        console.log(date);
+		        cell.innerHTML = date.format("HH:MM"); 
+		        
+		        cell = row.insertCell (1);
+		       	cell.innerHTML = info[i].title;
+		       	
+			}
+		}
+	}
+	
+	function showEvent(index) {
+		var div = document.getElementById ("middle-div");
+		var title = "<h1>" + info[index].title + "</h1>" + "<p>" + info[index].lead + "</p>";
+		div.innerHTML = title;
+	}
+	
+    </script>
+
+</head>
+
+<body>
+	<header>
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
+	<div id="content">
+
+		<aside id="left_aside">
+			<section>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
+			</section>
+		</aside>
+
+		<div id="middle-div"></div>
+
+
 	</div>
-	</div>
-</body> 
+
+</body>
 </html>

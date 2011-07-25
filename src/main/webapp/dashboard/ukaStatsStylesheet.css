@@ -1,140 +1,107 @@
+* {
+	margin: 0;
+	padding: 0;
+}
 
-  * {
-   margin:0;
-   padding:0;
-   }
-   body
-   {
-   margin:0 auto;
-   width:960px;
-   font-family:Arial, Helvetica, sans-serif;
-   }
-   a {color:#000000; text-shadow:1px 1px 1px #cccccc;}
-   p {text-align:justify;}
-     header, aside, section {display:block;}
-   h1 {
-   font-size:26px;
-   line-height:40px;
-   padding:18px 0;
-   text-align:center;
-   }
+body {
+	margin: 0 auto;
+	height: 100%;
+	width: 100%;
+	position:relative;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+	color: #000000;
+	text-shadow: 1px 1px 1px #cccccc;
+}
+
+p {
+	text-align: justify;
+}
+
+header,aside,section,footer {
+	display: block;
+}
+
+h1 {
+	font-size: 26px;
+	line-height: 40px;
+	padding: 18px 0;
+	text-align: center;
+}
+
+#ukaCanvasDiv {
+     width: 1000px;
+     height:500px;
+     margin: 0px auto;
+}
 
 #ukaCanvas {
-	margin: 0;
+	width: 100%;
+	height: 100%;
 }
+
 #content {
-margin-top:40px;
+	margin-top: 40px;
 }
+
 #mcontent {
-padding-right:22px;
-width:620px;
-}
-aside {
-float: right;
-width:250px;
-height: 400px;
-background:#f3f3f3;
-
+	padding-left: 62px;
 }
 
-aside section {
--moz-border-radius:11px;
--webkit-border-radius:11px;
-background:#e0e0e0;
-margin: 30px auto;
-padding:11px 22px;
-width:50%;
+#left_aside {
+	float: left;
+	width: 250px;
+	height: 450px;
+	background: #f3f3f3;
+	margin-left: 30px;
 }
 
-#aside_nav {
-list-style: none;
+#left_aside section {
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	background: #e0e0e0;
+	margin: 30px auto;
+	padding: 11px 42px;
+	width: 50%;
 }
 
-#aside_nav li {
-margin-bottom: 10px;
-width:130px;
-text-align:center;
-background: #222 repeat-x;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
--moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
--webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-border-bottom: 1px solid rgba(0,0,0,0.25);
-position: relative;
-cursor: pointer;
-background-color: #66FF99;
+#right_aside {
+	float: right;
+	width: 250px;
+	height: 600px;
 }
 
-#main_nav {
-list-style: none;
+#right_aside section {
+	-moz-border-radius: 11px;
+	margin: 30px auto;
+	padding: 11px 42px;
+	width: 50%;
+	margin-right: 30px;
 }
 
-#main_nav li {
-width:130px;
-text-align:center;
-background: #222 repeat-x;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
--moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
--webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-border-bottom: 1px solid rgba(0,0,0,0.25);
-position: relative;
-cursor: pointer;
-background-color: #66FFCC;
-}
-
-#findMyApp { 
-	content: url(ukemannen.JPG), contents; 
-    width: 60%;
-    background-repeat:no-repeat;
+#findMyApp {
+	content: url(ukalogo.png), contents;
+	background-repeat: no-repeat;
 	margin-left: auto;
-    margin-right: auto;
-	}
-
-.awesomeButton{
-color: #000000;
-text-decoration: none;
-font-weight: normal;
-line-height: 2;
-
+	margin-right: auto;
 }
 
-/* Sizes ---------- */
-.small.awesomeButton {
-font-size: 11px;
-}
-.medium.awesomeButton {
-font-size: 13px;
-}
-.large.awesomeButton {
-font-size: 14px;
-padding: 8px 14px 9px;
-}
- 
-/* Colors ---------- */
-.lillaUkeFarge.awesomeButton {
-background-color: #4019FF;
-}
-.red.awesomeButton {
-background-color: #e33100;
-}
-.magenta.awesomeButton {
-background-color: #a9014b;
-}
-.orange.awesomeButton {
-background-color: #ff5c00;
-}
-.yellow.awesomeButton {
-background-color: #ffb515;
+#back_button {
+	position: absolute;
+	left: 80px;
+	width: 150px;
+	height: 150px;
+	padding: 40px auto;
 }
 
-iframe {
-    background-color: transparent;
-    border: 0px none transparent;
-    padding: 0px;
-    overflow: hidden;
+#mainContent {
+	width: 1280px;
+	height: 520px;	
 }
 
-
+footer {
+	position: absolute;
+	bottom: 70px;
+}

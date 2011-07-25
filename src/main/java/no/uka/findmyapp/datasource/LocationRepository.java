@@ -347,7 +347,7 @@ public class LocationRepository {
 			logger.info("Data logged: " + locationReport.toString());
 			
 			
-		} catch (Exception e) {logger.error("Could not clean the given parameter: " + e);}
+		} catch (Exception e) {logger.error("Could not add data to the given parameter: " + e);}
 		
 	}
 
@@ -426,55 +426,76 @@ public class LocationRepository {
  */
 	public ManageParameterRespons addParameter(String parName,String devId) {
 		logger.info("Adding Parameter:"+parName);
-				
-		try {jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER " +
-				"(parameter_name,appstore_developer_id)VALUES(?,?)",parName,devId);
-			ManageParameterRespons respons = new ManageParameterRespons("parameter: "+parName+" was added", null,null);
-					return respons;		
+		ManageParameterRespons respons = new ManageParameterRespons();
+		try {respons.setNumberOfRowsAffected( jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER " +
+				"(parameter_name,appstore_developer_id)VALUES(?,?)",parName,devId));
+			respons.setRespons("Parameter: "+parName+" was added");
+			respons.setStatus(true);
+					
 		}catch (org.springframework.dao.DuplicateKeyException e) {
 			logger.error("Could not clean the parameter: " + e);
-			ManageParameterRespons respons = new ManageParameterRespons("parameter: "+parName+" could not be added", " probably beacause " +
-					"this  parameter already exists, try with another nice name :) ! ",""+e);
-		return respons;	}
-		
+			respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " probably beacause " +
+					"this  parameter already exists, try with another nice name :) ! ",null);
+			respons.setStatus(false);
+			}
 		catch (org.springframework.dao.DataIntegrityViolationException e) {
 			logger.error("Could not clean the parameter: " + e);
-			ManageParameterRespons respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " probably beacause " +
-					" you have not provided a valid developers id, try again:) ! ",""+e);
+			 respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " probably beacause " +
+					" you have not provided a valid developers id, try again:) ! ",null);
+			 respons.setStatus(false);
 
-				return respons;	}
+			}
 		catch (Exception e) {
-			ManageParameterRespons respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " See excepiton message"+
-					" for possible cause. Hopefully its not to hard to understand :)  ",""+e);
+			 respons = new ManageParameterRespons("Parameter: "+parName+" could not be added", " See excepiton message"+
+					" for possible cause. Hopefully its not to hard to understand :)  ",null);
+			 respons.setStatus(false);
 			
 			logger.error("Could not add given parameter: " + e);
-			return respons;}
+			}
+		return respons;
 			
 	}
 
-	public ManageParameterRespons cleanParameter(String parName) {//Must have access check in service, add check if variables exist!!
+	public ManageParameterRespons cleanParameter(String parName, String devId) {//Must have access check in service, add check if variables exist!!
 		logger.info("Cleaning Parameter:"+parName);
-		String respons;
-		
+		ManageParameterRespons respons = new ManageParameterRespons();
+		try {
+			
+			respons.setNumberOfRowsAffected(jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE" +
+					" WHERE custom_parameter_id =" +
+					" (SELECT custom_parameter_id FROM CUSTOM_PARAMETER " +
+						"WHERE parameter_name = ? " +
+						"AND appstore_developer_id = ?)",parName, devId));
+		respons.setStatus(true);
+		return respons;
+			
+		} catch (Exception e) {logger.error("Could not clean the parameter: " + e);
+			respons.setRespons("Could not clean the parameter"+ parName);
+			respons.setSuggestion("The parameter might not exist, check the list of parameters");
+			//respons.setException(e.toString());
+		respons.setStatus(false);
+		return respons;}
+	}
+
+	public ManageParameterRespons removeParameter(String parName, String devId) {//Must have access check in service, add check if variables exist!!
+		ManageParameterRespons respons = new ManageParameterRespons();
 		try {
 			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE" +
 					" WHERE custom_parameter_id =" +
 					" (SELECT custom_parameter_id FROM CUSTOM_PARAMETER " +
-						"WHERE parameter_name = ?)",parName);
-			return null;
-		} catch (Exception e) {logger.error("Could not clean the parameter: " + e);
-	
-		return null;	}
-	}
-
-	public ManageParameterRespons removeParameter(String parName) {//Must have access check in service, add check if variables exist!!
-		String respons;
-		try {jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER WHERE " +
-				" parameter_name = ?",parName);
-		return null;
+						"WHERE parameter_name = ? " +
+						"AND appstore_developer_id = ?)",parName, devId);//Cleaning.
+			respons.setNumberOfRowsAffected(jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER WHERE " +
+				" parameter_name = ? AND  appstore_developer_id = ?",parName, devId));
+			respons.setStatus(true);
+		return respons;
 								
-		} catch (Exception e) {logger.error("Could not remove given parameter: " + e);
-		return null;}
+		} catch (Exception e) {logger.error("Could remove the parameter: " + e);
+		respons.setRespons("Could not remove the parameter"+ parName);
+		respons.setSuggestion("The parameter might not exist, check the list of parameters");
+		//respons.setException(e.toString());
+		respons.setStatus(false);
+	return respons;}
 		
 	}
 
