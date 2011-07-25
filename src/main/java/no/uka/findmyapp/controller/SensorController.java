@@ -17,6 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,37 +41,6 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=Temperature.class)
-	public ModelAndView getTemperatureData(
-			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
-		
-		List<Temperature> temp = service.getLatestTemperatureData(locationId, limit);
-		
-		if(temp == null){
-			return new ModelAndView("fail_respons");
-		}
-		else{
-			return new ModelAndView("json","temperature",temp);
-		}
-	}
-	
-	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=Noise.class)
-	public ModelAndView getNoiseData(
-			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
-		
-		List<Noise> noise = service.getLatestNoiseData(locationId, limit);
-		
-		if(noise == null){
-			return new ModelAndView("fail_respons");
-		}
-		else{
-			return new ModelAndView("json","noise",noise);
-		}
-	}
 	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
@@ -88,6 +58,22 @@ public class SensorController {
 			return new ModelAndView("json","temperature",temperatureList);
 		}
 	}
+	
+	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Temperature.class)
+	public ModelAndView getTemperatureData(
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
+		
+		List<Temperature> temp = service.getLatestTemperatureData(locationId, limit);
+		
+		if(temp == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","temperature",temp);
+		}
+	}
 
 	@RequestMapping(value="/{locationId}/noise",method = RequestMethod.GET)
 	public ModelAndView getNoiseData(
@@ -100,7 +86,21 @@ public class SensorController {
 		return new ModelAndView("json","noise",noiseList);
 	}
 	
-	
+	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Noise.class)
+	public ModelAndView getNoiseData(
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
+		
+		List<Noise> noise = service.getLatestNoiseData(locationId, limit);
+		
+		if(noise == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","noise",noise);
+		}
+	}
 	
 	@RequestMapping(value="/{locationId}/humidity",method = RequestMethod.GET)
 	public ModelAndView getHumidityData(
@@ -134,8 +134,6 @@ public class SensorController {
 			
 	}
 	
-	
-
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
@@ -172,6 +170,7 @@ public class SensorController {
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/temperature", method = RequestMethod.POST)
 	@ServiceModelMapping(returnType = Temperature.class)
 	public ModelAndView setTemperatureData(
@@ -185,7 +184,7 @@ public class SensorController {
 		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
-
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/noise", method = RequestMethod.POST)
 	public ModelAndView setNoiseData(
 			@PathVariable int locationId,
@@ -197,7 +196,7 @@ public class SensorController {
 		return new ModelAndView("json", "dataReg", dataReg);
 	}
 	
-	
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/humidity", method = RequestMethod.POST)
 	public ModelAndView setHumidityData(
 			@PathVariable int locationId,
@@ -208,6 +207,7 @@ public class SensorController {
 		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/beertap/{tapNr}", method = RequestMethod.POST)
 	public ModelAndView setBeertapData(
 			@PathVariable int  locationId,

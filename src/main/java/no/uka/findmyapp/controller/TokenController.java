@@ -27,7 +27,7 @@ public class TokenController {
 	public ModelAndView login(
 			@RequestParam(required = true) String facebookToken)
 			throws TokenException {
-		ModelAndView mav = new ModelAndView("login");
+		ModelAndView mav = new ModelAndView("json");
 		String token = service.login(facebookToken);
 		if (token == null)
 			throw new TokenException("Unable to obtain token for user.");

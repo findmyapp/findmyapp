@@ -1,46 +1,55 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>UKA 2011</title> 
-  <script type="text/javascript" src="ajaxobject.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient2.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  <script type="text/javascript">
-    
-    google.load('visualization', '1', {'packages':['corechart', 'gauge']});
-    google.setOnLoadCallback(getData(1));
-    
-    function goHist(a) {
-  	  history.go(a); 
-  	}
-  </script>
-   
-</head> 
+<!DOCTYPE html>
+<html lang="en">
 
-<body> 
-	<div id="content">
-	<!-- Sidebars / Aside -->
-	<aside id="right_aside">	
- 		<section>
-			<div id='temp_chart'></div>
-			<div id='humidity_chart'></div>
-		</section>
-	</aside>
-	
-	<aside id="left_aside">	
- 		<section>
-			<div>'Insert event info here..'</div>
-		</section>
-	</aside>
-	
-	<div id="mcontent">
-		<!-- Content Section -->
-	</div>
-	</div>
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>UKA 2011</title>
+<script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="dataclient2.js"></script>
+<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(1));
+
+	function goHist(a) {
+		history.go(a);
+	}
+</script>
+
+</head>
+
+<body>
+	<header>
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
+	<section id="mainContent">
+		<!-- Sidebars / Aside -->
+		<aside id="right_aside">
+			<section>
+				<div id='temp_chart'></div>
+				<div id='humidity_chart'></div>
+			</section>
+		</aside>
+
+		<div id="mcontent">
+			<!-- Content Section -->
+		</div>
+
+		<aside id="left_aside">
+			<section>
+				<div>'Insert event info here..'</div>
+			</section>
+		</aside>
+	</section>
+	<footer>
+		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+	</footer>
 </body>
 
 </html>
