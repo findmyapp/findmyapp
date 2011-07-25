@@ -11,42 +11,65 @@
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
   <script type="text/javascript">
     
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"beersale"));
+    //google.load("visualization", "1", {packages:["corechart"]});
+    //google.setOnLoadCallback(getData(2,"beersale"));
     
     function goHist(a) {
   	  history.go(a); 
   	}
     
+    window.onload = function(){
+    	var url = 'http://findmyapp.net/findmyapp/program/uka11/places/storsalen';
+    	var request = new ajaxObject(url, processEvents);
+    	request.update();  // Server is contacted here
+    }
+    
+	function processEvents(){
+		var event;
+		console.log('processing events');
+		
+		var table = document.getElementById ("event-table-today");
+        var row = table.insertRow (-1);
+        
+        var datecell = row.insertCell (0);
+        datecell.innerHTML = "21:00";
+        
+        var titlecell = row.insertCell (1);
+        titlecell.innerHTML = "Dagens kjempekule event";
+		
+        var table = document.getElementById ("event-table-tomorrow");
+        var row = table.insertRow (-1);
+        
+        var datecell = row.insertCell (0);
+        datecell.innerHTML = "21:00";
+        
+        var titlecell = row.insertCell (1);
+        titlecell.innerHTML = "Morgendagens kjempekule event";
+	}
+	
     </script>
    
 </head> 
 
 <body> 
+	<header>
+        <h1 id="findMyApp">FindMyApp</h1>
+  </header>
+  
 	<div id="content">
-	<!-- Sidebar / Aside -->
-	<aside>
-		<section>
-			<ul id="main_nav">
-		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
-		    </ul>
-		</section>
-		
-		<section>
-			<ul id="aside_nav">
-		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
-			 </ul>
-		</section>
-	</aside>
 	
 	<div id="mcontent">
-		<!-- Content Section -->
-		<div id='chart_div'></div>
+		<table class='event-table' id='event-table-today'> 
+				<tr class='event-table-header'><th colspan="2">I dag</th></tr>
+		</table>
+		
+		<table class='event-table' id='event-table-tomorrow'> 
+				<tr class='event-table-header'><th colspan="2">I morgen</th></tr>
+		</table>
+		
+		
 	</div>
+	
 	</div>
 </body> 
 </html>

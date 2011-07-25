@@ -70,8 +70,23 @@ public class UkaProgramRepository {
 		return jdbcTemplate.queryForObject("SELECT * FROM UKA_EVENTS WHERE " +
 				"place = ? AND showing_time > (now()) AND showing_time >= ? AND showing_time <= ? ORDER BY showing_time LIMIT 1", new EventRowMapper(), place, from, to);
 	}
+	
 	public List<UkaEvent> getEventsOnPlace(String place) {
+		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE place = ?", 
+				new EventRowMapper(), place);
+	}
+	
+	// not tested
+	public List<UkaEvent> getEventsOnPlaceToday(String place) {
 		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE " +
-				"place = ?", new EventRowMapper(), place);
+				"place = ? AND showing_time >= (now())", 
+				new EventRowMapper(), place);
+	}
+	
+	//must be updated to show tomorrow not today
+	public List<UkaEvent> getEventsOnPlaceTomorrow(String place) {
+		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE " +
+				"place = ? AND showing_time >= (now())", 
+				new EventRowMapper(), place);
 	}
 }
