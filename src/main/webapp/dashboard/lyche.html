@@ -7,46 +7,40 @@
   <title>UKA 2011</title> 
   <script type="text/javascript" src="ajaxobject.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient.js"></script>
+  <script type="text/javascript" src="dataclient2.js"></script>
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
   <script type="text/javascript">
     
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"beersale"));
+    google.load('visualization', '1', {'packages':['corechart', 'gauge']});
+    google.setOnLoadCallback(getData(1));
     
     function goHist(a) {
   	  history.go(a); 
   	}
-    
-    </script>
+  </script>
    
 </head> 
 
 <body> 
 	<div id="content">
-	<!-- Sidebar / Aside -->
-	<aside>
-		<section>
-			<ul id="main_nav">
-		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
-		    </ul>
+	<!-- Sidebars / Aside -->
+	<aside id="right_aside">	
+ 		<section>
+			<div id='temp_chart'></div>
+			<div id='humidity_chart'></div>
 		</section>
-		
-		<section>
-			<ul id="aside_nav">
-		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
-			 </ul>
+	</aside>
+	
+	<aside id="left_aside">	
+ 		<section>
+			<div>'Insert event info here..'</div>
 		</section>
 	</aside>
 	
 	<div id="mcontent">
 		<!-- Content Section -->
-		<div id='chart_div'></div>
 	</div>
 	</div>
-</body> 
+</body>
+
 </html>

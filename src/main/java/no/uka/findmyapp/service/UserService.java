@@ -171,7 +171,7 @@ public class UserService {
 		return data.findUserPrivacyId(userId);
 	}
 
-	public boolean verifyAccessToken(int userId, int accessToken) {
+	public boolean verifyAccessToken(int userId, String accessToken) {
 		// TODO Auto-generated method stub
 		return true;
 	}

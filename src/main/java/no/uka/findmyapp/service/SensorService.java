@@ -129,33 +129,33 @@ public class SensorService {
 		}
 	}
 
-	public void setTemperatureData(Temperature temperature) {
-		data.setTemperatureData(temperature);
-		return;
+	public boolean setTemperatureData(int locationId, float value) {
+		
+		return data.setTemperatureData(locationId, value);
 	}
 
-	public void setHumidityData(Humidity humidity) {
+	public boolean setHumidityData(int locationId, float value) {
 
-		data.setHumidityData(humidity);
-		return;
+		
+		return data.setHumidityData(locationId, value);
 	}
 
-	public BeerTap setBeertapData(int location, float value, int tapnr) {
+	public boolean setBeertapData(int locationId, float value, int tapnr) {
 
-		return data.setBeertapData(location, value, tapnr);
+		return data.setBeertapData(locationId, value, tapnr);
 	}
 	
-	public Noise setNoiseData(int location, int[] sample) {
+	public boolean setNoiseData(int locationId, int[] sample) {
 
 		// returns Noise data.
-		Noise noise = extractNoiseData(location, sample);
+		Noise noise = extractNoiseData(locationId, sample);
 		data.setNoiseData(noise); 
-		return noise; // 
+		return true; // 
 	}
 
-	private Noise extractNoiseData(int location, int[] samples) {
+	private Noise extractNoiseData(int locationId, int[] samples) {
 		Noise noise = new Noise();
-		noise.setLocation(location);
+		noise.setLocation(locationId);
 
 		noise.setAverage(calcAverage(samples));
 		noise.setMax(calcMax(samples));
