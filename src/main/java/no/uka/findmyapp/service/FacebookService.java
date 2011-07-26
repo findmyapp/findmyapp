@@ -53,7 +53,8 @@ public class FacebookService {
 
 			throw new ConsumerException(
 					"Consumer token could not be retreived from Facebook for app "
-							+ consumerDetails.getConsumerName()+" message :"+e.getLocalizedMessage());
+							+ consumerDetails.getConsumerName()+" message :"+e.getLocalizedMessage()
+							+ " fId: "+facebookId+" fSecret: "+facebookSecret );
 		}
 
 		int indexOfToken = response.indexOf('=') + 1;
