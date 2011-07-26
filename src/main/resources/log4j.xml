@@ -45,6 +45,9 @@
 	<logger name="no.uka.findmyapp.service">
 		<level value="debug" />
 	</logger>
+	<logger name="no.uka.findmyapp.controller.DeveloperController">
+		<level value="debug" />
+	</logger>
 	
 	
 

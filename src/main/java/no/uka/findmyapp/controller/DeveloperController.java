@@ -44,6 +44,7 @@ public class DeveloperController {
 	@RequestMapping(value = "/register", method = RequestMethod.PUT)
 	public ModelAndView registerDeveloper(@RequestBody Developer developer) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
+		logger.debug("Registering developer: " + developer.toString());
 		int result = service.registerDeveloper(developer);
 		return new ModelAndView("json", "result", result);
 	}
