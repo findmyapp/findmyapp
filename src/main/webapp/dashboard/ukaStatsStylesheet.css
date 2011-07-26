@@ -64,6 +64,8 @@ Container for the main content section
 Container for left toolbar within mainContent
 */
 #left_aside {
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
 	position: absolute;
 	top:160px;
 	left: 20px;
@@ -147,7 +149,6 @@ Container for right section within mainContent
 	position: absolute;
 	top:160px;
 	right: 20px;
-	background: #f3f3f3;
 	width: 250px;
 	height: 450px;
 }
