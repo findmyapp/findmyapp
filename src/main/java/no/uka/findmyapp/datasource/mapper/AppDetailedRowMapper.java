@@ -20,7 +20,7 @@ public class AppDetailedRowMapper implements RowMapper<AppDetailed> {
 		app.setCategory(rs.getString("category"));
 		app.setDescription(rs.getString("description"));
 		app.setPlatform(rs.getString("platform"));
-		developer.setDeveloperName(rs.getString("fullname"));
+		//developer.setDeveloperName(rs.getString("fullname"));
 		try {
 			app.setThumbImage(new URI(rs.getString(("thumb_image"))));
 		} catch (URISyntaxException e) {

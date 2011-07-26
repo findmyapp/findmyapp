@@ -14,6 +14,7 @@ import no.uka.findmyapp.model.UserPrivacy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,35 @@ public class UserService {
 
 	@Autowired
 	private UserRepository data;
+	
+	
+	public int getUserIdFromToken(String facebookToken) {
+		Facebook facebook = new FacebookTemplate(facebookToken);
+		String facebookId;
+			facebookId = facebook.userOperations().getUserProfile().getId();
+
+		if (facebookId != null) {
+			logger.debug("Find userId of user with facebookId " + facebookId);
+			int userId = 0;
+			
+			try {
+				userId = data.getUserIdByFacebookId(facebookId);
+			} catch (EmptyResultDataAccessException e) {
+				// Empty result ok
+			}
+			
+
+			if (userId == 0) {
+				logger.debug("User not found. Adding user with facebook id: "
+						+ facebookId);
+				userId = data.addUserWithFacebookId(facebookId);
+			} else {
+				logger.debug("User with userId " + userId + " found.");
+			}
+			return userId;
+		}
+		return -1;
+	}
 
 	public PrivacySetting getPrivacySettingForUserId(int userId,
 			String privacyType) {
@@ -69,7 +99,7 @@ public class UserService {
 
 	/**
 	 * Method where it is possible to change privacy settings
-	 * 
+	 * there is only three types of privacy settings: ANYONE (1), FRIENDS (2) and ONLY ME (3)
 	 * @param userPrivacyId
 	 * @param newPosition
 	 * @param newEvents
@@ -82,10 +112,8 @@ public class UserService {
 
 		UserPrivacy userPrivacy = data.retrievePrivacy(userPrivacyId);
 
-		// there is only three types of privacy settings: ANYONE (1), FRIENDS
-		// (2) and ONLY ME (3)
-		// this method assures that the privacy settings only gets updated if
-		// the settings are valid (1,2 or 3)
+
+		// this method assures that privacy settings only gets updated if settings are valid (1,2 or 3)
 		if (newPosition == 1 || newPosition == 2 || newPosition == 3) {
 			userPrivacy.setPositionPrivacySetting(PrivacySetting
 					.getSetting(newPosition));

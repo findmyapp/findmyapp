@@ -17,7 +17,6 @@ public class LocationStatus {
 	private float headCount;
 	
 	public LocationStatus(){//Setting default values upon construction
-		
 		this.funFactor = -1;
 		this.danceFactor = -1;
 		this.flirtFactor = -1;

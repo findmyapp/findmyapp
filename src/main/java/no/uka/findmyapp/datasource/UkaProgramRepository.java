@@ -79,14 +79,14 @@ public class UkaProgramRepository {
 	// not tested
 	public List<UkaEvent> getEventsOnPlaceToday(String place) {
 		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE " +
-				"place = ? AND showing_time >= (now())", 
+				"place = ? AND DATEDIFF(CURDATE(), DATE(showing_time)) = 0", 
 				new EventRowMapper(), place);
 	}
 	
 	//must be updated to show tomorrow not today
 	public List<UkaEvent> getEventsOnPlaceTomorrow(String place) {
 		return jdbcTemplate.query("SELECT * FROM UKA_EVENTS WHERE " +
-				"place = ? AND showing_time >= (now())", 
+				"place = ? AND DATEDIFF(CURDATE(), DATE(showing_time)) = -1", 
 				new EventRowMapper(), place);
 	}
 }

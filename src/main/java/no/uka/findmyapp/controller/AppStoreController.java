@@ -40,7 +40,6 @@ public class AppStoreController {
 	private static final Logger logger = LoggerFactory
 	.getLogger(AppStoreController.class);
 	
-
 	/**
 	 * Returns a list of avaliable apps
 	 * @throws URISyntaxException 
