@@ -138,5 +138,4 @@ public class DeveloperController {
 		logger.info("handleLocationNotFoundException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
-
 }
