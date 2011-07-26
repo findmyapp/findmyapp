@@ -161,14 +161,15 @@ Container for right section within mainContent
 }
 
 
-
 #live_feed {
 	position: absolute;
-	left: 350px;
+	left: 300px;
 	bottom: 5px;
-	width: 500px;
-	top: 100px;
-	height: 10px;
+	width: 800px;
+	top: 199px;
+	height: 28px;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
 }
 
 footer {
