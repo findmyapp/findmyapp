@@ -8,6 +8,7 @@ import java.util.Map;
 import no.uka.findmyapp.controller.auth.TokenException;
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
+import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationCount;
@@ -23,6 +24,9 @@ import no.uka.findmyapp.service.auth.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -158,70 +162,6 @@ public class LocationController {
 		return new ModelAndView("json", "random_fact", fact);
 	}
 
-
-	/*
-	 * -------------------------------UserReporting-------------------------
-	 */
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
-		Location locale = service.getAllData(locationId);
-		return new ModelAndView("json", "location_real_time", locale);
-	}
-
-	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)
-	// add max limit per user.
-	public ModelAndView addReport(@PathVariable("id") int locationId,
-			@RequestBody LocationReport[] locationReport) {
-
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.debug("Status data logged for location: " + locationId);
-		List<LocationReport> reportList = Arrays.asList(locationReport);
-		service.addData(reportList, locationId);
-		mav.addObject("respons", reportList);
-		return mav;
-	}
-
-	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.GET)
-	public ModelAndView getReports(
-			@PathVariable("id") int locationId,// ADD ERROR HANDLING
-			@RequestParam(required = false) String action,// average
-			@RequestParam(required = false, defaultValue = "0") int noe,// If
-																		// want
-																		// to
-																		// pick
-																		// out
-																		// the
-																		// last
-																		// noe
-																		// nr of
-																		// elements
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam(required = false) String parname) {
-		try {
-			List<LocationReport> reports = service.getReports(locationId,
-
-			action, noe, from, to, parname);
-
-			return new ModelAndView("json", "location_real_time", reports);
-		} catch (Exception e) {
-			logger.error("Could not get the requested data: " + e);
-			return null;
-		}
-	}
-
-	@RequestMapping(value = "/developer", method = RequestMethod.GET)
-	public ModelAndView manageParameter(// ADD ERROR HANDLING, max elem
-			@RequestParam String action,// Has to be either addparam,
-										// removeparam or removedata
-			@RequestParam String parname, @RequestParam String devid) {
-
-		ManageParameterRespons respons = service.manageParams(action, parname,
-				devid);
-		return new ModelAndView("json", "reponse", respons);
-	}
-	
 	@SuppressWarnings("unused")
 	@ExceptionHandler(TokenException.class)
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Token did not match provided user id")
@@ -251,5 +191,108 @@ public class LocationController {
 	@ExceptionHandler(LocationNotFoundException.class)
 	private void handleLocationNotFoundException(LocationNotFoundException ex) {
 		logger.error(ex.getLocalizedMessage());
+	}
+
+	/*
+	 * -------------------------------UserReporting-------------------------
+	 */
+
+	// COMMENT +++++
+	// FETCHES EVERYTIHGN INCLUDING SENSOR DATA FRO LOCATION
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
+		Location locale = service.getAllData(locationId);
+		logger.info("DEBUG",locale);
+		return new ModelAndView("json", "location_real_time", locale);
+	}
+
+	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)
+	// add max limit per user.
+	public ModelAndView addReport(@PathVariable("id") int locationId,
+			@RequestBody LocationReport[] locationReport) {
+
+		ModelAndView mav = new ModelAndView("ok_respons");
+		logger.info("Status data logged for location: " + locationId);
+		List<LocationReport> reportList = Arrays.asList(locationReport);
+		service.addData(reportList, locationId);
+		mav.addObject("respons", reportList);
+		return mav;
+	}
+
+	// TODO COMMENT +++++++++++++
+	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.GET)
+	public ModelAndView getReports(
+			@PathVariable("id") int locationId,// ADD ERROR HANDLING
+			@RequestParam(required = false) String action,// average
+			@RequestParam(required = false, defaultValue = "-1") int noe,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
+			@RequestParam(required = false) String parname) {
+		try {
+			
+			List<LocationReport> reports = service.getReports(locationId, action, noe, from, to, parname);
+			return new ModelAndView("json", "location_real_time", reports);
+		}
+
+		catch (Exception e) {
+			logger.error("Could not get the requested data: " + e);
+			return null;
+		}
+	}
+	
+	@RequestMapping(value = "/parameters", method = RequestMethod.GET)
+	public ModelAndView listParameters() {
+
+		List<CustomParameter> respons = service.listParameters();
+		return new ModelAndView("json", "reponse", respons);
+	}
+
+	@RequestMapping(value = "/parameters/add", method = RequestMethod.GET)
+	public ModelAndView addParameter(
+			@RequestParam String name) throws DataIntegrityViolationException{
+		String devid = "1"; //replace this;
+		boolean respons = service.addParameter(name, devid);
+		return new ModelAndView("json", "reponse", respons);
+	}
+	
+	@RequestMapping(value = "/parameters/remove", method = RequestMethod.GET)
+	public ModelAndView removeParameter(// ADD ERROR HANDLING, max elem
+			@RequestParam String name) {
+		String devid = "1"; //replace this;
+		boolean respons = service.removeParameter(name,devid);
+		return new ModelAndView("json", "reponse", respons);
+	}
+	
+	@RequestMapping(value = "/parameters/clean", method = RequestMethod.GET)
+	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
+			@RequestParam String name) {
+		String devid = "1"; //replace this;
+		boolean respons = service.cleanParameter(name, devid);
+		return new ModelAndView("json", "reponse", respons);
+	}
+	
+	@SuppressWarnings("unused") 
+	@ResponseStatus(value=HttpStatus.FORBIDDEN ,reason="Could not add parameter. Developer id not valid. ")
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	private void handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+		logger.debug("handleDataIntegrityViolationException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+	
+	@SuppressWarnings("unused") 
+	@ResponseStatus(value=HttpStatus.FORBIDDEN ,reason="Could not add parameter. Parameter already exists")
+	@ExceptionHandler(DuplicateKeyException.class)
+	private void handleDuplicateKeyException(DuplicateKeyException ex) {
+		logger.debug("handleDuplicateKeyException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+	
+
+	@SuppressWarnings("unused") 
+	@ResponseStatus(value=HttpStatus.FORBIDDEN ,reason="The operation could not be completed. No access.")
+	@ExceptionHandler(DataAccessException.class)
+	private void handleDataAccessException(DataAccessException ex) {
+		logger.debug("handleDataAccessException ( "
+				+ ex.getLocalizedMessage() + " )");
 	}
 }

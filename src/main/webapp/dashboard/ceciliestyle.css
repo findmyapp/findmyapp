@@ -1,0 +1,45 @@
+
+.event-table th {
+	padding: 6px 8px;
+	vertical-align: middle;
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 1px solid #CCC;
+}
+
+.event-table td {
+	background-color: "white";
+	padding: 6px 8px;
+	vertical-align: middle;
+	text-align: left;
+	border-bottom: 1px solid #EEE;
+}
+
+#room-heading {
+	position: absolute;
+	left: 400px;
+}
+
+#room-thumbnail {
+	
+}
+
+#room-info-div {
+	position: absolute;
+	width: 700px;
+	top:160px;
+	left: 300px;
+}
+
+#event-info-div {
+	position: absolute;
+	width: 700px;
+	top:160px;
+	left: 300px;
+}
+
+#event-close-button {
+	position: absolute;
+	left: 500px;
+	top: 1px;
+}

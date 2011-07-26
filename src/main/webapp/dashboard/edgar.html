@@ -1,52 +1,83 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>UKA 2011</title> 
-  <script type="text/javascript" src="ajaxobject.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  <script type="text/javascript">
-    
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"beersale"));
-    
-    function goHist(a) {
-  	  history.go(a); 
-  	}
-    
-    </script>
-   
-</head> 
+<!DOCTYPE html>
+<html lang="en">
 
-<body> 
-	<div id="content">
-	<!-- Sidebar / Aside -->
-	<aside>
-		<section>
-			<ul id="main_nav">
-		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
-		    </ul>
-		</section>
-		
-		<section>
-			<ul id="aside_nav">
-		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
-			 </ul>
-		</section>
-	</aside>
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>UKA 2011</title>
+<script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="dataclient2.js"></script>
+<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+</head>
+
+<body>
+	<header>
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
+	<section id="mainContent">
+		<!-- Sidebars / Aside -->
+		<aside id="right_aside">
+			<section>
+				<div id='temp_chart'></div>
+				<div id='humidity_chart'></div>
+			</section>
+		</aside>
+
+		<div id="mcontent">
+			<!-- Content Section -->
+			<h1 id="room-heading">Edgar</h1>
+			<div id="room-info-div">
+			<p>Preget av lune og brune og røde vegger, dekket av bokhyller, bilder og malerier, er Edgar Studentersamfundets kafé, oppkalt etter Edgar B. Schieldrop, Samfundets første leder. Her kan du få en god kopp kaffe mens du leser dagens aviser eller høre på rolig og spennende musikk i nostalgiske og tidløse omgivelser. Du kan også utfordre dine venner i et brettspill fra vårt rikholdige utvalg. Hvis du er glad i å lese har vi et skattkammer av gamle bøker i de store bokhyllene og vinduskarmene, som bare venter på at noen blar i dem!</p>
+			
+			<br>
+			
+			<h4>Visste du at?</h4>
+			
+			<br>
+			
+			<ul>
+			<li>Edgar er oppkalt etter Edgar B. Schieldrop,  Samfundets første formann. I sin tale på Samfundets ettårsdag 1. oktober 1911 kom han med utsagnet som han senere har blitt kjent for: Høiskolen vil gjøre dere til studerende, vi, Samfundet, vil gjøre dere til studenter. Den er blind som ikke øiner kløften mellom disse to ords betydning. Den som blott er det første uten å være det annet, han blir ingen mann, intet helt menneske - han kan i høiden drive det til professor.</li>
+			</ul>
+			
+			<br>
+			
+			<img src="images/edgar.jpg" id="room-thumbnail">
+			
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
+		</div>
+
+		<aside id="left_aside">
+			<section>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
+			</section>
+		</aside>
+	</section>
 	
-	<div id="mcontent">
-		<!-- Content Section -->
-		<div id='chart_div'></div>
-	</div>
-	</div>
-</body> 
+	<footer>
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+	</footer>
+</body>
+
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(3, 'edgar')); //edgar har id 3
+</script>
+
 </html>

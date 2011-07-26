@@ -41,37 +41,6 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=Temperature.class)
-	public ModelAndView getTemperatureData(
-			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
-		
-		List<Temperature> temp = service.getLatestTemperatureData(locationId, limit);
-		
-		if(temp == null){
-			return new ModelAndView("fail_respons");
-		}
-		else{
-			return new ModelAndView("json","temperature",temp);
-		}
-	}
-	
-	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=Noise.class)
-	public ModelAndView getNoiseData(
-			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
-		
-		List<Noise> noise = service.getLatestNoiseData(locationId, limit);
-		
-		if(noise == null){
-			return new ModelAndView("fail_respons");
-		}
-		else{
-			return new ModelAndView("json","noise",noise);
-		}
-	}
 	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
@@ -89,6 +58,22 @@ public class SensorController {
 			return new ModelAndView("json","temperature",temperatureList);
 		}
 	}
+	
+	@RequestMapping(value="/{locationId}/temperature/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Temperature.class)
+	public ModelAndView getTemperatureData(
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
+		
+		List<Temperature> temp = service.getLatestTemperatureData(locationId, limit);
+		
+		if(temp == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","temperature",temp);
+		}
+	}
 
 	@RequestMapping(value="/{locationId}/noise",method = RequestMethod.GET)
 	public ModelAndView getNoiseData(
@@ -101,7 +86,21 @@ public class SensorController {
 		return new ModelAndView("json","noise",noiseList);
 	}
 	
-	
+	@RequestMapping(value="/{locationId}/noise/latest",method = RequestMethod.GET)
+	@ServiceModelMapping(returnType=Noise.class)
+	public ModelAndView getNoiseData(
+			@PathVariable int locationId,
+			@RequestParam (required = false) String limit) {
+		
+		List<Noise> noise = service.getLatestNoiseData(locationId, limit);
+		
+		if(noise == null){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","noise",noise);
+		}
+	}
 	
 	@RequestMapping(value="/{locationId}/humidity",method = RequestMethod.GET)
 	public ModelAndView getHumidityData(
@@ -135,8 +134,6 @@ public class SensorController {
 			
 	}
 	
-	
-
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
@@ -173,66 +170,53 @@ public class SensorController {
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/temperature", method = RequestMethod.POST)
 	@ServiceModelMapping(returnType = Temperature.class)
 	public ModelAndView setTemperatureData(
 			@PathVariable int locationId,
-			@RequestBody Temperature temperature) {
+			@RequestBody float value) {
 
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Temperature data logged for location: " + locationId  + ", Value: "+ temperature.getValue()  );
-		service.setTemperatureData(temperature);
-		mav.addObject("respons", temperature); // model name, model object
 		
-		return mav; 
+		logger.info("Temperature data logged for location: " + locationId  + ", Value: "+ value  );
+		
+		boolean dataReg = service.setTemperatureData(locationId, value);
+		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
-
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/noise", method = RequestMethod.POST)
 	public ModelAndView setNoiseData(
 			@PathVariable int locationId,
 			@RequestBody int[] samples){
-		
-		ModelAndView mav = new ModelAndView("ok_respons");
+	
 		logger.info("Noise data logged for location: " + locationId );
-		
-		Noise noise = service.setNoiseData(locationId, samples);
 			
-		//mav.addObject("respons",noise );
-		mav.addObject("respons","OK" );
-		
-		return mav;
+		boolean dataReg = service.setNoiseData(locationId, samples);
+		return new ModelAndView("json", "dataReg", dataReg);
 	}
 	
-	
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/humidity", method = RequestMethod.POST)
 	public ModelAndView setHumidityData(
 			@PathVariable int locationId,
-			@RequestBody Humidity humidity){
+			@RequestBody float value){
 
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Humidity data logged for location: " + locationId + ", Value: "+ humidity.getValue()  );
-
-		service.setHumidityData(humidity);
-		mav.addObject("respons", humidity); // model name, model object
-		
-		return mav; 
-
-
+		logger.info("Humidity data logged for location: " + locationId + ", Value: "+ value  );	
+		boolean dataReg = service.setHumidityData(locationId, value);
+		return new ModelAndView("json", "dataReg", dataReg);
 	}
 
+	@Secured("ROLE_SENSOR")
 	@RequestMapping(value = "/{locationId}/beertap/{tapNr}", method = RequestMethod.POST)
 	public ModelAndView setBeertapData(
 			@PathVariable int  locationId,
 			@PathVariable int  tapNr,
 			@RequestBody float value){
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: " + tapNr  );
 		
-		BeerTap beerTap = service.setBeertapData(locationId, value, tapNr);
-		mav.addObject("respons", beerTap); // model name, model object
-		return mav;
-
+		logger.info("Beertap data logged for location: " + locationId + ", Value: "+ value +",tap nr: " + tapNr  );	
+		boolean dataReg = service.setBeertapData(locationId, value, tapNr);
+		return new ModelAndView("json", "dataReg", dataReg);
 
 	}
 	

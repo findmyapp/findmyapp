@@ -40,6 +40,24 @@
 			<value>${jdbc.password}</value>
 		</property>
 	</bean>
+	
+
+	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" autowire="byName">
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.user}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+	</bean>
+
 
 	<bean id="searchConfiguration" class="no.uka.findmyapp.configuration.SearchConfiguration">
 		<property name="minLength">
@@ -102,6 +120,9 @@
 		<constructor-arg value="256" />
 	</bean>
 	<security:user-service id="userDetailsService">
+		<!-- <security:user name="wordpress"
+			password="d6ef441296e261a73cedc89faa2643cec5b71b114e2870ea24e6e1738e091429"
+			authorities="ROLE_WORDPRESS" /> -->
 		<security:user name="wordpress"
 			password="d6ef441296e261a73cedc89faa2643cec5b71b114e2870ea24e6e1738e091429"
 			authorities="ROLE_WORDPRESS" />

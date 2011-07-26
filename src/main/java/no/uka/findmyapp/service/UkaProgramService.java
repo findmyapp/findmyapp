@@ -128,7 +128,7 @@ public class UkaProgramService {
 	 * @param date is used if you want the list of events for a given day. One day is from midnight to midnight. If date is given then from and to is ignored. 
 	 * @param from is used if you want the list of events for a time interval starting at from ending at to. Input to is necessary.
 	 * @param to (see from).
-	 * @param all is used if you want the whole program. Then use all=true and no other input. This solution has been chosen to avoid some input errors in the REST api.
+	 * @param all is used if you want the whole program. Then use all=true and no other input. This solution has been chosen to avoid some input errors in the REST API.
 	 * @param place can be used alone or together with date or to/from. When place is specified only events occurring at this place are returned. 
 	 * @return a list of events wrapped inside an instance of the UkaProgram class.
 	 */
@@ -216,6 +216,22 @@ public class UkaProgramService {
 			throw new UkaYearNotFoundException("ukaYear "+ukaYear+" not found ");
 		}
 		return data.getEventsOnPlace(place);
+	}
+
+	public List<UkaEvent> getEventsToday(String ukaYear, String place) throws UkaYearNotFoundException {
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new UkaYearNotFoundException("ukaYear "+ukaYear+" not found ");
+		}
+		return data.getEventsOnPlaceToday(place);
+	}
+	
+	public List<UkaEvent> getEventsTomorrow(String ukaYear, String place) throws UkaYearNotFoundException {
+		UkaProgramConfiguration config = ukaProgramConfigurationList.get(ukaYear);
+		if (config == null) {
+			throw new UkaYearNotFoundException("ukaYear "+ukaYear+" not found ");
+		}
+		return data.getEventsOnPlaceTomorrow(place);
 	}
 
 }

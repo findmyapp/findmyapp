@@ -1,52 +1,81 @@
-<!DOCTYPE html> 
-<html lang="en"> 
- 
-<head> 
-  <meta charset="utf-8" /> 
-  <meta name="robots" content="noindex" /> 
-  <title>UKA 2011</title> 
-  <script type="text/javascript" src="ajaxobject.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient.js"></script>
-  <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-  <script type="text/javascript">
-    
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"beersale"));
-    
-    function goHist(a) {
-  	  history.go(a); 
-  	}
-    
-    </script>
-   
-</head> 
+<!DOCTYPE html>
+<html lang="en">
 
-<body> 
-	<div id="content">
-	<!-- Sidebar / Aside -->
-	<aside>
-		<section>
-			<ul id="main_nav">
-		        <li><a href="javascript:goHist(-1);" class='awesomeButton'>Hovedside</a></li>
-		    </ul>
-		</section>
-		
-		<section>
-			<ul id="aside_nav">
-		        <li><a href='#self' class='awesomeButton' onclick="getData(1, 'humidity');">Fuktighet</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'noise');">Lydnivå</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'temperature');">Temperatur</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(2, 'beersale');">Ølsalg</a></li>
-				<li><a href='#self' class='awesomeButton' onclick="getData(1, 'users');">Personer</a></li>
-			 </ul>
-		</section>
-	</aside>
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>UKA 2011</title>
+<script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="dataclient2.js"></script>
+<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+
+</head>
+
+<body>
+	<header>
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
+	<section id="mainContent">
+		<!-- Sidebars / Aside -->
+		<aside id="right_aside">
+			<section>
+				<div id='temp_chart'></div>
+				<div id='humidity_chart'></div>
+			</section>
+		</aside>
+
+		<div id="mcontent">
+			<!-- Content Section -->
+			<h1 id="room-heading">Bodegaen</h1>
+			<div id="room-info-div">
+			<p>Bodegaen er Samfundets svetteste dansegulv. Her finner du hver fredag- og lørdagskveld den beste dansbare popmusikken, et hett dansegulv og den beste feststemningen.</p>
+			<br>
+			<img alt="Samfundetkart med lyche markert" src="images/kartbodegaen.png" id="map-with-selection"/>
+			
+			<h4>Visste du at?</h4>
+			<ul>
+			<li>Da Bodegaen ble pusset opp til UKA-97 fikk de karakteristiske fem Larvikitt-blokkene sin plass i lokalet som barelementer. Steinblokkene var en gave fra en gammel Samfundettraver, men Samfundet måtte selv ordne transport. Et transportfirma ble lurt til å ta på seg oppdraget, og angret nok da de så hvor de 2,5 tonn tunge elementene skulle.</li>
+			</ul>
+			
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
+		</div>
+
+		<aside id="left_aside">
+			<section>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
+			</section>
+		</aside>
+	</section>
 	
-	<div id="mcontent">
-		<!-- Content Section -->
-		<div id='chart_div'></div>
-	</div>
-	</div>
-</body> 
+	<footer>
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button"></a>
+		<FONT face="futura medium" size="5">
+			<marquee id="live_feed" direction="left" behavior="scroll" scrollamount="5"></marquee>
+		</FONT>
+	</footer>
+</body>
+
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(10, 'bodegaen'));
+	
+</script>
+
 </html>
