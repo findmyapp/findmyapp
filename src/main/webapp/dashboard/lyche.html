@@ -6,18 +6,18 @@
 <meta name="robots" content="noindex" />
 <title>UKA 2011</title>
 <script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
+<link rel="stylesheet" href="ceciliestyle.css" />
+
 <script type="text/javascript">
 	google.load('visualization', '1', {
 		'packages' : [ 'corechart', 'gauge' ]
 	});
-	google.setOnLoadCallback(getData(1));
-
-	function goHist(a) {
-		history.go(a);
-	}
+	google.setOnLoadCallback(getData(1, 'lyche'));
+	
 </script>
 
 </head>
@@ -38,11 +38,30 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
+			<h1 id="room-heading">Lyche</h1>
+			<div id="room-info-div">
+			<p>Lyche er et lykkens sted og her er alle glade :)</p>
+			<p>Lyche er et lykkens sted og her er alle glade :)</p>
+			<p>Lyche er et lykkens sted og her er alle glade :)</p>
+			<p>Lyche er et lykkens sted og her er alle glade :)</p>
+			<p>Lyche er et lykkens sted og her er alle glade :)</p>
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
 		</div>
 
 		<aside id="left_aside">
 			<section>
-				<div>'Insert event info here..'</div>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
 			</section>
 		</aside>
 	</section>
