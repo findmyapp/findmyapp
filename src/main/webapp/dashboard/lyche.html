@@ -10,15 +10,6 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-<link rel="stylesheet" href="ceciliestyle.css" />
-
-<script type="text/javascript">
-	google.load('visualization', '1', {
-		'packages' : [ 'corechart', 'gauge' ]
-	});
-	google.setOnLoadCallback(getData(1, 'lyche'));
-	
-</script>
 
 </head>
 
@@ -76,8 +67,20 @@
 	
 	<footer>
 		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
+			id="backbuttonfooter"></a>
+		<FONT face="futura medium" size="5">
+			<marquee id="live_feed" direction="left" behavior="scroll" scrollamount="5"></marquee>
+		</FONT>
+		<h1 id="lychekartfooter">Kart</h1>
 	</footer>
 </body>
+
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(1, 'lyche'));
+	
+</script>
 
 </html>

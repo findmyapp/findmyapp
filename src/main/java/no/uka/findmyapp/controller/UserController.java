@@ -76,7 +76,7 @@ public class UserController {
 			@RequestParam (defaultValue = "0") int privacySettingMedia,
 			@RequestParam (defaultValue = "0") String accessToken) throws InvalidUserIdOrAccessTokenException {
 
-		logger.info("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
+		logger.debug("update privacy with inputs" +  privacySettingPosition + " " + privacySettingEvents
 				+ " " +  privacySettingMoney + " " + privacySettingMedia);
 		
 		// verify if the access token is valid, if not, throw exception

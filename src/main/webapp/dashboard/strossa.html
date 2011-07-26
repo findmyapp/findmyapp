@@ -6,20 +6,10 @@
 <meta name="robots" content="noindex" />
 <title>UKA 2011</title>
 <script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-<script type="text/javascript">
-	google.load('visualization', '1', {
-		'packages' : [ 'corechart', 'gauge' ]
-	});
-	google.setOnLoadCallback(getData(1));
-
-	function goHist(a) {
-		history.go(a);
-	}
-</script>
-
 </head>
 
 <body>
@@ -38,19 +28,58 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
+			<h1 id="room-heading">Strossa</h1>
+			<div id="room-info-div">
+			<p>Nederst i Samfundet, under Edgar og Lyche, finner du Strossa. Til UKA-09 var det Strossa som fikk makeover, og lokalet ble forvandlet til en stilren lounge for trondheimsstudentene. Her finner du DJ-er  som spiller rolig chillout-electronica og forfriskende drinker bak baren.</p>
+
+			<br>
+			
+			<h4>Visste du at?</h4>
+			
+			<br>
+			
+			<ul>
+			<li>Strossa har en lang historie bak seg. Den ble først gravd ut i kjelleren under UKA – 67. Før dette ble etasjen brukt som vaskekjeller og oppholdssted for noe som het Herreklubben. </li>
+			<li>Strossa har også tidligere vært kjent som Pub-a-go-og og Underpub, der det ble holdt en del kontroversielle arrangement som f.eks toppløs servering og strippeshow. </li>
+			<li>Den runde baren er dekorert med tusenvis av knuste Bombay Gin-flasker. Det var vanskelig å få tak nok under byggeperioden, og derfor er det spedd på med Farris-flasker.</li>
+			</ul>
+			
+			<br>
+			
+			<img src="images/strossa.jpg" id="room-thumbnail">
+			
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
 		</div>
 
 		<aside id="left_aside">
 			<section>
-				<div>'Insert event info here..'</div>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
 			</section>
 		</aside>
 	</section>
 	
 	<footer>
-		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
 			id="back_button" /></a>
 	</footer>
 </body>
+
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(1, 'strossa'));
+</script>
 
 </html>

@@ -99,7 +99,7 @@ public class UserService {
 
 	/**
 	 * Method where it is possible to change privacy settings
-	 * 
+	 * there is only three types of privacy settings: ANYONE (1), FRIENDS (2) and ONLY ME (3)
 	 * @param userPrivacyId
 	 * @param newPosition
 	 * @param newEvents
@@ -112,10 +112,8 @@ public class UserService {
 
 		UserPrivacy userPrivacy = data.retrievePrivacy(userPrivacyId);
 
-		// there is only three types of privacy settings: ANYONE (1), FRIENDS
-		// (2) and ONLY ME (3)
-		// this method assures that the privacy settings only gets updated if
-		// the settings are valid (1,2 or 3)
+
+		// this method assures that privacy settings only gets updated if settings are valid (1,2 or 3)
 		if (newPosition == 1 || newPosition == 2 || newPosition == 3) {
 			userPrivacy.setPositionPrivacySetting(PrivacySetting
 					.getSetting(newPosition));
