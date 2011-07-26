@@ -15,9 +15,27 @@ public class UKAppsConsumerDetails implements ExtraTrustConsumerDetails {
 	private int consumerId;
 	private String consumerKey;
 	private String consumerName;
+	private String facebookId;
+	private String facebookSecret;
 	private String secret;
 	private String authority;
 	private boolean requiredToObtainAuthenticatedToken;
+	
+	public String getFacebookId() {
+		return facebookId;
+	}
+	
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
+	}
+	
+	public String getFacebookSecret() {
+		return facebookSecret;
+	}
+	
+	public void setFacebookSecret(String facebookSecret) {
+		this.facebookSecret = facebookSecret;
+	}
 	
 	public boolean isRequiredToObtainAuthenticatedToken() {
 		return requiredToObtainAuthenticatedToken;

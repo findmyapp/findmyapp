@@ -44,7 +44,9 @@ public class ServiceInfoService {
 		for(Annotation a : as) {
 			if(a.annotationType() == RequestMapping.class) {
 				RequestMapping req = (RequestMapping)a;
-				controllerLocationPrefix = req.value()[0];
+				if(req.value().length > 0) {
+					controllerLocationPrefix = req.value()[0];
+				}
 			}
 		}
 		

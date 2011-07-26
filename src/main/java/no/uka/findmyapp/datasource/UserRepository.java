@@ -11,12 +11,16 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 import no.uka.findmyapp.model.UserPrivacy;
 
 import org.slf4j.Logger;
@@ -44,30 +48,8 @@ public class UserRepository {
 	@Qualifier("dataSource")
 	DataSource dataSource;
 
-	public boolean areFriends(int userId1, int userId2) {
-		final int id1 = userId1;
-		final int id2 = userId2;
-		int friends = jdbcTemplate
-				.queryForInt(
-						"SELECT COUNT(*) FROM ("
-								+ "SELECT * FROM FRIENDS f "
-								+ "WHERE f.user1_id = ? AND f.user2_id = ? "
-								+ "UNION "
-								+ "SELECT * FROM FRIENDS f WHERE f.user1_id = ? AND f.user2_id = ?) AS areFriends",
-						new PreparedStatementSetter() {
-							public void setValues(PreparedStatement ps)
-									throws SQLException {
-								ps.setInt(1, id1);
-								ps.setInt(2, id2);
-								ps.setInt(3, id2);
-								ps.setInt(4, id1);
-							}
-						});
-		if (friends > 0)
-			return true;
-		else
-			return false;
-	}
+	@Autowired
+	DataSource dataSourceMSSQL;
 
 	public boolean addEvent(int userId, long eventId) {
 		try {
@@ -102,6 +84,21 @@ public class UserRepository {
 		return user;
 	}
 	
+	public Location getUserLocation(int userId) {
+		try {
+			Location location = jdbcTemplate
+					.queryForObject(
+							"SELECT location.position_location_id, location.name "
+									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
+									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
+							new LocationRowMapper(), userId);
+			return location;
+		} catch (Exception e) {
+			logger.error("Could not get user position: " + e);
+			return null;
+		}
+	}
+	
 	public UserPrivacy getUserPrivacyForUserId(int userId) {
 		// fetch UserPrivacy by user id;
 
@@ -114,18 +111,13 @@ public class UserRepository {
 
 	// Retrieving data
 	public UserPrivacy retrievePrivacy(int privacyId) {
-		try {
 			UserPrivacy privacy = jdbcTemplate
 					.queryForObject(
 							"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS "
 									+ "WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ",
 							new UserPrivacyRowMapper(), privacyId);
 			return privacy;
-		} catch (Exception e) {
-			return null;
 		}
-
-	}
 
 	// Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition,
@@ -211,24 +203,33 @@ public class UserRepository {
 		return (Integer) n.intValue();
 	}
 
-	public int getUserIdByFacebookId(String facebookId)
-			throws DataAccessException {
-		int userId = jdbcTemplate.queryForInt(
-				"SELECT user_id FROM USER WHERE facebook_id=?", facebookId);
+	public int getUserIdByFacebookId(String facebookId) {
+		int userId;
+		try {
+			userId = jdbcTemplate.queryForInt(
+					"SELECT user_id FROM USER WHERE facebook_id=?", facebookId);
+		} catch (DataAccessException e) {
+			userId = -1;
+		}
 		return userId;
 	}
-
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
+	
+	public String getFacebookIdByUserId(int userId) {
+		String facebookId;
 		try {
-			int userPrivacyId = jdbcTemplate.queryForInt(
+			facebookId = jdbcTemplate.queryForObject(
+					"SELECT facebook_id FROM USER WHERE user_id=?", String.class, userId);
+		} catch (DataAccessException e) {
+			facebookId = null;
+		}
+		return facebookId;
+	}
+
+	public int findUserPrivacyId(int userId) {
+		int userPrivacyId = jdbcTemplate.queryForInt(
 					"SELECT USER.USER_PRIVACY_ID FROM USER "
 							+ "WHERE USER.user_id = ? ", userId);
-			return userPrivacyId;
-		} catch (Exception e) {
-			throw new InvalidUserIdOrAccessTokenException("Invalid user id ");
-		}
-
+		return userPrivacyId;
 	}
 
 	public int updateUserTokenIssueTime(long tokenIssued, int userId) {
@@ -237,8 +238,12 @@ public class UserRepository {
 				tokenIssued, userId);
 	}
 
-	public long getUserTokenIssued(String userId) {
+	public long getUserTokenIssued(int userId) {
 		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER WHERE user_id=?", userId);
+	}
+
+	public List<UserPosition> getLocationOfAllUsers() {
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
 }

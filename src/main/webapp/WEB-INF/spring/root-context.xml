@@ -25,7 +25,7 @@
 		</property>
 	</bean>
 
-	<bean name="dataSource" id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" autowire="default">
 		<property name="driverClassName">
 			<value>${jdbc.driver}</value>
@@ -40,7 +40,6 @@
 			<value>${jdbc.password}</value>
 		</property>
 	</bean>
-	
 
 	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" autowire="byName">
@@ -58,7 +57,6 @@
 		</property>
 	</bean>
 
-
 	<bean id="searchConfiguration" class="no.uka.findmyapp.configuration.SearchConfiguration">
 		<property name="minLength">
 			<value>${search.minLength}</value>
@@ -67,7 +65,7 @@
 			<value>${search.depth}</value>
 		</property>
 	</bean>
-	 
+
 	<bean id="authenticationConfiguration"
 		class="no.uka.findmyapp.configuration.AuthenticationConfiguration">
 		<property name="tokenSecret">
@@ -89,24 +87,17 @@
 		<security:http-basic />
 	</security:http>
 
-	<oauth:provider consumer-details-service-ref="consumerDetails"
+	<oauth:provider consumer-details-service-ref="consumerDetailsService"
 		token-services-ref="tokenServices" request-token-url="/oauth/request_token"
 		authenticate-token-url="/oauth/authorize" authentication-failed-url="/oauth/confirm_access"
 		access-granted-url="/request_token_authorized.jsp" access-token-url="/oauth/access_token"
 		require10a="false" />
-	
-	<oauth:consumer-details-service id="consumerDetails">
-		<oauth:consumer name="ukappsConsumer" key="key" secret="secret"
-			resourceName="ukappsServices" requiredToObtainAuthenticatedToken="false"
-			authorities="ROLE_CONSUMER" />
-	</oauth:consumer-details-service>
-		
-<!-- 
+
 	<bean id="consumerDetailsService"
 		class="no.uka.findmyapp.service.auth.UKAppsConsumerDetailsService">
 		<property name="service" ref="authenticationService" />
 	</bean>
--->
+
 	<!-- <oauth:consumer-details-service id="consumerDetails"> -->
 	<!-- <oauth:consumer name="ukappsConsumer" key="key" secret="secret" -->
 	<!-- resourceName="ukappsServices" requiredToObtainAuthenticatedToken="false" -->

@@ -1,4 +1,5 @@
 var info; // data from server
+var userCount;
 var todaysEvents;
 var tomorrowsEvents;
 
@@ -6,7 +7,7 @@ function getData(locationID, locationName, datatype) {// get json data from serv
 	var url;
 	var request;
 
-	testings();
+	requestUsers(locationID);
 	requestLocationReports(locationID);
 	requestTemperature(locationID);
 	requestHumidity(locationID);
@@ -14,14 +15,14 @@ function getData(locationID, locationName, datatype) {// get json data from serv
 	requestTomorrowsEvents(locationName);
 }
 
-function requestTodaysEvents(){
-	var url = 'http://localhost:8080/findmyapp/program/uka11/places/storsalen';
+function requestTodaysEvents(locationName){
+	var url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/today';
 	var request = new ajaxObject(url, processTodaysEvents);
 	request.update();  // Server is contacted here
 }
 
-function requestTomorrowsEvents(){
-	url = 'http://localhost:8080/findmyapp/program/uka11/places/dodensdal';
+function requestTomorrowsEvents(locationName){
+	url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/tomorrow';
 	request = new ajaxObject(url, processTomorrowsEvents);
 	request.update();  // Server is contacted here
 }
@@ -107,6 +108,30 @@ function showEvent(index, day) {
 	eventDiv.appendChild(p);
 	eventDiv.style.visibility="visible";
 	roomDiv.style.visibility="hidden";
+}
+
+function requestUsers(locationID) {
+	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/users/count';
+//	url = 'http://findmyapp.net/findmyapp/locations/usercount';
+	request = new ajaxObject(url, processUserData, locationID);
+	request.update();  // Server is contacted here.
+}
+
+function processUserData(responseText, responseStatus, locationID) {
+	  if (responseStatus==200) {
+		  console.log(responseText);
+		  var hax = "[" +responseText+"]";
+		  userCount = eval(hax);
+		  drawUserDataChart();
+	  } else {
+		alert(responseStatus + ' -- Error Processing Request');
+	  }
+}
+
+function drawUserDataChart() {
+	document.getElementById('user_count').innerHTML = "[" + userCount[0].usercount + "]";
+	console.log("usercount is...: " + userCount[0].usercount);
+
 }
 
 // populate temperature chart

@@ -2,21 +2,24 @@ package no.uka.findmyapp.service;
 
 //import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
-import no.uka.findmyapp.model.UkaEvent;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
+import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 import no.uka.findmyapp.model.UserPrivacy;
+import no.uka.findmyapp.service.auth.AuthenticationService;
+import no.uka.findmyapp.service.auth.ConsumerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,35 +31,10 @@ public class UserService {
 
 	@Autowired
 	private UserRepository data;
-	
-	
-	public int getUserIdFromToken(String facebookToken) {
-		Facebook facebook = new FacebookTemplate(facebookToken);
-		String facebookId;
-			facebookId = facebook.userOperations().getUserProfile().getId();
-
-		if (facebookId != null) {
-			logger.debug("Find userId of user with facebookId " + facebookId);
-			int userId = 0;
-			
-			try {
-				userId = data.getUserIdByFacebookId(facebookId);
-			} catch (EmptyResultDataAccessException e) {
-				// Empty result ok
-			}
-			
-
-			if (userId == 0) {
-				logger.debug("User not found. Adding user with facebook id: "
-						+ facebookId);
-				userId = data.addUserWithFacebookId(facebookId);
-			} else {
-				logger.debug("User with userId " + userId + " found.");
-			}
-			return userId;
-		}
-		return -1;
-	}
+	@Autowired
+	private AuthenticationService auth;
+	@Autowired
+	private FacebookService facebook;
 
 	public PrivacySetting getPrivacySettingForUserId(int userId,
 			String privacyType) {
@@ -80,8 +58,12 @@ public class UserService {
 		return data.getUserPrivacyForUserId(userId);
 	}
 
-	public boolean areFriends(int userId1, int userId2) {
-		return data.areFriends(userId1, userId2);
+	public boolean areFriends(int userId1, int userId2) throws ConsumerException {
+		List<User> friends = getRegisteredFacebookFriends(userId1);
+		for (User friend : friends) {
+			if (friend.getFacebookUserId() == userId2) return true;
+		}
+		return false;
 	}
 
 	public boolean addEvent(int userId, long eventId) {
@@ -176,31 +158,129 @@ public class UserService {
 		return userPrivacy;
 	}
 
-	public List<User> getRegisteredFacebookFriends(String accessToken) {
-		List<String> friendIds = getFacebookFriends(accessToken);
+	/**
+	 * Get all the facebook friends of a user which also resides in the local FMA datastore
+	 * 
+	 * @param userId local id of user
+	 * @return list of facebook friends also registered in FMA storage.
+	 * @throws ConsumerException
+	 */
+	public List<User> getRegisteredFacebookFriends(int userId)
+			throws ConsumerException {
+		List<String> friendIds = getFacebookIdOfFriends(userId);
 		List<User> users = data.getRegisteredFacebookFriends(friendIds);
 		return users;
 	}
 
-	public List<User> getFriendsAtEvent(int eventId, String accessToken) {
-		List<String> friendIds = getFacebookFriends(accessToken);
+	/**
+	 * Retreives all of the dudes friends based on event and userid.
+	 * 
+	 * @param eventId Id of the event in local datastore
+	 * @param userId Id of the user in local datastore
+	 * @return list of the dudes friends
+	 * @throws ConsumerException
+	 */
+	public List<User> getFriendsAtEvent(int eventId, int userId)
+			throws ConsumerException {
+		List<String> friendIds = getFacebookIdOfFriends(userId);
 		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
 		return users;
 	}
 
-	public List<String> getFacebookFriends(String accessToken) {
-		Facebook facebook = new FacebookTemplate(accessToken);
-		List<String> friendIds = facebook.friendOperations().getFriendIds();
+	/**
+	 * Generic method to extract a users friends based on its user id in the FMA data store.
+	 * 
+	 * @param userId User id from the local datastore
+	 * @return List of ids of the users friends
+	 * @throws ConsumerException
+	 */
+	public List<String> getFacebookIdOfFriends(int userId)
+			throws ConsumerException {
+		String facebookConsumerToken = getFacebookConsumerToken();
+		String facebookUserId = data.getFacebookIdByUserId(userId);
+		List<String> friendIds = getFacebookFriends(facebookConsumerToken,
+				facebookUserId);
 		return friendIds;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
+	public int findUserPrivacyId(int userId) {
 		return data.findUserPrivacyId(userId);
 	}
 
-	public boolean verifyAccessToken(int userId, String accessToken) {
-		// TODO Auto-generated method stub
-		return true;
+	/**
+	 * Method used to get friends based on a consumer token from the calling app
+	 * and a user id of the dude with the friends.
+	 * 
+	 * @param facebookConsumerToken
+	 *            Consumer token for the app responsible for the call
+	 * @param facebookUserId
+	 *            The user id of the dude with the friends
+	 * @return A list of ids of the dudes facebook friends
+	 * @throws ConsumerException
+	 *             Which tells you that something is wrong with either the
+	 *             consumer credentials or permissions to access the dudes
+	 *             friends.
+	 */
+	private List<String> getFacebookFriends(String facebookConsumerToken,
+			String facebookUserId) throws ConsumerException {
+		return facebook.getFacebookFriends(facebookConsumerToken,
+				facebookUserId);
+	}
+
+	/**
+	 * Retreives a consumer token for the calling app based on the details
+	 * gathered from the data source based on passed OAuth consumer key and
+	 * secret.
+	 * 
+	 * @return Consumer token for the calling app
+	 * @throws ConsumerException
+	 */
+	private String getFacebookConsumerToken() throws ConsumerException {
+		return facebook.getConsumerFacebookToken(auth.getConsumerDetails());
+	}
+	
+	/**
+	 * 
+	 * @param userId 
+	 * 				Id of the user you want the location of
+	 * @param tokenUserId
+	 * 				Id of the user who is asking for the location
+	 * @return The location of the user if the asking user has permission to
+	 * @throws ConsumerException
+	 */
+	public Location getUserLocation(int userId, int tokenUserId) throws ConsumerException {
+		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
+		switch(userPrivacy.getPositionPrivacySetting()) {
+			case ANYONE:
+				return data.getUserLocation(userId);
+			case FRIENDS:
+				if(areFriends(userId, tokenUserId)) {
+					return data.getUserLocation(userId);
+				}
+			case ONLY_ME:
+				return null;
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @return A list of all userpositions found in database
+	 */
+	public List<UserPosition> getLocationOfAllUsers() {
+		return data.getLocationOfAllUsers();
+	}
+
+	//TODO
+	public List<UserPosition> getLocationOfFriends(int userId) throws ConsumerException {
+		List<UserPosition> friendsPositions = new ArrayList<UserPosition>();
+		List<UserPosition> allUserPositions = getLocationOfAllUsers();
+		for(UserPosition userposition : allUserPositions) {
+			if(areFriends(userposition.getUserId(), userId)) {
+				friendsPositions.add(userposition);
+			}
+		}
+		return friendsPositions;
 	}
 }
