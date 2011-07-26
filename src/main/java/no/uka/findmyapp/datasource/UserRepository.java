@@ -1,9 +1,8 @@
 package no.uka.findmyapp.datasource;
 
-import java.sql.Date;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +24,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import com.mysql.jdbc.Statement;
 
 @Repository
 public class UserRepository {
@@ -86,13 +90,18 @@ public class UserRepository {
 	}
 
 	public List<UkaEvent> getEvents(int userId) {
-		List<UkaEvent> events = jdbcTemplate.query(
-				"SELECT * FROM UKA_EVENTS e, USER_EVENT ue "
-						+ "WHERE e.id = ue.event_id AND ue.user_id = ?",
+		List<UkaEvent> events = jdbcTemplate.query("SELECT * FROM UKA_EVENTS e, USER_EVENT ue WHERE e.id = ue.event_id AND ue.user_id = ?", 
 				new EventRowMapper(), userId);
 		return events;
 	}
 
+	public User getUserByTokenIssued(String token) {
+
+		User user = jdbcTemplate.queryForObject(
+				"SELECT * FROM USER WHERE token_issued=?", new UserRowMapper(), token);
+		return user;
+	}
+	
 	public UserPrivacy getUserPrivacyForUserId(int userId) {
 		// fetch UserPrivacy by user id;
 
@@ -183,9 +192,23 @@ public class UserRepository {
 	 * @param facebookId
 	 *            id of user in Facebook
 	 */
-	public void addUserWithFacebookId(String facebookId) {
-		jdbcTemplate.update("INSERT INTO USER (facebook_id) VALUES (?)",
-				facebookId);
+	public int addUserWithFacebookId(final String facebookId) {
+		
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id) VALUES (?)";
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(
+		    new PreparedStatementCreator() {
+		        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+		            PreparedStatement ps =
+		                connection.prepareStatement(INSERT_SQL, new String[] {"user_id"});
+		            ps.setString(1, facebookId);
+		            return ps;
+		        }
+
+		    },
+		    keyHolder);
+		Number n = keyHolder.getKey();
+		return (Integer) n.intValue();
 	}
 
 	public int getUserIdByFacebookId(String facebookId)

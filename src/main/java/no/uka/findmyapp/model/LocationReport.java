@@ -1,11 +1,12 @@
 package no.uka.findmyapp.model;
 
 public class LocationReport {
-	private String parameterName;
-	private String parameterTextValue;
+	private String parameterName;//Name of the parameter, i.e. fun_factor or comment
+	private String parameterTextValue; 
 	private float parameterNumberValue;
+	private String username;
 		
-	public LocationReport(){//NOTE TO SELF:Should I set default string? or better with null?
+	public LocationReport(){
 		parameterNumberValue = -1;
 	}
 	public String getParameterName(){
@@ -25,5 +26,11 @@ public class LocationReport {
 	}
 	public void setParameterNumberValue(float num){
 		this.parameterNumberValue = num;
+	}
+	public void setUsername(String username){
+		this.username = username;
+	}
+	public String getUsername(){
+		return username;
 	}
 }

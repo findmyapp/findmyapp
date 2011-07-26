@@ -58,15 +58,17 @@ public class LocationController {
 		List<Location> locations = service.getAllLocations();
 		return new ModelAndView("json", "location", locations);
 	}
-	
-	/*OLD* REPLACED BY getLocationData
-	 * @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocation(@PathVariable("id") int locationId) {
-		logger.debug("getLocation ( " + locationId + ")");
-		Location loc = service.getLocation(locationId);
-		return new ModelAndView("json", "location", loc);
-	}*/
-	
+
+	/*
+	 * OLD* REPLACED BY getLocationData
+	 * 
+	 * @RequestMapping(value = "/{id}", method = RequestMethod.GET) public
+	 * ModelAndView getLocation(@PathVariable("id") int locationId) {
+	 * logger.debug("getLocation ( " + locationId + ")"); Location loc =
+	 * service.getLocation(locationId); return new ModelAndView("json",
+	 * "location", loc); }
+	 */
+
 	/*
 	 * ************* POSITIONING *************
 	 */
@@ -82,7 +84,6 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
-	
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = User.class)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
@@ -90,15 +91,16 @@ public class LocationController {
 		List<User> users = service.getUsersAtLocation(locationId);
 		return new ModelAndView("json", "users_at_location", users);
 	}
-	
+
 	@RequestMapping(value = "/{id}/usercount", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = int.class)
-	public ModelAndView getUserCountAtLocation(@PathVariable("id") int locationId) {
+	public ModelAndView getUserCountAtLocation(
+			@PathVariable("id") int locationId) {
 		logger.debug("getUserCountAtLocation ( " + locationId + ")");
 		int count = service.getUserCountAtLocation(locationId);
-		return new ModelAndView("json","usercount", count);
+		return new ModelAndView("json", "usercount", count);
 	}
-	
+
 	@RequestMapping(value = "/usercount", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = LocationCount.class)
 	public ModelAndView getUserCountAtAllLocations() {
@@ -139,16 +141,19 @@ public class LocationController {
 
 	@RequestMapping(value = "/friends/{id}", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Location.class)
-	public ModelAndView getLocationOfFriend(@PathVariable("id") int friendId, @RequestParam String accessToken) {
-		Location friendLocation = service.getLocationOfFriend(friendId, accessToken);
+	public ModelAndView getLocationOfFriend(@PathVariable("id") int friendId,
+			@RequestParam String accessToken) {
+		Location friendLocation = service.getLocationOfFriend(friendId,
+				accessToken);
 		return new ModelAndView("json", "friend_location", friendLocation);
 	}
 
 	@RequestMapping(value = "/friends", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Map.class)
-	public ModelAndView getLocationOfFriends(@PathVariable int userId, @RequestParam String accessToken) {
-		Map<Integer, Integer> friendsPositions = service
-				.getLocationOfFriends(userId, accessToken);
+	public ModelAndView getLocationOfFriends(@PathVariable int userId,
+			@RequestParam String accessToken) {
+		Map<Integer, Integer> friendsPositions = service.getLocationOfFriends(
+				userId, accessToken);
 		return new ModelAndView("json", "friends_positions", friendsPositions);
 	}
 
@@ -169,7 +174,6 @@ public class LocationController {
 		Fact fact = service.getRandomFact(locationId);
 		return new ModelAndView("json", "random_fact", fact);
 	}
-
 
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -196,63 +200,62 @@ public class LocationController {
 		logger.info("handleLocationNotFoundException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
-/*
- * -------------------------------UserReporting-------------------------
- */
 
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocationData(@PathVariable("id") int locationId){
+	/*
+	 * -------------------------------UserReporting-------------------------
+	 */
+
+	// COMMENT +++++
+	// FETCHES EVERYTIHGN INCLUDING SENSOR DATA FRO LOCATION
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
 		Location locale = service.getAllData(locationId);
-		return new ModelAndView("json","location_real_time", locale);
+		logger.info("DEBUG",locale);
+		return new ModelAndView("json", "location_real_time", locale);
 	}
-	
-	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)// add max limit per user.
+
+	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)
+	// add max limit per user.
 	public ModelAndView addReport(@PathVariable("id") int locationId,
-			@RequestBody LocationReport[] locationReport){
-		
+			@RequestBody LocationReport[] locationReport) {
+
 		ModelAndView mav = new ModelAndView("ok_respons");
 		logger.info("Status data logged for location: " + locationId);
 		List<LocationReport> reportList = Arrays.asList(locationReport);
 		service.addData(reportList, locationId);
-		mav.addObject("respons",reportList);
+		mav.addObject("respons", reportList);
 		return mav;
 	}
-	
-	@RequestMapping(value="/{id}/userreports", method = RequestMethod.GET)
-	public ModelAndView getReports(@PathVariable("id") int locationId,//ADD ERROR HANDLING
-			@RequestParam (required = false) String action,//average 
-			@RequestParam (required = false, defaultValue = "0") int noe,//If want to pick out the last noe nr of elements
-			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
-			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam (required = false) String parname
-		){
-			try{
-				List<LocationReport> reports= service.getReports(locationId,
-			
-					action,
-					noe,
-					from,
-					to,
-					parname
-					);
-			
-			return new ModelAndView("json","location_real_time", reports);}
-			catch (Exception e){
-				logger.error("Could not get the requested data: " + e);
-				return null;}
-	}
-	
-	
 
-	@RequestMapping(value="/developer", method = RequestMethod.GET)
-	public ModelAndView manageParameter(//ADD ERROR HANDLING, max elem
-			@RequestParam  String action,//Has to be either addparam, removeparam or removedata
-			@RequestParam  String parname,
-			@RequestParam  String devid
-			){
-				
+	// TODO COMMENT +++++++++++++
+	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.GET)
+	public ModelAndView getReports(
+			@PathVariable("id") int locationId,// ADD ERROR HANDLING
+			@RequestParam(required = false) String action,// average
+			@RequestParam(required = false, defaultValue = "-1") int noe,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
+			@RequestParam(required = false) String parname) {
+		try {
 			
-		ManageParameterRespons respons = service.manageParams(action,parname,devid);
-		return new ModelAndView("json","reponse", respons);
+			List<LocationReport> reports = service.getReports(locationId, action, noe, from, to, parname);
+			return new ModelAndView("json", "location_real_time", reports);
+		}
+
+		catch (Exception e) {
+			logger.error("Could not get the requested data: " + e);
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/developer", method = RequestMethod.GET)
+	public ModelAndView manageParameter(// ADD ERROR HANDLING, max elem
+			@RequestParam String action,// Has to be either add, removeparam or
+										// removedata
+			@RequestParam String parname, @RequestParam String devid) {
+
+		ManageParameterRespons respons = service.manageParams(action, parname,
+				devid);
+		return new ModelAndView("json", "reponse", respons);
 	}
 }

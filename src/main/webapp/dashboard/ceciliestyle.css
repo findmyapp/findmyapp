@@ -1,3 +1,4 @@
+
 .event-table th {
 	padding: 6px 8px;
 	vertical-align: middle;
@@ -7,6 +8,7 @@
 }
 
 .event-table td {
+	background-color: "white";
 	padding: 6px 8px;
 	vertical-align: middle;
 	text-align: left;
