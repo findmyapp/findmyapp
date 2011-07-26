@@ -2,6 +2,7 @@ package no.uka.findmyapp.service;
 
 //import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -239,15 +240,24 @@ public class UserService {
 		return facebook.getConsumerFacebookToken(auth.getConsumerDetails());
 	}
 	
-	//TODO
-	public Location getUserLocation(int userId, int tokenUserId) {
-		UserPrivacy up = getUserPrivacyForUserId(userId);
-		switch(up.getPositionPrivacySetting()) {
+	/**
+	 * 
+	 * @param userId 
+	 * 				Id of the user you want the location of
+	 * @param tokenUserId
+	 * 				Id of the user who is asking for the location
+	 * @return The location of the user if the asking user has permission to
+	 * @throws ConsumerException
+	 */
+	public Location getUserLocation(int userId, int tokenUserId) throws ConsumerException {
+		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
+		switch(userPrivacy.getPositionPrivacySetting()) {
 			case ANYONE:
 				return data.getUserLocation(userId);
 			case FRIENDS:
-				// If they are friends
-				return data.getUserLocation(userId);
+				if(areFriends(userId, tokenUserId)) {
+					return data.getUserLocation(userId);
+				}
 			case ONLY_ME:
 				return null;
 			default:
@@ -255,18 +265,23 @@ public class UserService {
 		}
 	}
 
-	//TODO
+	/**
+	 * 
+	 * @return A list of all userpositions found in database
+	 */
 	public List<UserPosition> getLocationOfAllUsers() {
-		return null;
-	}
-	
-	//TODO
-	public Location getLocationOfFriend(int friendId, int userId) {
-		return null;
+		return data.getLocationOfAllUsers();
 	}
 
 	//TODO
-	public Map<Integer, Integer> getLocationOfFriends(int userId) throws ConsumerException {
-		return null;
+	public List<UserPosition> getLocationOfFriends(int userId) throws ConsumerException {
+		List<UserPosition> friendsPositions = new ArrayList<UserPosition>();
+		List<UserPosition> allUserPositions = getLocationOfAllUsers();
+		for(UserPosition userposition : allUserPositions) {
+			if(areFriends(userposition.getUserId(), userId)) {
+				friendsPositions.add(userposition);
+			}
+		}
+		return friendsPositions;
 	}
 }

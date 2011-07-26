@@ -144,7 +144,7 @@ public class UserController {
 	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getUserLocation(
 			@PathVariable("id") int userId,
-			@RequestParam String token) throws TokenException {
+			@RequestParam String token) throws TokenException, ConsumerException {
 		int tokenUserId = verifyToken(token);
 		Location location = service.getUserLocation(userId , tokenUserId);
 		return new ModelAndView("json", "location", location);
@@ -166,7 +166,7 @@ public class UserController {
 	public ModelAndView getLocationOfFriends(@PathVariable int userId,
 			@RequestParam String token) throws ConsumerException, TokenException {
 		int tokenUserId = verifyToken(token);
-		Map<Integer, Integer> friendsPositions;
+		List<UserPosition> friendsPositions;
 		if (tokenUserId == userId) {
 			friendsPositions = service.getLocationOfFriends(userId);
 		} else throw new TokenException();
