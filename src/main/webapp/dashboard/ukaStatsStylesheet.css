@@ -4,9 +4,9 @@
 }
 
 body {
+	width:1280px;
+	height:720px;
 	margin: 0 auto;
-	height: 100%;
-	width: 100%;
 	position:relative;
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -26,7 +26,7 @@ header,aside,section,footer {
 
 h1 {
 	font-size: 26px;
-	line-height: 40px;
+	line-height: 30px;
 	text-align: center;
 }
 
@@ -50,13 +50,14 @@ Title (uka logo)
 	margin-left: auto;
 	margin-right: auto;
 	padding: 38px 0;
+	height:45px;
 }
 
 /*
 Container for the main content section
 */
 #mainContent {
-	width: 1280px;
+	width: 100%;
 	height: 520px;	
 }
 
@@ -107,7 +108,7 @@ Container for middle section within mainContent
 */
 #mcontent {
 	position: absolute;
-	top:160px;
+	top:130px;
 	margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -116,11 +117,17 @@ Container for middle section within mainContent
 	height: 450px;
 }
 
+#map-with-selection {
+	margin-left: 170px;
+	margin-bottom: 10px;
+	width: 50%;
+}
+
 #room-info-div {
 	position: absolute;
 	width: 600px;
-	top:80px;
-		margin-left: auto;
+	top:250px;
+	margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
@@ -129,7 +136,7 @@ Container for middle section within mainContent
 #event-info-div {
 	position: absolute;
 	width: 600px;
-	top:80px;
+	top:250px;
 	margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -174,7 +181,10 @@ Footer thingies
 */
 footer {
 	position: absolute;
-	bottom: 70px;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	height: 14px;
 }
 
 #live_feed {
@@ -182,7 +192,6 @@ footer {
 	left: 300px;
 	bottom: 5px;
 	width: 800px;
-	top: 199px;
 	height: 28px;
 	-moz-border-radius: 12px;
 	-webkit-border-radius: 12px;
@@ -190,15 +199,9 @@ footer {
 
 #back_button {
 	position: absolute;
-	left: 70px;
-	width: 150px;
-	height: 150px;
-	top: 70px;
-	padding: 40px auto;
+	left: 100px;
+	bottom:1px;
+	width: 100px;
+	height: 100px;
 }
 
-#map-with-selection {
-	margin-left: 140px;
-	margin-bottom: 10px;
-	width: 60%;
-}

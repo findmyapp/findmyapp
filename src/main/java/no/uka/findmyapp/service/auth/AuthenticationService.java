@@ -151,6 +151,11 @@ public class AuthenticationService {
 		if (authentication.getPrincipal() instanceof UKAppsConsumerDetails) {
 			details = (UKAppsConsumerDetails) authentication.getPrincipal();
 		}
+		//aas
+		if (true) {
+			throw new ArrayIndexOutOfBoundsException("consumerdetails: "+details.getFacebookId()+details.getFacebookSecret());
+		}
+		//end aas
 		return details;
 	}
 	
