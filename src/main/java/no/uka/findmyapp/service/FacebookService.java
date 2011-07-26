@@ -35,17 +35,18 @@ public class FacebookService {
 
 		String facebookId = consumerDetails.getFacebookId();
 		String facebookSecret = consumerDetails.getFacebookSecret();
+		String requestURL = "";
 		RestTemplate rest = new RestTemplate();
 
 		String response;
 		try {
 			logger.debug("Fetching Facebook consumer token for consumer with id "
 					+ consumerDetails.getConsumerId());
-
+			requestURL = "https://graph.facebook.com/oauth/access_token?"
+				+ "client_id=" + facebookId + "&client_secret="
+				+ facebookSecret + "&type=client_cred";
 			response = rest.postForObject(
-					"https://graph.facebook.com/oauth/access_token?"
-							+ "client_id=" + facebookId + "&client_secret="
-							+ facebookSecret + "&type=client_cred", null,
+					requestURL, null,
 					String.class);
 
 		} catch (RestClientException e) {
@@ -54,7 +55,7 @@ public class FacebookService {
 			throw new ConsumerException(
 					"Consumer token could not be retreived from Facebook for app "
 							+ consumerDetails.getConsumerName()+" message :"+e.getLocalizedMessage()
-							+ " fId: "+facebookId+" fSecret: "+facebookSecret );
+							+ " requestURL: "+requestURL );
 		}
 
 		int indexOfToken = response.indexOf('=') + 1;
