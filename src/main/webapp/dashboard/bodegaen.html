@@ -5,24 +5,27 @@
 <meta charset="utf-8" />
 <meta name="robots" content="noindex" />
 <title>UKA 2011</title>
+<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+
+</head>
 <script type="text/javascript" src="ajaxobject.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
-<link rel="stylesheet" href="ukaStatsStylesheet.css" />
 <script type="text/javascript">
-	google.load('visualization', '1', {
-		'packages' : [ 'corechart', 'gauge' ]
-	});
-	google.setOnLoadCallback(getData(1));
-
+	function loaded() {
+		google.load('visualization', '1', {
+			'packages' : [ 'corechart', 'gauge' ]
+		});
+		google.setOnLoadCallback(getData(10));
+		var e = document.getElementById('live_feed');
+		e.innerHTML = "Ikke svett lenger!";
+	}
 	function goHist(a) {
 		history.go(a);
 	}
 </script>
 
-</head>
-
-<body>
+<body onload="loaded();">
 	<header>
 		<h1 id="findMyApp">FindMyApp</h1>
 	</header>
@@ -46,12 +49,13 @@
 			</section>
 		</aside>
 	</section>
-	
+		
 	<footer>
 		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
 			id="back_button" /></a>
-		<marquee id="livefeed" direction="left" behavior="scroll" scrollamount="5" >Her er det jammen svett stemning az!</marquee>
+		<marquee id="live_feed" direction="left" behavior="scroll" scrollamount="5" >Her er det jammen svett stemning az!</marquee>
 	</footer>
+	
 </body>
 
 </html>

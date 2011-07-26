@@ -61,10 +61,10 @@ function drawTemperatureChart() {
 function requestLocationReports(locationID) {
 	console.log("locationID: "+locationID);
 	url = 'http://localhost:8080/findmyapp/locations/' + locationID
-	+ '/userreports?parname=comment';
+	+ '/userreports';
 	console.log("url: "+url);
 	request = new ajaxObject(url, processLocationReports);
-	request.update();
+	request.update('parname=comment');
 }
 
 function processLocationReports(responseText, responseStatus) {
@@ -89,7 +89,7 @@ function drawLocationReports() {
 		}
 	}
 	console.log("reportString: "+reportString);
-	document.getElementById('livefeed').innerHTML = reportString;
+	document.getElementById('live_feed').innerHTML = reportString;
 }
 
 // populate humidity chart
