@@ -13,11 +13,16 @@ public class AppRowMapper implements RowMapper<App> {
 	
 	public App mapRow(ResultSet rs, int rowNum) throws SQLException {
 		App app = new App();
+		app.setId(rs.getInt("id"));
 		app.setMarketID(rs.getString("market_identifier"));
 		app.setName(rs.getString("name"));
 		app.setCategory(rs.getString("category"));
 		app.setDescription(rs.getString("description"));
 		app.setPlatform(rs.getString("platform"));	
+		app.setActivated(rs.getBoolean("activated"));
+		app.setRemoved(rs.getBoolean("removed"));
+		app.setFacebookAppID(rs.getString("facebook_app_id"));
+		app.setFacebookSecret(rs.getString("facebook_secret"));
 		try {
 			app.setThumbImage(new URI(rs.getString(("thumb_image"))));
 		} catch (URISyntaxException e) {

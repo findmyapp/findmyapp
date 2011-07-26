@@ -21,6 +21,8 @@ public class App {
 	private int timesDownloaded;
 	private double ranking;
 	private String category;
+	private boolean removed;
+	private boolean activated;
 	
 	
 	@Override
@@ -33,6 +35,7 @@ public class App {
 				+ ", timesDownloaded=" + timesDownloaded + ", ranking="
 				+ ranking + ", category=" + category + "]";
 	}
+	
 	
 	public String getDeveloperName() {
 		return developerName;
@@ -128,4 +131,25 @@ public class App {
 	public void setFacebookSecret(String facebookSecret) {
 		this.facebookSecret = facebookSecret;
 	}
+
+
+	public boolean isRemoved() {
+		return removed;
+	}
+
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
+
+
+	public boolean isActivated() {
+		return activated;
+	}
+
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+	
 }
