@@ -151,10 +151,12 @@ Container for right section within mainContent
 	right: 20px;
 	width: 250px;
 	height: 450px;
+	background: #f3f3f3;
 }
 
 #right_aside section {
 	-moz-border-radius: 11px;
+	background: #e0e0e0;
 	margin: 30px auto;
 	padding: 11px 42px;
 	width: 50%;
@@ -186,11 +188,8 @@ footer {
 	padding: 40px auto;
 }
 
-#lychekartfooter {
-	position: absolute;
-	content: url(images/kartlyche.png), contents;
-	background-repeat: no-repeat;	
-	top:70px;
-	left:1170px;
-	width: 250px;
+#map-with-selection {
+	margin-left: 140px;
+	margin-bottom: 10px;
+	width: 60%;
 }
