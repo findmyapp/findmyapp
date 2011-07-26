@@ -145,8 +145,7 @@ public class UserController {
 			@PathVariable("id") int userId,
 			@RequestParam String token) throws TokenException {
 		int tokenUserId = verifyToken(token);
-		Location location = service.getUserLocation(userId //, tokenUserId to know who's calling
-				);
+		Location location = service.getUserLocation(userId , tokenUserId);
 		return new ModelAndView("json", "location", location);
 	}
 

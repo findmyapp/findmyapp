@@ -63,10 +63,11 @@ public class DeveloperRepository {
 	public Developer getDeveloperForConsumerKey(String consumerKey) {
 		Developer dev;
 		try {
-			dev = jdbcTemplate.queryForObject("SELECT * "
-					+ "FROM APPSTORE_DEVELOPER " + "WHERE consumer_key = ? ",
+			dev = jdbcTemplate.queryForObject("SELECT DEV.* "
+					+ "FROM APPSTORE_DEVELOPER AS DEV, APPSTORE_APPLICATION AS APP " + "WHERE APP.consumer_key = ? AND DEV.appstore_developer_id = APP.appstore_developer_id ",
 					new DeveloperRowMapper(), consumerKey);
 		} catch (Exception e) {
+			logger.info(e.getMessage());
 			return null;
 		}
 		return dev;
