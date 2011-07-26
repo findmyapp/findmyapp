@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.GsonBuilder;
+
 @Controller
 @RequestMapping("/developer")
 public class DeveloperController {
@@ -86,14 +88,31 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", "res");
 	}
 
-	@RequestMapping(value = "/demo2", method = RequestMethod.POST)
-	public ModelAndView registerApp(@RequestBody String str) {
+	@RequestMapping(value = "/demo2", method = RequestMethod.PUT)
+	public ModelAndView registerApp1(@RequestBody String str) {
 		
 		logger.info(str);
 		
 		return new ModelAndView("json", "registerApp", "res");
 	}
 	
+	@RequestMapping(value = "/demo3", method = RequestMethod.PUT)
+	public ModelAndView registerApp2(@RequestBody String str) {
+		Developer dev = new GsonBuilder().create().fromJson(str, Developer.class);
+		logger.info(str);
+
+		logger.info(dev.toString());
+		
+		return new ModelAndView("json", "registerApp", "res");
+	}
+
+	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
+	public ModelAndView registerApp3(@RequestBody Developer dev) {
+		
+		logger.info(dev.toString());
+		
+		return new ModelAndView("json", "registerApp", dev);
+	}
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)

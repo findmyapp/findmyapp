@@ -21,9 +21,9 @@ public class DeveloperService {
 	
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
-	AuthenticationService authenticationService;
+	UserService userService;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(DeveloperService.class);
@@ -33,9 +33,13 @@ public class DeveloperService {
 	}
 	
 	public int registerDeveloper(Developer developer) {
-		String tempToken = authenticationService.login(developer.getAccessToken());
-		User user = userRepository.getUserByTokenIssued(tempToken);
-		developer.setUserId(user.getLocalUserId());
+		int userId = userService.getUserIdFromToken(developer.getAccessToken());
+		if(userId == 0) {
+			//TODO THROW USER NOT FOUND AND COULD NOT BE CREATED
+			logger.debug("USER NOT FOUND AND COULD NOT BE CREATED");
+		}
+		developer.setUserId(userId);
+		logger.debug("Got userId: " + userId);
 		logger.debug("Registering developer: " + developer.toString());
 		return developerRepository.registerDeveloper(developer);
 	}
