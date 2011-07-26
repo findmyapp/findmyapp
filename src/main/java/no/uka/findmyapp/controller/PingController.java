@@ -26,7 +26,7 @@ public class PingController {
 			.getLogger(PingController.class);
 
 	@RequestMapping(value = "/ping", method = RequestMethod.GET)
-	public void ping(@RequestParam @TokenParam String token) {
+	public void ping(@RequestParam String token) {
 		int userId = service.verify(token);
 		if (userId != -1) {
 			logger.debug("Token verified.");
