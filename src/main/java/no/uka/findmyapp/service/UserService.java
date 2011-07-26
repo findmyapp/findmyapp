@@ -19,6 +19,9 @@ import no.uka.findmyapp.service.auth.ConsumerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,29 +37,6 @@ public class UserService {
 	private AuthenticationService auth;
 	@Autowired
 	private FacebookService facebook;
-
-		if (facebookId != null) {
-			logger.debug("Find userId of user with facebookId " + facebookId);
-			int userId = 0;
-			
-			try {
-				userId = data.getUserIdByFacebookId(facebookId);
-			} catch (EmptyResultDataAccessException e) {
-				// Empty result ok
-			}
-			
-
-			if (userId == 0) {
-				logger.debug("User not found. Adding user with facebook id: "
-						+ facebookId);
-				userId = data.addUserWithFacebookId(facebookId);
-			} else {
-				logger.debug("User with userId " + userId + " found.");
-			}
-			return userId;
-		}
-		return -1;
-	}
 
 	public PrivacySetting getPrivacySettingForUserId(int userId,
 			String privacyType) {
