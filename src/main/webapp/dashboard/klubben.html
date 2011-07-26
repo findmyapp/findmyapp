@@ -6,18 +6,18 @@
 <meta name="robots" content="noindex" />
 <title>UKA 2011</title>
 <script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
+<link rel="stylesheet" href="ceciliestyle.css" />
+
 <script type="text/javascript">
 	google.load('visualization', '1', {
 		'packages' : [ 'corechart', 'gauge' ]
 	});
-	google.setOnLoadCallback(getData(1));
-
-	function goHist(a) {
-		history.go(a);
-	}
+	google.setOnLoadCallback(getData(1, 'lyche'));
+	
 </script>
 
 </head>
@@ -38,11 +38,31 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
+			<h1 id="room-heading">Klubben</h1>
+			<div id="room-info-div">
+			<p>Hvis Storsalen blir for upersonlig og Knaus blir for smått for deg, så er det på Klubben du finner Samfundets heteste konserter. Scenen er perfekt for intime og direkte, men likevel storartete konsertopplevelser. Det kan ligge rock, svette og øl i luften, men det er ikke kun gitarmusikk man får servert her. Her er det er varierte artister som spiller både indie, elektronika, hip-hop og annen musikk med trøkk i. I tillegg snurrer våre dyktige DJer alltid de passende platene som gjør pilsen før og etter konserten ekstra smakelig. På hverdagene er Klubben alt fra Excenteraften og Bokstavlig talt, til åstedet for Café NordSør-møter, og møtelokalet til Studenttinget.</p>
+			
+			<br>
+			
+			<img src="klubben.jpg" id="room-thumbnail">
+			
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
 		</div>
 
 		<aside id="left_aside">
 			<section>
-				<div>'Insert event info here..'</div>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
 			</section>
 		</aside>
 	</section>
