@@ -22,6 +22,7 @@ import no.uka.findmyapp.model.UserPrivacy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -30,8 +31,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import com.mysql.jdbc.Statement;
 
 @Repository
 public class UserRepository {
@@ -42,6 +41,7 @@ public class UserRepository {
 			.getLogger(UserRepository.class);
 
 	@Autowired
+	@Qualifier("dataSource")
 	DataSource dataSource;
 
 	public boolean areFriends(int userId1, int userId2) {
