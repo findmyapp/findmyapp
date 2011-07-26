@@ -27,7 +27,6 @@ header,aside,section,footer {
 h1 {
 	font-size: 26px;
 	line-height: 40px;
-	padding: 18px 0;
 	text-align: center;
 }
 
@@ -50,6 +49,7 @@ Title (uka logo)
 	background-repeat: no-repeat;
 	margin-left: auto;
 	margin-right: auto;
+	padding: 38px 0;
 }
 
 /*
@@ -79,24 +79,24 @@ Container for left toolbar within mainContent
 	-webkit-border-radius: 11px;
 	background: #e0e0e0;
 	margin: 30px auto;
-	padding: 11px 42px;
-	width: 50%;
+	height:400px;
+	width: 210px;
 }
 
 #room-heading {
 }
 
 .event-table th {
-	padding: 6px 8px;
+	padding: 16px 0;
 	vertical-align: middle;
-	text-align: left;
+	text-align: center;
 	font-weight: bold;
-	border-bottom: 1px solid #CCC;
+	border-bottom: 2px solid #CCC;
 }
 
 .event-table td {
 	background-color: "white";
-	padding: 6px 8px;
+	padding: 16px 18px;
 	vertical-align: middle;
 	text-align: left;
 	border-bottom: 1px solid #EEE;
@@ -147,6 +147,8 @@ Container for right section within mainContent
 */
 #right_aside {
 	position: absolute;
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
 	top:160px;
 	right: 20px;
 	width: 250px;
@@ -156,13 +158,24 @@ Container for right section within mainContent
 
 #right_aside section {
 	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
 	background: #e0e0e0;
 	margin: 30px auto;
-	padding: 11px 42px;
-	width: 50%;
-	margin-right: 30px;
+	height:400px;
+	width: 210px;
 }
 
+#temp_chart {
+	padding-top: 40px;
+}
+
+/**
+Footer thingies
+*/
+footer {
+	position: absolute;
+	bottom: 70px;
+}
 
 #live_feed {
 	position: absolute;
@@ -173,11 +186,6 @@ Container for right section within mainContent
 	height: 28px;
 	-moz-border-radius: 12px;
 	-webkit-border-radius: 12px;
-}
-
-footer {
-	position: absolute;
-	bottom: 70px;
 }
 
 #back_button {
