@@ -26,7 +26,23 @@
 	</bean>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
+		destroy-method="close" autowire="default">
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.user}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+	</bean>
+	
+	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" autowire="byName">
 		<property name="driverClassName">
 			<value>${jdbc.driver}</value>
 		</property>
