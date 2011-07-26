@@ -3,6 +3,8 @@ package no.uka.findmyapp.service;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.DeveloperRepository;
+import no.uka.findmyapp.datasource.UserRepository;
+import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.utils.NumberUtils;
@@ -16,6 +18,12 @@ import org.springframework.stereotype.Service;
 public class DeveloperService {
 	@Autowired
 	DeveloperRepository developerRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	AuthenticationService authenticationService;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(DeveloperService.class);
@@ -25,6 +33,9 @@ public class DeveloperService {
 	}
 	
 	public int registerDeveloper(Developer developer) {
+		String tempToken = authenticationService.login(developer.getAccessToken());
+		User user = userRepository.getUserByTokenIssued(tempToken);
+		developer.setUserId(user.getLocalUserId());
 		return developerRepository.registerDeveloper(developer);
 	}
 

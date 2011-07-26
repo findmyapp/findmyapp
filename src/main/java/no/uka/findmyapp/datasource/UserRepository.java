@@ -91,6 +91,13 @@ public class UserRepository {
 		return events;
 	}
 
+	public User getUserByTokenIssued(String token) {
+
+		User user = jdbcTemplate.queryForObject(
+				"SELECT * FROM USER WHERE token_issued=?", new UserRowMapper(), token);
+		return user;
+	}
+	
 	public UserPrivacy getUserPrivacyForUserId(int userId) {
 		// fetch UserPrivacy by user id;
 

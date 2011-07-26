@@ -6,6 +6,8 @@ public class Developer{
 	private int wpId;
 	private int userId;
 	private String email;
+	private String accessToken;
+	
 	public String getFullName() {
 		return fullName;
 	}
@@ -35,6 +37,13 @@ public class Developer{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getAccessToken() {
+		return accessToken;
+	}
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 	@Override
 	public String toString() {
