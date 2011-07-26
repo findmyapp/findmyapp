@@ -35,12 +35,20 @@ public class DeveloperController {
 		return new ModelAndView("json", "developer", developer);
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.PUT)
 	public ModelAndView registerDeveloper(@RequestBody Developer developer) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
 		int result = service.registerDeveloper(developer);
 		return new ModelAndView("json", "result", result);
 	}
+
+	@RequestMapping(value = "/{developer_id}/update", method = RequestMethod.POST)
+	public ModelAndView updateDeveloper(@PathVariable int developer_id, @RequestBody Developer developer) {
+		//TODO IMPLEMENT
+		int result = -1;
+		return new ModelAndView("json", "result", result);
+	}
+	
 
 	@RequestMapping(value = "/{developer_id}/apps", method = RequestMethod.GET)
 	public ModelAndView getAppsFromDeveloperId(@PathVariable int developer_id) {
@@ -48,12 +56,20 @@ public class DeveloperController {
 		return new ModelAndView("json", "list", list);
 	}
 
-	@RequestMapping(value = "/{developer_id}/apps/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/{developer_id}/apps/add", method = RequestMethod.PUT)
 	public ModelAndView registerApp(@PathVariable int developer_id, @RequestBody App app) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
 		int result = service.registerApp(developer_id, app);
 		return new ModelAndView("json", "result", result);
 	}
+	
+	@RequestMapping(value = "/{developer_id}/apps/{appId}/update", method = RequestMethod.POST)
+	public ModelAndView updateApp(@PathVariable int developer_id, @PathVariable int appId, @RequestBody App app) {
+		//TODO IMPLEMENT
+		int result = -1;
+		return new ModelAndView("json", "result", result);
+	}
+	
 	
 	@RequestMapping(value = "/demo", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody Developer developer) {

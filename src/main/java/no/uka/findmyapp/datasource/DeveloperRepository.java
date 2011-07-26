@@ -24,8 +24,7 @@ public class DeveloperRepository {
 	public Developer getDeveloperForWpId(int wpId) {
 		Developer dev = jdbcTemplate.queryForObject("SELECT * " +
 				"FROM APPSTORE_DEVELOPER " +
-				"WHERE wp_id = ? " +
-				"LIMIT 1", new DeveloperRowMapper(), wpId);
+				"WHERE wp_id = ? ", new DeveloperRowMapper(), wpId);
 		return dev;
 	}
 	
