@@ -11,6 +11,7 @@ import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.datasource.SensorRepository;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
+import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Location;
@@ -28,6 +29,7 @@ import no.uka.findmyapp.model.UserPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -188,7 +190,7 @@ public class LocationService {
 												// of all the latest data on the
 												// location
 		Location locationOfInterest = data.getLocation(locationId);
-		//int time = -10;
+		// int time = -10;
 		// Calendar cal = Calendar.getInstance();
 		// cal.add(Calendar.MINUTE,time);
 		// Date tenminago = cal.getTime();
@@ -271,7 +273,6 @@ public class LocationService {
 
 		return locationOfInterest;
 	}
-
 
 	public List<LocationReport> getReports(int locationId, String action,
 			int numberOfelements, Date from, Date to, String parName)
@@ -364,42 +365,23 @@ public class LocationService {
 		return averageData;
 	}
 
-	public ManageParameterRespons manageParams(String action, String parName,
-			String devId) throws IllegalArgumentException {// must also check
-															// dev id, and clean
-															// string.
-		ManageParameterRespons respons;
-		if (action == null && devId == null) {
-			respons = data.findAllParameters();
-		}
-		if (action.equals("add")) {
-			respons = data.addParameter(parName, devId);
+	public boolean addParameter(String parameterName,
+			String devId) throws DataAccessException {
+		return data.addParameter(parameterName, devId);
+	}
 
-		} else if (action.equals("remove")) {
-			respons = data.removeParameter(parName, devId);
-			if (respons.getNumberOfRowsAffected() == 0) {
-				respons.setRespons("Nothing happened!");
-				respons.setStatus(false);
-				respons.setSuggestion("This might be because the parameter never existed,  is already removed, or you do not have the proper authorization");
-			} else {
-				respons.setRespons("Parameter: " + parName + " was removed");
-				respons.setStatus(true);
-			}
-		} else if (action.equals("clean")) {
-			respons = data.cleanParameter(parName, devId);
-			if (respons.getNumberOfRowsAffected() == 0) {
-				respons.setRespons("Nothing happened!");
-				respons.setSuggestion("This might be because the parameter does not exist, or all the data on the parameter have already been deleted, or you do not have the proper authorization");
-				respons.setStatus(false);
-			} else {
-				respons.setRespons("Parameter: " + parName + " was cleaned");
-				respons.setStatus(true);
-			}
-		} else {
-			throw new IllegalArgumentException(
-					"Read API for what arguments are allowed and required");
-		}
-		return respons;
+	public boolean removeParameter(String parameterName,
+			String devId) throws DataAccessException {
+		return data.removeParameter(parameterName, devId);
+	}
+
+	public boolean cleanParameter(String parameterName,
+			String devId) throws DataAccessException {
+		return data.cleanParameter(parameterName, devId);
+	}
+
+	public List<CustomParameter> listParameters() {
+		return data.findAllParameters();
 	}
 
 }
