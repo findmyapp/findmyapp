@@ -54,7 +54,7 @@ public class UkaProgramController {
 			@RequestParam(required=false) String place)
 			throws UkaYearNotFoundException { 
 
-		logger.info("getUkaProgram - new");
+		logger.debug("getUkaProgram - new");
 		//TODO FIX SERVICE TO RETURN A LIST TO REFLECT THE CONTROLLER
 		UkaProgram program = ukaProgramService.getUkaProgram(ukaYear, date, from, to, place);	
 		
@@ -71,7 +71,7 @@ public class UkaProgramController {
 			throws UkaYearNotFoundException {
 			
 		UkaProgram program = new UkaProgram();
-		logger.info("searchForUkaProgramByName");
+		logger.debug("searchForUkaProgramByName");
 		program = ukaProgramService.titleSearch(ukaYear, eventName);	
 
 		return new ModelAndView("json", "program", program);
@@ -83,7 +83,7 @@ public class UkaProgramController {
 			@PathVariable String ukaYear)
 			throws UkaYearNotFoundException {
 		List<String> places;
-		logger.info("getUkaProgramPlaces");
+		logger.debug("getUkaProgramPlaces");
 		places = ukaProgramService.getUkaPlaces(ukaYear);
 
 		return new ModelAndView("json", "places", places);
@@ -95,7 +95,7 @@ public class UkaProgramController {
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
 		
-		logger.info("getEventsOnPlace");
+		logger.debug("getEventsOnPlace");
 		List<UkaEvent> events = ukaProgramService.getEventsOnPlace(ukaYear, place);
 
 		return new ModelAndView("json", "event", events);
@@ -107,7 +107,7 @@ public class UkaProgramController {
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
 		
-		logger.info("getNextUkaEvent");
+		logger.debug("getNextUkaEvent");
 		UkaEvent event = ukaProgramService.getNextUkaEvent(ukaYear, place);
 
 		return new ModelAndView("json", "event", event);
@@ -119,7 +119,7 @@ public class UkaProgramController {
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
 		
-		logger.info("getUkaEventsToday");
+		logger.debug("getUkaEventsToday");
 		List<UkaEvent> events = ukaProgramService.getEventsToday(ukaYear, place);
 
 		return new ModelAndView("json", "event", events);
@@ -131,7 +131,7 @@ public class UkaProgramController {
 			@PathVariable String ukaYear, @PathVariable String place)
 			throws UkaYearNotFoundException {
 		
-		logger.info("getUkaEventsTomorrow");
+		logger.debug("getUkaEventsTomorrow");
 		List<UkaEvent> events = ukaProgramService.getEventsTomorrow(ukaYear, place);
 
 		return new ModelAndView("json", "event", events);
@@ -143,14 +143,14 @@ public class UkaProgramController {
 			@PathVariable String ukaYear)
 			throws UkaYearNotFoundException {
 
-		logger.info("getUkaProgramStartEndDate using a config file");
+		logger.debug("getUkaProgramStartEndDate using a config file");
 		UkaProgramConfiguration config = ukaProgramService.getUkaProgramConfiguration(ukaYear);
 		return new ModelAndView("json", "ukaProgram", config);
 	}
 	@RequestMapping(value = "/program", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaProgramConfiguration.class, isList=true)
 	public ModelAndView getUkaProgramStartEndDate() {
-		logger.info("get all ukaprograms");
+		logger.debug("get all ukaprograms");
 		List<UkaProgramConfiguration> configs = ukaProgramService.getUkaProgramConfiguration();
 		return new ModelAndView("json", "ukaProgram", configs);
 	}
@@ -174,7 +174,7 @@ public class UkaProgramController {
 			@PathVariable int id, @PathVariable String ukaYear) 
 			throws UkaYearNotFoundException {
 		UkaEvent event;
-		logger.info("getUkaEventById");
+		logger.debug("getUkaEventById");
 		event = ukaProgramService.getUkaEventById(ukaYear, id);
 
 		return new ModelAndView("json", "event", event);
@@ -184,7 +184,7 @@ public class UkaProgramController {
 	@ExceptionHandler
 	public void handleIllegalArgumentException(
 			IllegalArgumentException ex) {
-		logger.info("handleIllegalArgumentException ( "
+		logger.error("handleIllegalArgumentException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
 	
@@ -193,7 +193,7 @@ public class UkaProgramController {
 	@ExceptionHandler
 	private void handleEmptyResultDataAccessException(
 			EmptyResultDataAccessException ex) {
-		logger.info("handleEmptyResultDataAccessException ( "
+		logger.error("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
 	
@@ -201,7 +201,7 @@ public class UkaProgramController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(UkaYearNotFoundException.class)
 	private void handleUkaYearNotFoundException(UkaYearNotFoundException e) {
-		logger.info("UkaYearNotFoundException ( "+e.getLocalizedMessage()+ " )");
+		logger.error("UkaYearNotFoundException ( "+e.getLocalizedMessage()+ " )");
 	}
 }
 
