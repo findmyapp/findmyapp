@@ -153,7 +153,7 @@ public class AuthenticationService {
 		}
 		//aas
 		if (true) {
-			throw new IllegalArgumentException("consumerdetails: "+details.getFacebookId()+details.getFacebookSecret());
+			throw new ArrayIndexOutOfBoundsException("consumerdetails: "+details.getFacebookId()+details.getFacebookSecret());
 		}
 		//end aas
 		return details;
