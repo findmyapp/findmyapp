@@ -240,8 +240,19 @@ public class UserService {
 	}
 	
 	//TODO
-	public Location getUserLocation(int userId) {
-		return null;
+	public Location getUserLocation(int userId, int tokenUserId) {
+		UserPrivacy up = getUserPrivacyForUserId(userId);
+		switch(up.getPositionPrivacySetting()) {
+			case ANYONE:
+				return data.getUserLocation(userId);
+			case FRIENDS:
+				// If they are friends
+				return data.getUserLocation(userId);
+			case ONLY_ME:
+				return null;
+			default:
+				return null;
+		}
 	}
 
 	//TODO

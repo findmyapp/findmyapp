@@ -18,6 +18,8 @@ import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
+import no.uka.findmyapp.model.appstore.Developer;
+import no.uka.findmyapp.service.DeveloperService;
 import no.uka.findmyapp.service.LocationService;
 import no.uka.findmyapp.service.auth.AuthenticationService;
 
@@ -49,13 +51,15 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
-@RequestMapping
+@RequestMapping("/locations")
 public class LocationController {
 
 	@Autowired
 	private LocationService service;
 	@Autowired
 	private AuthenticationService auth;
+	@Autowired
+	private DeveloperService dev;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationController.class);
@@ -147,6 +151,8 @@ public class LocationController {
 	/*
 	 * **************** FACT *****************
 	 */
+
+	
 	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Fact.class)
 	public ModelAndView getAllFacts(@PathVariable("id") int locationId) {
@@ -193,106 +199,5 @@ public class LocationController {
 		logger.error(ex.getLocalizedMessage());
 	}
 
-	/*
-	 * -------------------------------UserReporting-------------------------
-	 */
 
-	// COMMENT +++++
-	// FETCHES EVERYTIHGN INCLUDING SENSOR DATA FRO LOCATION
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
-		Location locale = service.getAllData(locationId);
-		logger.info("DEBUG",locale);
-		return new ModelAndView("json", "location_real_time", locale);
-	}
-
-	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.POST)
-	// add max limit per user.
-	public ModelAndView addReport(@PathVariable("id") int locationId,
-			@RequestBody LocationReport[] locationReport) {
-
-		ModelAndView mav = new ModelAndView("ok_respons");
-		logger.info("Status data logged for location: " + locationId);
-		List<LocationReport> reportList = Arrays.asList(locationReport);
-		service.addData(reportList, locationId);
-		mav.addObject("respons", reportList);
-		return mav;
-	}
-
-	// TODO COMMENT +++++++++++++
-	@RequestMapping(value = "/{id}/userreports", method = RequestMethod.GET)
-	public ModelAndView getReports(
-			@PathVariable("id") int locationId,// ADD ERROR HANDLING
-			@RequestParam(required = false) String action,// average
-			@RequestParam(required = false, defaultValue = "-1") int noe,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam(required = false) String parname) {
-		try {
-			
-			List<LocationReport> reports = service.getReports(locationId, action, noe, from, to, parname);
-			return new ModelAndView("json", "location_real_time", reports);
-		}
-
-		catch (Exception e) {
-			logger.error("Could not get the requested data: " + e);
-			return null;
-		}
-	}
-	
-	@RequestMapping(value = "/parameters", method = RequestMethod.GET)
-	public ModelAndView listParameters() {
-
-		List<CustomParameter> respons = service.listParameters();
-		return new ModelAndView("json", "reponse", respons);
-	}
-
-	@RequestMapping(value = "/parameters/add", method = RequestMethod.GET)
-	public ModelAndView addParameter(
-			@RequestParam String name) throws DataIntegrityViolationException{
-		String devid = "1"; //replace this;
-		boolean respons = service.addParameter(name, devid);
-		return new ModelAndView("json", "reponse", respons);
-	}
-	
-	@RequestMapping(value = "/parameters/remove", method = RequestMethod.GET)
-	public ModelAndView removeParameter(// ADD ERROR HANDLING, max elem
-			@RequestParam String name) {
-		String devid = "1"; //replace this;
-		boolean respons = service.removeParameter(name,devid);
-		return new ModelAndView("json", "reponse", respons);
-	}
-	
-	@RequestMapping(value = "/parameters/clean", method = RequestMethod.GET)
-	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
-			@RequestParam String name) {
-		String devid = "1"; //replace this;
-		boolean respons = service.cleanParameter(name, devid);
-		return new ModelAndView("json", "reponse", respons);
-	}
-	
-	@SuppressWarnings("unused") 
-	@ResponseStatus(value=HttpStatus.FORBIDDEN ,reason="Could not add parameter. Developer id not valid. ")
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	private void handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-		logger.debug("handleDataIntegrityViolationException ( "
-				+ ex.getLocalizedMessage() + " )");
-	}
-	
-	@SuppressWarnings("unused") 
-	@ResponseStatus(value=HttpStatus.FORBIDDEN ,reason="Could not add parameter. Parameter already exists")
-	@ExceptionHandler(DuplicateKeyException.class)
-	private void handleDuplicateKeyException(DuplicateKeyException ex) {
-		logger.debug("handleDuplicateKeyException ( "
-				+ ex.getLocalizedMessage() + " )");
-	}
-	
-
-	@SuppressWarnings("unused") 
-	@ResponseStatus(value=HttpStatus.FORBIDDEN ,reason="The operation could not be completed. No access.")
-	@ExceptionHandler(DataAccessException.class)
-	private void handleDataAccessException(DataAccessException ex) {
-		logger.debug("handleDataAccessException ( "
-				+ ex.getLocalizedMessage() + " )");
-	}
 }

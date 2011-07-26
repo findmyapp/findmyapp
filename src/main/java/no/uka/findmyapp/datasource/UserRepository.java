@@ -11,9 +11,11 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
+import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
+import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.User;
@@ -47,31 +49,6 @@ public class UserRepository {
 	@Autowired
 	DataSource dataSourceMSSQL;
 
-	public boolean areFriends(int userId1, int userId2) {
-		final int id1 = userId1;
-		final int id2 = userId2;
-		int friends = jdbcTemplate
-				.queryForInt(
-						"SELECT COUNT(*) FROM ("
-								+ "SELECT * FROM FRIENDS f "
-								+ "WHERE f.user1_id = ? AND f.user2_id = ? "
-								+ "UNION "
-								+ "SELECT * FROM FRIENDS f WHERE f.user1_id = ? AND f.user2_id = ?) AS areFriends",
-						new PreparedStatementSetter() {
-							public void setValues(PreparedStatement ps)
-									throws SQLException {
-								ps.setInt(1, id1);
-								ps.setInt(2, id2);
-								ps.setInt(3, id2);
-								ps.setInt(4, id1);
-							}
-						});
-		if (friends > 0)
-			return true;
-		else
-			return false;
-	}
-
 	public boolean addEvent(int userId, long eventId) {
 		try {
 			final long event_id = eventId;
@@ -103,6 +80,21 @@ public class UserRepository {
 		User user = jdbcTemplate.queryForObject(
 				"SELECT * FROM USER WHERE token_issued=?", new UserRowMapper(), token);
 		return user;
+	}
+	
+	public Location getUserLocation(int userId) {
+		try {
+			Location location = jdbcTemplate
+					.queryForObject(
+							"SELECT location.position_location_id, location.name "
+									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
+									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
+							new LocationRowMapper(), userId);
+			return location;
+		} catch (Exception e) {
+			logger.error("Could not get user position: " + e);
+			return null;
+		}
 	}
 	
 	public UserPrivacy getUserPrivacyForUserId(int userId) {

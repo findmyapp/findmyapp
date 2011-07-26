@@ -32,6 +32,10 @@ public class DeveloperService {
 		return developerRepository.getDeveloperForWpId(wpId);
 	}
 	
+	public Developer getDeveloperForConsumerKey(String consumerKey) {
+		return developerRepository.getDeveloperForConsumerKey(consumerKey);
+	}
+	
 	public int registerDeveloper(Developer developer) {
 		//int userId = userService.getUserIdFromToken(developer.getAccessToken());
 		int userId = 0;

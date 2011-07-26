@@ -15,14 +15,14 @@ function getData(locationID, locationName, datatype) {// get json data from serv
 	requestTomorrowsEvents(locationName);
 }
 
-function requestTodaysEvents(){
-	var url = 'http://localhost:8080/findmyapp/program/uka11/places/storsalen';
+function requestTodaysEvents(locationName){
+	var url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/today';
 	var request = new ajaxObject(url, processTodaysEvents);
 	request.update();  // Server is contacted here
 }
 
-function requestTomorrowsEvents(){
-	url = 'http://localhost:8080/findmyapp/program/uka11/places/dodensdal';
+function requestTomorrowsEvents(locationName){
+	url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/tomorrow';
 	request = new ajaxObject(url, processTomorrowsEvents);
 	request.update();  // Server is contacted here
 }
@@ -111,7 +111,7 @@ function showEvent(index, day) {
 }
 
 function requestUsers(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
+	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/users/count';
 //	url = 'http://findmyapp.net/findmyapp/locations/usercount';
 	request = new ajaxObject(url, processUserData, locationID);
 	request.update();  // Server is contacted here.

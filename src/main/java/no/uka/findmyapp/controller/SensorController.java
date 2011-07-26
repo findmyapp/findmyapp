@@ -34,6 +34,7 @@ public class SensorController {
 
 	@Autowired
 	private SensorService service;
+	
 	List <Temperature> temperatureList;
 	List<Noise> noiseList;
 	List<Humidity> humidityList;
@@ -41,7 +42,6 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
-	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,
