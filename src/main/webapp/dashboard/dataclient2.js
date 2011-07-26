@@ -29,7 +29,7 @@ function requestTomorrowsEvents(){
 function processTodaysEvents(responseText, responseStatus){
 	if (responseStatus==200) {
 		
-		console.log(responseText);
+		//console.log(responseText);
 		todaysEvents = eval(responseText);
 		updateEventList('today');  	
 	}
@@ -38,7 +38,7 @@ function processTodaysEvents(responseText, responseStatus){
 function processTomorrowsEvents(responseText, responseStatus){
 	if (responseStatus==200) {
 		
-		console.log(responseText);
+		//console.log(responseText);
 		tomorrowsEvents = eval(responseText);
 		updateEventList('tomorrow');  	
 	}
@@ -60,7 +60,7 @@ function updateEventList(day){
 	var row;
 	var cell;
 	
-	console.log('no of events: ' + list.length)
+	//console.log('no of events: ' + list.length)
 	for(i = 0; i < list.length; i++) {
 		
 		row = table.insertRow (-1);
@@ -70,7 +70,7 @@ function updateEventList(day){
         
         cell = row.insertCell (0);
         var date = new Date(list[i].showingTime); 
-        console.log(date);
+        //console.log(date);
         cell.innerHTML = date.format("HH:MM"); 
         
         cell = row.insertCell (1);
@@ -87,7 +87,7 @@ function showEvent(index, day) {
 		list = tomorrowsEvents;
 	}
 	
-	console.log("showing event for: " + day + " with index: " + index);
+	//console.log("showing event for: " + day + " with index: " + index);
 	var eventDiv = document.getElementById ("event-info-div");
 	var roomDiv = document.getElementById ("room-info-div");
 	
@@ -156,10 +156,8 @@ function drawTemperatureChart() {
 
 // populate the livefeed
 function requestLocationReports(locationID) {
-	console.log("locationID: "+locationID);
 	url = 'http://localhost:8080/findmyapp/locations/' + locationID
 	+ '/userreports';
-	console.log("url: "+url);
 	request = new ajaxObject(url, processLocationReports);
 	request.update('parname=comment');
 }
@@ -177,15 +175,15 @@ function processLocationReports(responseText, responseStatus) {
 function drawLocationReports() {
 	var reportString = "";
 	var i = 0;
-	console.log("info length: "+info.length);
 	for (i = 0; i < info.length; i++) {
 		if (i == 0) {
 			reportString += info[i].parameterTextValue;
 		} else {
-			reportString += "      " + info[i].parameterTextValue;
+			reportString += "                                                          " + info[i].parameterTextValue;
+			var blankCharacter = "&" + "nbsp";
+			reportString = reportString.replace(/ /gi, blankCharacter);
 		}
 	}
-	console.log("reportString: "+reportString);
 	document.getElementById('live_feed').innerHTML = reportString;
 }
 
@@ -201,9 +199,9 @@ function requestHumidity(locationID) {
 
 function processHumidityData(responseText, responseStatus) {
 	if (responseStatus == 200) {
-		console.log(responseText);
+		//console.log(responseText);
 		info = eval(responseText);
-		console.log("humidity info length: "+info.length);
+		// console.log("humidity info length: "+info.length);
 		drawHumidityChart();
 	} else {
 		alert(responseStatus + ' -- Error Processing Request');

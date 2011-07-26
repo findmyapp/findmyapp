@@ -1,29 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="utf-8" />
-<meta name="robots" content="noindex" />
-<title>UKA 2011</title>
-<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+	<meta charset="utf-8" />
+	<meta name="robots" content="noindex" />
+	<title>UKA 2011</title>
+	<link rel="stylesheet" href="ukaStatsStylesheet.css" />
+	<script type="text/javascript" src="ajaxobject.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="dataclient2.js"></script>
 
 </head>
-<script type="text/javascript" src="ajaxobject.js"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="dataclient2.js"></script>
-<script type="text/javascript">
-	function loaded() {
-		google.load('visualization', '1', {
-			'packages' : [ 'corechart', 'gauge' ]
-		});
-		google.setOnLoadCallback(getData(10));
-		var e = document.getElementById('live_feed');
-		e.innerHTML = "Ikke svett lenger!";
-	}
-	function goHist(a) {
-		history.go(a);
-	}
-</script>
 
 <body onload="loaded();">
 	<header>
@@ -51,11 +37,20 @@
 	</section>
 		
 	<footer>
+		<FONT face="futura medium" size="5">
+		<marquee id="live_feed" direction="left" behavior="scroll" scrollamount="5"></marquee>
+		</FONT>
 		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
-		<marquee id="live_feed" direction="left" behavior="scroll" scrollamount="5" >Her er det jammen svett stemning az!</marquee>
+			id="back_button" /></a>	
 	</footer>
 	
 </body>
+
+<script>
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(10));
+</script>
 
 </html>
