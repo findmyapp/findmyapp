@@ -45,16 +45,16 @@
 	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" autowire="byName">
 		<property name="driverClassName">
-			<value>${jdbc.driver}</value>
+			<value>${mssql.driver}</value>
 		</property>
 		<property name="url">
-			<value>${jdbc.url}</value>
+			<value>${mssql.url}</value>
 		</property>
 		<property name="username">
-			<value>${jdbc.user}</value>
+			<value>${mssql.user}</value>
 		</property>
 		<property name="password">
-			<value>${jdbc.password}</value>
+			<value>${mssql.password}</value>
 		</property>
 	</bean>
 
@@ -79,6 +79,10 @@
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="mssqlJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSourceMSSQL" />
 	</bean>
 
 	<security:http auto-config='true'>
