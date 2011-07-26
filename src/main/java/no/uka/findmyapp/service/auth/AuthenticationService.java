@@ -150,15 +150,12 @@ public class AuthenticationService {
 		UKAppsConsumerDetails details = null;
 		if (authentication.getPrincipal() instanceof UKAppsConsumerDetails) {
 			details = (UKAppsConsumerDetails) authentication.getPrincipal();
-			//Added by aasmund
-			try {
-				details = this.loadConsumer(details.getConsumerKey());
-			}
-			catch (Exception e) {
-				logger.info("FEIL I NOE AASMUND LAGET "+e.getLocalizedMessage());
-			}
-			//End adding by aasmund
 		}
+		//aas
+		if (true) {
+			throw new IllegalArgumentException("consumerdetails: "+details.getFacebookId()+details.getFacebookSecret());
+		}
+		//end aas
 		return details;
 	}
 	
