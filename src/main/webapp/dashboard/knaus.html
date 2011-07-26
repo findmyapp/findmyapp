@@ -6,18 +6,18 @@
 <meta name="robots" content="noindex" />
 <title>UKA 2011</title>
 <script type="text/javascript" src="ajaxobject.js"></script>
+<script type="text/javascript" src="dateformat.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
+<link rel="stylesheet" href="ceciliestyle.css" />
+
 <script type="text/javascript">
 	google.load('visualization', '1', {
 		'packages' : [ 'corechart', 'gauge' ]
 	});
-	google.setOnLoadCallback(getData(1));
-
-	function goHist(a) {
-		history.go(a);
-	}
+	google.setOnLoadCallback(getData(1, 'lyche'));
+	
 </script>
 
 </head>
@@ -38,11 +38,44 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
+			<h1 id="room-heading">Knaus</h1>
+			<div id="room-info-div">
+			<p>Knaus har sitt navn etter maleren Knut Knaus, som stod for mye av den innvendige utsmykningen av Samfundet. Bak de sorte veggene gjemmer det seg fine veggmalerier som Knut har malt. Det hvelvformetete tønnetaket i tre er nesten det eneste som finnes av sitt slag i Norge (det finnes et til). Det skal også sies at taket bidrar til at rommet får en stilig akustikk.</p>
+
+			<p>I 20 år har Knaus vært plassen der det beste av ny norsk musikk blir presentert. I 1987 skapte det da ukjente Dum Dum Boys liv på scenen  på Knaus, og nå er de et av de mest sentrale banda i norsk rockehistorie. I løpet av den første halvdelen av 2000-tallet har Knaus vært et springbrett for band som Gåte, El Caco, Sissy Wish, The Lionheart Brothers og Superfamil</p>
+			
+			<br>
+			
+			<h4>Visste du at?</h4>
+			
+			<br>
+			
+			<ul>
+			<li>Opprinnelig var Knaus en spisesal, men etter at nåværende Edgar fikk kjøkken i 1964, ble middagsserveringen flyttet dit. Siden har lokalet fungert som blant annet møtelokale for Samfundsstyret og som fyllearrest. </li>
+			<li>De sorte veggene i lokalet ble satt opp i forbindelse med en UKA-oppussing i 1970-årene. Bak gjemmer det seg store veggmalerier av kunstneren Knut Knaus.</li>
+			</ul>
+			
+			<br>
+			
+			<img src="knaus.jpg" id="room-thumbnail">
+			
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
 		</div>
 
 		<aside id="left_aside">
 			<section>
-				<div>'Insert event info here..'</div>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">I dag</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">I morgen</th>
+					</tr>
+				</table>
 			</section>
 		</aside>
 	</section>
