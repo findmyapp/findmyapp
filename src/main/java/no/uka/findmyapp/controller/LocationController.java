@@ -49,7 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
-@RequestMapping
+@RequestMapping("/locations")
 public class LocationController {
 
 	@Autowired
