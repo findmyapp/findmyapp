@@ -3,11 +3,11 @@ var todaysEvents;
 var tomorrowsEvents;
 
 function getData(locationID, locationName, datatype) {// get json data from server
-
 	var url;
 	var request;
 
 	testings();
+	requestLocationReports(locationID);
 	requestTemperature(locationID);
 	requestHumidity(locationID);
 	requestTodaysEvents(locationName);
@@ -146,6 +146,41 @@ function drawTemperatureChart() {
 	d.style.marginRight = 'auto';
 }
 
+// populate the livefeed
+function requestLocationReports(locationID) {
+	console.log("locationID: "+locationID);
+	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	+ '/userreports?parname=comment';
+	console.log("url: "+url);
+	request = new ajaxObject(url, processLocationReports);
+	request.update();
+}
+
+function processLocationReports(responseText, responseStatus) {
+	if (responseStatus == 200) {
+		info = eval(responseText);
+		console.log("responseText: "+responseText);
+		drawLocationReports();
+	} else {
+		alert(responseStatus + ' -- Error Processing Request');
+	}
+}
+
+function drawLocationReports() {
+	var reportString = "";
+	var i = 0;
+	console.log("info length: "+info.length);
+	for (i = 0; i < info.length; i++) {
+		if (i == 0) {
+			reportString += info[i].parameterTextValue;
+		} else {
+			reportString += "      " + info[i].parameterTextValue;
+		}
+	}
+	console.log("reportString: "+reportString);
+	document.getElementById('livefeed').innerHTML = reportString;
+}
+
 // populate humidity chart
 function requestHumidity(locationID) {
 	url = 'http://localhost:8080/findmyapp/locations/' + locationID
@@ -160,6 +195,7 @@ function processHumidityData(responseText, responseStatus) {
 	if (responseStatus == 200) {
 		console.log(responseText);
 		info = eval(responseText);
+		console.log("humidity info length: "+info.length);
 		drawHumidityChart();
 	} else {
 		alert(responseStatus + ' -- Error Processing Request');
@@ -192,6 +228,5 @@ function drawHumidityChart() {
 }
 
 function testings() {
-	
-}
 
+}
