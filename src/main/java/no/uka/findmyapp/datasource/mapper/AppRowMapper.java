@@ -13,7 +13,7 @@ public class AppRowMapper implements RowMapper<App> {
 	
 	public App mapRow(ResultSet rs, int rowNum) throws SQLException {
 		App app = new App();
-		app.setId(rs.getInt("id"));
+		app.setId(rs.getInt("appstore_application_id"));
 		app.setMarketID(rs.getString("market_identifier"));
 		app.setName(rs.getString("name"));
 		app.setCategory(rs.getString("category"));
