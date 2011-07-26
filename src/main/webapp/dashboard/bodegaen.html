@@ -7,12 +7,12 @@
   <title>UKA 2011</title> 
   <script type="text/javascript" src="ajaxobject.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="dataclient.js"></script>
+  <script type="text/javascript" src="dataclient2.js"></script>
   <link rel="stylesheet" href="ukaStatsStylesheet.css" />
   <script type="text/javascript">
     
     google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(getData(2,"beersale"));
+    google.setOnLoadCallback(getData(10,"beersale"));
     
     function goHist(a) {
   	  history.go(a); 
@@ -49,4 +49,8 @@
 	</div>
 	</div>
 </body> 
+
+<footer>
+	<marquee id="livefeed" direction="left" behavior="scroll" scrollamount="5" >Her er det jammen svett stemning az!</marquee>
+</footer>
 </html>
