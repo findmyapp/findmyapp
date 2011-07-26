@@ -35,6 +35,7 @@ import no.uka.findmyapp.model.UserPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -46,6 +47,7 @@ public class LocationRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
+	@Qualifier("dataSource")
 	DataSource dataSource;
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationRepository.class);

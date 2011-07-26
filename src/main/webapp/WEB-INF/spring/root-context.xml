@@ -25,7 +25,7 @@
 		</property>
 	</bean>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean name="dataSource" id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" autowire="default">
 		<property name="driverClassName">
 			<value>${jdbc.driver}</value>
@@ -41,6 +41,7 @@
 		</property>
 	</bean>
 	
+
 	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" autowire="byName">
 		<property name="driverClassName">
@@ -57,6 +58,7 @@
 		</property>
 	</bean>
 
+
 	<bean id="searchConfiguration" class="no.uka.findmyapp.configuration.SearchConfiguration">
 		<property name="minLength">
 			<value>${search.minLength}</value>
@@ -72,7 +74,7 @@
 			<value>${token.secret}</value>
 		</property>
 	</bean>
-	
+
 	<import resource="classpath:uka-program.xml" />
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
