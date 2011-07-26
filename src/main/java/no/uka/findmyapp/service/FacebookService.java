@@ -1,8 +1,6 @@
 package no.uka.findmyapp.service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.jar.Attributes;
 
 import no.uka.findmyapp.model.auth.UKAppsConsumerDetails;
 import no.uka.findmyapp.service.auth.ConsumerException;
@@ -37,29 +35,22 @@ public class FacebookService {
 
 		String facebookId = consumerDetails.getFacebookId();
 		String facebookSecret = consumerDetails.getFacebookSecret();
-		String requestURL = "";
 		RestTemplate rest = new RestTemplate();
-		//Map params = new Attributes(3);
-		//params.put("client_id", facebookId);
-		//params.put("client_secret", facebookSecret);
-		//params.put("type", "client_cred");
 
 		String response;
 		try {
 			logger.debug("Fetching Facebook consumer token for consumer with id "
 					+ consumerDetails.getConsumerId());
-			requestURL = "https://graph.facebook.com/oauth/access_token?"
-				+ "client_id=" + facebookId + "&client_secret="
-				+ facebookSecret + "&type=client_cred";
-			response = rest.getForObject(requestURL, String.class);
+			response = rest.getForObject("https://graph.facebook.com/oauth/access_token?"
+					+ "client_id=" + facebookId + "&client_secret="
+					+ facebookSecret + "&type=client_cred", String.class);
 
 		} catch (RestClientException e) {
 			logger.error("Exception while trying to connect to Facebook and fetching token");
 
 			throw new ConsumerException(
 					"Consumer token could not be retreived from Facebook for app "
-							+ consumerDetails.getConsumerName()+" message :"+e.getLocalizedMessage()
-							+ " requestURL: "+requestURL );
+							+ consumerDetails.getConsumerName());
 		}
 
 		int indexOfToken = response.indexOf('=') + 1;
