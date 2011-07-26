@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class DeveloperRowMapper  implements RowMapper<Developer>{
 	public Developer mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Developer developer = new Developer();
-		developer.setDeveloperID(rs.getString("appstore_developer_id"));
+		developer.setDeveloperID(rs.getInt("appstore_developer_id"));
 		developer.setEmail(rs.getString("email"));
 		developer.setFullName(rs.getString("fullname"));
 		developer.setUserId(rs.getInt("user_id"));

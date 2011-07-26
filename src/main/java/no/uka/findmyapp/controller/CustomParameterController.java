@@ -7,7 +7,6 @@ import java.util.List;
 import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationReport;
-import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.CustomParameterService;
 import no.uka.findmyapp.service.DeveloperService;
 import no.uka.findmyapp.service.auth.AuthenticationService;
@@ -23,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -105,37 +105,35 @@ public class CustomParameterController {
 		List<CustomParameter> respons = service.listParameters();
 		return new ModelAndView("json", "reponse", respons);
 	}
-	
-	@Secured("ROLE_CONSUMER")
+
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/add", method = RequestMethod.PUT)
-	public ModelAndView addParameter(
-			@RequestParam String name) throws DataIntegrityViolationException{
-		String consumerKey = auth.getConsumerDetails().getConsumerKey();
-		logger.debug("consumerKey: " + consumerKey);
-		Developer developer = dev.getDeveloperForConsumerKey(consumerKey);
-		logger.debug("consumerKey: " + developer.toString());
-		boolean respons = service.addParameter(name, developer.getDeveloperID());
-		return new ModelAndView("json", "reponse", respons);
+	public String addParameter(
+			@RequestParam String name, @RequestParam(required=true) int developerId, Model model) throws DataIntegrityViolationException{
+		
+		int respons = service.addParameter(name, developerId);
+		model.addAttribute("json", respons);
+		
+		return "json";
 	}
 
-	@Secured("ROLE_CONSUMER")
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/remove", method = RequestMethod.DELETE)
 	public ModelAndView removeParameter(// ADD ERROR HANDLING, max elem
-			@RequestParam String name) {
-		String consumerKey = auth.getConsumerDetails().getConsumerKey();
-		Developer developer = dev.getDeveloperForConsumerKey(consumerKey);
-		boolean respons = service.removeParameter(name,developer.getDeveloperID());
-		return new ModelAndView("json", "reponse", respons);
+			@RequestParam String name, @RequestParam(required=true) int developerId) {
+		
+		boolean respons = service.removeParameter(name, developerId);
+		
+		return new ModelAndView("json", "json", respons);
 	}
 
-	@Secured("ROLE_CONSUMER")
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/clean", method = RequestMethod.DELETE)
 	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
-			@RequestParam String name) {
-		String consumerKey = auth.getConsumerDetails().getConsumerKey();
-		Developer developer = dev.getDeveloperForConsumerKey(consumerKey);
-		boolean respons = service.cleanParameter(name, developer.getDeveloperID());
-		return new ModelAndView("json", "reponse", respons);
+			@RequestParam String name, @RequestParam(required=true) int developerId) {
+		
+		boolean respons = service.cleanParameter(name, developerId);
+		return new ModelAndView("json", "json", respons);
 	}
 	
 	@SuppressWarnings("unused") 
