@@ -68,6 +68,14 @@ public class UserController {
 		model.addAttribute(events);
 		return model;
 	}
+	
+	@RequestMapping(value = "/me/events", method = RequestMethod.GET)
+	public ModelMap getEvents(@RequestParam String token, ModelMap model) throws ConsumerException {
+		int userId = verifyToken(token);
+		List<UkaEvent> events = service.getEvents(userId);
+		model.addAttribute(events);
+		return model;
+	}
 
 	/**
 	 * POST method where it is possible to change privacy settings Privacy
@@ -75,10 +83,10 @@ public class UserController {
 	 * 
 	 * @param userId
 	 *            is necessary to change privacy settings
-	 * @param privacySettingPosition
-	 * @param privacySettingEvents
-	 * @param privacySettingMoney
-	 * @param privacySettingMedia
+	 * @param positionPrivacySetting
+	 * @param eventsPrivacySetting
+	 * @param moneyPrivacySetting
+	 * @param mediaPrivacySetting
 	 * @param token
 	 *            for our local database
 	 * @return
@@ -88,16 +96,16 @@ public class UserController {
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/privacy", method = RequestMethod.POST)
 	public ModelAndView postPrivacy(
-			@RequestParam(defaultValue = "0") int privacySettingPosition,
-			@RequestParam(defaultValue = "0") int privacySettingEvents,
-			@RequestParam(defaultValue = "0") int privacySettingMoney,
-			@RequestParam(defaultValue = "0") int privacySettingMedia,
+			@RequestParam(defaultValue = "0") int positionPrivacySetting,
+			@RequestParam(defaultValue = "0") int eventsPrivacySetting,
+			@RequestParam(defaultValue = "0") int moneyPrivacySetting,
+			@RequestParam(defaultValue = "0") int mediaPrivacySetting,
 			@RequestParam(required = true) String token)
 			throws ConsumerException {
 
-		logger.info("update privacy with inputs" + privacySettingPosition + " "
-				+ privacySettingEvents + " " + privacySettingMoney + " "
-				+ privacySettingMedia);
+		logger.info("update privacy with inputs" + positionPrivacySetting + " "
+				+ eventsPrivacySetting + " " + moneyPrivacySetting + " "
+				+ mediaPrivacySetting);
 
 		// verify if the access token is valid, if not, throw exception
 		int userId = verifyToken(token);
@@ -105,8 +113,8 @@ public class UserController {
 		// If access token is valid, json view is returned
 		int userPrivacyId = service.findUserPrivacyId(userId);
 		UserPrivacy userPrivacy = service.updatePrivacy(userPrivacyId,
-				privacySettingPosition, privacySettingEvents,
-				privacySettingMoney, privacySettingMedia);
+				positionPrivacySetting, eventsPrivacySetting,
+				moneyPrivacySetting, mediaPrivacySetting);
 		return new ModelAndView("json", "privacy", userPrivacy);
 	}
 
