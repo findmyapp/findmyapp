@@ -14,3 +14,15 @@
 	text-align: left;
 	border-bottom: 1px solid #EEE;
 }
+
+#room-info-div {
+	position: absolute;
+	width: 600px;
+	left: 300px;
+}
+
+#event-info-div {
+	position: absolute;
+	width: 600px;
+	left: 300px;
+}
