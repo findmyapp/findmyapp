@@ -96,6 +96,15 @@ h1 {
 	padding: 40px auto;
 }
 
+#live_feed {
+	position: relative;
+	left: 350px;
+	bottom: 5px;
+	width: 500px;
+	height: 10px;
+	border:red;
+}
+
 #mainContent {
 	width: 1280px;
 	height: 520px;	
