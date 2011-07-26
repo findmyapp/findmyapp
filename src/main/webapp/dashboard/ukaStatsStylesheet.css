@@ -163,12 +163,12 @@ Container for right section within mainContent
 
 
 #live_feed {
-	position: relative;
+	position: absolute;
 	left: 350px;
 	bottom: 5px;
 	width: 500px;
+	top: 100px;
 	height: 10px;
-	border:red;
 }
 
 footer {
