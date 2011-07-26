@@ -1,6 +1,8 @@
 package no.uka.findmyapp.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.jar.Attributes;
 
 import no.uka.findmyapp.model.auth.UKAppsConsumerDetails;
 import no.uka.findmyapp.service.auth.ConsumerException;
@@ -37,6 +39,10 @@ public class FacebookService {
 		String facebookSecret = consumerDetails.getFacebookSecret();
 		String requestURL = "";
 		RestTemplate rest = new RestTemplate();
+		//Map params = new Attributes(3);
+		//params.put("client_id", facebookId);
+		//params.put("client_secret", facebookSecret);
+		//params.put("type", "client_cred");
 
 		String response;
 		try {
@@ -45,9 +51,7 @@ public class FacebookService {
 			requestURL = "https://graph.facebook.com/oauth/access_token?"
 				+ "client_id=" + facebookId + "&client_secret="
 				+ facebookSecret + "&type=client_cred";
-			response = rest.postForObject(
-					requestURL, null,
-					String.class);
+			response = rest.getForObject(requestURL, String.class);
 
 		} catch (RestClientException e) {
 			logger.error("Exception while trying to connect to Facebook and fetching token");
