@@ -18,7 +18,6 @@ public class AppRowMapper implements RowMapper<App> {
 		app.setCategory(rs.getString("category"));
 		app.setDescription(rs.getString("description"));
 		app.setPlatform(rs.getString("platform"));	
-		app.setDeveloperName(rs.getString("fullname"));
 		try {
 			app.setThumbImage(new URI(rs.getString(("thumb_image"))));
 		} catch (URISyntaxException e) {
