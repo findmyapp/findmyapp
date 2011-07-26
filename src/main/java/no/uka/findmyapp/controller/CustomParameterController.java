@@ -3,6 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
 import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationReport;
@@ -10,6 +11,7 @@ import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.CustomParameterService;
 import no.uka.findmyapp.service.DeveloperService;
 import no.uka.findmyapp.service.auth.AuthenticationService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,7 +105,8 @@ public class CustomParameterController {
 		List<CustomParameter> respons = service.listParameters();
 		return new ModelAndView("json", "reponse", respons);
 	}
-
+	
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/parameters/add", method = RequestMethod.PUT)
 	public ModelAndView addParameter(
 			@RequestParam String name) throws DataIntegrityViolationException{
@@ -111,7 +115,8 @@ public class CustomParameterController {
 		boolean respons = service.addParameter(name, developer.getDeveloperID());
 		return new ModelAndView("json", "reponse", respons);
 	}
-	
+
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/parameters/remove", method = RequestMethod.DELETE)
 	public ModelAndView removeParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name) {
@@ -120,7 +125,8 @@ public class CustomParameterController {
 		boolean respons = service.removeParameter(name,developer.getDeveloperID());
 		return new ModelAndView("json", "reponse", respons);
 	}
-	
+
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/parameters/clean", method = RequestMethod.DELETE)
 	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name) {
