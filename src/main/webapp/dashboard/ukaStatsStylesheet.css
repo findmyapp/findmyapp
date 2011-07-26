@@ -42,20 +42,34 @@ h1 {
 	height: 100%;
 }
 
-#content {
-	margin-top: 40px;
+/*
+Title (uka logo)
+*/
+#findMyApp {
+	content: url(ukalogo.png), contents;
+	background-repeat: no-repeat;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-#mcontent {
-	padding-left: 62px;
+/*
+Container for the main content section
+*/
+#mainContent {
+	width: 1280px;
+	height: 520px;	
 }
 
+/*
+Container for left toolbar within mainContent
+*/
 #left_aside {
-	float: left;
+	position: absolute;
+	top:160px;
+	left: 20px;
+	background: #f3f3f3;
 	width: 250px;
 	height: 450px;
-	background: #f3f3f3;
-	margin-left: 30px;
 }
 
 #left_aside section {
@@ -67,10 +81,75 @@ h1 {
 	width: 50%;
 }
 
+#room-heading {
+}
+
+.event-table th {
+	padding: 6px 8px;
+	vertical-align: middle;
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 1px solid #CCC;
+}
+
+.event-table td {
+	background-color: "white";
+	padding: 6px 8px;
+	vertical-align: middle;
+	text-align: left;
+	border-bottom: 1px solid #EEE;
+}
+
+/*
+Container for middle section within mainContent
+*/
+#mcontent {
+	position: absolute;
+	top:160px;
+	margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+	width: 740px;
+	height: 450px;
+}
+
+#room-info-div {
+	position: absolute;
+	width: 600px;
+	top:80px;
+		margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+#event-info-div {
+	position: absolute;
+	width: 600px;
+	top:80px;
+	margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+#event-close-button {
+	position: absolute;
+	left: 550px;
+	top: 1px;
+}
+
+/*
+Container for right section within mainContent
+*/
 #right_aside {
-	float: right;
+	position: absolute;
+	top:160px;
+	right: 20px;
+	background: #f3f3f3;
 	width: 250px;
-	height: 600px;
+	height: 450px;
 }
 
 #right_aside section {
@@ -81,20 +160,7 @@ h1 {
 	margin-right: 30px;
 }
 
-#findMyApp {
-	content: url(ukalogo.png), contents;
-	background-repeat: no-repeat;
-	margin-left: auto;
-	margin-right: auto;
-}
 
-#back_button {
-	position: absolute;
-	left: 80px;
-	width: 150px;
-	height: 150px;
-	padding: 40px auto;
-}
 
 #live_feed {
 	position: relative;
@@ -105,12 +171,25 @@ h1 {
 	border:red;
 }
 
-#mainContent {
-	width: 1280px;
-	height: 520px;	
-}
-
 footer {
 	position: absolute;
 	bottom: 70px;
+}
+
+#backbuttonfooter {
+	position: absolute;
+	left: 70px;
+	width: 150px;
+	height: 150px;
+	top: 70px;
+	padding: 40px auto;
+}
+
+#lychekartfooter {
+	position: absolute;
+	content: url(images/kartlyche.png), contents;
+	background-repeat: no-repeat;	
+	top:70px;
+	left:1170px;
+	width: 250px;
 }
