@@ -36,6 +36,7 @@ public class DeveloperService {
 		String tempToken = authenticationService.login(developer.getAccessToken());
 		User user = userRepository.getUserByTokenIssued(tempToken);
 		developer.setUserId(user.getLocalUserId());
+		logger.debug("Registering developer: " + developer.toString());
 		return developerRepository.registerDeveloper(developer);
 	}
 

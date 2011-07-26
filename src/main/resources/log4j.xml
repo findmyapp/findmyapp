@@ -42,6 +42,10 @@
 		<level value="debug" />
 	</logger>
 	
+	<logger name="no.uka.findmyapp.service">
+		<level value="debug" />
+	</logger>
+	
 	
 
 	<!-- Root Logger -->
