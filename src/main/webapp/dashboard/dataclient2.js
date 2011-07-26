@@ -89,15 +89,23 @@ function showEvent(index, day) {
 	
 	console.log("showing event for: " + day + " with index: " + index);
 	var eventDiv = document.getElementById ("event-info-div");
+	var roomDiv = document.getElementById ("room-info-div");
+	
 	eventDiv.innerHTML = "";
 	var h1 = document.createElement("h1");
 	h1.innerHTML = list[index].title;
 	eventDiv.appendChild(h1);
+	
+	var img = document.createElement('img');
+	img.setAttribute("id", "event-close-button");
+	img.setAttribute("src","close_button.gif");
+	img.onclick = function () {eventDiv.style.visibility="hidden"; roomDiv.style.visibility="visible";};
+	eventDiv.appendChild(img);
+	
 	var p = document.createElement("p");
 	p.innerHTML = list[index].lead;
 	eventDiv.appendChild(p);
 	eventDiv.style.visibility="visible";
-	var roomDiv = document.getElementById ("room-info-div");
 	roomDiv.style.visibility="hidden";
 }
 

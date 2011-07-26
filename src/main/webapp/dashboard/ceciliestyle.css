@@ -15,14 +15,27 @@
 	border-bottom: 1px solid #EEE;
 }
 
+#room-heading {
+	position: absolute;
+	left: 400px;
+}
+
 #room-info-div {
 	position: absolute;
 	width: 600px;
+	top:160px;
 	left: 300px;
 }
 
 #event-info-div {
 	position: absolute;
 	width: 600px;
+	top:160px;
 	left: 300px;
+}
+
+#event-close-button {
+	position: absolute;
+	left: 500px;
+	top: 1px;
 }
