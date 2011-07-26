@@ -10,15 +10,6 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-<link rel="stylesheet" href="ceciliestyle.css" />
-
-<script type="text/javascript">
-	google.load('visualization', '1', {
-		'packages' : [ 'corechart', 'gauge' ]
-	});
-	google.setOnLoadCallback(getData(1, 'lyche'));
-	
-</script>
 
 </head>
 
@@ -57,7 +48,7 @@
 			
 			<br>
 			
-			<img src="knaus.jpg" id="room-thumbnail">
+			<img src="images/knaus.jpg" id="room-thumbnail">
 			
 			 </div>
 			<div id="event-info-div" style="hidden"></div>
@@ -81,9 +72,16 @@
 	</section>
 	
 	<footer>
-		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
 			id="back_button" /></a>
 	</footer>
 </body>
+
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(11, 'knaus'));
+</script>
 
 </html>

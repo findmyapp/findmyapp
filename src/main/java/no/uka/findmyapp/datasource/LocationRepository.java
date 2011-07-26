@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import no.uka.findmyapp.datasource.mapper.CustomParameterRowMapper;
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
@@ -22,6 +23,7 @@ import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserLocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
+import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationCount;
@@ -35,6 +37,10 @@ import no.uka.findmyapp.model.UserPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -46,6 +52,7 @@ public class LocationRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
+	@Qualifier("dataSource")
 	DataSource dataSource;
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationRepository.class);
@@ -451,120 +458,66 @@ public class LocationRepository {
 	 * ---------------------------ManageParameter--------------------------------
 	 * -----
 	 */
-	public ManageParameterRespons addParameter(String parName, String devId) {
-		logger.info("Adding Parameter:" + parName);
-		ManageParameterRespons respons = new ManageParameterRespons();
+	public boolean addParameter(String parName, String devId) throws DataAccessException,DuplicateKeyException,DataIntegrityViolationException  {
+		logger.debug("Adding Parameter:" + parName);
 		try {
-			respons.setNumberOfRowsAffected(jdbcTemplate
-					.update("INSERT INTO CUSTOM_PARAMETER "
-							+ "(parameter_name,appstore_developer_id)VALUES(?,?)",
-							parName, devId));
-			respons.setRespons("Parameter: " + parName + " was added");
-			respons.setStatus(true);
-
+			jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER (parameter_name,appstore_developer_id)VALUES(?,?)", parName, devId);
+			logger.debug("here");
+			return true;
 		} catch (org.springframework.dao.DuplicateKeyException e) {
-			logger.error("Could not clean the parameter: " + e);
-			respons = new ManageParameterRespons(
-					"Parameter: " + parName + " could not be added",
-					" probably beacause "
-							+ "this  parameter already exists, try with another nice name :) ! ",
-					null);
-			respons.setStatus(false);
+			logger.error("Could not add the parameter: " + e);
+			throw new DuplicateKeyException("Parameter: " + parName + " could not be added. Dublicate entry");
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
-			logger.error("Could not clean the parameter: " + e);
-			respons = new ManageParameterRespons(
-					"Parameter: " + parName + " could not be added",
-					" probably beacause "
-							+ " you have not provided a valid developers id, try again:) ! ",
-					null);
-			respons.setStatus(false);
-
-		} catch (Exception e) {
-			respons = new ManageParameterRespons(
-					"Parameter: " + parName + " could not be added",
-					" See excepiton message"
-							+ " for possible cause. Hopefully its not to hard to understand :)  ",
-					null);
-			respons.setStatus(false);
-
-			logger.error("Could not add given parameter: " + e);
+			logger.error("Could not add the parameter: " + e);
+			throw new DataIntegrityViolationException("Parameter: " + parName + " could not be added. Developer id not valid.");
+		} catch (DataAccessException e) {
+			logger.error("Could not add parameter: " + e);
+			throw e;
+			
 		}
-		return respons;
 
 	}
 
-	public ManageParameterRespons cleanParameter(String parName, String devId) {// Must
-																				// have
-																				// access
-																				// check
-																				// in
-																				// service,
-																				// add
-																				// check
-																				// if
-																				// variables
-																				// exist!!
-		logger.info("Cleaning Parameter:" + parName);
-		ManageParameterRespons respons = new ManageParameterRespons();
+	public boolean cleanParameter(String parName, String devId) throws DataAccessException{
+		// Must have access check in service, add check if variables  exist!!
+		logger.debug("Cleaning Parameter:" + parName);
 		try {
 
-			respons.setNumberOfRowsAffected(jdbcTemplate
-					.update("DELETE FROM CUSTOM_PARAMETER_VALUE"
+			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE"
 							+ " WHERE custom_parameter_id ="
 							+ " (SELECT custom_parameter_id FROM CUSTOM_PARAMETER "
 							+ "WHERE parameter_name = ? "
-							+ "AND appstore_developer_id = ?)", parName, devId));
-			respons.setStatus(true);
-			return respons;
+							+ "AND appstore_developer_id = ?)", parName, devId);
+			return true;
 
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			logger.error("Could not clean the parameter: " + e);
-			respons.setRespons("Could not clean the parameter" + parName);
-			respons.setSuggestion("The parameter might not exist, check the list of parameters");
-			// respons.setException(e.toString());
-			respons.setStatus(false);
-			return respons;
+			throw e;
 		}
 	}
 
-	public ManageParameterRespons removeParameter(String parName, String devId) {// Must
-																					// have
-																					// access
-																					// check
-																					// in
-																					// service,
-																					// add
-																					// check
-																					// if
-																					// variables
-																					// exist!!
-		ManageParameterRespons respons = new ManageParameterRespons();
+	public boolean removeParameter(String parName, String devId) throws DataAccessException {
+		// Must have access check in service, add check if variables  exist!!
 		try {
 			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE"
 					+ " WHERE custom_parameter_id ="
 					+ " (SELECT custom_parameter_id FROM CUSTOM_PARAMETER "
 					+ "WHERE parameter_name = ? "
 					+ "AND appstore_developer_id = ?)", parName, devId);// Cleaning.
-			respons.setNumberOfRowsAffected(jdbcTemplate
-					.update("DELETE FROM CUSTOM_PARAMETER WHERE "
+			
+			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER WHERE "
 							+ " parameter_name = ? AND  appstore_developer_id = ?",
-							parName, devId));
-			respons.setStatus(true);
-			return respons;
+							parName, devId);			
+			return true;
 
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			logger.error("Could remove the parameter: " + e);
-			respons.setRespons("Could not remove the parameter" + parName);
-			respons.setSuggestion("The parameter might not exist, check the list of parameters");
-			// respons.setException(e.toString());
-			respons.setStatus(false);
-			return respons;
+			throw e;
 		}
 
 	}
 
-	public ManageParameterRespons findAllParameters() {
-		// TODO
-		return null;
+	public List<CustomParameter> findAllParameters() {	
+		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER", new CustomParameterRowMapper());
 	}
 }

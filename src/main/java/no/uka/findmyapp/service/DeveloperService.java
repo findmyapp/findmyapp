@@ -33,7 +33,8 @@ public class DeveloperService {
 	}
 	
 	public int registerDeveloper(Developer developer) {
-		int userId = userService.getUserIdFromToken(developer.getAccessToken());
+		//int userId = userService.getUserIdFromToken(developer.getAccessToken());
+		int userId = 0;
 		if(userId == 0) {
 			//TODO THROW USER NOT FOUND AND COULD NOT BE CREATED
 			logger.debug("USER NOT FOUND AND COULD NOT BE CREATED");

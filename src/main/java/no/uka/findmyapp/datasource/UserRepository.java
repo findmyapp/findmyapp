@@ -22,6 +22,7 @@ import no.uka.findmyapp.model.UserPrivacy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -30,8 +31,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import com.mysql.jdbc.Statement;
 
 @Repository
 public class UserRepository {
@@ -42,7 +41,11 @@ public class UserRepository {
 			.getLogger(UserRepository.class);
 
 	@Autowired
+	@Qualifier("dataSource")
 	DataSource dataSource;
+
+	@Autowired
+	DataSource dataSourceMSSQL;
 
 	public boolean areFriends(int userId1, int userId2) {
 		final int id1 = userId1;
@@ -211,11 +214,26 @@ public class UserRepository {
 		return (Integer) n.intValue();
 	}
 
-	public int getUserIdByFacebookId(String facebookId)
-			throws DataAccessException {
-		int userId = jdbcTemplate.queryForInt(
-				"SELECT user_id FROM USER WHERE facebook_id=?", facebookId);
+	public int getUserIdByFacebookId(String facebookId) {
+		int userId;
+		try {
+			userId = jdbcTemplate.queryForInt(
+					"SELECT user_id FROM USER WHERE facebook_id=?", facebookId);
+		} catch (DataAccessException e) {
+			userId = -1;
+		}
 		return userId;
+	}
+	
+	public String getFacebookIdByUserId(int userId) {
+		String facebookId;
+		try {
+			facebookId = jdbcTemplate.queryForObject(
+					"SELECT facebook_id FROM USER WHERE user_id=?", String.class, userId);
+		} catch (DataAccessException e) {
+			facebookId = null;
+		}
+		return facebookId;
 	}
 
 	public int findUserPrivacyId(int userId)
@@ -237,7 +255,7 @@ public class UserRepository {
 				tokenIssued, userId);
 	}
 
-	public long getUserTokenIssued(String userId) {
+	public long getUserTokenIssued(int userId) {
 		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER WHERE user_id=?", userId);
 	}
 

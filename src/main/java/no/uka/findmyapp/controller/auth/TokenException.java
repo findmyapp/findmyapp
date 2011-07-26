@@ -1,4 +1,4 @@
-package no.uka.findmyapp.controller;
+package no.uka.findmyapp.controller.auth;
 
 public class TokenException extends Exception {
 

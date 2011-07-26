@@ -7,6 +7,7 @@ import no.uka.findmyapp.model.auth.AppAuthInfo;
 import no.uka.findmyapp.service.auth.ConsumerKeyNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 public class AuthenticationRepository {
 
 	@Autowired
+	@Qualifier("dataSource")
 	DataSource ds;
 
 	public AppAuthInfo getAppAuthInfoByConsumerKey(String consumerKey)
@@ -23,9 +25,7 @@ public class AuthenticationRepository {
 		AppAuthInfo appAuthInfo;
 		try {
 			appAuthInfo = jdbcTemplate.queryForObject(
-					"SELECT appstore_application_id, consumer_secret, consumer_key, consumer_role "
-							+ "FROM APPSTORE_APPLICATION "
-							+ "WHERE consumer_key=?",
+					"SELECT * FROM APPSTORE_APPLICATION WHERE consumer_key=?",
 					new AppAuthInfoRowMapper(), consumerKey);
 		} catch (DataAccessException e) {
 			throw new ConsumerKeyNotFoundException(
