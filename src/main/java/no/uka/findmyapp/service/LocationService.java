@@ -24,12 +24,16 @@ import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.UserPosition;
+import no.uka.findmyapp.service.auth.ConsumerException;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Service
 public class LocationService {
@@ -74,27 +78,6 @@ public class LocationService {
 
 	public boolean registerUserLocation(int userId, int locationId) {
 		return data.registerUserLocation(userId, locationId);
-	}
-
-	public Location getUserLocation(int userId) {
-		return data.getUserLocation(userId);
-	}
-
-	public List<UserPosition> getLocationOfAllUsers() {
-		return data.getLocationOfAllUsers();
-	}
-
-	public Location getLocationOfFriend(int friendId, String accessToken) {
-		List<User> friends = userService.getRegisteredFacebookFriends(accessToken);
-		for (User u : friends) {
-			if(u.getLocalUserId() == friendId) return data.getLocationOfFriend(friendId);
-		}
-		return null;
-	}
-
-	public Map<Integer, Integer> getLocationOfFriends(int userId, String accessToken) {
-		List<String> friendIds = userService.getFacebookFriends(accessToken);
-		return data.getLocationOfFriends(userId, friendIds);
 	}
 
 	public Location getCurrentLocation(List<Signal> signals)
@@ -310,4 +293,10 @@ public class LocationService {
 		}else{throw new IllegalArgumentException("Read API for what arguments are allowed and required");}
 	}
 	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(ConsumerException.class)
+	private void handleConsumerException(ConsumerException e) {
+		logger.debug(e.getMessage());
+	}
 }

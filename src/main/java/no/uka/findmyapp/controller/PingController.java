@@ -1,6 +1,7 @@
 package no.uka.findmyapp.controller;
 
-import no.uka.findmyapp.service.AuthenticationService;
+import no.uka.findmyapp.controller.auth.TokenParam;
+import no.uka.findmyapp.service.auth.AuthenticationService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,28 +18,28 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class PingController {
-	
+
 	@Autowired
 	AuthenticationService service;
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(PingController.class);
-	
-	@Secured("ROLE_CONSUMER")
+
 	@RequestMapping(value = "/ping", method = RequestMethod.GET)
-	public void ping(@RequestParam String token) {
-		if (service.verify(token)) {
+	public void ping(@RequestParam @TokenParam String token) {
+		int userId = service.verify(token);
+		if (userId != -1) {
 			logger.debug("Token verified.");
 		} else {
 			throw new InvalidTokenException("Token is not valid");
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	@ExceptionHandler(InvalidTokenException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	private void handleInvalidTokenException(InvalidTokenException e) {
 		logger.debug(e.getMessage());
 	}
-	
+
 }

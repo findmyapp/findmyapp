@@ -11,6 +11,8 @@ import no.uka.findmyapp.model.UkaProgram;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.UkaProgramService;
 import no.uka.findmyapp.service.UserService;
+import no.uka.findmyapp.service.auth.AuthenticationService;
+import no.uka.findmyapp.service.auth.ConsumerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +38,8 @@ public class UkaProgramController {
 	private UkaProgramService ukaProgramService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AuthenticationService auth;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(UkaProgramController.class);
@@ -140,9 +145,15 @@ public class UkaProgramController {
 	@ServiceModelMapping(returnType=User.class, isList=true)
 	public ModelAndView getFriendsAttendingEvent(
 			@PathVariable("id") int eventId,
-			@RequestParam String accessToken){
+			@RequestParam(required = true) String token) throws ConsumerException{
 		ModelAndView mav = new ModelAndView("json");
-		List<User> users = userService.getFriendsAtEvent(eventId, accessToken);
+		int userId = auth.verify(token);
+		List<User> users;
+		if (userId != -1) {
+			users = userService.getFriendsAtEvent(eventId, userId);
+		} else {
+			throw new InvalidTokenException("Token not valid");
+		}
 		mav.addObject("users", users);
 		return mav;
 	}
