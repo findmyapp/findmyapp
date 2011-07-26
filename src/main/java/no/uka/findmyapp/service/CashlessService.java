@@ -25,9 +25,8 @@ public class CashlessService {
 	 * @param qry is the search query. 
 	 * @return is a list of all the events sorted by relevance, wrapped inside UkaProgram. 
 	 */
-	public void testCashless() {
+	public long testCashless() {
 		logger.debug("Entering CashlessService");
-		data.testCashless();
-		logger.debug("Returning from CashlessService");
+		return data.testCashless();
 	}
 }

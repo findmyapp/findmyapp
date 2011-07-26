@@ -15,10 +15,10 @@ public class CashlessRepository {
 	private static final Logger logger = LoggerFactory
 	.getLogger(CashlessRepository.class);
 	
-	public void testCashless() {
+	public long testCashless() {
 		//logger.debug("In the cashless dataSource");
 		System.out.println("In the cashless dataSource");
-		System.out.println(mssqlJdbcTemplate.queryForInt("select [Invoice No] from Invoice"));
+		return mssqlJdbcTemplate.queryForLong("select [Invoice No] from Invoice");
 		/*List<UkaEvent> eventList = mssqlJdbcTemplate.query(
 				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=?",
 				new EventRowMapper(),startDate, endDate  );
