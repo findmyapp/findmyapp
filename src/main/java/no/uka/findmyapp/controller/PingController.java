@@ -1,6 +1,5 @@
 package no.uka.findmyapp.controller;
 
-import no.uka.findmyapp.controller.auth.TokenParam;
 import no.uka.findmyapp.service.auth.AuthenticationService;
 
 import org.slf4j.Logger;
