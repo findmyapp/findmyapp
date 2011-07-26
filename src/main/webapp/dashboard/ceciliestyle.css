@@ -20,16 +20,20 @@
 	left: 400px;
 }
 
+#room-thumbnail {
+	
+}
+
 #room-info-div {
 	position: absolute;
-	width: 600px;
+	width: 700px;
 	top:160px;
 	left: 300px;
 }
 
 #event-info-div {
 	position: absolute;
-	width: 600px;
+	width: 700px;
 	top:160px;
 	left: 300px;
 }

@@ -8,126 +8,17 @@
 <script type="text/javascript" src="ajaxobject.js"></script>
 <script type="text/javascript" src="dateformat.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="dataclient.js"></script>
+<script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
 <link rel="stylesheet" href="ceciliestyle.css" />
-<script type="text/javascript">
-    
-    //google.load("visualization", "1", {packages:["corechart"]});
-    //google.setOnLoadCallback(getData(2,"beersale"));
-    
-   	var todaysEvents;
-   	var tomorrowsEvents;
-    
-    window.onload = function(){
-    	var url = 'http://localhost:8080/findmyapp/program/uka11/places/storsalen';
-    	var request = new ajaxObject(url, processEvents);
-    	request.update();  // Server is contacted here
-    	
-    	url = 'http://localhost:8080/findmyapp/program/uka11/places/dodensdal';
-    	request = new ajaxObject(url, processTomorrowsEvents);
-    	request.update();  // Server is contacted here
-    }
-    
-	function processEvents(responseText, responseStatus){
-		
-		var row;
-		var cell;
-		
-		if (responseStatus==200) {
-  		
-			console.log(responseText);
-  		  	todaysEvents = eval(responseText);
-  		  	
-  		    var table = document.getElementById ("event-table-today");
-	  		var i=0;
-	  		
-	  		console.log('no of events: ' + todaysEvents.length)
-			for(i=0; i<todaysEvents.length; i++) {
-				
-				row = table.insertRow (-1);
-				var arg = "showEvent(" + i +");";
-		        row.setAttribute("onClick",arg);
-		        
-		        cell = row.insertCell (0);
-		        var date = new Date(todaysEvents[i].showingTime); 
-		        console.log(date);
-		        cell.innerHTML = date.format("HH:MM"); 
-		        
-		        cell = row.insertCell (1);
-		       	cell.innerHTML = todaysEvents[i].title;
-		       	
-			}
-		}
-	}
-	
-	function processTomorrowsEvents(responseText, responseStatus){
-		
-		var row;
-		var cell;
-		
-		if (responseStatus==200) {
-  		
-			console.log(responseText);
-			tomorrowsEvents = eval(responseText);
-  		  	
-  		    var table = document.getElementById ("event-table-tomorrow");
-	  		var i=0;
-	  		
-	  		console.log('no of events: ' + tomorrowsEvents.length)
-			for(i=0; i<tomorrowsEvents.length; i++) {
-				
-				row = table.insertRow (-1);
-				var arg = "showTomorrowsEvent(" + i +");";
-		        row.setAttribute("onClick",arg);
-		        
-		        cell = row.insertCell (0);
-		        var date = new Date(tomorrowsEvents[i].showingTime); 
-		        console.log(date);
-		        cell.innerHTML = date.format("HH:MM"); 
-		        
-		        cell = row.insertCell (1);
-		       	cell.innerHTML = tomorrowsEvents[i].title;
-		       	
-			}
-		}
-	}
-	
-	function showtodaysEventsPage() {
-		//var div = document.getElementById ("middle-div");
-		//var title = "<p>" + Storsalen er selve hjertet av Samfundet. Lokalet har gjestet alt fra Dalai Lama til Sex Pistols – og det meste i mellom. + "</p>"
-		//div.innerHTML = title;
-	}
-	
-	
-	function showEvent(index) {
-		
-		console.log("showing event with index: " + index);
-		var div = document.getElementById ("middle-div");
-		div.innerHTML = "";
-		var h1 = document.createElement("h1");
-		h1.innerHTML = todaysEvents[index].title;
-		div.appendChild(h1);
-		var p = document.createElement("p");
-		p.innerHTML = todaysEvents[index].lead;
-		div.appendChild(p);
-		
-	}
 
-	function showTomorrowsEvent(index) {
-		
-		console.log("showing event with index: " + index);
-		var div = document.getElementById ("middle-div");
-		div.innerHTML = "";
-		var h1 = document.createElement("h1");
-		h1.innerHTML = tomorrowsEvents[index].title;
-		div.appendChild(h1);
-		var p = document.createElement("p");
-		p.innerHTML = tomorrowsEvents[index].lead;
-		div.appendChild(p);
-		
-	}
-    </script>
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(1, 'lyche'));
+	
+</script>
 
 </head>
 
@@ -136,7 +27,38 @@
 		<h1 id="findMyApp">FindMyApp</h1>
 	</header>
 
-	<div id="content">
+	<section id="mainContent">
+		<!-- Sidebars / Aside -->
+		<aside id="right_aside">
+			<section>
+				<div id='temp_chart'></div>
+				<div id='humidity_chart'></div>
+			</section>
+		</aside>
+
+		<div id="mcontent">
+			<!-- Content Section -->
+			<h1 id="room-heading">Storsalen</h1>
+			<div id="room-info-div">
+			<p>Dette rommet er hjertet i studentmiljøet i Trondheim. Her velges lederen for Samfundet, UKEsjefen og ISFiT-presidenten, tre av de viktigste vervene i studentmiljøet. Storsalen er også stedet for de legendariske UKErevyene. </p>
+
+			<br>
+			
+			<h4>Visste du at?</h4>
+			
+			<br>
+			
+			<ul>
+			<li>Tribunene i Storsalen er delt opp i fire kvadranter, hver med 90 sitteplasser. Kvadrantene er nummerert fra en til fire, hvor første kvadrant ligger lengst mot sør. Da Samfundet holdt til i Cirkus ble tradisjonen med faste plasser startet. I første kvadrant satt gamle akademikere med fruer. Grunnen til at de satt her var mest sannsynlig at dette var den minst trekkfulle plassen i salen. I andre kvadrant satt studenter som hadde med seg dame. Det ble derfor kallt forloved-kvadranten. I tredje kvadrant satt de som var kommet for å få utbytte av foredraget, og i fjerde kvadrant de som ville være nærmest ølsalget. Men tidene har forandret seg, og nå er det fritt fram hvor man kan sitte.</li>
+			</ul>
+			
+			<br>
+			
+			<img src="storsalen.jpg" id="room-thumbnail">
+			
+			 </div>
+			<div id="event-info-div" style="hidden"></div>
+		</div>
 
 		<aside id="left_aside">
 			<section>
@@ -153,11 +75,12 @@
 				</table>
 			</section>
 		</aside>
-
-		<div id="middle-div"></div>
-
-
-	</div>
-
+	</section>
+	
+	<footer>
+		<a href="samfundet.html"> <img src="backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+	</footer>
 </body>
+
 </html>
