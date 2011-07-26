@@ -111,7 +111,7 @@ function showEvent(index, day) {
 }
 
 function requestUsers(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/usercount';
+	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/users/count';
 //	url = 'http://findmyapp.net/findmyapp/locations/usercount';
 	request = new ajaxObject(url, processUserData, locationID);
 	request.update();  // Server is contacted here.
