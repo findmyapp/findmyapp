@@ -24,6 +24,7 @@ public class PingController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PingController.class);
 
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/ping", method = RequestMethod.GET)
 	public void ping(@RequestParam String token) {
 		int userId = service.verify(token);

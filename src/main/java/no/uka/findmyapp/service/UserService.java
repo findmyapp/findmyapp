@@ -201,8 +201,7 @@ public class UserService {
 		return friendIds;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
+	public int findUserPrivacyId(int userId) {
 		return data.findUserPrivacyId(userId);
 	}
 

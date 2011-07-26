@@ -117,18 +117,13 @@ public class UserRepository {
 
 	// Retrieving data
 	public UserPrivacy retrievePrivacy(int privacyId) {
-		try {
 			UserPrivacy privacy = jdbcTemplate
 					.queryForObject(
 							"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS "
 									+ "WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ",
 							new UserPrivacyRowMapper(), privacyId);
 			return privacy;
-		} catch (Exception e) {
-			return null;
 		}
-
-	}
 
 	// Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition,
@@ -236,17 +231,11 @@ public class UserRepository {
 		return facebookId;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
-		try {
-			int userPrivacyId = jdbcTemplate.queryForInt(
+	public int findUserPrivacyId(int userId) {
+		int userPrivacyId = jdbcTemplate.queryForInt(
 					"SELECT USER.USER_PRIVACY_ID FROM USER "
 							+ "WHERE USER.user_id = ? ", userId);
-			return userPrivacyId;
-		} catch (Exception e) {
-			throw new InvalidUserIdOrAccessTokenException("Invalid user id ");
-		}
-
+		return userPrivacyId;
 	}
 
 	public int updateUserTokenIssueTime(long tokenIssued, int userId) {

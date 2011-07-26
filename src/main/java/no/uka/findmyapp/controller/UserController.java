@@ -44,7 +44,7 @@ public class UserController {
 			.getLogger(UserController.class);
 
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "/friends")
+	@RequestMapping(value = "/me/friends")
 	public ModelAndView getRegisteredFacebookFriends(@RequestParam String token)
 			throws ConsumerException {
 		ModelAndView mav = new ModelAndView();
@@ -86,21 +86,21 @@ public class UserController {
 	 */
 
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.POST)
-	public ModelAndView postPrivacy(@PathVariable("userId") int userId,
+	@RequestMapping(value = "/me/privacy", method = RequestMethod.POST)
+	public ModelAndView postPrivacy(
 			@RequestParam(defaultValue = "0") int privacySettingPosition,
 			@RequestParam(defaultValue = "0") int privacySettingEvents,
 			@RequestParam(defaultValue = "0") int privacySettingMoney,
 			@RequestParam(defaultValue = "0") int privacySettingMedia,
 			@RequestParam(required = true) String token)
-			throws InvalidUserIdOrAccessTokenException {
+			throws ConsumerException {
 
 		logger.info("update privacy with inputs" + privacySettingPosition + " "
 				+ privacySettingEvents + " " + privacySettingMoney + " "
 				+ privacySettingMedia);
 
 		// verify if the access token is valid, if not, throw exception
-		verifyToken(token);
+		int userId = verifyToken(token);
 
 		// If access token is valid, json view is returned
 		int userPrivacyId = service.findUserPrivacyId(userId);
@@ -108,7 +108,6 @@ public class UserController {
 				privacySettingPosition, privacySettingEvents,
 				privacySettingMoney, privacySettingMedia);
 		return new ModelAndView("json", "privacy", userPrivacy);
-
 	}
 
 	/**
@@ -122,19 +121,19 @@ public class UserController {
 	 * @return
 	 * @throws InvalidUserIdOrAccessTokenException
 	 */
-	@RequestMapping(value = "/{userId}/privacy", method = RequestMethod.GET)
+	@RequestMapping(value = "/me/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = String.class, isList = true)
-	public ModelAndView getPrivacy(@PathVariable int userId,
+	public ModelAndView getPrivacy(
 			@RequestParam(required = true) String token)
-			throws InvalidUserIdOrAccessTokenException {
-		UserPrivacy privacy;
+			throws ConsumerException {
+
 
 		// verify if the access token is valid, if not, throw exception
-		verifyToken(token);
+		int userId = verifyToken(token);
 
 		// If access token is valid, json view is returned
 		int userPrivacyId = service.findUserPrivacyId(userId);
-		privacy = service.retrievePrivacy(userPrivacyId);
+		UserPrivacy privacy = service.retrievePrivacy(userPrivacyId);
 		return new ModelAndView("json", "privacy", privacy);
 	}
 	
