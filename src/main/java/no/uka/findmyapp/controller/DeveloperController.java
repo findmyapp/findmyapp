@@ -2,6 +2,7 @@ package no.uka.findmyapp.controller;
 
 import java.util.List;
 
+import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.DeveloperService;
@@ -9,13 +10,18 @@ import no.uka.findmyapp.service.DeveloperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -86,4 +92,31 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", "res");
 	}
+	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ExceptionHandler(EmptyResultDataAccessException.class)
+	private void handleEmptyResultDataAccessException(
+			EmptyResultDataAccessException ex) {
+		logger.info("handleEmptyResultDataAccessException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(IncorrectResultSizeDataAccessException.class)
+	private void handleIncorrectResultSizeDataAccessException(
+			IncorrectResultSizeDataAccessException ex) {
+		logger.info("handleEmptyResultDataAccessException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(LocationNotFoundException.class)
+	private void handleLocationNotFoundException(LocationNotFoundException ex) {
+		logger.info("handleLocationNotFoundException ( "
+				+ ex.getLocalizedMessage() + " )");
+	}
+
 }
