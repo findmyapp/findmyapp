@@ -188,7 +188,7 @@ public class UserController {
 	}
 
 	@SuppressWarnings("unused")
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(InvalidUserIdOrAccessTokenException.class)
 	private void handleInvalidUserIdOrAccessTokenException(
 			InvalidUserIdOrAccessTokenException e) {
@@ -196,7 +196,7 @@ public class UserController {
 	}
 
 	@SuppressWarnings("unused")
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(ConsumerException.class)
 	private void handleConsumerException(ConsumerException e) {
 		logger.debug(e.getMessage());
