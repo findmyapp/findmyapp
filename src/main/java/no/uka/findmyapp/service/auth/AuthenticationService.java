@@ -1,4 +1,4 @@
-package no.uka.findmyapp.service;
+package no.uka.findmyapp.service.auth;
 
 import java.util.GregorianCalendar;
 
@@ -7,12 +7,13 @@ import no.uka.findmyapp.datasource.AuthenticationRepository;
 import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.auth.AppAuthInfo;
 import no.uka.findmyapp.model.auth.UKAppsConsumerDetails;
-import no.uka.findmyapp.service.auth.ConsumerKeyNotFoundException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
@@ -37,14 +38,14 @@ public class AuthenticationService {
 	public String login(String facebookToken) {
 		Facebook facebook = new FacebookTemplate(facebookToken);
 		String facebookId;
-			facebookId = facebook.userOperations().getUserProfile().getId();
+		facebookId = facebook.userOperations().getUserProfile().getId();
 
 		String token = null;
 		if (facebookId != null) {
 			logger.debug("Find userId of user with facebookId " + facebookId);
 			int userId = userRepo.getUserIdByFacebookId(facebookId);
 
-			if (userId == 0) {
+			if (userId == -1) {
 				logger.debug("User not found. Adding user with facebook id: "
 						+ facebookId);
 				userRepo.addUserWithFacebookId(facebookId);
@@ -83,36 +84,47 @@ public class AuthenticationService {
 	/**
 	 * @param token
 	 *            The token attached to the message
-	 * @return User ID of the token owner
+	 * @return User ID of the token owner. -1 if token is not valid.
 	 */
-	public boolean verify(String token) {
-		if (token == null || token.length() <= 42) 
-			return false;
-		
+	public int verify(String token) {
+		if (token == null || token.length() <= 42)
+			return -1;
+
 		int startOfUserId = token.lastIndexOf(USER_ID_DELIMITER);
 		int startOfTimestamp = token.lastIndexOf(TIMESTAMP_DELIMITER);
-		
+
 		String hash = token.substring(0, startOfUserId);
 		String base = token.substring(startOfUserId);
-		String userId = token.substring(startOfUserId+1, startOfTimestamp);
-		String timestamp = token.substring(startOfTimestamp+1);
-		
+		int userId;
+		try {
+			userId = Integer.parseInt(token.substring(startOfUserId + 1,
+					startOfTimestamp));
+		} catch (NumberFormatException e1) {
+			return -1;
+		}
+		String timestamp = token.substring(startOfTimestamp + 1);
+
 		logger.debug("Verifying token structure");
-		String calculatedHash = calculateHash(base + authConfig.getTokenSecret());
+		String calculatedHash = calculateHash(base
+				+ authConfig.getTokenSecret());
 		if (hash.equals(calculatedHash)) {
 			logger.debug("Token structure verified. Verifying token timestamp");
 			long storedTimestamp = userRepo.getUserTokenIssued(userId);
 			try {
 				long tokenTimestamp = Long.parseLong(timestamp);
-				boolean timestampValid = tokenTimestamp == storedTimestamp;
-				logger.debug("Timestamp of token is " + (timestampValid ? "valid" : "invalid"));
-				return timestampValid;
+				if (tokenTimestamp == storedTimestamp) {
+					logger.debug("Timestamp is valid");
+				} else {
+					logger.debug("Timestamp is invalid ("+tokenTimestamp+" != "+storedTimestamp+")");
+					return -1;
+				}
+				return userId;
 			} catch (NumberFormatException e) {
-				return false;
+				return -1;
 			}
 		} else {
 			logger.debug("Token structure not valid");
-			return false;
+			return -1;
 		}
 	}
 
@@ -123,11 +135,23 @@ public class AuthenticationService {
 
 		UKAppsConsumerDetails consumerDetails = new UKAppsConsumerDetails();
 		consumerDetails.setConsumerId(authInfo.getAppId());
+		consumerDetails.setConsumerName(authInfo.getAppName());
 		consumerDetails.setConsumerKey(authInfo.getConsumerKey());
 		consumerDetails.setSignatureSecret(authInfo.getConsumerSecret());
 		consumerDetails.setAuthority(authInfo.getConsumerRole());
-
+		consumerDetails.setFacebookId(authInfo.getFacebookId());
+		consumerDetails.setFacebookSecret(authInfo.getFacebookSecret());
 		return consumerDetails;
 	}
 
+	public UKAppsConsumerDetails getConsumerDetails() {
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+		UKAppsConsumerDetails details = null;
+		if (authentication.getPrincipal() instanceof UKAppsConsumerDetails) {
+			details = (UKAppsConsumerDetails) authentication.getPrincipal();
+		}
+		return details;
+	}
+	
 }

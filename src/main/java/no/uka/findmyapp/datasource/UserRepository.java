@@ -44,6 +44,9 @@ public class UserRepository {
 	@Qualifier("dataSource")
 	DataSource dataSource;
 
+	@Autowired
+	DataSource dataSourceMSSQL;
+
 	public boolean areFriends(int userId1, int userId2) {
 		final int id1 = userId1;
 		final int id2 = userId2;
@@ -211,11 +214,26 @@ public class UserRepository {
 		return (Integer) n.intValue();
 	}
 
-	public int getUserIdByFacebookId(String facebookId)
-			throws DataAccessException {
-		int userId = jdbcTemplate.queryForInt(
-				"SELECT user_id FROM USER WHERE facebook_id=?", facebookId);
+	public int getUserIdByFacebookId(String facebookId) {
+		int userId;
+		try {
+			userId = jdbcTemplate.queryForInt(
+					"SELECT user_id FROM USER WHERE facebook_id=?", facebookId);
+		} catch (DataAccessException e) {
+			userId = -1;
+		}
 		return userId;
+	}
+	
+	public String getFacebookIdByUserId(int userId) {
+		String facebookId;
+		try {
+			facebookId = jdbcTemplate.queryForObject(
+					"SELECT facebook_id FROM USER WHERE user_id=?", String.class, userId);
+		} catch (DataAccessException e) {
+			facebookId = null;
+		}
+		return facebookId;
 	}
 
 	public int findUserPrivacyId(int userId)
@@ -237,7 +255,7 @@ public class UserRepository {
 				tokenIssued, userId);
 	}
 
-	public long getUserTokenIssued(String userId) {
+	public long getUserTokenIssued(int userId) {
 		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER WHERE user_id=?", userId);
 	}
 

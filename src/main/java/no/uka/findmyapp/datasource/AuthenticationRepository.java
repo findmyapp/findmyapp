@@ -25,9 +25,7 @@ public class AuthenticationRepository {
 		AppAuthInfo appAuthInfo;
 		try {
 			appAuthInfo = jdbcTemplate.queryForObject(
-					"SELECT appstore_application_id, consumer_secret, consumer_key, consumer_role "
-							+ "FROM APPSTORE_APPLICATION "
-							+ "WHERE consumer_key=?",
+					"SELECT * FROM APPSTORE_APPLICATION WHERE consumer_key=?",
 					new AppAuthInfoRowMapper(), consumerKey);
 		} catch (DataAccessException e) {
 			throw new ConsumerKeyNotFoundException(
