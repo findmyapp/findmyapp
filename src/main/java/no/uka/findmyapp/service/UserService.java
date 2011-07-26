@@ -19,9 +19,6 @@ import no.uka.findmyapp.service.auth.ConsumerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -60,8 +57,12 @@ public class UserService {
 		return data.getUserPrivacyForUserId(userId);
 	}
 
-	public boolean areFriends(int userId1, int userId2) {
-		return data.areFriends(userId1, userId2);
+	public boolean areFriends(int userId1, int userId2) throws ConsumerException {
+		List<User> friends = getRegisteredFacebookFriends(userId1);
+		for (User friend : friends) {
+			if (friend.getFacebookUserId() == userId2) return true;
+		}
+		return false;
 	}
 
 	public boolean addEvent(int userId, long eventId) {
@@ -201,8 +202,7 @@ public class UserService {
 		return friendIds;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
+	public int findUserPrivacyId(int userId) {
 		return data.findUserPrivacyId(userId);
 	}
 
@@ -239,8 +239,19 @@ public class UserService {
 	}
 	
 	//TODO
-	public Location getUserLocation(int userId) {
-		return null;
+	public Location getUserLocation(int userId, int tokenUserId) {
+		UserPrivacy up = getUserPrivacyForUserId(userId);
+		switch(up.getPositionPrivacySetting()) {
+			case ANYONE:
+				return data.getUserLocation(userId);
+			case FRIENDS:
+				// If they are friends
+				return data.getUserLocation(userId);
+			case ONLY_ME:
+				return null;
+			default:
+				return null;
+		}
 	}
 
 	//TODO
