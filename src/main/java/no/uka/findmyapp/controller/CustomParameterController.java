@@ -111,7 +111,9 @@ public class CustomParameterController {
 	public ModelAndView addParameter(
 			@RequestParam String name) throws DataIntegrityViolationException{
 		String consumerKey = auth.getConsumerDetails().getConsumerKey();
+		logger.debug("consumerKey: " + consumerKey);
 		Developer developer = dev.getDeveloperForConsumerKey(consumerKey);
+		logger.debug("consumerKey: " + developer.toString());
 		boolean respons = service.addParameter(name, developer.getDeveloperID());
 		return new ModelAndView("json", "reponse", respons);
 	}
