@@ -60,6 +60,21 @@ public class DeveloperRepository {
 				app.getRanking(), app.getTimesDownloaded(), app.getFacebookAppID(), app.getThumbImage(), consumer_secret, consumer_key, app.getFacebookSecret());
 	}
 	
+	public int updateApp(int developer_id, App app) {
+		String sql = "UPDATE APPSTORE_APPLICATION SET " +
+		"name = ?, " +
+		"platform = ?, " +
+		"description = ?, " +
+		"market_identifier = ?, " +
+		"facebook_app_id = ?, " +
+		"thumb_image = ? " +
+		"WHERE appstore_developer_id = ? " +
+		"AND appstore_application_id = ?";
+		logger.info("running sql : " + sql);
+		return jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
+				app.getFacebookAppID(), app.getThumbImage(), developer_id, app.getId());
+	}
+	
 	public Developer getDeveloperForConsumerKey(String consumerKey) {
 		Developer dev;
 		try {

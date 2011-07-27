@@ -57,6 +57,10 @@ public class DeveloperService {
 		return developerRepository.registerApp(developer_id, app, generateConsumerKey(), generateConsumerSecret());
 	}
 	
+	public int updateApp(int developer_id, App app) {
+		return developerRepository.updateApp(developer_id, app);
+	}
+	
 	//TODO FIX GENERATION OF KEY/SECRET
 	private String generateConsumerKey() {
 		return "key" + NumberUtils.generateRandomInteger(1000000, 9999999);
