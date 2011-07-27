@@ -1,6 +1,7 @@
 package no.uka.findmyapp.service;
 
 import no.uka.findmyapp.datasource.CashlessRepository;
+import no.uka.findmyapp.model.cashless.CashlessCard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +21,8 @@ public class CashlessService {
 	private static final Logger logger = LoggerFactory
 	.getLogger(CashlessService.class);
 	
-	/**
-	 * titleSearch searches for a list of events with names containing a substring close to the query.
-	 * @param qry is the search query. 
-	 * @return is a list of all the events sorted by relevance, wrapped inside UkaProgram. 
-	 */
-	public long testCashless() {
+	public CashlessCard getCardTransactions(long cardNo) {
 		logger.debug("Entering CashlessService");
-		return data.testCashless();
+		return data.getCardTransactions(cardNo);
 	}
 }

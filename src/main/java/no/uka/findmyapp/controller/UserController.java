@@ -52,15 +52,7 @@ public class UserController {
 		mav.addObject("users", users);
 		return mav;
 	}
-	/*
-	@RequestMapping(value = "/{id}/events/{eventId}", method = RequestMethod.POST)
-	public ModelMap addEvent(@PathVariable("id") int userId,
-			@PathVariable("eventId") long eventId, ModelMap model) {
-		boolean addEvent = service.addEvent(userId, eventId);
-		model.addAttribute(addEvent);
-		return model;
-	}
-	*/
+	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/events/{eventId}", method = RequestMethod.POST)
 	public ModelAndView addEvent(@PathVariable long eventId, @RequestParam String token) {
@@ -82,30 +74,18 @@ public class UserController {
 	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{idOrMe}/events", method = RequestMethod.GET)
-	public ModelAndView getEvents(@PathVariable String idOrMe, @RequestParam String token) {
+	public ModelAndView getEvents(@PathVariable String idOrMe, @RequestParam String token) throws NumberFormatException, ConsumerException {
+		ModelAndView data = new ModelAndView("json");
+		int tokenUserId = verifyToken(token);
+		List<UkaEvent> events;
 		if (idOrMe.equalsIgnoreCase("me")) {
-			return getMyEvents(token);
+			 events = service.getEvents(tokenUserId);
+		} else {
+			events = service.getEvents(Integer.parseInt(idOrMe), tokenUserId);
 		}
-		else {
-			return getEvents(token, Integer.parseInt(idOrMe));
-		}
-	}
-	//retrieve my events
-	private ModelAndView getMyEvents(String token) {
-		int userId = verifyToken(token);
-		ModelAndView data = new ModelAndView("json");
-		List<UkaEvent> events = service.getEvents(userId);
 		data.addObject("events", events);
 		return data;
-	}
-	//retrieve events to others
-	private ModelAndView getEvents(String token, int userId) {
-		List<UkaEvent> events = service.getEvents(userId);
-		ModelAndView data = new ModelAndView("json");
-		data.addObject("events", events);
-		return data;
-	}
-	
+	}	
 
 	/**
 	 * POST method where it is possible to change privacy settings Privacy

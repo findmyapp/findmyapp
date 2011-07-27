@@ -29,9 +29,20 @@ public class LocationService {
 	private LocationRepository data;
 	@Autowired
 	private SensorRepository sensor;
-
+	
+	private String bartenderString = "BartenderString";
+	
 	private static final Logger logger = LoggerFactory
 			.getLogger(UkaProgramRepository.class);
+	
+	public String getBartenderString() {
+		return bartenderString;
+	}
+
+	public boolean setBartenderString(String bartenderString) {
+		this.bartenderString = bartenderString;
+		return true;
+	}
 
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
