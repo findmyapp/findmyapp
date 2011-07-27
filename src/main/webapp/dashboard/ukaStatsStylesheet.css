@@ -175,6 +175,22 @@ Container for right section within mainContent
 	width: 95%;	
 }
 
+#people_counter_div {
+	width:100px;
+	height: 150px;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+#people_counter_paragraph {
+	text-align:center;
+	font-size:200%;
+}
+
+#people_icon {
+	margin-top:20px;
+}
+
 #temp_chart {
 	padding-top: 40px;
 }
