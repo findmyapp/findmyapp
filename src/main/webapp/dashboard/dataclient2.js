@@ -1,4 +1,6 @@
-var info; // data from server
+var humidity;
+var temperature;
+var comments;
 var userCount;
 var todaysEvents;
 var tomorrowsEvents;
@@ -6,7 +8,7 @@ var tomorrowsEvents;
 var server = 'http://findmyapp.net/';
 
 
-function getData(locationID, locationName, datatype) {// get json data from server
+function getData(locationID, locationName) {// get json data from server
 	requestUsers(locationID);
 	requestLocationReports(locationID);
 	requestTemperature(locationID);
@@ -145,7 +147,7 @@ function requestTemperature(locationID) {
 function processTemperatureData(responseText, responseStatus) {
 	if (responseStatus == 200) {
 		console.log(responseText);
-		info = eval(responseText);
+		temperature = eval(responseText);
 		drawTemperatureChart();
 	} else {
 		console.log(responseStatus + ' -- Error Processing Temperature Request');
@@ -158,7 +160,7 @@ function drawTemperatureChart() {
 	data.addColumn('number', 'Value');
 	data.addRows(1);
 	data.setValue(0, 0, 'Temperatur');
-	data.setValue(0, 1, info[0].value);
+	data.setValue(0, 1, temperature[0].value);
 
 	var chart = new google.visualization.Gauge(document
 			.getElementById('temp_chart'));
@@ -187,7 +189,7 @@ function requestLocationReports(locationID) {
 
 function processLocationReports(responseText, responseStatus) {
 	if (responseStatus == 200) {
-		info = eval(responseText);
+		comments = eval(responseText);
 		console.log("responseText: "+responseText);
 		drawLocationReports();
 	} else {
@@ -198,11 +200,11 @@ function processLocationReports(responseText, responseStatus) {
 function drawLocationReports() {
 	var reportString = "";
 	var i = 0;
-	for (i = 0; i < info.length; i++) {
+	for (i = 0; i < comments.length; i++) {
 		if (i == 0) {
-			reportString += info[i].parameterTextValue;
+			reportString += comments[i].parameterTextValue;
 		} else {
-			reportString += "                                                          " + info[i].parameterTextValue;
+			reportString += "                                                          " + comments[i].parameterTextValue;
 			var blankCharacter = "&" + "nbsp";
 			reportString = reportString.replace(/ /gi, blankCharacter);
 		}
@@ -221,8 +223,8 @@ function requestHumidity(locationID) {
 function processHumidityData(responseText, responseStatus) {
 	if (responseStatus == 200) {
 		//console.log(responseText);
-		info = eval(responseText);
-		// console.log("humidity info length: "+info.length);
+		humidity = eval(responseText);
+		// console.log("humidity length: " + humidity.length);
 		drawHumidityChart();
 	} else {
 		console.log(responseStatus + ' -- Error Processing Request for humidity data');
@@ -235,7 +237,7 @@ function drawHumidityChart() {
 	data.addColumn('number', 'Luftfuktighet i prosent');
 	data.addRows(1);
 	data.setValue(0, 0, 'Luftfuktighet');
-	data.setValue(0, 1, info[0].value);
+	data.setValue(0, 1, humidity[0].value);
 
 	var chart = new google.visualization.Gauge(document
 			.getElementById('humidity_chart'));
