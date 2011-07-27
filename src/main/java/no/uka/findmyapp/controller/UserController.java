@@ -82,26 +82,28 @@ public class UserController {
 	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{idOrMe}/events", method = RequestMethod.GET)
-	public ModelMap getEvents(@PathVariable String idOrMe, @RequestParam String token, ModelMap model) {
+	public ModelAndView getEvents(@PathVariable String idOrMe, @RequestParam String token) {
 		if (idOrMe.equalsIgnoreCase("me")) {
-			return getMyEvents(token, model);
+			return getMyEvents(token);
 		}
 		else {
-			return getEvents(token, Integer.parseInt(idOrMe), model);
+			return getEvents(token, Integer.parseInt(idOrMe));
 		}
 	}
 	//retrieve my events
-	private ModelMap getMyEvents(String token, ModelMap model) {
+	private ModelAndView getMyEvents(String token) {
 		int userId = verifyToken(token);
+		ModelAndView data = new ModelAndView("json");
 		List<UkaEvent> events = service.getEvents(userId);
-		model.addAttribute(events);
-		return model;
+		data.addObject("events", events);
+		return data;
 	}
 	//retrieve events to others
-	private ModelMap getEvents(String token, int userId, ModelMap model) {
+	private ModelAndView getEvents(String token, int userId) {
 		List<UkaEvent> events = service.getEvents(userId);
-		model.addAttribute(events);
-		return model;
+		ModelAndView data = new ModelAndView("json");
+		data.addObject("events", events);
+		return data;
 	}
 	
 
