@@ -2,11 +2,11 @@ var info; // data from server
 var userCount;
 var todaysEvents;
 var tomorrowsEvents;
+//var server = 'http://localhost:8080/';
+var server = 'http://findmyapp.net/';
+
 
 function getData(locationID, locationName, datatype) {// get json data from server
-	var url;
-	var request;
-
 	requestUsers(locationID);
 	requestLocationReports(locationID);
 	requestTemperature(locationID);
@@ -16,20 +16,19 @@ function getData(locationID, locationName, datatype) {// get json data from serv
 }
 
 function requestTodaysEvents(locationName){
-	var url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/today';
+	var url = server + 'findmyapp/program/uka11/places/'+ locationName + '/today';
 	var request = new ajaxObject(url, processTodaysEvents);
 	request.update();  // Server is contacted here
 }
 
 function requestTomorrowsEvents(locationName){
-	url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/tomorrow';
-	request = new ajaxObject(url, processTomorrowsEvents);
+	var url = server + 'findmyapp/program/uka11/places/'+ locationName + '/tomorrow';
+	var request = new ajaxObject(url, processTomorrowsEvents);
 	request.update();  // Server is contacted here
 }
 
 function processTodaysEvents(responseText, responseStatus){
 	if (responseStatus==200) {
-		
 		//console.log(responseText);
 		todaysEvents = eval(responseText);
 		updateEventList('today');  	
@@ -38,7 +37,6 @@ function processTodaysEvents(responseText, responseStatus){
 
 function processTomorrowsEvents(responseText, responseStatus){
 	if (responseStatus==200) {
-		
 		//console.log(responseText);
 		tomorrowsEvents = eval(responseText);
 		updateEventList('tomorrow');  	
@@ -111,9 +109,8 @@ function showEvent(index, day) {
 }
 
 function requestUsers(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/users/count';
-//	url = 'http://findmyapp.net/findmyapp/locations/usercount';
-	request = new ajaxObject(url, processUserData, locationID);
+	var url = server + 'findmyapp/locations/' + locationID + '/users/count';
+	var request = new ajaxObject(url, processUserData, locationID);
 	request.update();  // Server is contacted here.
 }
 
@@ -131,16 +128,13 @@ function processUserData(responseText, responseStatus, locationID) {
 function drawUserDataChart() {
 	document.getElementById('user_count').innerHTML = "[" + userCount[0].usercount + "]";
 	console.log("usercount is...: " + userCount[0].usercount);
-
 }
 
 // populate temperature chart
 function requestTemperature(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	var url = server + 'findmyapp/locations/' + locationID
 			+ '/temperature/latest';
-//	 url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
-//	 '/temperature/latest';
-	request = new ajaxObject(url, processTemperatureData);
+	var request = new ajaxObject(url, processTemperatureData);
 	request.update(); // Server is contacted here.
 }
 
@@ -181,9 +175,9 @@ function drawTemperatureChart() {
 
 // populate the livefeed
 function requestLocationReports(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	var url = server + 'findmyapp/locations/' + locationID
 	+ '/userreports';
-	request = new ajaxObject(url, processLocationReports);
+	var request = new ajaxObject(url, processLocationReports);
 	request.update('parname=comment');
 }
 
@@ -214,11 +208,9 @@ function drawLocationReports() {
 
 // populate humidity chart
 function requestHumidity(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	var url = server + 'findmyapp/locations/' + locationID
 			+ '/humidity/latest';
-//	 url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
-//	 '/humidity/latest';
-	request = new ajaxObject(url, processHumidityData);
+	var request = new ajaxObject(url, processHumidityData);
 	request.update();
 }
 
