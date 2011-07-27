@@ -35,6 +35,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,6 +88,7 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = User.class)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
@@ -94,7 +96,8 @@ public class LocationController {
 		List<User> users = service.getUsersAtLocation(locationId);
 		return new ModelAndView("json", "users_at_location", users);
 	}
-
+	
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/{id}/users/count", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = int.class)
 	public ModelAndView getUserCountAtLocation(
@@ -119,37 +122,17 @@ public class LocationController {
 		logger.debug("registerSample ( " + regSample + " )");
 		return new ModelAndView("json", "regSample", regSample);
 	}
-
-	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "/{locationId}/users/{userId}", method = RequestMethod.PUT)
-	@ServiceModelMapping(returnType = boolean.class)
-	public ModelAndView registerUserLocation(
-			@PathVariable int userId,
-			@PathVariable int locationId,
-			@RequestParam String token) throws TokenException {
-		int tokenUserId = verifyToken(token);
-		boolean regUserPos = false;
-		if (tokenUserId == userId) {
-			regUserPos = service.registerUserLocation(userId, locationId);
-			logger.debug("Registering user postition for user " + userId);
-		} else {
-			throw new TokenException("Token and supplied user id did not match");
-		}
-		return new ModelAndView("json", "regUserPos", regUserPos);
-	}
-
-	private int verifyToken(String token) throws TokenException {
-		int userId = auth.verify(token);
-		if (userId == -1) {
-			throw new TokenException("Invalid token");
-		}
-		return userId;
+	
+	private int verifyToken(String token) throws InvalidTokenException {
+		int tokenUserId = auth.verify(token);
+		if (tokenUserId == -1)
+			throw new InvalidTokenException("Invalid access token");
+		return tokenUserId;
 	}
 
 	/*
 	 * **************** FACT *****************
 	 */
-
 	
 	@RequestMapping(value = "/{id}/facts", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Fact.class)

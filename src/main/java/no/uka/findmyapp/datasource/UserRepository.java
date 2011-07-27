@@ -3,7 +3,9 @@ package no.uka.findmyapp.datasource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,6 @@ import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
-import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UkaEvent;
@@ -77,6 +78,31 @@ public class UserRepository {
 		User user = jdbcTemplate.queryForObject(
 				"SELECT * FROM USER WHERE token_issued=?", new UserRowMapper(), token);
 		return user;
+	}
+	
+	public boolean registerUserLocation(int userId, int locationId) {
+		try {
+			final int fUserId = userId;
+			final int fLocationId = locationId;
+			final Timestamp now = new Timestamp(new Date().getTime());
+			jdbcTemplate
+					.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) "
+							+ "ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
+							new PreparedStatementSetter() {
+								public void setValues(PreparedStatement ps)
+										throws SQLException {
+									ps.setInt(1, fUserId);
+									ps.setInt(2, fLocationId);
+									ps.setTimestamp(3, now);
+									ps.setInt(4, fLocationId);
+									ps.setTimestamp(5, now);
+								}
+							});
+			return true;
+		} catch (Exception e) {
+			logger.error("Could not register user position: " + e);
+			return false;
+		}
 	}
 	
 	public Location getUserLocation(int userId) {

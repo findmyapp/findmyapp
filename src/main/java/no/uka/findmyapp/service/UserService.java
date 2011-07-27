@@ -4,10 +4,8 @@ package no.uka.findmyapp.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import no.uka.findmyapp.datasource.UserRepository;
-import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UkaEvent;
@@ -240,6 +238,10 @@ public class UserService {
 	 */
 	private String getFacebookConsumerToken() throws ConsumerException {
 		return facebook.getConsumerFacebookToken(auth.getConsumerDetails());
+	}
+	
+	public boolean registerUserLocation(int userId, int locationId) {
+		return data.registerUserLocation(userId, locationId);
 	}
 	
 	/**
