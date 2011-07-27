@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,11 @@ public class AuthenticationService {
 	public String login(String facebookToken) {
 		Facebook facebook = new FacebookTemplate(facebookToken);
 		String facebookId;
-		facebookId = facebook.userOperations().getUserProfile().getId();
+		FacebookProfile profile = facebook.userOperations().getUserProfile();
+		facebookId = profile.getId();
 
 		String token = null;
+		
 		if (facebookId != null) {
 			logger.debug("Find userId of user with facebookId " + facebookId);
 			int userId = userRepo.getUserIdByFacebookId(facebookId);
@@ -48,7 +51,10 @@ public class AuthenticationService {
 			if (userId == -1) {
 				logger.debug("User not found. Adding user with facebook id: "
 						+ facebookId);
-				userRepo.addUserWithFacebookId(facebookId);
+
+				String facebookName;
+				facebookName = profile.getName();
+				userRepo.addUserWithFacebookId(facebookId, facebookName);
 			} else {
 				logger.debug("User with userId " + userId + " found.");
 			}

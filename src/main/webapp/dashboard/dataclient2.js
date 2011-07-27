@@ -137,7 +137,7 @@ function processUserData(responseText, responseStatus, locationID) {
 }
 
 function drawUserDataChart() {
-	document.getElementById('people_counter_paragraph').innerHTML = userCount[0].usercount;
+	document.getElementById('user_count').innerHTML = "[" + userCount[0].usercount + "]";
 	console.log("usercount is...: " + userCount[0].usercount);
 }
 
@@ -261,3 +261,6 @@ function drawHumidityChart() {
 	d.style.marginRight = 'auto';
 }
 
+function testings() {
+
+}

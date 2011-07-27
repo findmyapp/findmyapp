@@ -15,6 +15,7 @@ public class LocationReportRowMapper implements RowMapper<LocationReport> {
 		localeNow.setParameterName(rs.getString("parameter_name"));
 		localeNow.setParameterTextValue(rs.getString("string_value"));
 		localeNow.setParameterNumberValue(rs.getFloat("float_value"));
+		localeNow.setUsername(rs.getString("full_name"));
 		return localeNow;
 		}
 

@@ -13,28 +13,22 @@
 </head>
 
 <body>
+	<header id="header">
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
 	<section id="mainContent">
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
-		<header id="header">
-			<h1 id="findMyApp">FindMyApp</h1>
-		</header>
-		
-	
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
-				<div id="people_counter_div">
-					<img id="people_icon" alt="Antall personer på Strossa: " src="images/people_icon.gif" />
-					<p id="people_counter_paragraph"></p>
-				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
 		</aside>
 
 		<div id="mcontent">
-			<!-- Content Section -->
+			<!-- Content Section -->	
+			<h1 id="room-heading">Strossa <b id=user_count></b></h1>
 			<img alt="Samfundetkart med Strossa markert" src="images/kartstrossa.png" id="map-with-selection"/>
 			<div id="room-info-div">
 			<p>Nederst i Samfundet, under Edgar og Lyche, finner du Strossa. Til UKA-09 var det Strossa som fikk makeover, og lokalet ble forvandlet til en stilren lounge for trondheimsstudentene. Her finner du DJ-er  som spiller rolig chillout-electronica og forfriskende drinker bak baren.</p>
@@ -73,7 +67,9 @@
 	</section>
 	
 	<footer id="footer">
-		<FONT id = "livefeed_font" face="futura medium" color="white">
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+		<FONT face="futura medium" size="5" color="white">
 			<marquee id="live_feed" direction="left" behavior="scroll"	scrollamount="5" bgcolor= "#8F0000"></marquee>
 		</FONT>
 	</footer>

@@ -10,6 +10,7 @@ public class User {
 	private Timestamp lastLogon;
 	private Location lastKnownPosition;
 	private UserPrivacy userPrivacy;
+	private String fullName;
 	
 	public User() {}
 	
@@ -92,8 +93,14 @@ public class User {
 	public void setUserPrivacy(UserPrivacy userPrivacy) {
 		this.userPrivacy = userPrivacy;
 	}
-	
-	
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 	
 	
 }

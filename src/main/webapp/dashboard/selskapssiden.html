@@ -13,19 +13,14 @@
 </head>
 
 <body>
+	<header>
+		<h1 id="findMyApp">FindMyApp</h1>
+	</header>
+
 	<section id="mainContent">
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
-		<header id="header">
-			<h1 id="findMyApp">FindMyApp</h1>
-		</header>
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
-				<div id="people_counter_div">
-					<img id="people_icon" alt="Antall personer på Strossa: " src="images/people_icon.gif" />
-					<p id="people_counter_paragraph"></p>
-				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
@@ -33,6 +28,7 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
+			<h1 id="room-heading">Selskapssiden  <b id=user_count></b></h1>
 			<img alt="Samfundetkart med Selskapssiden markert" src="images/kartselskapssiden.png" id="map-with-selection"/>
 			<div id="room-info-div">
 			<p>I tredje etasje på nordsiden av huset finner du Samfundets stilfulle cocktailbar. Baren har et gjennomført skandinavisk preg inspirert av hytteliv, mørk skog, jakt og fangst. På Selskapssiden er du omgitt av vedkubber, gevir og innrammede bilder på veggen.</p>
@@ -71,8 +67,10 @@
 		</aside>
 	</section>
 	
-	<footer id="footer">
-		<FONT id = "livefeed_font" face="futura medium" color="white">
+	<footer>
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+		<FONT face="futura medium" size="5" color="white">
 			<marquee id="live_feed" direction="left" behavior="scroll"	scrollamount="5" bgcolor= "#8F0000"></marquee>
 		</FONT>
 	</footer>

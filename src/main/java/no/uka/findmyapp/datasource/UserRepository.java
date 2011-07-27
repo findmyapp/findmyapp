@@ -179,9 +179,9 @@ public class UserRepository {
 	 * @param facebookId
 	 *            id of user in Facebook
 	 */
-	public int addUserWithFacebookId(final String facebookId) {
+	public int addUserWithFacebookId(final String facebookId, final String facebookName) {
 		
-		final String INSERT_SQL = "INSERT INTO USER (facebook_id) VALUES (?)";
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name) VALUES (?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
@@ -189,6 +189,7 @@ public class UserRepository {
 		            PreparedStatement ps =
 		                connection.prepareStatement(INSERT_SQL, new String[] {"user_id"});
 		            ps.setString(1, facebookId);
+		            ps.setString(2, facebookName);
 		            return ps;
 		        }
 
