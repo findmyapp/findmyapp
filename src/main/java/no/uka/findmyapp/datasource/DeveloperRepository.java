@@ -74,7 +74,7 @@ public class DeveloperRepository {
 		int res = 0;
 		try {
 			res = jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
-					app.getFacebookAppID(), app.getThumbImage(), developer_id, app.getId());
+					app.getFacebookAppID(), app.getThumbImage().toString(), developer_id, app.getId());
 			
 		} catch (Exception e) {
 			logger.info(e.getMessage());
