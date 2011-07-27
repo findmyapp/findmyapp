@@ -59,7 +59,7 @@ public class CashlessController {
 	@ServiceModelMapping(returnType=CashlessCard.class)
 	public ModelAndView updateMyCashless() { 
 		
-		int userId = 0;
+		int userId = 1;
 		long cardNo = 1628620850; // This must come from user object
 		
 		if(cashlessService.updateCardNumber(userId, cardNo)) {
