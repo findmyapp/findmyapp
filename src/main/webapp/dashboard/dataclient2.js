@@ -4,8 +4,8 @@ var comments;
 var userCount;
 var todaysEvents;
 var tomorrowsEvents;
-var server = 'http://localhost:8080/';
-//var server = 'http://findmyapp.net/';
+//var server = 'http://localhost:8080/';
+var server = 'http://findmyapp.net/';
 
 
 function getData(locationID, locationName) {// get json data from server
