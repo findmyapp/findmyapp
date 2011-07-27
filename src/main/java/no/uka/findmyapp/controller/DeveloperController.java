@@ -82,7 +82,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
-	@RequestMapping(value = "/{developer_id}/apps/{appId}/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/{developer_id}/apps/{appId}/activation/update", method = RequestMethod.POST)
 	public ModelAndView updateAppActivation(@PathVariable int developer_id, @PathVariable int appId, @RequestParam(required=true) boolean activated) {
 		
 		int result = service.updateAppActivation(developer_id, appId, activated);
