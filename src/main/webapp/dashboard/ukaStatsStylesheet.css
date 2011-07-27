@@ -97,10 +97,15 @@ Container for left toolbar within mainContent
 #tomorrows-events-div {
 	position: absolute;
 	top:300px;
-}	
+}
 
+.event-table th {
+	padding: 15px 8px;
+	vertical-align: middle;
+	text-align: left;
+	border-bottom: 1px solid #EEE;
+}
 .event-table td {
-	background-color: white;
 	padding: 8px 8px;
 	vertical-align: middle;
 	text-align: left;

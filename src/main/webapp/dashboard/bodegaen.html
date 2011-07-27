@@ -14,11 +14,12 @@
 </head>
 
 <body>
-	<header>
-		<h1 id="findMyApp">FindMyApp</h1>
-	</header>
-
 	<section id="mainContent">
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+		<header id="header">
+			<h1 id="findMyApp">FindMyApp</h1>
+		</header>
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
@@ -26,7 +27,7 @@
 				<div id='humidity_chart'></div>
 			</section>
 		</aside>
-
+		
 		<div id="mcontent">
 			<!-- Content Section -->
 			<h1 id="room-heading">Bodegaen <b id=user_count></h1>
@@ -50,26 +51,29 @@
 
 		<aside id="left_aside">
 			<section>
-				<div id="todays-events-div">
-				<b>Dagens arrangementer</b>
-				<table class='event-table' id='event-table-today'></table>
-				</div>
-				<div id="tomorrows-events-div">
-				<b>Morgendagens arrangementer</b>
-				<table class='event-table' id='event-table-tomorrow'></table>
-				</div>
+				<table class='event-table' id='event-table-today'>
+					<tr class='event-table-header'>
+						<th colspan="2">Dagens arrangementer</th>
+					</tr>
+				</table>
+
+				<table class='event-table' id='event-table-tomorrow'>
+					<tr class='event-table-header'>
+						<th colspan="2">Morgendagens arrangementer</th>
+					</tr>
+				</table>
 			</section>
 		</aside>
-	</section>
-	
-	<footer>
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button"></a>
-		<FONT face="futura medium" size="5" color="white">
+		<footer>
+		<FONT id = "livefeed_font" face="futura medium" color="white">
 			<marquee id="live_feed" direction="left" behavior="scroll"	scrollamount="5" bgcolor= "#8F0000"></marquee>
 		</FONT>
 	</footer>
+	</section>
+	
+	
 </body>
+
 
 <script type="text/javascript">
 	google.load('visualization', '1', {
