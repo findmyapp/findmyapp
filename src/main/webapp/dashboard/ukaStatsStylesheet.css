@@ -88,20 +88,19 @@ Container for left toolbar within mainContent
 	width: 90%;
 }
 
-#room-heading {
+#todays-events-div {
+	position: absolute;
+	top:50px;
 }
-
-.event-table th {
-	padding: 16px 0;
-	vertical-align: middle;
-	text-align: center;
-	font-weight: bold;
-	border-bottom: 2px solid #CCC;
-}
+	
+#tomorrows-events-div {
+	position: absolute;
+	top:300px;
+}	
 
 .event-table td {
-	background-color: "white";
-	padding: 16px 18px;
+	background-color: white;
+	padding: 8px 8px;
 	vertical-align: middle;
 	text-align: left;
 	border-bottom: 1px solid #EEE;
