@@ -14,64 +14,87 @@
 
 <body>
 	<section id="mainContent">
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
+
+		<a href="samfundet.html"> <img src="images/backbutton.jpg"
+			alt="Tilbake" id="back_button" />
+		</a>
 		<header id="header">
 			<h1 id="findMyApp">FindMyApp</h1>
 		</header>
+
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
+				<div id="people_counter_div">
+					<img id="people_icon" alt="Antall personer på Lyche: "
+						src="images/people_icon.gif" />
+					<p id="people_counter_paragraph"></p>
+				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
 		</aside>
 
+
 		<div id="mcontent">
 			<!-- Content Section -->
-			
-			<img alt="Samfundetkart med Lyche markert" src="images/kartlyche.png" id="map-with-selection"/>
+			<img alt="Samfundetkart med Lyche markert" src="images/kartlyche.png"
+				id="map-with-selection" />
 			<div id="room-info-div">
-			<p>Lyche er Studentersamfundets egen vinbar, lounge & kjøkken, med direkte inngang fra parken. Lokalene ble pusset opp i 2010. På nye Lyche vil alle kunne finne sin favorittplass uansett om man er mange eller få, skal spise eller drikke, er på date eller for å møte venner. Både på en rolig tirsdag eller festfylt lørdag. Hele uka igjennom tilbys det behagelig bakgrunnsmusikk, gode sofaer, myke stoler i et lokale preget av farger og kontraster, og som er klassisk og moderne på samme tid. På Lyche koser du deg hele uka igjennom.</p>
-			
-			<br>
-			
-			<h4>Visste du at?</h4>
-			
-			<br>
-			
-			<ul>
-			<li>Lyche er oppkalt etter professor Ralph Tambs-Lyche. Ralph Tambs-Lyche var professor på NTH, leder for Samfundet på 20-tallet, og han var med å skrive UKErevyen i 1945</li>
-			<li>Oppvaskmaskinen på Lyche het frem til våren 2010 Hobart. Hobart var veldig kjent for sine PMS-utbrudd, noe han fikk støtt og stadig. Hans mest kjente sitater under slike utbrudd var blant annet "Fault: Filling Booster" og "Beeeeeeeeep! Beeeeeep!</li>
-			</ul>
-			
-			 </div>
-			<div id="event-info-div" style="hidden"></div>
+				<p>Lyche er Studentersamfundets egen vinbar, lounge & kjøkken,
+					med direkte inngang fra parken. Lokalene ble pusset opp i 2010. På
+					nye Lyche vil alle kunne finne sin favorittplass uansett om man er
+					mange eller få, skal spise eller drikke, er på date eller for å
+					møte venner. Både på en rolig tirsdag eller festfylt lørdag. Hele
+					uka igjennom tilbys det behagelig bakgrunnsmusikk, gode sofaer,
+					myke stoler i et lokale preget av farger og kontraster, og som er
+					klassisk og moderne på samme tid. På Lyche koser du deg hele uka
+					igjennom.</p>
+
+				<br>
+
+				<h4>Visste du at?</h4>
+
+				<br>
+
+				<ul>
+					<li>Lyche er oppkalt etter professor Ralph Tambs-Lyche. Ralph
+						Tambs-Lyche var professor på NTH, leder for Samfundet på
+						20-tallet, og han var med å skrive UKErevyen i 1945</li>
+					<li>Oppvaskmaskinen på Lyche het frem til våren 2010 Hobart.
+						Hobart var veldig kjent for sine PMS-utbrudd, noe han fikk støtt
+						og stadig. Hans mest kjente sitater under slike utbrudd var blant
+						annet "Fault: Filling Booster" og "Beeeeeeeeep! Beeeeeep!</li>
+				</ul>
+
+			</div>
+			<div id="event-info-div" style=""></div>
 		</div>
 
 		<aside id="left_aside">
 			<section>
 				<table class='event-table' id='event-table-today'>
 					<tr class='event-table-header'>
-						<th colspan="2">I dag</th>
+						<th colspan="2">Dagens arrangementer</th>
 					</tr>
 				</table>
 
 				<table class='event-table' id='event-table-tomorrow'>
 					<tr class='event-table-header'>
-						<th colspan="2">I morgen</th>
+						<th colspan="2">Morgendagens arrangementer</th>
 					</tr>
 				</table>
 			</section>
 		</aside>
 		<footer>
-		<FONT id = "livefeed_font" face="futura medium" color="white">
-			<marquee id="live_feed" direction="left" behavior="scroll"	scrollamount="5" bgcolor= "#8F0000"></marquee>
-		</FONT>
-	</footer>
+			<FONT id="livefeed_font" face="futura medium" color="white"> <marquee
+					id="live_feed" direction="left" behavior="scroll" scrollamount="5"
+					bgcolor="#8F0000"></marquee> </FONT>
+		</footer>
+
 	</section>
-	
-	
+
+
 </body>
 
 <script type="text/javascript">
