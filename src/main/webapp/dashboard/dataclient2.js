@@ -207,9 +207,11 @@ function drawLocationReports() {
 	var i = 0;
 	for (i = 0; i < comments.length; i++) {
 		if (i == 0) {
+			reportString += comments[i].username+": ";
 			reportString += comments[i].parameterTextValue;
 		} else {
-			reportString += "                                                          " + comments[i].parameterTextValue;
+			reportString += "                                                          " + comments[i].username+": ";
+			reportString += comments[i].parameterTextValue;
 			var blankCharacter = "&" + "nbsp";
 			reportString = reportString.replace(/ /gi, blankCharacter);
 		}

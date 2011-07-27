@@ -89,7 +89,7 @@ public class CustomParameterRepository {
 			int numberOfelements, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
 					+ "ON CPV.custom_parameter_id = CP.custom_parameter_id "
@@ -112,7 +112,7 @@ public class CustomParameterRepository {
 			Date from, Date to, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
 					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
@@ -135,7 +135,7 @@ public class CustomParameterRepository {
 			Date from, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
 					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
@@ -156,7 +156,7 @@ public class CustomParameterRepository {
 			String parName) {
 		logger.info("Fetching data HEHR ");
 		try {
-			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
 					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
