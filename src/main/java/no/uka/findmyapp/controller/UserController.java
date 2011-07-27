@@ -81,6 +81,13 @@ public class UserController {
 		return data;
 	}
 	
+	@RequestMapping(value = "/me/events", method = RequestMethod.GET)
+	public ModelMap getEvents(@RequestParam String token, ModelMap model) throws ConsumerException {
+		int userId = verifyToken(token);
+		List<UkaEvent> events = service.getEvents(userId);
+		model.addAttribute(events);
+		return model;
+	}
 	
 	@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
 	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
@@ -89,13 +96,6 @@ public class UserController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/me/events", method = RequestMethod.GET)
-	public ModelMap getEvents(@RequestParam String token, ModelMap model) throws ConsumerException {
-		int userId = verifyToken(token);
-		List<UkaEvent> events = service.getEvents(userId);
-		model.addAttribute(events);
-		return model;
-	}
 
 	/**
 	 * POST method where it is possible to change privacy settings Privacy
