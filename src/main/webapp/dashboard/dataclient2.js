@@ -70,6 +70,8 @@ function updateEventList(day){
 		
 		row = table.insertRow (-1);
 		
+		//var arg = "showEvent(" + i +",'" + day + "'); this.setAttribute('bgcolor', '#C0C0C0');";
+		//row.setAttribute("bgcolor", "#FFFFFF");
 		var arg = "showEvent(" + i +",'" + day + "');";
         row.setAttribute("onClick",arg);
         
