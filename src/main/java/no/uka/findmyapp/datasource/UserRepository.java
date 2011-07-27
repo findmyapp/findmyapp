@@ -109,7 +109,7 @@ public class UserRepository {
 		try {
 			Location location = jdbcTemplate
 					.queryForObject(
-							"SELECT location.position_location_id, location.name "
+							"SELECT location.position_location_id, location.string_id "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
 									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
 							new LocationRowMapper(), userId);

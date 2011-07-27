@@ -45,7 +45,7 @@ public class LocationRepository {
 	public Location getLocation(Sample sample) {
 		Location location = jdbcTemplate
 				.queryForObject(
-						"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_SAMPLE sa, POSITION_SIGNAL si "
+						"SELECT l.position_location_id, l.string_id FROM POSITION_LOCATION l, POSITION_SAMPLE sa, POSITION_SIGNAL si "
 								+ "WHERE l.id = sa.position_location_id AND sa.position_sample_id = ?",
 						new LocationRowMapper(), sample.getLocationId());
 		return location;
@@ -54,7 +54,7 @@ public class LocationRepository {
 	private Location getLocationByName(String locationName) {
 
 		Location location = jdbcTemplate.queryForObject(
-				"SELECT * FROM POSITION_LOCATION WHERE name=?",
+				"SELECT * FROM POSITION_LOCATION WHERE string_id=?",
 				new LocationRowMapper(), locationName);
 		return location;
 	}
@@ -72,7 +72,7 @@ public class LocationRepository {
 			final String fLocationName = locationName;
 
 			jdbcTemplate.update(
-					"INSERT into POSITION_LOCATION(name) values (?)",
+					"INSERT into POSITION_LOCATION(string_id) values (?)",
 					new PreparedStatementSetter() {
 						public void setValues(PreparedStatement ps)
 								throws SQLException {
@@ -111,9 +111,9 @@ public class LocationRepository {
 
 	public List<LocationCount> getUserCountAtAllLocations() {
 		List<LocationCount> locationCounts = jdbcTemplate
-				.query("SELECT l.name, COUNT(up.position_location_id) AS count "
+				.query("SELECT l.string_id, COUNT(up.position_location_id) AS count "
 						+ "FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
-						+ "WHERE l.position_location_id = up.position_location_id GROUP BY l.name",
+						+ "WHERE l.position_location_id = up.position_location_id GROUP BY l.string_id",
 						new LocationCountRowMapper());
 		return locationCounts;
 	}
@@ -132,7 +132,7 @@ public class LocationRepository {
 		try {
 			Location location = jdbcTemplate
 					.queryForObject(
-							"SELECT location.position_location_id, location.name "
+							"SELECT location.position_location_id, location.string_id "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
 									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
 							new LocationRowMapper(), userId);
@@ -214,11 +214,11 @@ public class LocationRepository {
 			final Sample fSample = sample;
 			int numCurrentLocations = jdbcTemplate
 					.queryForInt(
-							"SELECT COUNT(position_location_id) FROM POSITION_LOCATION WHERE name = ?",
+							"SELECT COUNT(position_location_id) FROM POSITION_LOCATION WHERE string_id = ?",
 							sample.getLocationName());
 			if (numCurrentLocations == 0) {
 				jdbcTemplate.update(
-						"INSERT INTO POSITION_LOCATION(name) VALUES(?)",
+						"INSERT INTO POSITION_LOCATION(string_id) VALUES(?)",
 						new PreparedStatementSetter() {
 							public void setValues(PreparedStatement ps)
 									throws SQLException {
