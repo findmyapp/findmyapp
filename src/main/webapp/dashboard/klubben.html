@@ -14,14 +14,19 @@
 </head>
 
 <body>
-	<header>
-		<h1 id="findMyApp">FindMyApp</h1>
-	</header>
-
 	<section id="mainContent">
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+		<header id="header">
+			<h1 id="findMyApp">FindMyApp</h1>
+		</header>
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
+				<div id="people_counter_div">
+					<img id="people_icon" alt="Antall personer " src="images/people_icon.gif" />
+					<p id="people_counter_paragraph"></p>
+				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
@@ -29,7 +34,6 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
-			<h1 id="room-heading">Klubben  <b id=user_count></b></h1>
 			<img alt="Samfundetkart med Klubben markert" src="images/kartklubben.png" id="map-with-selection"/>
 			<div id="room-info-div">
 			<p>Hvis Storsalen blir for upersonlig og Knaus blir for smått for deg, så er det på Klubben du finner Samfundets heteste konserter. Scenen er perfekt for intime og direkte, men likevel storartete konsertopplevelser. Det kan ligge rock, svette og øl i luften, men det er ikke kun gitarmusikk man får servert her. Her er det er varierte artister som spiller både indie, elektronika, hip-hop og annen musikk med trøkk i. I tillegg snurrer våre dyktige DJer alltid de passende platene som gjør pilsen før og etter konserten ekstra smakelig. På hverdagene er Klubben alt fra Excenteraften og Bokstavlig talt, til åstedet for Café NordSør-møter, og møtelokalet til Studenttinget.</p>
@@ -54,27 +58,26 @@
 			<section>
 				<table class='event-table' id='event-table-today'>
 					<tr class='event-table-header'>
-						<th colspan="2">I dag</th>
+						<th colspan="2">Dagens arrangementer</th>
 					</tr>
 				</table>
 
 				<table class='event-table' id='event-table-tomorrow'>
 					<tr class='event-table-header'>
-						<th colspan="2">I morgen</th>
+						<th colspan="2">Morgendagens arrangementer</th>
 					</tr>
 				</table>
 			</section>
 		</aside>
 	</section>
-	
-	<footer>
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
-		<FONT face="futura medium" size="5" color="white">
+
+	<footer id="footer">
+		<FONT id = "livefeed_font" face="futura medium" color="white">
 			<marquee id="live_feed" direction="left" behavior="scroll"	scrollamount="5" bgcolor= "#8F0000"></marquee>
 		</FONT>
 	</footer>
 </body>
+
 
 <script type="text/javascript">
 	google.load('visualization', '1', {
