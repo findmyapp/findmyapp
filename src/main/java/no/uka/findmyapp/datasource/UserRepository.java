@@ -207,7 +207,11 @@ public class UserRepository {
 	 */
 	public int addUserWithFacebookId(final String facebookId, final String facebookName) {
 		
-		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name) VALUES (?,?)";
+		//Add row in privacy_settings table
+		final int privacyId = createDefaultPrivacySettingsEntry();
+
+		//Add row in user table
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name, user_privacy_id) VALUES (?,?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
@@ -216,6 +220,7 @@ public class UserRepository {
 		                connection.prepareStatement(INSERT_SQL, new String[] {"user_id"});
 		            ps.setString(1, facebookId);
 		            ps.setString(2, facebookName);
+		            ps.setInt(3, privacyId);
 		            return ps;
 		        }
 
