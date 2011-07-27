@@ -73,9 +73,8 @@ public class DeveloperRepository {
 		logger.info("running sql : " + sql);
 		int res = 0;
 		try {
-			Object[] params = {app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), app.getFacebookAppID(), app.getThumbImage(), developer_id, app.getId()};
-			
-			res = jdbcTemplate.update(sql, params);
+			res = jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
+					app.getFacebookAppID(), app.getThumbImage(), developer_id, app.getId());
 			
 		} catch (Exception e) {
 			logger.info(e.getMessage());
