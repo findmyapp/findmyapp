@@ -182,26 +182,29 @@ Footer thingies
 footer {
 	position: absolute;
 	left: 0px;
-	bottom: 0px;
+	bottom: 1px;
 	width: 100%;
 	height: 14px;
 }
 
 #live_feed {
 	position: absolute;
-	left: 300px;
-	bottom: 5px;
 	width: 800px;
 	height: 28px;
 	-moz-border-radius: 12px;
 	-webkit-border-radius: 12px;
+	
+	margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
 }
 
 #back_button {
 	position: absolute;
 	left: 100px;
-	bottom:1px;
 	width: 100px;
 	height: 100px;
+	bottom:1px;
 }
 
