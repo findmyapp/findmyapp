@@ -2,7 +2,7 @@ package no.uka.findmyapp.model.appstore;
 
 public class Developer{
 	private String fullName;
-	private String developerID;
+	private int developerID;
 	private int wpId;
 	private int userId;
 	private String email;
@@ -14,10 +14,10 @@ public class Developer{
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public String getDeveloperID() {
+	public int getDeveloperID() {
 		return developerID;
 	}
-	public void setDeveloperID(String developerID) {
+	public void setDeveloperID(int developerID) {
 		this.developerID = developerID;
 	}
 	public int getWpId() {

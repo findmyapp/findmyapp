@@ -120,12 +120,12 @@
 		<constructor-arg value="256" />
 	</bean>
 	<security:user-service id="userDetailsService">
-		<!-- <security:user name="wordpress"
-			password="d6ef441296e261a73cedc89faa2643cec5b71b114e2870ea24e6e1738e091429"
-			authorities="ROLE_WORDPRESS" /> -->
 		<security:user name="wordpress"
 			password="d6ef441296e261a73cedc89faa2643cec5b71b114e2870ea24e6e1738e091429"
-			authorities="ROLE_WORDPRESS" />
+			authorities="ROLE_WORDPRESS" /> 
+		<!-- <security:user name="wordpress"
+			password="d6ef441296e261a73cedc89faa2643cec5b71b114e2870ea24e6e1738e091429"
+			authorities="ROLE_WORDPRESS" />-->
 		<security:user name="sensor"
 			password="18e788d1f9fa1c3b5092075863e2f107af757c29bba8c91516b8513d352afc1a"
 			authorities="ROLE_SENSOR" />

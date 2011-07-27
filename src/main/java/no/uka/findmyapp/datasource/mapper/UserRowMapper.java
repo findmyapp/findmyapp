@@ -20,6 +20,7 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setUserRegistered(rs.getTimestamp("registered_date"));
 		user.setLastLogon(rs.getTimestamp("last_logon"));
 		user.setUserPrivacy( null );
+		user.setFullName(rs.getString("full_name"));
 		return user; 
 	}
 }

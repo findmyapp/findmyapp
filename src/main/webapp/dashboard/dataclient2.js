@@ -31,7 +31,7 @@ function requestTomorrowsEvents(locationName){
 
 function processTodaysEvents(responseText, responseStatus){
 	if (responseStatus==200) {
-		//console.log(responseText);
+		console.log(responseText);
 		todaysEvents = eval(responseText);
 		updateEventList('today');  	
 	} else {
@@ -41,7 +41,7 @@ function processTodaysEvents(responseText, responseStatus){
 
 function processTomorrowsEvents(responseText, responseStatus){
 	if (responseStatus==200) {
-		//console.log(responseText);
+		console.log(responseText);
 		tomorrowsEvents = eval(responseText);
 		updateEventList('tomorrow');  	
 	} else {
@@ -64,26 +64,29 @@ function updateEventList(day){
 	var i=0;
 	var row;
 	var cell;
-	
-	//console.log('no of events: ' + list.length)
-	for(i = 0; i < list.length; i++) {
-		
+	if (list.length == 0) {
 		row = table.insertRow (-1);
-		
-		//var arg = "showEvent(" + i +",'" + day + "'); this.setAttribute('bgcolor', '#C0C0C0');";
-		//row.setAttribute("bgcolor", "#FFFFFF");
-		var arg = "showEvent(" + i +",'" + day + "');";
-        row.setAttribute("onClick",arg);
-        
         cell = row.insertCell (0);
-        var date = new Date(list[i].showingTime); 
-        //console.log(date);
-        cell.innerHTML = date.format("HH:MM"); 
-        
-        cell = row.insertCell (1);
-       	cell.innerHTML = list[i].title;
-       	
+        cell.innerHTML = 'Ingen arrangement';
+	} else {
+		for(i = 0; i < list.length; i++) {
+			if (i > 4){
+				break;
+			}
+			row = table.insertRow (-1);
+			var arg = "showEvent(" + i +",'" + day + "');";
+	        row.setAttribute("onClick",arg);
+	        
+	        cell = row.insertCell (0);
+	        var date = new Date(list[i].showingTime); 
+	        cell.innerHTML = date.format("HH:MM"); 
+	        
+	        cell = row.insertCell (1);
+	       	cell.innerHTML = list[i].title;
+	       	//console.log(date);	
+		}
 	}
+	
 }
 
 function showEvent(index, day) {
