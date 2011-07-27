@@ -70,7 +70,9 @@ function updateEventList(day){
         cell.innerHTML = 'Ingen arrangement';
 	} else {
 		for(i = 0; i < list.length; i++) {
-			
+			if (i > 4){
+				break;
+			}
 			row = table.insertRow (-1);
 			var arg = "showEvent(" + i +",'" + day + "');";
 	        row.setAttribute("onClick",arg);
