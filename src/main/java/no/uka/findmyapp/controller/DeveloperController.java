@@ -74,8 +74,8 @@ public class DeveloperController {
 	
 	@RequestMapping(value = "/{developer_id}/apps/{appId}/update", method = RequestMethod.POST)
 	public ModelAndView updateApp(@PathVariable int developer_id, @PathVariable int appId, @RequestBody App app) {
-		//TODO IMPLEMENT
-		int result = -1;
+		//TODO IMPLEMENTupdateApp
+		int result = service.updateApp(developer_id, app);
 		return new ModelAndView("json", "result", result);
 	}
 	

@@ -51,21 +51,23 @@ public class ServiceInfoController {
 	 	for(ServiceModel s : list) {
 	 		System.out.println(s);
 	 	}
-	 	
-	 	/*
-	 	OAuthProviderToken providerToken = tokenServices.getToken(oauth_token);
-	    ConsumerDetails consumer = consumerDetailsService.loadConsumerByConsumerKey(providerToken.getConsumerKey());
-	    logger.info("providerToken " + providerToken.getConsumerKey());
-	    logger.info("consumer" + consumer);
-	    logger.info("consumerName " + consumer.getConsumerName());
-	    logger.info("consumerDetailsService key " + consumer.getConsumerKey());
-	    logger.info("consumerDetailsService auth " + consumer.getAuthorities());
-	   */
-		//logger.info("returning : " + list.size() + " ServiceModels");
-		//model.addAttribute("json", list);
 
 		return new ModelAndView("json", "list", list);
 		//return "json";
+	}
+	
+	@RequestMapping(value = "/all2", method = RequestMethod.GET)
+	public ModelAndView getServiceInfo2(Model model) throws URISyntaxException {
+		logger.info("getting service info for all services");
+	 	List<String> list = serviceInfoService.getAllServicesFact();
+	 	String out = "";
+	 	
+	 	for(String s : list) {
+	 		out += s;
+	 		out += "---";
+	 		
+	 	}
+		return new ModelAndView("appstore", "list", out);
 	}
 	
 	
