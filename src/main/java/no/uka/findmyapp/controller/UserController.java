@@ -82,20 +82,30 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
-	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
-		List<UkaEvent> events = service.getEvents(userId);
-		model.addAttribute(events);
-		return model;
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/{idOrMe}/events", method = RequestMethod.GET)
+	public ModelMap getEvents(@PathVariable String idOrMe, @RequestParam String token, ModelMap model) {
+		if (idOrMe.equalsIgnoreCase("me")) {
+			return getMyEvents(token, model);
+		}
+		else {
+			return getEvents(token, Integer.parseInt(idOrMe), model);
+		}
 	}
-	
-	@RequestMapping(value = "/me/events", method = RequestMethod.GET)
-	public ModelMap getEvents(@RequestParam String token, ModelMap model) throws ConsumerException {
+	//retrieve my events
+	private ModelMap getMyEvents(String token, ModelMap model) {
 		int userId = verifyToken(token);
 		List<UkaEvent> events = service.getEvents(userId);
 		model.addAttribute(events);
 		return model;
 	}
+	//retrieve events to others
+	private ModelMap getEvents(String token, int userId, ModelMap model) {
+		List<UkaEvent> events = service.getEvents(userId);
+		model.addAttribute(events);
+		return model;
+	}
+	
 
 	/**
 	 * POST method where it is possible to change privacy settings Privacy
@@ -219,6 +229,13 @@ public class UserController {
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(ConsumerException.class)
 	private void handleConsumerException(ConsumerException e) {
+		logger.debug(e.getMessage());
+	}
+	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(NumberFormatException.class)
+	private void handleNumberFormatException(NumberFormatException e) {
 		logger.debug(e.getMessage());
 	}
 
