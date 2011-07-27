@@ -59,7 +59,7 @@ public class UserRepository {
 			return true;
 		} catch (Exception e) {
 			logger.error("Could not register event to user: " + e);
-			return false;
+			throw new ArrayIndexOutOfBoundsException(e.getLocalizedMessage());
 		}
 	}
 	public boolean removeEvent(int userId, long eventId) {
