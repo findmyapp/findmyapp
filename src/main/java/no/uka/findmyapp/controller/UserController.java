@@ -44,7 +44,7 @@ public class UserController {
 			.getLogger(UserController.class);
 
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "/me/friends")
+	@RequestMapping(value = "/me/friends", method = RequestMethod.GET)
 	public ModelAndView getRegisteredFacebookFriends(@RequestParam String token)
 			throws ConsumerException {
 		ModelAndView mav = new ModelAndView();
@@ -169,7 +169,7 @@ public class UserController {
 	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "me/friends/all/location", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType = Map.class)
+	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getLocationOfFriends(@PathVariable int userId,
 			@RequestParam String token) throws ConsumerException, TokenException {
 		int tokenUserId = verifyToken(token);
