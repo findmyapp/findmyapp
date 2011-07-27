@@ -69,6 +69,9 @@ public class UserService {
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
 	}
+	public boolean removeEvent(int userId, long eventId) {
+		return data.removeEvent(userId, eventId);
+	}
 
 	public List<UkaEvent> getEvents(int userId) {
 		return data.getEvents(userId);

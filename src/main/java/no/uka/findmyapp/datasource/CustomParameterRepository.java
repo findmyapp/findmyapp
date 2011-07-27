@@ -83,18 +83,19 @@ public class CustomParameterRepository {
 		} catch (Exception e) {
 			logger.error("Could not add data to the given parameter: " + e);
 		}
-		
 	}
 
 	public List<LocationReport> getLastUserReportedData(int locationId,
 			int numberOfelements, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "ON CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? "
 					+ "ORDER BY time DESC LIMIT 0,? ",
 					new LocationReportRowMapper(), parName, locationId,
@@ -111,11 +112,13 @@ public class CustomParameterRepository {
 			Date from, Date to, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? "
 					+ "AND time >= ? AND time <= ?",
 					new LocationReportRowMapper(), parName, locationId, from,
@@ -132,11 +135,13 @@ public class CustomParameterRepository {
 			Date from, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? " + "AND time >= ?",
 					new LocationReportRowMapper(), parName, locationId, from);
 
@@ -151,11 +156,13 @@ public class CustomParameterRepository {
 			String parName) {
 		logger.info("Fetching data HEHR ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CVP.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? ",
 					new LocationReportRowMapper(), parName, locationId);
 
@@ -163,7 +170,6 @@ public class CustomParameterRepository {
 			logger.error("Read API for what arguments are allowed " + e);
 			return null;
 		}
-
 	}
 
 	/*

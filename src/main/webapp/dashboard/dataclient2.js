@@ -4,8 +4,8 @@ var comments;
 var userCount;
 var todaysEvents;
 var tomorrowsEvents;
-//var server = 'http://localhost:8080/';
-var server = 'http://findmyapp.net/';
+var server = 'http://localhost:8080/';
+//var server = 'http://findmyapp.net/';
 
 
 function getData(locationID, locationName) {// get json data from server
@@ -70,6 +70,8 @@ function updateEventList(day){
 		
 		row = table.insertRow (-1);
 		
+		//var arg = "showEvent(" + i +",'" + day + "'); this.setAttribute('bgcolor', '#C0C0C0');";
+		//row.setAttribute("bgcolor", "#FFFFFF");
 		var arg = "showEvent(" + i +",'" + day + "');";
         row.setAttribute("onClick",arg);
         

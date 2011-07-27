@@ -53,22 +53,17 @@ public class UserRepository {
 
 	public boolean addEvent(int userId, long eventId) {
 		try {
-			final long event_id = eventId;
-			final int user_id = userId;
 			jdbcTemplate.update(
-					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)",
-					new PreparedStatementSetter() {
-						public void setValues(PreparedStatement ps)
-								throws SQLException {
-							ps.setInt(1, user_id);
-							ps.setLong(2, event_id);
-						}
-					});
+					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)", userId, eventId);
 			return true;
 		} catch (Exception e) {
-			logger.error("Could not register given location: " + e);
+			logger.error("Could not register event to user: " + e);
 			return false;
 		}
+	}
+	public boolean removeEvent(int userId, long eventId) {
+		int n = jdbcTemplate.update("DELETE from USER_EVENT WHERE user_id=? AND event_id=?", userId, eventId);
+		return n > 0;
 	}
 
 	public List<UkaEvent> getEvents(int userId) {
@@ -184,9 +179,9 @@ public class UserRepository {
 	 * @param facebookId
 	 *            id of user in Facebook
 	 */
-	public int addUserWithFacebookId(final String facebookId) {
+	public int addUserWithFacebookId(final String facebookId, final String facebookName) {
 		
-		final String INSERT_SQL = "INSERT INTO USER (facebook_id) VALUES (?)";
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name) VALUES (?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
@@ -194,6 +189,7 @@ public class UserRepository {
 		            PreparedStatement ps =
 		                connection.prepareStatement(INSERT_SQL, new String[] {"user_id"});
 		            ps.setString(1, facebookId);
+		            ps.setString(2, facebookName);
 		            return ps;
 		        }
 
