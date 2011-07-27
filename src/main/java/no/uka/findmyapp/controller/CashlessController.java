@@ -2,6 +2,7 @@ package no.uka.findmyapp.controller;
 
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.UkaEvent;
+import no.uka.findmyapp.model.cashless.CashlessCard;
 import no.uka.findmyapp.service.CashlessService;
 
 
@@ -30,9 +31,13 @@ public class CashlessController {
 	@RequestMapping(value = "/cashless", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
 	public ModelAndView testCashless() { 
-
+		
+		long cardNo = 1628620850;
+		CashlessCard card = cashlessService.getCardTransactions(cardNo);
+		
+		
 		logger.debug("testing cashless");	
-		return new ModelAndView("json", "program", cashlessService.testCashless());
+		return new ModelAndView("json", "program", card);
 	
 	}
 }
