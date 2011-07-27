@@ -240,6 +240,8 @@ public class UserService {
 	}
 	
 	/**
+	 * Retreives the most recent registered location of a user.
+	 * Only returns the position if the asking user has permission.
 	 * 
 	 * @param userId 
 	 * 				Id of the user you want the location of
@@ -265,6 +267,7 @@ public class UserService {
 	}
 
 	/**
+	 * Retreives a list of all user positions.
 	 * 
 	 * @return A list of all userpositions found in database
 	 */
@@ -272,7 +275,13 @@ public class UserService {
 		return data.getLocationOfAllUsers();
 	}
 
-	//TODO
+	/**
+	 * Retreives a list of the user positions of users facebook friends.
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws ConsumerException
+	 */
 	public List<UserPosition> getLocationOfFriends(int userId) throws ConsumerException {
 		List<UserPosition> friendsPositions = new ArrayList<UserPosition>();
 		List<UserPosition> allUserPositions = getLocationOfAllUsers();
