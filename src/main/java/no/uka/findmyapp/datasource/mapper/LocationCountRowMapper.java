@@ -11,7 +11,7 @@ public class LocationCountRowMapper implements RowMapper<LocationCount> {
 
 	public LocationCount mapRow(ResultSet rs, int rowNum) throws SQLException {
 		LocationCount locationCount = new LocationCount();
-		locationCount.setLocationName(rs.getString("name"));
+		locationCount.setLocationName(rs.getString("string_id"));
 		locationCount.setUserCount(rs.getInt("count"));
 		return locationCount;
 	}
