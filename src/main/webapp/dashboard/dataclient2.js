@@ -32,6 +32,8 @@ function processTodaysEvents(responseText, responseStatus){
 		//console.log(responseText);
 		todaysEvents = eval(responseText);
 		updateEventList('today');  	
+	} else {
+		console.log(responseStatus + ' -- Error Processing Request for todays events');
 	}
 }
 
@@ -40,6 +42,8 @@ function processTomorrowsEvents(responseText, responseStatus){
 		//console.log(responseText);
 		tomorrowsEvents = eval(responseText);
 		updateEventList('tomorrow');  	
+	} else {
+		console.log(responseStatus + ' -- Error Processing Request request for tomorrows events');
 	}
 }
 
@@ -121,7 +125,7 @@ function processUserData(responseText, responseStatus, locationID) {
 		  userCount = eval(hax);
 		  drawUserDataChart();
 	  } else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Request for user count');
 	  }
 }
 
@@ -144,7 +148,7 @@ function processTemperatureData(responseText, responseStatus) {
 		info = eval(responseText);
 		drawTemperatureChart();
 	} else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Temperature Request');
 	}
 }
 
@@ -187,7 +191,7 @@ function processLocationReports(responseText, responseStatus) {
 		console.log("responseText: "+responseText);
 		drawLocationReports();
 	} else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Request for comments (location reports)');
 	}
 }
 
@@ -221,7 +225,7 @@ function processHumidityData(responseText, responseStatus) {
 		// console.log("humidity info length: "+info.length);
 		drawHumidityChart();
 	} else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Request for humidity data');
 	}
 }
 
