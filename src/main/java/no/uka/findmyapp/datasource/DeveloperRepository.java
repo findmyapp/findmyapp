@@ -57,7 +57,7 @@ public class DeveloperRepository {
 				"consumer_key, " +
 				"facebook_secret) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?);",
 				app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), developer_id, app.getCategory(),
-				app.getRanking(), app.getTimesDownloaded(), app.getFacebookAppID(), app.getThumbImage(), consumer_secret, consumer_key, app.getFacebookSecret());
+				app.getRanking(), app.getTimesDownloaded(), app.getFacebookAppID(), app.getThumbImage().toString(), consumer_secret, consumer_key, app.getFacebookSecret());
 	}
 	
 	public int updateApp(int developer_id, App app) {
