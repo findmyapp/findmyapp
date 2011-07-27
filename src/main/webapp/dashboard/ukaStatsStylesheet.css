@@ -42,14 +42,21 @@ h1 {
 }
 
 /*
-Title (uka logo)
+Header
 */
+#header {
+	position:absolute;
+	left: 350px;
+	width:40%;
+	text-align: center;
+}
+
 #findMyApp {
 	content: url(ukalogo.png), contents;
 	background-repeat: no-repeat;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 38px 0;
+	padding: 18px 0;
 	height:45px;
 }
 
@@ -57,31 +64,28 @@ Title (uka logo)
 Container for the main content section
 */
 #mainContent {
-	width: 100%;
-	height: 520px;	
+	width: inherit;
+	height: inherit;	
 }
 
 /*
 Container for left toolbar within mainContent
 */
 #left_aside {
-	-moz-border-radius: 11px;
-	-webkit-border-radius: 11px;
 	position: absolute;
-	top:160px;
-	left: 20px;
+	left: 0px;
 	background: #f3f3f3;
-	width: 250px;
-	height: 450px;
+	width: 20%;
+	height: inherit;
 }
 
 #left_aside section {
 	-moz-border-radius: 11px;
 	-webkit-border-radius: 11px;
 	background: #e0e0e0;
-	margin: 30px auto;
-	height:400px;
-	width: 210px;
+	margin: 10px auto;
+	height:95%;
+	width: 90%;
 }
 
 #room-heading {
@@ -108,7 +112,7 @@ Container for middle section within mainContent
 */
 #mcontent {
 	position: absolute;
-	top:130px;
+	top:91px;
 	margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -119,14 +123,14 @@ Container for middle section within mainContent
 
 #map-with-selection {
 	margin-left: 170px;
-	margin-bottom: 10px;
+	
 	width: 50%;
 }
 
 #room-info-div {
 	position: absolute;
 	width: 600px;
-	top:250px;
+	top:200px;
 	margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -136,7 +140,7 @@ Container for middle section within mainContent
 #event-info-div {
 	position: absolute;
 	width: 600px;
-	top:250px;
+	top:230px;
 	margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -154,12 +158,9 @@ Container for right section within mainContent
 */
 #right_aside {
 	position: absolute;
-	-moz-border-radius: 11px;
-	-webkit-border-radius: 11px;
-	top:160px;
-	right: 20px;
-	width: 250px;
-	height: 450px;
+	right: 0px;
+	width: 20%;
+	height: inherit;
 	background: #f3f3f3;
 }
 
@@ -167,9 +168,9 @@ Container for right section within mainContent
 	-moz-border-radius: 11px;
 	-webkit-border-radius: 11px;
 	background: #e0e0e0;
-	margin: 30px auto;
-	height:400px;
-	width: 210px;
+	margin: 10px auto;
+	height:95%;
+	width: 90%;
 }
 
 #temp_chart {
@@ -182,29 +183,27 @@ Footer thingies
 footer {
 	position: absolute;
 	left: 0px;
-	bottom: 1px;
+	bottom: 0px;
 	width: 100%;
-	height: 14px;
+	height: 0px;
 }
 
 #live_feed {
 	position: absolute;
-	width: 800px;
+	width: 60%;
 	height: 28px;
-	-moz-border-radius: 12px;
-	-webkit-border-radius: 12px;
-	
-	margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
+    bottom: 0px;
 }
 
 #back_button {
 	position: absolute;
-	left: 100px;
+	left: 80px;
 	width: 100px;
 	height: 100px;
-	bottom:1px;
+	bottom:10px;
 }
 
