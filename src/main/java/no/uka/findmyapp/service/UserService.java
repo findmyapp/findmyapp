@@ -187,6 +187,21 @@ public class UserService {
 		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
 		return users;
 	}
+	
+	/**
+	 * Retreives all of the dudes friends that have registred their Cashless card
+	 * 
+	 * @param userId Id of the user in local datastore
+	 * @return list of the dudes friends
+	 * @throws ConsumerException
+	 */
+	public List<User> getFriendsWithCashless(int userId) throws ConsumerException {
+		
+		List<String> friendIds = getFacebookIdOfFriends(userId);
+		List<User> users = data.getFacebookFriendsWithCashless( friendIds );
+		return users;
+		
+	}
 
 	/**
 	 * Generic method to extract a users friends based on its user id in the FMA data store.
