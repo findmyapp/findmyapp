@@ -297,4 +297,20 @@ public class UserService {
 		}
 		return friendsPositions;
 	}
+
+	public List<UkaEvent> getEvents(int userId, int tokenUserId) throws ConsumerException {
+		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
+		switch(userPrivacy.getPositionPrivacySetting()) {
+			case ANYONE:
+				return data.getEvents(userId);
+			case FRIENDS:
+				if(areFriends(userId, tokenUserId)) {
+					return data.getEvents(userId);
+				}
+			case ONLY_ME:
+				return null;
+			default:
+				return null;
+		}
+	}
 }
