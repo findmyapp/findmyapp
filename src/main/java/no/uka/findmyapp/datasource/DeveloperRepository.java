@@ -1,5 +1,8 @@
 package no.uka.findmyapp.datasource;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.mapper.AppRowMapper;
@@ -10,7 +13,13 @@ import no.uka.findmyapp.model.appstore.Developer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,24 +49,61 @@ public class DeveloperRepository {
 				new AppRowMapper(), developer_id);
 	}
 	
-	public int registerApp(int developer_id, App app, String consumer_key, String consumer_secret) {
-		return jdbcTemplate.update("INSERT INTO APPSTORE_APPLICATION " +
-				"(name, " +
-				"platform, " +
-				"description, " +
-				"market_identifier, " +
-				"appstore_developer_id, " +
-				"category, " +
-				"publish_date, " +
-				"ranking, " +
-				"times_downloaded, " +
-				"facebook_app_id, " +
-				"thumb_image, " +
-				"consumer_secret, " +
-				"consumer_key, " +
-				"facebook_secret) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?);",
-				app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), developer_id, app.getCategory(),
-				app.getRanking(), app.getTimesDownloaded(), app.getFacebookAppID(), app.getThumbImage().toString(), consumer_secret, consumer_key, app.getFacebookSecret());
+	public int registerApp(final int developer_id, final App app, final String consumer_key, final String consumer_secret) {
+		
+		try {
+			final String sql = "INSERT INTO APPSTORE_APPLICATION " +
+			"(name, " +
+			"platform, " +
+			"description, " +
+			"market_identifier, " +
+			"appstore_developer_id, " +
+			"category, " +
+			"publish_date, " +
+			"ranking, " +
+			"times_downloaded, " +
+			"facebook_app_id, " +
+			"thumb_image, " +
+			"consumer_secret, " +
+			"consumer_key, " +
+			"facebook_secret) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?)";
+			
+			
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			jdbcTemplate.update(
+			    new PreparedStatementCreator() {
+			        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+			            PreparedStatement ps =
+			                connection.prepareStatement(sql, new String[] {"custom_parameter_id"});
+			            ps.setString(1, app.getName());
+			            ps.setString(2, app.getPlatform());
+			            ps.setString(3, app.getDescription());
+			            ps.setString(4, app.getMarketID());
+			            ps.setInt(5, developer_id);
+			            ps.setString(6, app.getCategory());
+			            ps.setDouble(7, app.getRanking());
+			            ps.setInt(8, app.getTimesDownloaded());
+			            ps.setString(9, app.getFacebookAppID());
+			            ps.setString(10, app.getThumbImage().toString());
+			            ps.setString(11, consumer_secret);
+			            ps.setString(12, consumer_key);
+			            ps.setString(13, app.getFacebookSecret());
+			            return ps;
+			        }
+
+			    },
+			    keyHolder);
+			Number n = keyHolder.getKey();
+			return (Integer) n.intValue();
+		} catch (org.springframework.dao.DuplicateKeyException e) {
+			logger.error("DataIntegrityViolationException" + e);
+		} catch (org.springframework.dao.DataIntegrityViolationException e) {
+			logger.error("DataIntegrityViolationException " + e);
+		} catch (DataAccessException e) {
+			logger.error("DataAccessException" + e);
+			throw e;
+		}
+		return -1;
 	}
 	
 	public int updateApp(int developer_id, App app) {
