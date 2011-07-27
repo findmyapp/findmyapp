@@ -47,13 +47,13 @@ public class UserController {
 	@RequestMapping(value = "/me/friends", method = RequestMethod.GET)
 	public ModelAndView getRegisteredFacebookFriends(@RequestParam String token)
 			throws ConsumerException {
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView("json");
 		int userId = verifyToken(token);
 		List<User> users = service.getRegisteredFacebookFriends(userId);
 		mav.addObject("users", users);
 		return mav;
 	}
-
+	/*
 	@RequestMapping(value = "/{id}/events/{eventId}", method = RequestMethod.POST)
 	public ModelMap addEvent(@PathVariable("id") int userId,
 			@PathVariable("eventId") long eventId, ModelMap model) {
@@ -61,7 +61,27 @@ public class UserController {
 		model.addAttribute(addEvent);
 		return model;
 	}
-
+	*/
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/me/events/{eventId}", method = RequestMethod.POST)
+	public ModelAndView addEvent(@PathVariable long eventId, @RequestParam String token) {
+		int userId = verifyToken(token);
+		boolean eventAdded = service.addEvent(userId, eventId);
+		ModelAndView data = new ModelAndView("json");
+		data.addObject("success", eventAdded);
+		return data;
+	}
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/me/events/{eventId}", method = RequestMethod.DELETE)
+	public ModelAndView removeEvent(@PathVariable long eventId, @RequestParam String token) {
+		int userId = verifyToken(token);
+		boolean eventRemoved = service.removeEvent(userId, eventId);
+		ModelAndView data = new ModelAndView("json");
+		data.addObject("success", eventRemoved);
+		return data;
+	}
+	
+	
 	@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
 	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
 		List<UkaEvent> events = service.getEvents(userId);
