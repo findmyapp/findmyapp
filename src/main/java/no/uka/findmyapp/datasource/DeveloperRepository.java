@@ -58,15 +58,13 @@ public class DeveloperRepository {
 			"description, " +
 			"market_identifier, " +
 			"appstore_developer_id, " +
-			"category, " +
 			"publish_date, " +
 			"ranking, " +
-			"times_downloaded, " +
 			"facebook_app_id, " +
 			"thumb_image, " +
 			"consumer_secret, " +
 			"consumer_key, " +
-			"facebook_secret) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?)";
+			"facebook_secret) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)";
 			
 			
 			KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -80,9 +78,6 @@ public class DeveloperRepository {
 			            ps.setString(3, app.getDescription());
 			            ps.setString(4, app.getMarketID());
 			            ps.setInt(5, developer_id);
-			            ps.setString(6, app.getCategory());
-			            ps.setDouble(7, app.getRanking());
-			            ps.setInt(8, app.getTimesDownloaded());
 			            ps.setString(9, app.getFacebookAppID());
 			            ps.setString(10, app.getThumbImage().toString());
 			            ps.setString(11, consumer_secret);
