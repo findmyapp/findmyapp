@@ -97,7 +97,6 @@ public class LocationController {
 		return new ModelAndView("json", "users_at_location", users);
 	}
 	
-	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/{id}/users/count", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = int.class)
 	public ModelAndView getUserCountAtLocation(

@@ -46,8 +46,8 @@ Header
 */
 #header {
 	position:absolute;
-	left: 350px;
-	width:40%;
+	left: 450px;
+	width:30%;
 	text-align: center;
 }
 
@@ -177,6 +177,21 @@ Container for right section within mainContent
 	margin-top:10px;
 	height:100%;
 	width: 95%;	
+}
+#people_counter_div {
+	width:100px;
+	height: 150px;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+#people_counter_paragraph {
+	text-align:center;
+	font-size:200%;
+}
+
+#people_icon {
+	margin-top:20px;
 }
 
 #temp_chart {
