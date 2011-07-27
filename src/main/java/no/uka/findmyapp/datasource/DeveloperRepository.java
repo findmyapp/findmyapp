@@ -59,7 +59,6 @@ public class DeveloperRepository {
 			"market_identifier, " +
 			"appstore_developer_id, " +
 			"publish_date, " +
-			"ranking, " +
 			"facebook_app_id, " +
 			"thumb_image, " +
 			"consumer_secret, " +
@@ -78,11 +77,11 @@ public class DeveloperRepository {
 			            ps.setString(3, app.getDescription());
 			            ps.setString(4, app.getMarketID());
 			            ps.setInt(5, developer_id);
-			            ps.setString(9, app.getFacebookAppID());
-			            ps.setString(10, app.getThumbImage().toString());
-			            ps.setString(11, consumer_secret);
-			            ps.setString(12, consumer_key);
-			            ps.setString(13, app.getFacebookSecret());
+			            ps.setString(6, app.getFacebookAppID());
+			            ps.setString(7, app.getThumbImage().toString());
+			            ps.setString(8, consumer_secret);
+			            ps.setString(9, consumer_key);
+			            ps.setString(10, app.getFacebookSecret());
 			            return ps;
 			        }
 
