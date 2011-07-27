@@ -53,7 +53,7 @@ public class AuthenticationService {
 						+ facebookId);
 
 				String facebookName;
-				facebookName = profile.getName();
+				facebookName = profile.getFirstName() + profile.getLastName().substring(0, 1).toUpperCase();
 				userRepo.addUserWithFacebookId(facebookId, facebookName);
 			} else {
 				logger.debug("User with userId " + userId + " found.");
