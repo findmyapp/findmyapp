@@ -6,10 +6,10 @@ import java.util.List;
 public class LocationStatus {
 	
 	private	List<String> comments;
-	private float funFactor;
-	private float danceFactor;
-	private float flirtFactor;
-	private float chatFactor;
+	private float fun_factor;
+	private float dance_factor;
+	private float flirt_factor;
+	private float chat_factor;
 	private float noise;
 	private float temp;
 	private float hum;
@@ -17,10 +17,10 @@ public class LocationStatus {
 	private float headCount;
 	
 	public LocationStatus(){//Setting default values upon construction
-		this.funFactor = -1;
-		this.danceFactor = -1;
-		this.flirtFactor = -1;
-		this.chatFactor = -1;
+		this.fun_factor = -1;
+		this.dance_factor = -1;
+		this.flirt_factor = -1;
+		this.chat_factor = -1;
 		this.headCount = -1;
 		this.noise = -1;
 		this.temp = -1;
@@ -41,29 +41,29 @@ public class LocationStatus {
 		
 	}
 	public void setFunFactor(float ff){
-		this.funFactor = ff;
+		this.fun_factor = ff;
 	}
 	
 	public float getFunFactor (){
-		return this.funFactor;
+		return this.fun_factor;
 	}
 	public void setDanceFactor(float df){
-		this.danceFactor = df;
+		this.dance_factor = df;
 	}
 	public float getDanceFactor (){
-		return this.danceFactor;
+		return this.dance_factor;
 	}
 	public void setFlirtFactor(float ff){
-		this.flirtFactor = ff;
+		this.flirt_factor = ff;
 	}
 	public float getFlirtFactor (){
-		return this.flirtFactor;
+		return this.flirt_factor;
 	}
 	public void setChatFactor(float cf){
-		this.chatFactor = cf;
+		this.chat_factor = cf;
 	}
 	public float getChatFactor (){
-		return this.chatFactor;
+		return this.chat_factor;
 	}
 	public void setHeadCount(float hc){
 		this.headCount = hc;
