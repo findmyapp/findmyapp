@@ -71,8 +71,15 @@ public class DeveloperRepository {
 		"WHERE appstore_developer_id = ? " +
 		"AND appstore_application_id = ?";
 		logger.info("running sql : " + sql);
-		return jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
-				app.getFacebookAppID(), app.getThumbImage(), developer_id, app.getId());
+		int res = 0;
+		try {
+
+			res = jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
+					app.getFacebookAppID(), app.getThumbImage(), developer_id, app.getId());
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+		return res;
 	}
 	
 	public Developer getDeveloperForConsumerKey(String consumerKey) {
