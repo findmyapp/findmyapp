@@ -2,48 +2,33 @@ package no.uka.findmyapp.datasource;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
-import no.uka.findmyapp.datasource.mapper.CustomParameterRowMapper;
 import no.uka.findmyapp.datasource.mapper.FactRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
-import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
 import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
 import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
-import no.uka.findmyapp.datasource.mapper.UserLocationRowMapper;
-import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
-import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Fact;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationCount;
-import no.uka.findmyapp.model.LocationReport;
-import no.uka.findmyapp.model.ManageParameterRespons;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
 import no.uka.findmyapp.model.User;
-import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -137,37 +122,6 @@ public class LocationRepository {
 		List<Location> locations = jdbcTemplate.query(
 				"SELECT * FROM POSITION_LOCATION", new LocationRowMapper());
 		return locations;
-	}
-
-	public Location getLocationOfFriend(int friendId) {
-		Location location = jdbcTemplate
-				.queryForObject(
-						"SELECT l.position_location_id, l.name FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
-								+ "WHERE l.position_location_id = up.position_location_id AND up.user_id = ?",
-						new LocationRowMapper(), friendId);
-		return location;
-	}
-
-	public List<UserPosition> getLocationOfAllUsers() {
-		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION",
-				new UserPositionRowMapper());
-	}
-
-	// Returns a hashmap of the positions of the friends of the user, with
-	// userId as key and locationId as value
-	public Map<Integer, Integer> getLocationOfFriends(int userId,
-			List<String> friendIds) {
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				dataSource);
-		Map<Integer, Integer> userLocations = new HashMap<Integer, Integer>();
-		namedParameterJdbcTemplate
-				.query("SELECT DISTINCT u.user_id, pl.position_location_id "
-						+ "FROM POSITION_USER_POSITION pup, USER u, FRIENDS f, POSITION_LOCATION pl "
-						+ "WHERE pup.position_location_id = pl.position_location_id "
-						+ "AND u.user_id = pup.user_id AND pup.user_id IN (:ids)",
-						Collections.singletonMap("ids", friendIds),
-						new UserLocationRowMapper(userLocations));
-		return userLocations;
 	}
 
 	/*
@@ -291,31 +245,6 @@ public class LocationRepository {
 			return true;
 		} catch (Exception e) {
 			logger.error("Could not register given sample: " + e);
-			return false;
-		}
-	}
-
-	public boolean registerUserLocation(int userId, int locationId) {
-		try {
-			final int fUserId = userId;
-			final int fLocationId = locationId;
-			final Timestamp now = new Timestamp(new Date().getTime());
-			jdbcTemplate
-					.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) "
-							+ "ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
-							new PreparedStatementSetter() {
-								public void setValues(PreparedStatement ps)
-										throws SQLException {
-									ps.setInt(1, fUserId);
-									ps.setInt(2, fLocationId);
-									ps.setTimestamp(3, now);
-									ps.setInt(4, fLocationId);
-									ps.setTimestamp(5, now);
-								}
-							});
-			return true;
-		} catch (Exception e) {
-			logger.error("Could not register user position: " + e);
 			return false;
 		}
 	}

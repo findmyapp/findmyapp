@@ -1,7 +1,6 @@
 package no.uka.findmyapp.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import no.uka.findmyapp.controller.auth.TokenException;
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
@@ -45,7 +44,7 @@ public class UserController {
 
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/friends", method = RequestMethod.GET)
-	public ModelAndView getRegisteredFacebookFriends(@RequestParam String token)
+	public ModelAndView getRegisteredFacebookFriends(@RequestParam(required = true) String token)
 			throws ConsumerException {
 		ModelAndView mav = new ModelAndView("json");
 		int userId = verifyToken(token);
@@ -73,7 +72,7 @@ public class UserController {
 	}
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/events/{eventId}", method = RequestMethod.DELETE)
-	public ModelAndView removeEvent(@PathVariable long eventId, @RequestParam String token) {
+	public ModelAndView removeEvent(@PathVariable long eventId, @RequestParam(required = true) String token) {
 		int userId = verifyToken(token);
 		boolean eventRemoved = service.removeEvent(userId, eventId);
 		ModelAndView data = new ModelAndView("json");
@@ -82,20 +81,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/me/events", method = RequestMethod.GET)
-	public ModelMap getEvents(@RequestParam String token, ModelMap model) throws ConsumerException {
+	public ModelMap getEvents(@RequestParam(required = true) String token, ModelMap model) throws ConsumerException {
 		int userId = verifyToken(token);
 		List<UkaEvent> events = service.getEvents(userId);
 		model.addAttribute(events);
 		return model;
-	}
-	
-	@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
-	public ModelMap getEvents(@PathVariable("id") int userId, ModelMap model) {
-		List<UkaEvent> events = service.getEvents(userId);
-		model.addAttribute(events);
-		return model;
-	}
-	
+	}	
 
 	/**
 	 * POST method where it is possible to change privacy settings Privacy
@@ -151,11 +142,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/me/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = String.class, isList = true)
-	public ModelAndView getPrivacy(
-			@RequestParam(required = true) String token)
-			throws ConsumerException {
-
-
+	public ModelAndView getPrivacy(@RequestParam(required = true) String token)throws ConsumerException {
 		// verify if the access token is valid, if not, throw exception
 		int userId = verifyToken(token);
 
@@ -165,13 +152,32 @@ public class UserController {
 		return new ModelAndView("json", "privacy", privacy);
 	}
 	
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/me/location/{locationId}", method = RequestMethod.PUT)
+	@ServiceModelMapping(returnType = boolean.class)
+	public ModelAndView registerUserLocation(
+			@PathVariable int locationId,
+			@RequestParam(required = true) String token) throws TokenException {
+		int tokenUserId = verifyToken(token);
+		boolean regUserPos = false;
+		if(tokenUserId != -1) {
+			regUserPos = service.registerUserLocation(tokenUserId, locationId);
+			logger.debug("Registering user postition for user " + tokenUserId);
+			regUserPos = true;
+		}
+		else {
+			throw new TokenException("Token and supplied user id did not match");
+		}
+		return new ModelAndView("json", "regUserPos", regUserPos);
+	}
+	
 
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{id}/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getUserLocation(
 			@PathVariable("id") int userId,
-			@RequestParam String token) throws TokenException, ConsumerException {
+			@RequestParam(required = true) String token) throws TokenException, ConsumerException {
 		int tokenUserId = verifyToken(token);
 		Location location = service.getUserLocation(userId , tokenUserId);
 		return new ModelAndView("json", "location", location);
@@ -181,7 +187,7 @@ public class UserController {
 	@RequestMapping(value = "/all/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getAllUserLocations(
-			@RequestParam String token) {
+			@RequestParam(required = true) String token) {
 		verifyToken(token);
 		List<UserPosition> pos = service.getLocationOfAllUsers();
 		return new ModelAndView("json", "user_position", pos);
@@ -191,7 +197,7 @@ public class UserController {
 	@RequestMapping(value = "me/friends/all/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getLocationOfFriends(@PathVariable int userId,
-			@RequestParam String token) throws ConsumerException, TokenException {
+			@RequestParam(required = true) String token) throws ConsumerException, TokenException {
 		int tokenUserId = verifyToken(token);
 		List<UserPosition> friendsPositions;
 		if (tokenUserId == userId) {
