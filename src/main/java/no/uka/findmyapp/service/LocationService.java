@@ -39,8 +39,6 @@ public class LocationService {
 	private LocationRepository data;
 	@Autowired
 	private SensorRepository sensor;
-	@Autowired
-	private UserService userService;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UkaProgramRepository.class);

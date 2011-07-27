@@ -41,12 +41,9 @@ public class FacebookService {
 		try {
 			logger.debug("Fetching Facebook consumer token for consumer with id "
 					+ consumerDetails.getConsumerId());
-
-			response = rest.postForObject(
-					"https://graph.facebook.com/oauth/access_token?"
-							+ "client_id=" + facebookId + "&client_secret="
-							+ facebookSecret + "&type=client_cred", null,
-					String.class);
+			response = rest.getForObject("https://graph.facebook.com/oauth/access_token?"
+					+ "client_id=" + facebookId + "&client_secret="
+					+ facebookSecret + "&type=client_cred", String.class);
 
 		} catch (RestClientException e) {
 			logger.error("Exception while trying to connect to Facebook and fetching token");

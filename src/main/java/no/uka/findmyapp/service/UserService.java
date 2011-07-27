@@ -2,6 +2,7 @@ package no.uka.findmyapp.service;
 
 //import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +20,6 @@ import no.uka.findmyapp.service.auth.ConsumerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -60,8 +58,12 @@ public class UserService {
 		return data.getUserPrivacyForUserId(userId);
 	}
 
-	public boolean areFriends(int userId1, int userId2) {
-		return data.areFriends(userId1, userId2);
+	public boolean areFriends(int userId1, int userId2) throws ConsumerException {
+		List<User> friends = getRegisteredFacebookFriends(userId1);
+		for (User friend : friends) {
+			if (friend.getFacebookUserId() == userId2) return true;
+		}
+		return false;
 	}
 
 	public boolean addEvent(int userId, long eventId) {
@@ -201,8 +203,7 @@ public class UserService {
 		return friendIds;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
+	public int findUserPrivacyId(int userId) {
 		return data.findUserPrivacyId(userId);
 	}
 
@@ -238,23 +239,57 @@ public class UserService {
 		return facebook.getConsumerFacebookToken(auth.getConsumerDetails());
 	}
 	
-	//TODO
-	public Location getUserLocation(int userId) {
-		return null;
+	/**
+	 * Retreives the most recent registered location of a user.
+	 * Only returns the position if the asking user has permission.
+	 * 
+	 * @param userId 
+	 * 				Id of the user you want the location of
+	 * @param tokenUserId
+	 * 				Id of the user who is asking for the location
+	 * @return The location of the user if the asking user has permission to
+	 * @throws ConsumerException
+	 */
+	public Location getUserLocation(int userId, int tokenUserId) throws ConsumerException {
+		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
+		switch(userPrivacy.getPositionPrivacySetting()) {
+			case ANYONE:
+				return data.getUserLocation(userId);
+			case FRIENDS:
+				if(areFriends(userId, tokenUserId)) {
+					return data.getUserLocation(userId);
+				}
+			case ONLY_ME:
+				return null;
+			default:
+				return null;
+		}
 	}
 
-	//TODO
+	/**
+	 * Retreives a list of all user positions.
+	 * 
+	 * @return A list of all userpositions found in database
+	 */
 	public List<UserPosition> getLocationOfAllUsers() {
-		return null;
-	}
-	
-	//TODO
-	public Location getLocationOfFriend(int friendId, int userId) {
-		return null;
+		return data.getLocationOfAllUsers();
 	}
 
-	//TODO
-	public Map<Integer, Integer> getLocationOfFriends(int userId) throws ConsumerException {
-		return null;
+	/**
+	 * Retreives a list of the user positions of users facebook friends.
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws ConsumerException
+	 */
+	public List<UserPosition> getLocationOfFriends(int userId) throws ConsumerException {
+		List<UserPosition> friendsPositions = new ArrayList<UserPosition>();
+		List<UserPosition> allUserPositions = getLocationOfAllUsers();
+		for(UserPosition userposition : allUserPositions) {
+			if(areFriends(userposition.getUserId(), userId)) {
+				friendsPositions.add(userposition);
+			}
+		}
+		return friendsPositions;
 	}
 }
