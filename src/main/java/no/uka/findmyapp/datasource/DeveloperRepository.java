@@ -100,7 +100,7 @@ public class DeveloperRepository {
 		return -1;
 	}
 	
-	public int updateApp(int developer_id, App app) {
+	public int updateApp(int developerId, App app) {
 		String sql = "UPDATE APPSTORE_APPLICATION SET " +
 		"name = ?, " +
 		"platform = ?, " +
@@ -114,7 +114,24 @@ public class DeveloperRepository {
 		int res = 0;
 		try {
 			res = jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
-					app.getFacebookAppID(), app.getThumbImage().toString(), developer_id, app.getId());
+					app.getFacebookAppID(), app.getThumbImage().toString(), developerId, app.getId());
+			
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+		return res;
+	}
+	
+	public int updateAppActivation(int developerId, int appId, boolean activated) {
+
+		String sql = "UPDATE APPSTORE_APPLICATION SET " +
+		"activated = ?, " +
+		"WHERE appstore_developer_id = ? " +
+		"AND appstore_application_id = ?";
+		logger.info("running sql : " + sql);
+		int res = 0;
+		try {
+			res = jdbcTemplate.update(sql, activated, developerId, appId);
 			
 		} catch (Exception e) {
 			logger.info(e.getMessage());

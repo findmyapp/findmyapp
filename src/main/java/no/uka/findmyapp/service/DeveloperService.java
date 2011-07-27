@@ -61,6 +61,10 @@ public class DeveloperService {
 		return developerRepository.updateApp(developer_id, app);
 	}
 	
+	public int updateAppActivation(int developerId, int appId, boolean activated) {
+		return developerRepository.updateAppActivation(developerId, appId, activated);
+	}
+	
 	//TODO FIX GENERATION OF KEY/SECRET
 	private String generateConsumerKey() {
 		return "key" + NumberUtils.generateRandomInteger(1000000, 9999999);
