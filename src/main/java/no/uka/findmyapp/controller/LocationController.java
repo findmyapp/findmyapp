@@ -147,6 +147,25 @@ public class LocationController {
 		Fact fact = service.getRandomFact(locationId);
 		return new ModelAndView("json", "random_fact", fact);
 	}
+	
+	
+	/*
+	 * SCREEN
+	 */
+	
+	@RequestMapping(value = "/screen", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = Fact.class)
+	public ModelAndView getBartenderString() {
+		String string = service.getBartenderString();
+		return new ModelAndView("json", "bartender_string", string);
+	}
+	
+	@RequestMapping(value = "/screen/{string}", method = RequestMethod.POST)
+	@ServiceModelMapping(returnType = Fact.class)
+	public ModelAndView postBartenderString(@PathVariable("string") String string) {
+		boolean post = service.setBartenderString(string);
+		return new ModelAndView("json", "post_string", post);
+	}
 
 	@SuppressWarnings("unused")
 	@ExceptionHandler(TokenException.class)
