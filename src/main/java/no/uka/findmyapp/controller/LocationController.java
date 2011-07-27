@@ -58,8 +58,6 @@ public class LocationController {
 	private LocationService service;
 	@Autowired
 	private AuthenticationService auth;
-	@Autowired
-	private DeveloperService dev;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationController.class);
