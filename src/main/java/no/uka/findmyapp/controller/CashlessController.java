@@ -48,8 +48,6 @@ public class CashlessController {
 		int userId = auth.verify( token );
 		logger.debug("UserId: " + userId);
 		
-		//long cardNo = 1628620850; // This must come from user object
-		
 		CashlessCard card;
 		if (userId != -1) {
 			card = cashlessService.getCardTransactions(userId);
@@ -74,7 +72,7 @@ public class CashlessController {
 		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
 		int userId = auth.verify( token );
 		
-		cardNo = 1628620850;
+		//cardNo = 1628620850;
 		
 		boolean success = false;
 		
