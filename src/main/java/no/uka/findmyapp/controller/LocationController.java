@@ -88,7 +88,7 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN") //TODO dette maa fikses.
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = User.class)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {

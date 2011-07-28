@@ -118,9 +118,17 @@ public class LocationRepository {
 				.query("SELECT l.string_id, COUNT(up.position_location_id) AS count "
 						+ "FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
 						+ "WHERE l.position_location_id = up.position_location_id "
-						+ "AND TIMESTAMPDIFF(HOUR, up.registered_time, ?) < 2 "		
+						+ "AND TIMESTAMPDIFF(HOUR, up.registered_time, NOW()) < 2 "		
 						+ "GROUP BY l.string_id",
 						new LocationCountRowMapper());
+		//Christian and Haakon changed this so it dint give 500-error
+//		List<LocationCount> locationCounts = jdbcTemplate
+//		.query("SELECT l.string_id, COUNT(up.position_location_id) AS count "
+//				+ "FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
+//				+ "WHERE l.position_location_id = up.position_location_id "
+//				+ "AND TIMESTAMPDIFF(HOUR, up.registered_time, ?) < 2 "		
+//				+ "GROUP BY l.string_id",
+//				new LocationCountRowMapper());
 		return locationCounts;
 	}
 
