@@ -51,7 +51,9 @@ public class CashlessRepository {
 	}
 	
 	public boolean updateCardNumber(int userId, long cardNo){
-		jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no) VALUES( ? , ? )",
+		// Set old cards to be invalid
+		jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
+		jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no, in_use) VALUES( ? , ?, 1 )",
 				userId, cardNo);
 		
 		return true;
@@ -59,7 +61,7 @@ public class CashlessRepository {
 	
 	public long getCardNumberFromUserId(int userId){
 		try{
-			return jdbcTemplate.queryForLong("SELECT card_no FROM USER_CASHLESS WHERE user_id=?", userId);
+			return jdbcTemplate.queryForLong("SELECT card_no FROM USER_CASHLESS WHERE in_use=1 AND user_id=?", userId);
 		}
 		catch (Exception e) {
 			return -1;
