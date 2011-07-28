@@ -80,7 +80,7 @@ public class CustomParameterController {
 			@RequestParam(required = false, defaultValue = "-1") int noe,
 			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam(required = false) String parname) {
+			@RequestParam(required = false) String parname){
 		try {
 			
 			List<LocationReport> reports = service.getReports(locationId, action, noe, from, to, parname);
@@ -92,6 +92,9 @@ public class CustomParameterController {
 			return null;
 		}
 	}
+	/*
+	 * -------------------------------ParameterManagement-------------------------------------------
+	 */
 	
 	@RequestMapping(value = "/parameters", method = RequestMethod.GET)
 	public ModelAndView listParameters() {

@@ -59,94 +59,7 @@ public class CustomParameterService {
 
 	}
 
-	public Location getAllData(int locationId) {// Creates and returns a
-												// location object with average
-												// of all the latest data on the
-												// location
-		Location locationOfInterest = locationData.getLocation(locationId);
-		// int time = -10;
-		// Calendar cal = Calendar.getInstance();
-		// cal.add(Calendar.MINUTE,time);
-		// Date tenminago = cal.getTime();
 
-		// Fetching data:
-		List<LocationReport> last10usercomments = getReports(locationId, null,
-				10, null, null, "comment");
-		List<LocationReport> averagefun = getReports(locationId, "average", 10,
-				null, null, "fun_factor");
-		List<LocationReport> averagechat = getReports(locationId, "average",
-				10, null, null, "chat_factor");
-		List<LocationReport> averagedance = getReports(locationId, "average",
-				10, null, null, "dance_factor");
-		List<LocationReport> averageflirt = getReports(locationId, "average",
-				10, null, null, "flirt_factor");
-
-		List<Noise> noiselist = sensor.getLatestNoiseData(locationId, 1);
-		List<Temperature> templist = sensor.getLatestTemperatureData(
-				locationId, 1);
-		List<Humidity> humlist = sensor.getLatestHumidityData(locationId, 1);
-		Noise noise = null;
-		Humidity hum = null;
-		Temperature temp = null;
-		int beerTappedOnLocation = sensor.getBeertapSum(locationId);
-		int headcount = locationData.getUserCountAtLocation(locationId);
-
-		if (!noiselist.isEmpty()) {
-			noise = noiselist.get(0);
-		}
-		if (!humlist.isEmpty()) {
-			hum = humlist.get(0);
-		}
-		if (!templist.isEmpty()) {
-			temp = templist.get(0);
-		}
-
-		// Creating location status from all data
-		LocationStatus statusAtLocation = new LocationStatus();
-		if (beerTappedOnLocation != -1) {
-			statusAtLocation.setBeerTap(beerTappedOnLocation);
-		}
-		if (noise != null) {
-			statusAtLocation.setNoise((float) noise.getAverage());
-		}
-		if (hum != null) {
-			statusAtLocation.setHumidity(hum.getValue());
-		}
-		if (temp != null) {
-			statusAtLocation.setTemperature(temp.getValue());
-		}
-		if (headcount != -1) {
-			statusAtLocation.setHeadCount(headcount);
-		}
-		if (averagechat != null) {
-			statusAtLocation.setChatFactor(averagechat.get(0)
-					.getParameterNumberValue());
-		}
-		if (averageflirt != null) {
-			statusAtLocation.setFlirtFactor(averageflirt.get(0)
-					.getParameterNumberValue());
-		}
-		if (averagefun != null) {
-			statusAtLocation.setFunFactor(averagefun.get(0)
-					.getParameterNumberValue());
-		}
-		if (averagedance != null) {
-			statusAtLocation.setDanceFactor(averagedance.get(0)
-					.getParameterNumberValue());
-		}
-		if (last10usercomments != null) {
-			Iterator<LocationReport> comments = last10usercomments.iterator();
-			while (comments.hasNext()) {
-				statusAtLocation.addComment(comments.next()
-						.getParameterTextValue());
-			}
-		}
-
-		// Fill location with status
-		//locationOfInterest.setLocationStatus(statusAtLocation);
-
-		return locationOfInterest;
-	}
 
 	public List<LocationReport> getReports(int locationId, String action,
 			int numberOfelements, Date from, Date to, String parName)
@@ -154,7 +67,7 @@ public class CustomParameterService {
 
 		List<LocationReport> reportedData = new ArrayList<LocationReport>();
 		logger.info("data:" + locationId + "," + numberOfelements);
-
+		
 		if (numberOfelements > 0 && from == null && to == null) {
 			// Fetch latest reports with paraName x
 			logger.info("got in!");
