@@ -41,13 +41,23 @@ public class CashlessController {
 	 */
 	@RequestMapping(value = "/cashless/me", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=CashlessCard.class)
-	public ModelAndView getMyCashless() { 
+	public ModelAndView getMyCashless(
+			@RequestParam(required = true) String token) throws ConsumerException{ 
 		
-		long cardNo = 1628620850; // This must come from user object
+		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
+		int userId = auth.verify( token );
+		logger.debug("UserId: " + userId);
 		
-		CashlessCard card = cashlessService.getCardTransactions(cardNo);
+		//long cardNo = 1628620850; // This must come from user object
 		
-		return new ModelAndView("json", "program", card);
+		CashlessCard card;
+		if (userId != -1) {
+			card = cashlessService.getCardTransactions(userId);
+		} else {
+			throw new InvalidTokenException("Token not valid");
+		}
+		
+		return new ModelAndView("json", "card", card);
 	}
 	
 	/**
@@ -57,16 +67,24 @@ public class CashlessController {
 	 */
 	@RequestMapping(value = "/cashless/me/update", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=CashlessCard.class)
-	public ModelAndView updateMyCashless() { 
+	public ModelAndView updateMyCashless(
+			@RequestParam(required = true) long cardNo,
+			@RequestParam(required = true) String token) throws ConsumerException{ 
 		
-		int userId = 1;
-		long cardNo = 1628620850; // This must come from user object
+		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
+		int userId = auth.verify( token );
 		
-		if(cashlessService.updateCardNumber(userId, cardNo)) {
-			
+		cardNo = 1628620850;
+		
+		boolean success = false;
+		
+		if (userId != -1) {
+			success = cashlessService.updateCardNumber(userId, cardNo);
+		} else {
+			throw new InvalidTokenException("Token not valid");
 		}
 		
-		return new ModelAndView("json", "program", "hei");
+		return new ModelAndView("json", "status", success);
 	}
 	
 	@RequestMapping(value = "/cashless/friends", method = RequestMethod.GET)
@@ -74,7 +92,7 @@ public class CashlessController {
 	public ModelAndView getFriendsWithCashless(
 				@RequestParam(required = true) String token) 
 				throws ConsumerException{
-		
+			
 			ModelAndView mav = new ModelAndView("json");
 			int userId = auth.verify(token);
 			List<User> friends;

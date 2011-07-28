@@ -56,4 +56,13 @@ public class CashlessRepository {
 		
 		return true;
 	}
+	
+	public long getCardNumberFromUserId(int userId){
+		try{
+			return jdbcTemplate.queryForLong("SELECT card_no FROM USER_CASHLESS WHERE user_id=?", userId);
+		}
+		catch (Exception e) {
+			return -1;
+		}
+	}
 }
