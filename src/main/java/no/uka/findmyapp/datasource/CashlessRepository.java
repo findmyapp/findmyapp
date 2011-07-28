@@ -81,7 +81,7 @@ public class CashlessRepository {
 	
 	public int getCardBalance(long cardNo){
 		try{
-			return mssqlJdbcTemplate.queryForInt("SELECT EventCardBalance FROM Invoice WHERE EventCardSerialNo = ? ORDER BY [Invoice Date] DESC", cardNo);
+			return mssqlJdbcTemplate.queryForInt("SELECT TOP 1 EventCardBalance FROM Invoice WHERE EventCardSerialNo = ? ORDER BY [Invoice Date] DESC", cardNo);
 		}
 		catch (Exception e) {
 			return 0;
