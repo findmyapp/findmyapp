@@ -4,6 +4,7 @@ import java.util.List;
 
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.DeveloperService;
 
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,9 +61,16 @@ public class DeveloperController {
 
 	@RequestMapping(value = "/{developer_id}/apps", method = RequestMethod.GET)
 	public ModelAndView getAppsFromDeveloperId(@PathVariable int developer_id) {
-		List<App> list =  service.getAppsFromDeveloperId(developer_id);
+		List<AppDetailed> list =  service.getAppsFromDeveloperId(developer_id);
 		return new ModelAndView("json", "list", list);
 	}
+
+	@RequestMapping(value = "/{developer_id}/apps/{appId}", method = RequestMethod.GET)
+	public ModelAndView getDetailedApp(@PathVariable int developerId, @PathVariable int appId) {
+		AppDetailed app =  service.getDetailedApp(developerId, appId);
+		return new ModelAndView("json", "app", app);
+	}
+	
 
 	@RequestMapping(value = "/{developer_id}/apps/add", method = RequestMethod.PUT)
 	public ModelAndView registerApp(@PathVariable int developer_id, @RequestBody App app) {
@@ -71,8 +78,7 @@ public class DeveloperController {
 		int result = service.registerApp(developer_id, app);
 		return new ModelAndView("json", "result", result);
 	}
-	
-	
+
 	@RequestMapping(value = "/{developer_id}/apps/{appId}/update", method = RequestMethod.POST)
 	public ModelAndView updateApp(@PathVariable int developer_id, @PathVariable int appId, @RequestBody App app) {
 		
@@ -88,7 +94,6 @@ public class DeveloperController {
 		int result = service.updateAppActivation(developer_id, appId, activated);
 		return new ModelAndView("json", "result", result);
 	}
-	
 	
 	@RequestMapping(value = "/demo", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody Developer developer) {

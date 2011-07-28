@@ -6,23 +6,23 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 public class App {
-	private String developerName;
-	private String name;
-	private int id;
-	private String marketID;
-	private String platform;
-	private String description;
-	private String facebookAppID;
-	private String facebookSecret; //
-	private String developerID;
-	private URI thumbImage;
-	private List<URI> imageList;
-	private DateTime publishDate;
-	private int timesDownloaded;
-	private double ranking;
-	private String category;
-	private boolean removed;
-	private boolean activated;
+	protected String developerName;
+	protected String name;
+	protected int id;
+	protected String marketID;
+	protected String platform;
+	protected String description;
+	protected String facebookAppID;
+	protected String facebookSecret; //
+	protected String developerID;
+	protected URI thumbImage;
+	protected List<URI> imageList;
+	protected DateTime publishDate;
+	protected int timesDownloaded;
+	protected double ranking;
+	protected String category;
+	protected boolean removed;
+	protected boolean activated;
 	
 	
 	@Override

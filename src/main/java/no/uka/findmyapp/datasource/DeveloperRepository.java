@@ -5,17 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import no.uka.findmyapp.datasource.mapper.AppRowMapper;
+import no.uka.findmyapp.datasource.mapper.AppDetailedRowMapper;
 import no.uka.findmyapp.datasource.mapper.DeveloperRowMapper;
 import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.Developer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,9 +43,14 @@ public class DeveloperRepository {
 				developer.getFullName(), developer.getEmail(), developer.getWpId(), developer.getUserId());
 	}
 
-	public List<App> getAppsFromDeveloperId(int developer_id) {
+	public List<AppDetailed> getAppsFromDeveloperId(int developer_id) {
 		return jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_developer_id = ?",
-				new AppRowMapper(), developer_id);
+				new AppDetailedRowMapper(), developer_id);
+	}
+	
+	public AppDetailed getDetailedApp(int developerId, int appId) {
+		return jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION WHERE appstore_developer_id = ? AND appstore_application_id = ?",
+				new AppDetailedRowMapper(), developerId, appId);
 	}
 	
 	public int registerApp(final int developer_id, final App app, final String consumer_key, final String consumer_secret) {
