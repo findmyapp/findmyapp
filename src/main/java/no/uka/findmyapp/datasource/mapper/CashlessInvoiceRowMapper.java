@@ -13,8 +13,9 @@ public class CashlessInvoiceRowMapper implements RowMapper<CashlessInvoice> {
 	public CashlessInvoice mapRow(ResultSet rs, int arg1) throws SQLException {
 		CashlessInvoice invoice = new CashlessInvoice();
 		invoice.setInvoiceNo(rs.getString(1)); // [Invoice No]
-		invoice.setLocation(rs.getString("UserName")); // This must be changed
+		invoice.setLocation(rs.getString("Location")); // This must be changed
 		invoice.setSaleTime(rs.getTimestamp(6));
+		invoice.setAmount(rs.getInt("Amount"));
 		return invoice;
 	}
 

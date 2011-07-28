@@ -18,6 +18,7 @@ import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.FacesWebRequest;
 
 @Service
 public class AuthenticationService {
@@ -54,7 +55,7 @@ public class AuthenticationService {
 
 				String facebookName;
 				facebookName = profile.getFirstName() + profile.getLastName().substring(0, 1).toUpperCase();
-				userRepo.addUserWithFacebookId(facebookId, facebookName);
+				userId = userRepo.addUserWithFacebookId(facebookId, facebookName);
 			} else {
 				logger.debug("User with userId " + userId + " found.");
 			}
@@ -74,7 +75,7 @@ public class AuthenticationService {
 		logger.debug("Hash generated: " + hash);
 		String token = hash + base;
 
-		logger.debug("Updating user profile.");
+		logger.debug("Updating user profile for user " + userId);
 		int updated = userRepo.updateUserTokenIssueTime(tokenIssued, userId);
 		if (updated != 1)
 			token = null;
