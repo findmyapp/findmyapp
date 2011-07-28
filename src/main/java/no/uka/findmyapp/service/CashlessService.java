@@ -21,9 +21,18 @@ public class CashlessService {
 	private static final Logger logger = LoggerFactory
 	.getLogger(CashlessService.class);
 	
-	public CashlessCard getCardTransactions(long cardNo) {
-		logger.debug("Entering CashlessService");
-		return data.getCardTransactions(cardNo);
+	public CashlessCard getCardTransactions(int userId) {
+		
+		long cardNo = getCardNumberFromUserId(userId);
+		
+		if(cardNo != -1)
+			return data.getCardTransactions( cardNo );
+		else
+			return null;
+	}
+	
+	public long getCardNumberFromUserId(int userId){
+		return data.getCardNumberFromUserId(userId);
 	}
 	
 	public boolean updateCardNumber(int userId, long cardNo){
