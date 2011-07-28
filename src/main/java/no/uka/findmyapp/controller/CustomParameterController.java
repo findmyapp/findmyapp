@@ -104,7 +104,6 @@ public class CustomParameterController {
 		return new ModelAndView("json", "reponse", respons);
 	}
 	
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/developer/{developerId}", method = RequestMethod.GET)
 	public ModelAndView listParameters(@PathVariable("developerId") int developerId) {
 		List<CustomParameter> respons = service.listParameters(developerId);
