@@ -25,4 +25,8 @@ public class CashlessService {
 		logger.debug("Entering CashlessService");
 		return data.getCardTransactions(cardNo);
 	}
+	
+	public boolean updateCardNumber(int userId, long cardNo){
+		return data.updateCardNumber(userId, cardNo);
+	}
 }

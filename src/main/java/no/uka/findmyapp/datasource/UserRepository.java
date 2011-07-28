@@ -178,8 +178,8 @@ public class UserRepository {
 		return users;
 	}
 
-	public List<User> getFacebookFriendsAtEvent(int eventId,
-			List<String> friendIds) {
+	public List<User> getFacebookFriendsAtEvent(int eventId, List<String> friendIds) {
+		
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
 		Map<String, Object> namedParameters = new HashMap<String, Object>();
@@ -195,6 +195,20 @@ public class UserRepository {
 				.query("SELECT u.* FROM USER u, USER_EVENT e, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)"
 						+ " AND u.user_privacy_id = p.user_privacy_id AND p.events != 3",
+						namedParameters, new UserRowMapper());
+		return users;
+	}
+	
+	public List<User> getFacebookFriendsWithCashless(List<String> friendIds) {
+		
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("ids", friendIds);
+		List<User> users = namedParameterJdbcTemplate
+				.query("SELECT u.* FROM USER u, USER_PRIVACY_SETTINGS p"
+						+ " WHERE u.facebook_id IN (:ids) AND u.cashless!=''"
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
 						namedParameters, new UserRowMapper());
 		return users;
 	}

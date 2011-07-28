@@ -19,6 +19,8 @@ public class CashlessRepository {
 
 	@Autowired
 	private JdbcTemplate mssqlJdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	private static final Logger logger = LoggerFactory
 	.getLogger(CashlessRepository.class);
@@ -31,7 +33,7 @@ public class CashlessRepository {
 		
 		//return mssqlJdbcTemplate.queryForLong("select top 1 [Invoice No] from Invoice");
 		List<CashlessInvoice> invoices = mssqlJdbcTemplate.query(
-				"SELECT * FROM Invoice WHERE EventCardSerialNo=?",
+				"SELECT * FROM Invoice WHERE EventCardSerialNo=? ORDER BY [Invoice Date] DESC",
 				new CashlessInvoiceRowMapper(),cardNo);
 		
 		for(CashlessInvoice i : invoices){
@@ -39,9 +41,19 @@ public class CashlessRepository {
 					"SELECT * FROM SIDetails WHERE [Invoice No]=?",
 					new CashlessInvoiceItemRowMapper(),i.getInvoiceNo());
 			i.setProducts(items);
+			
+			// MAKE SURE THIS IS CORRECT!!!
+			card.setBalance(i.getCardBalanceAfter());
 		}
 		
 		card.setTransactions(invoices);
 		return card;
+	}
+	
+	public boolean updateCardNumber(int userId, long cardNo){
+		jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no) VALUES( ? , ? )",
+				userId, cardNo);
+		
+		return true;
 	}
 }
