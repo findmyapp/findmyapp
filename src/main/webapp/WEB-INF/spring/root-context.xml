@@ -127,7 +127,7 @@
 			password="758d61f26a44448384e5c4468a0dcb7a2abe456067b0f7b505bc28b9411fe931"
 			authorities="ROLE_PING" />
 		<security:user name="sampler"
-			password="31c8c08b9f3bf04ab88ac644daa03b2def40f90fb36326491cf80bd177212fd0"
+			password="b58463791f10e42cd0b55c2326cf35170a753bf36112262af8364d3608330005"
 			authorities="ROLE_SAMPLER" />
 	</security:user-service>
 
