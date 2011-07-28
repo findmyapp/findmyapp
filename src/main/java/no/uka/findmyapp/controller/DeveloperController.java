@@ -51,47 +51,47 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
-	@RequestMapping(value = "/{developer_id}/update", method = RequestMethod.POST)
-	public ModelAndView updateDeveloper(@PathVariable int developer_id, @RequestBody Developer developer) {
+	@RequestMapping(value = "/{developerId}/update", method = RequestMethod.POST)
+	public ModelAndView updateDeveloper(@PathVariable int developerId, @RequestBody Developer developer) {
 		//TODO IMPLEMENT
 		int result = -1;
 		return new ModelAndView("json", "result", result);
 	}
 	
 
-	@RequestMapping(value = "/{developer_id}/apps", method = RequestMethod.GET)
-	public ModelAndView getAppsFromDeveloperId(@PathVariable int developer_id) {
-		List<AppDetailed> list =  service.getAppsFromDeveloperId(developer_id);
+	@RequestMapping(value = "/{developerId}/apps", method = RequestMethod.GET)
+	public ModelAndView getAppsFromDeveloperId(@PathVariable int developerId) {
+		List<AppDetailed> list =  service.getAppsFromDeveloperId(developerId);
 		return new ModelAndView("json", "list", list);
 	}
 
-	@RequestMapping(value = "/{developer_id}/apps/{appId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{developerId}/apps/{appId}", method = RequestMethod.GET)
 	public ModelAndView getDetailedApp(@PathVariable int developerId, @PathVariable int appId) {
 		AppDetailed app =  service.getDetailedApp(developerId, appId);
 		return new ModelAndView("json", "app", app);
-	}
+	}	
 	
 
-	@RequestMapping(value = "/{developer_id}/apps/add", method = RequestMethod.PUT)
-	public ModelAndView registerApp(@PathVariable int developer_id, @RequestBody App app) {
+	@RequestMapping(value = "/{developerId}/apps/add", method = RequestMethod.PUT)
+	public ModelAndView registerApp(@PathVariable int developerId, @RequestBody App app) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
-		int result = service.registerApp(developer_id, app);
+		int result = service.registerApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
 
-	@RequestMapping(value = "/{developer_id}/apps/{appId}/update", method = RequestMethod.POST)
-	public ModelAndView updateApp(@PathVariable int developer_id, @PathVariable int appId, @RequestBody App app) {
+	@RequestMapping(value = "/{developerId}/apps/{appId}/update", method = RequestMethod.POST)
+	public ModelAndView updateApp(@PathVariable int developerId, @PathVariable int appId, @RequestBody App app) {
 		
-		logger.info("updating app: " + developer_id + " app: " + app.toString());
+		logger.info("updating app: " + developerId + " app: " + app.toString());
 		app.setId(appId);
-		int result = service.updateApp(developer_id, app);
+		int result = service.updateApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
 
-	@RequestMapping(value = "/{developer_id}/apps/{appId}/activation/update", method = RequestMethod.POST)
-	public ModelAndView updateAppActivation(@PathVariable int developer_id, @PathVariable int appId, @RequestParam(required=true) boolean activated) {
+	@RequestMapping(value = "/{developerId}/apps/{appId}/activation/update", method = RequestMethod.POST)
+	public ModelAndView updateAppActivation(@PathVariable int developerId, @PathVariable int appId, @RequestParam(required=true) boolean activated) {
 		
-		int result = service.updateAppActivation(developer_id, appId, activated);
+		int result = service.updateAppActivation(developerId, appId, activated);
 		return new ModelAndView("json", "result", result);
 	}
 	
