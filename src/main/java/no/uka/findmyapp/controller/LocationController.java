@@ -167,6 +167,10 @@ public class LocationController {
 		boolean success = service.setBartenderString(text);
 		return new ModelAndView("json", "put_bartender_string", success);
 	}
+	
+	/*
+	 * WARNINGS
+	 */
 
 	@SuppressWarnings("unused")
 	@ExceptionHandler(TokenException.class)
