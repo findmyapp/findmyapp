@@ -257,6 +257,10 @@ public class CustomParameterService {
 	public List<CustomParameter> listParameters() {
 		return data.findAllParameters();
 	}
+	public List<CustomParameter> listParameters(int developerId) {
+		return data.findAllParameters(developerId);
+	}
+
 
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
