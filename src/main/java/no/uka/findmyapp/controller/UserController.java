@@ -171,7 +171,7 @@ public class UserController {
 	}
 	
 
-	@Secured("ROLE_CONSUMER")
+	// @Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{id}/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getUserLocation(
