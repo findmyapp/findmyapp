@@ -34,16 +34,13 @@ public class CashlessRepository {
 		//return mssqlJdbcTemplate.queryForLong("select top 1 [Invoice No] from Invoice");
 		List<CashlessInvoice> invoices = mssqlJdbcTemplate.query(
 				"SELECT * FROM Invoice WHERE EventCardSerialNo=? ORDER BY [Invoice Date] DESC",
-				new CashlessInvoiceRowMapper(),cardNo);
+				new CashlessInvoiceRowMapper(), cardNo);
 		
 		for(CashlessInvoice i : invoices){
 			List<CashlessInvoiceItem> items = mssqlJdbcTemplate.query(
 					"SELECT * FROM SIDetails WHERE [Invoice No]=?",
 					new CashlessInvoiceItemRowMapper(),i.getInvoiceNo());
 			i.setProducts(items);
-			
-			// MAKE SURE THIS IS CORRECT!!!
-			card.setBalance(i.getCardBalanceAfter());
 		}
 		
 		card.setTransactions(invoices);
@@ -51,9 +48,20 @@ public class CashlessRepository {
 	}
 	
 	public boolean updateCardNumber(int userId, long cardNo){
-		jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no) VALUES( ? , ? )",
+		// Set old cards to be invalid
+		jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
+		jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no, in_use) VALUES( ? , ?, 1 )",
 				userId, cardNo);
 		
 		return true;
+	}
+	
+	public long getCardNumberFromUserId(int userId){
+		try{
+			return jdbcTemplate.queryForLong("SELECT card_no FROM USER_CASHLESS WHERE in_use=1 AND user_id=?", userId);
+		}
+		catch (Exception e) {
+			return -1;
+		}
 	}
 }

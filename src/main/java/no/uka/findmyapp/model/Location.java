@@ -6,9 +6,10 @@ package no.uka.findmyapp.model;
  */
 public class Location {
 
+
+	private int locationId;	
+	private String stringId;
 	private String locationName;
-	private int locationId;
-	private LocationStatus locationStatus;
 	
 	
 	public Location() {}
@@ -17,28 +18,35 @@ public class Location {
 		this.locationId = locationId;
 	}
 
-	public Location(String locationName, int locationId) {
+	public Location(int locationId, String stringId, String locationName) {
 		this.locationName = locationName;
+		this.stringId = stringId;
 		this.locationId = locationId;
 	}
-	public String getlocationName() {
-		return locationName;
-	}
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
+
 	public int getLocationId() {
 		return locationId;
 	}
+
 	public void setLocationId(int locationId) {
 		this.locationId = locationId;
 	}
-	
-	public void setLocationStatus(LocationStatus ls){
-		this.locationStatus = ls;
+
+	public String getStringId() {
+		return stringId;
 	}
-	
-	public LocationStatus getLocationStatus(){
-		return locationStatus;
+
+	public void setStringId(String stringId) {
+		this.stringId = stringId;
 	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
 }
+

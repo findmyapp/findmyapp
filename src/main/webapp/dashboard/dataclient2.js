@@ -106,14 +106,11 @@ function showEvent(index, day) {
 	h1.innerHTML = list[index].title;
 	eventDiv.appendChild(h1);
 	
-	var img = document.createElement('img');
-	img.setAttribute("id", "event-close-button");
-	img.setAttribute("src","close_button.gif");
-	img.onclick = function () {eventDiv.style.visibility="hidden"; roomDiv.style.visibility="visible";};
-	eventDiv.appendChild(img);
+	eventDiv.appendChild(document.createElement("br"));
 	
 	var p = document.createElement("p");
-	p.innerHTML = list[index].lead;
+	var str = list[index].lead.substr(0,920);
+	p.innerHTML = str;
 	eventDiv.appendChild(p);
 	eventDiv.style.visibility="visible";
 	roomDiv.style.visibility="hidden";
@@ -266,3 +263,33 @@ function drawHumidityChart() {
 function testings() {
 
 }
+
+//Disable right mouse click Script
+//By Maximus (maximus@nsimail.com) w/ mods by DynamicDrive
+//For full source code, visit http://www.dynamicdrive.com
+////////////////////////////////////////////////////////////
+function clickIE4(){
+	if (event.button==2){
+		return false;
+	}
+}
+
+function clickNS4(e){
+	if (document.layers||document.getElementById&&!document.all){
+		if (e.which==2||e.which==3){
+			return false;
+		}
+	}
+}
+
+if (document.layers){
+	document.captureEvents(Event.MOUSEDOWN);
+	document.onmousedown=clickNS4;
+}
+else if (document.all&&!document.getElementById){
+	document.onmousedown=clickIE4;
+}
+
+document.oncontextmenu = function() {return false;};
+document.onselectstart = function() {return false;}; // ie
+document.onmousedown = function() {return false;}; // mozilla

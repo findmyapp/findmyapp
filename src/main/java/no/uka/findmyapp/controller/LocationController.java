@@ -97,6 +97,12 @@ public class LocationController {
 		return new ModelAndView("json", "users_at_location", users);
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
+		Location locale = service.getLocation(locationId);
+		return new ModelAndView("json", "location_real_time",locale);
+	}
+	
 	@RequestMapping(value = "/{id}/users/count", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = int.class)
 	public ModelAndView getUserCountAtLocation(
