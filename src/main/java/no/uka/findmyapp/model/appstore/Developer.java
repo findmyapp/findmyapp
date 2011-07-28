@@ -49,7 +49,8 @@ public class Developer{
 	public String toString() {
 		return "Developer [fullName=" + fullName + ", developerID="
 				+ developerID + ", wpId=" + wpId + ", userId=" + userId
-				+ ", email=" + email + "]";
+				+ ", email=" + email + ", accessToken=" + accessToken + "]";
 	}
+	
 	
 }

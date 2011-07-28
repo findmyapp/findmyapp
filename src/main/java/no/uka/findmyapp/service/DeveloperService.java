@@ -7,6 +7,7 @@ import no.uka.findmyapp.datasource.UserRepository;
 import no.uka.findmyapp.model.appstore.App;
 import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.Developer;
+import no.uka.findmyapp.service.auth.AuthenticationService;
 import no.uka.findmyapp.utils.NumberUtils;
 
 import org.slf4j.Logger;
@@ -24,6 +25,9 @@ public class DeveloperService {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	AuthenticationService authenticationService;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(DeveloperService.class);
@@ -37,8 +41,12 @@ public class DeveloperService {
 	}
 	
 	public int registerDeveloper(Developer developer) {
-		//int userId = userService.getUserIdFromToken(developer.getAccessToken());
-		int userId = 0;
+		
+		
+		String token = authenticationService.login(developer.getAccessToken());
+		
+		int userId = authenticationService.verify(token);
+		//int userId = 0;
 		if(userId == 0) {
 			//TODO THROW USER NOT FOUND AND COULD NOT BE CREATED
 			logger.debug("USER NOT FOUND AND COULD NOT BE CREATED");
