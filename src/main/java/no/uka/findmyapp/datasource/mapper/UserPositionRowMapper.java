@@ -13,7 +13,7 @@ public class UserPositionRowMapper implements RowMapper<UserPosition> {
 		UserPosition userPosition = new UserPosition();
 		userPosition.setUserId(rs.getInt("user_id"));
 		userPosition.setLocationId(rs.getInt("position_location_id"));
+		userPosition.setTimestamp(rs.getTimestamp("registered_time"));
 		return userPosition; 
 	}
-
 }

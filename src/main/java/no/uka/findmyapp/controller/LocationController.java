@@ -169,7 +169,6 @@ public class LocationController {
 	@RequestMapping(value = "/screen/{text}", method = RequestMethod.PUT)
 	@ServiceModelMapping(returnType = Boolean.class)
 	public ModelAndView postBartenderString(@PathVariable("text") String text) {
-		System.out.println("postBartenderString");
 		boolean success = service.setBartenderString(text);
 		return new ModelAndView("json", "put_bartender_string", success);
 	}
