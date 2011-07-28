@@ -22,7 +22,11 @@
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
-				<div id="people_counter_div"></div>
+				<div id="people_counter_div">
+					<img id="people_icon" alt="Antall personer på Edgar: "
+						src="images/people_icon.gif" />
+					<p id="people_counter_paragraph"></p>
+				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
@@ -94,5 +98,12 @@
 				bgcolor="#8F0000"></marquee> </FONT>
 	</footer>
 </body>
+
+<script type="text/javascript">
+	google.load('visualization', '1', {
+		'packages' : [ 'corechart', 'gauge' ]
+	});
+	google.setOnLoadCallback(getData(18, 'daglighallen')); //edgar har id 3
+</script>
 
 </html>
