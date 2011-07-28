@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.model.CustomParameter;
-import no.uka.findmyapp.model.Location;
+import no.uka.findmyapp.model.CustomParameterDetailed;
 import no.uka.findmyapp.model.LocationReport;
 import no.uka.findmyapp.service.CustomParameterService;
 import no.uka.findmyapp.service.DeveloperService;
@@ -50,20 +50,14 @@ public class CustomParameterController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CustomParameterController.class);
 
-
-	
-
 	/*
 	 * -------------------------------UserReporting-------------------------
 	 */
 	
-
-
 	@RequestMapping(value = "/locations/{id}/userreports", method = RequestMethod.POST)
 	// add max limit per user.
 	public ModelAndView addReport(@PathVariable("id") int locationId,
 			@RequestBody LocationReport[] locationReport) {
-
 		ModelAndView mav = new ModelAndView("ok_respons");
 		logger.info("Status data logged for location: " + locationId);
 		List<LocationReport> reportList = Arrays.asList(locationReport);
@@ -104,7 +98,7 @@ public class CustomParameterController {
 	
 	@RequestMapping(value = "/parameters/developer/{developerId}", method = RequestMethod.GET)
 	public ModelAndView listParameters(@PathVariable("developerId") int developerId) {
-		List<CustomParameter> respons = service.listParameters(developerId);
+		List<CustomParameterDetailed> respons = service.listParameters(developerId);
 		return new ModelAndView("json", "reponse", respons);
 	}
 
