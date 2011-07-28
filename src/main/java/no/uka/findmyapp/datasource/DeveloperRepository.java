@@ -135,7 +135,13 @@ public class DeveloperRepository {
 		logger.info("running sql : " + sql);
 		int res = 0;
 		try {
-			res = jdbcTemplate.update(sql, activated, developerId, appId);
+			String act;
+			if(!activated) {
+				act = "false";
+			} else {
+				act = "true";
+			}
+			res = jdbcTemplate.update(sql, act, developerId, appId);
 			
 		} catch (Exception e) {
 			logger.info(e.getMessage());
