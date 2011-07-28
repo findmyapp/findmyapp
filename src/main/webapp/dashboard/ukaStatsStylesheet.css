@@ -128,14 +128,12 @@ Container for middle section within mainContent
 
 #map-with-selection {
 	margin-left: 170px;
-	
-	width: 50%;
 }
 
 #room-info-div {
 	position: absolute;
 	width: 600px;
-	top:200px;
+	top:250px;
 	margin-left: auto;
     margin-right: auto;
     left: 0;
