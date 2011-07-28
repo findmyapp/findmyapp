@@ -2,7 +2,9 @@ package no.uka.findmyapp.datasource;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,11 +98,13 @@ public class LocationRepository {
 	}
 
 	public int getUserCountAtLocation(int locationId) {
+		final Timestamp now = new Timestamp(new Date().getTime());
 		try {
 			int count = jdbcTemplate
 					.queryForInt(
-							"SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ?",
-							locationId);
+							"SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ? " +
+							"AND TIMESTAMPDIFF(HOUR, registered_time, ?) < 2",
+							locationId, now);
 			return count;
 		} catch (Exception e) {
 			logger.info("Something went wrong when fetching data from database");
@@ -113,7 +117,9 @@ public class LocationRepository {
 		List<LocationCount> locationCounts = jdbcTemplate
 				.query("SELECT l.string_id, COUNT(up.position_location_id) AS count "
 						+ "FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
-						+ "WHERE l.position_location_id = up.position_location_id GROUP BY l.string_id",
+						+ "WHERE l.position_location_id = up.position_location_id "
+						+ "AND TIMESTAMPDIFF(HOUR, up.registered_time, ?) < 2 "		
+						+ "GROUP BY l.string_id",
 						new LocationCountRowMapper());
 		return locationCounts;
 	}
