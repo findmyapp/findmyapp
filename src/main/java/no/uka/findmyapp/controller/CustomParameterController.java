@@ -50,7 +50,6 @@ public class CustomParameterController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CustomParameterController.class);
 
-	
 	@RequestMapping(value = "/locations/{id}", method = RequestMethod.GET)
 	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
 		Location locale = service.getAllData(locationId);
@@ -101,12 +100,11 @@ public class CustomParameterController {
 	
 	@RequestMapping(value = "/parameters", method = RequestMethod.GET)
 	public ModelAndView listParameters() {
-
 		List<CustomParameter> respons = service.listParameters();
 		return new ModelAndView("json", "reponse", respons);
 	}
 	
-
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/developer/{developerId}", method = RequestMethod.GET)
 	public ModelAndView listParameters(@PathVariable("developerId") int developerId) {
 		List<CustomParameter> respons = service.listParameters(developerId);
