@@ -41,9 +41,6 @@ public class CashlessRepository {
 					"SELECT * FROM SIDetails WHERE [Invoice No]=?",
 					new CashlessInvoiceItemRowMapper(),i.getInvoiceNo());
 			i.setProducts(items);
-			
-			// MAKE SURE THIS IS CORRECT!!!
-			card.setBalance(i.getCardBalanceAfter());
 		}
 		
 		card.setTransactions(invoices);
