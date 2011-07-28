@@ -37,7 +37,7 @@ public class LocationService {
 	
 	public String getBartenderString() {
 		int numOfChars = bartenderString.length();
-		String newString = String.format("%s%"+(128-numOfChars)+"s", "jack"," ");   
+		String newString = String.format("%s%"+(128-numOfChars)+"s", bartenderString," ");   
 		return newString;
 	}
 	
