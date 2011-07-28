@@ -143,7 +143,7 @@ public class CustomParameterService {
 		}
 
 		// Fill location with status
-		locationOfInterest.setLocationStatus(statusAtLocation);
+		//locationOfInterest.setLocationStatus(statusAtLocation);
 
 		return locationOfInterest;
 	}

@@ -50,12 +50,7 @@ public class CustomParameterController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CustomParameterController.class);
 
-	@RequestMapping(value = "/locations/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
-		Location locale = service.getAllData(locationId);
-		logger.info("DEBUG",locale);
-		return new ModelAndView("json", "location_real_time", locale);
-	}
+
 	
 
 	/*
