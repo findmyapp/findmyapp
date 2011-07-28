@@ -15,7 +15,7 @@ public class CashlessInvoiceRowMapper implements RowMapper<CashlessInvoice> {
 		invoice.setInvoiceNo(rs.getString(1)); // [Invoice No]
 		invoice.setLocation(rs.getString("Location")); // This must be changed
 		invoice.setSaleTime(rs.getTimestamp(6));
-		//invoice.setCardBalanceAfter(rs.getInt("EventCardBalance"));
+		invoice.setAmount(rs.getInt("Amount"));
 		return invoice;
 	}
 
