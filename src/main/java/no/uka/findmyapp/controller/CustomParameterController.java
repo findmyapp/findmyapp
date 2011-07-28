@@ -99,14 +99,12 @@ public class CustomParameterController {
 		return new ModelAndView("json", "reponse", respons);
 	}
 	
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/developer/{developerId}", method = RequestMethod.GET)
 	public ModelAndView listParameters(@PathVariable("developerId") int developerId) {
 		List<CustomParameter> respons = service.listParameters(developerId);
 		return new ModelAndView("json", "reponse", respons);
 	}
 
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/add", method = RequestMethod.PUT)
 	public String addParameter(
 			@RequestParam String name, @RequestParam(required=true) int developerId, Model model) throws DataIntegrityViolationException{
@@ -117,7 +115,6 @@ public class CustomParameterController {
 		return "json";
 	}
 
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/remove", method = RequestMethod.DELETE)
 	public ModelAndView removeParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name, @RequestParam(required=true) int developerId) {
@@ -127,7 +124,6 @@ public class CustomParameterController {
 		return new ModelAndView("json", "json", respons);
 	}
 
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/clean", method = RequestMethod.DELETE)
 	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name, @RequestParam(required=true) int developerId) {
