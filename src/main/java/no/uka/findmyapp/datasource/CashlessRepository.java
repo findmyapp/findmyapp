@@ -48,12 +48,16 @@ public class CashlessRepository {
 	}
 	
 	public boolean updateCardNumber(int userId, long cardNo){
-		// Set old cards to be invalid
-		jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
-		jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no, in_use) VALUES( ? , ?, 1 )",
-				userId, cardNo);
-		
-		return true;
+		try {
+			// Set old cards to be invalid
+			jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
+			// Update/insert Cashless card number
+			jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no, in_use) VALUES( ? , ?, 1 )", userId, cardNo);
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 	
 	public long getCardNumberFromUserId(int userId){

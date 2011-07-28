@@ -207,7 +207,7 @@ public class UserRepository {
 		namedParameters.put("ids", friendIds);
 		List<User> users = namedParameterJdbcTemplate
 				.query("SELECT u.* FROM USER u, USER_CASHLESS c, USER_PRIVACY_SETTINGS p"
-						+ " WHERE u.facebook_id IN (:ids) AND u.id=c.user_id"
+						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=c.user_id"
 						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
 						namedParameters, new UserRowMapper());
 		return users;
