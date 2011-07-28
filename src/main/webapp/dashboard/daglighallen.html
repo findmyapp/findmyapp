@@ -10,7 +10,6 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="dataclient2.js"></script>
 <link rel="stylesheet" href="ukaStatsStylesheet.css" />
-
 </head>
 
 <body>
@@ -19,14 +18,11 @@
 		<header id="header">
 			<h1 id="findMyApp">FindMyApp</h1>
 		</header>
+
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
-				<div id="people_counter_div">
-					<img id="people_icon" alt="Antall personer "
-						src="images/people_icon.gif" />
-					<p id="people_counter_paragraph"></p>
-				</div>
+				<div id="people_counter_div"></div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
@@ -35,7 +31,7 @@
 		<div id="mcontent">
 			<!-- Content Section -->
 
-			<img id="map-with-selection" src="images/kartklubben.png"
+			<img id="map-with-selection" src="images/kartstrossa.png"
 				usemap="#Image-Maps_1201107280226154" />
 			<map id="_Image-Maps_1201107280226154" name="Image-Maps_1201107280226154">
 				<area shape="poly" coords="172,183,197,187,225,193,246,197,277,204,305,191,348,195,347,212,324,231,303,227,283,243,240,234,195,224,143,213,144,195,159,188,168,183," href="strossa.html" alt="Strossa" title="Strossa"   />
@@ -47,22 +43,30 @@
 				<area shape="poly" coords="129,55,151,51,166,46,177,43,189,8,159,2,136,0,108,0,84,4,59,6,36,11,20,15,23,52,44,58,66,61,96,61,115,61,185,27," href="storsalen.html" alt="Storsalen" title="Storsalen"   />
 				<area shape="poly" coords="330,66,330,53,352,47,373,41,374,40,416,43,419,57,371,73," href="knaus.html" alt="Knaus" title="Knaus"   />
 				<area shape="poly" coords="237,40,239,26,261,18,305,22,337,24,386,28,412,33,405,40,384,39,374,37,364,41,352,44,327,47,279,45," href="selskapssiden.html" alt="Selskapssiden" title="Selskapssiden"   />
-				<area shape="poly" coords="364,101,365,91,389,76,413,78,445,81,445,105,431,114,410,113,391,120,368,117," href="daglighallen.html" alt="Daglighallen og Biblioteket" title="Daglighallen og Biblioteket"   />
+				<area shape="poly" coords="364,101,365,91,389,76,413,78,445,81,445,105,431,114,410,113,391,120,368,117," href="daglighallen.html" alt="Daglighallen" title="Daglighallen"   />
 			</map>
 
 			<div id="room-info-div">
-				<p>Hvis Storsalen blir for upersonlig og Knaus blir for smått
-					for deg, så er det på Klubben du finner Samfundets heteste
-					konserter. Scenen er perfekt for intime og direkte, men likevel
-					storartete konsertopplevelser. Det kan ligge rock, svette og øl i
-					luften, men det er ikke kun gitarmusikk man får servert her. Her er
-					det er varierte artister som spiller både indie, elektronika,
-					hip-hop og annen musikk med trøkk i. I tillegg snurrer våre dyktige
-					DJer alltid de passende platene som gjør pilsen før og etter
-					konserten ekstra smakelig. På hverdagene er Klubben alt fra
-					Excenteraften og Bokstavlig talt, til åstedet for Café
-					NordSør-møter, og møtelokalet til Studenttinget.</p>
+				<p>Daglighallen Pub er Samfundets brune sjenkestue. 
+				Puben er åpen hver eneste dag semesteret gjennom og viser det du trenger å se av fotballkamper. 
+				I helgene dyrkes den gode pubkulturen: God musikk, stolte bartendere og god lesk fra mange forskjellige 
+				flasker og fat.</p>
 				<br>
+				<p>Bak puben  finner du Samfundets perle. Biblioteket er kanskje Samfundets koseligste og mest sjarmerende lokale, 
+				med bokhyller som strekker seg helt opp under det høye taket. Her finner du tusenvis av bøker og et variert utvalg av spill. Biblioteket abonnerer også 
+				på en rekke magasiner og tidsskrifter</p>
+
+				<br>
+
+				<h4>Visste du at?</h4>
+
+				<br>
+
+				<ul>
+					<li>Daglighallen Pub tilbyr Nøgne Ø fra fat og har til enhver tid mellom 
+					30 og 40 varianter av flaskeøl.</li>
+				</ul>
+
 			</div>
 			<div id="event-info-div" style=""></div>
 		</div>
@@ -91,11 +95,4 @@
 	</footer>
 </body>
 
-
-<script type="text/javascript">
-	google.load('visualization', '1', {
-		'packages' : [ 'corechart', 'gauge' ]
-	});
-	google.setOnLoadCallback(getData(17, 'klubben'));
-</script>
 </html>
