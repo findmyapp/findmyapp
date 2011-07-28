@@ -73,14 +73,14 @@ public class DeveloperController {
 	
 
 	@RequestMapping(value = "/{developerId}/apps/add", method = RequestMethod.PUT)
-	public ModelAndView registerApp(@PathVariable int developerId, @RequestBody App app) {
+	public ModelAndView registerApp(@PathVariable int developerId, @RequestBody AppDetailed app) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
 		int result = service.registerApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
 
 	@RequestMapping(value = "/{developerId}/apps/{appId}/update", method = RequestMethod.POST)
-	public ModelAndView updateApp(@PathVariable int developerId, @PathVariable int appId, @RequestBody App app) {
+	public ModelAndView updateApp(@PathVariable int developerId, @PathVariable int appId, @RequestBody AppDetailed app) {
 		
 		logger.info("updating app: " + developerId + " app: " + app.toString());
 		app.setId(appId);
@@ -93,32 +93,6 @@ public class DeveloperController {
 		
 		int result = service.updateAppActivation(developerId, appId, activated);
 		return new ModelAndView("json", "result", result);
-	}
-	
-	@RequestMapping(value = "/demo", method = RequestMethod.POST)
-	public ModelAndView registerApp(@RequestBody Developer developer) {
-		
-		logger.info(developer.toString());
-		
-		return new ModelAndView("json", "result", "res");
-	}
-
-	@RequestMapping(value = "/demo2", method = RequestMethod.PUT)
-	public ModelAndView registerApp1(@RequestBody String str) {
-		
-		logger.info(str);
-		
-		return new ModelAndView("json", "registerApp", "res");
-	}
-	
-	@RequestMapping(value = "/demo3", method = RequestMethod.PUT)
-	public ModelAndView registerApp2(@RequestBody String str) {
-		Developer dev = new GsonBuilder().create().fromJson(str, Developer.class);
-		logger.info(str);
-
-		logger.info(dev.toString());
-		
-		return new ModelAndView("json", "registerApp", "res");
 	}
 
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
