@@ -80,6 +80,7 @@ public class CustomParameterRepository {
 					new LocationReportRowMapper(), parName, locationId,
 					numberOfelements);
 			logger.info(sql);
+			logger.info("locatId: " + locationId + " numberOfE: " + numberOfelements + " par: " + parName);
 			logger.info(list.size() + "");
 			return list;
 
