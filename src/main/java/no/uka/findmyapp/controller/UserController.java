@@ -62,6 +62,7 @@ public class UserController {
 		data.addObject("success", eventAdded);
 		return data;
 	}
+	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/events/{eventId}", method = RequestMethod.DELETE)
 	public ModelAndView removeEvent(@PathVariable long eventId, @RequestParam(required = true) String token) {

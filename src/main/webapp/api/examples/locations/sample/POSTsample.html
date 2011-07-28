@@ -1,0 +1,48 @@
+<h1>Example</h1> 
+
+<h3>Input: </h3>
+
+<pre>
+http://findmyapp.net/findmyapp/locations/sample?token=f4273dd70624dab4070540da074dac4be8dcafd9i24t1311768451491
+</pre>
+
+<pre>
+{
+    "Id": 1,
+    "locationId": 1,
+    "string": "strossa",
+    "signalList": [
+        {
+            "id": 1,
+            "bssid": "09:87:93:78:BM:78",
+            "signalStrength": -40,
+            "sampleId": "3"
+        },
+        {
+            "id": 1,
+            "bssid": "09:86:92:77:BM:12",
+            "signalStrength": -41,
+            "sampleId": "4"
+        }
+    ]
+}
+</pre>
+
+This method uses OAuth and accessToken.
+
+
+<h3>Output/h3>
+
+<pre>
+{
+true
+}
+</pre>
+
+
+<h2>References/h2>
+
+OAuth and HTML POST request: https://github.com/findmyapp/locationSamplerAndroid/blob/master/src/main/java/com/accenture/RegisterRooms/RestClient.java 
+Signal class: https://github.com/findmyapp/findmyapp/blob/master/src/main/java/no/uka/findmyapp/model/Sample.java
+
+

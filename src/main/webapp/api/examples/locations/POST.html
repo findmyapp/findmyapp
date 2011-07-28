@@ -1,66 +1,46 @@
-<h1>Example</h1>
+<h1>Example</h1> 
 
 <h3>Input: </h3>
 
 <pre>
-http://findmyapp.net/findmyapp/locations
+http://findmyapp.net/findmyapp/locations?token=f4273dd70624dab4070540da074dac4be8dcafd9i24t1311768451491
 </pre>
 
-
-<h3>Output:</h3>
- 
 <pre>
 {
-        "locationName": "strossa",
-        "locationId": 1
-    },
-    {
-        "locationName": "storsalen",
-        "locationId": 2
-    },
-    {
-        "locationName": "edgar",
-        "locationId": 3
-    },
-    {
-        "locationName": "bodegaen",
-        "locationId": 10
-    },
-    {
-        "locationName": "knaus",
-        "locationId": 11
-    },
-    {
-        "locationName": "selskapssiden",
-        "locationId": 12
-    },
-    {
-        "locationName": "klubben",
-        "locationId": 17
-    },
-    {
-        "locationName": "daglighallen",
-        "locationId": 18
-    },
-    {
-        "locationName": "lyche",
-        "locationId": 19
-    },
-    {
-        "locationName": "rundhallen",
-        "locationId": 20
-    },
-    {
-        "locationName": "ryttergangen",
-        "locationId": 21
-    },
-    {
-        "locationName": "biblioteket",
-        "locationId": 22
-    },
-    {
-        "locationName": "daglighallen vrimle",
-        "locationId": 23
+    "id": 1,
+    "bssid": "09:87:93:78:BM:78",
+    "signalStrength": -40,
+    "sampleId": "3"
+},
+{
+    "id": 1,
+    "bssid": "09:86:92:77:BM:12",
+    "signalStrength": -41,
+    "sampleId": "4"
 }
 
 </pre>
+
+This method uses OAuth and accessToken.
+
+
+<h3>Output/h3>
+
+<pre>
+{
+    "locationId": 1,
+    "stringId": "strossa",
+    "locationName": "Strossa"
+}
+</pre>
+
+
+<h3>References/h3>
+
+OAuth and HTML POST request: https://github.com/findmyapp/locationSamplerAndroid/blob/master/src/main/java/com/accenture/RegisterRooms/RestClient.java 
+Location class: https://github.com/findmyapp/findmyapp/blob/master/src/main/java/no/uka/findmyapp/model/Location.java
+Signal class: https://github.com/findmyapp/findmyapp/blob/master/src/main/java/no/uka/findmyapp/model/Signal.java
+
+
+
