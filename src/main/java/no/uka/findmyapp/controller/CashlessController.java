@@ -52,7 +52,8 @@ public class CashlessController {
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
-			@RequestParam(required=false) String location) throws ConsumerException, UkaYearNotFoundException{ 
+			@RequestParam(required=false) String location,
+			@RequestParam(required=false) String orderBy) throws ConsumerException, UkaYearNotFoundException{ 
 		
 		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
 		int userId = auth.verify( token );
@@ -113,9 +114,8 @@ public class CashlessController {
 	}
 	
 	
-	@RequestMapping(value = "/cashless/locations", method = RequestMethod.GET)
-	public ModelAndView getCashlessLocations() {
-			
+	@RequestMapping(value = "/cashless/{ukaYear}/locations", method = RequestMethod.GET)
+	public ModelAndView getCashlessLocations(@PathVariable String ukaYear) {
 		return new ModelAndView("json", "status", cashlessService.getCashlessLocations());
 	}
 }
