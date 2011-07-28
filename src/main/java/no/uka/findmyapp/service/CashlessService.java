@@ -31,10 +31,23 @@ public class CashlessService {
 			return null;
 	}
 	
+	/**
+	 * Get the Cashless card number from given userId
+	 * 
+	 * @param userId ID of user
+	 * @return Cashless card number, -1 if no card exists
+	 */
 	public long getCardNumberFromUserId(int userId){
 		return data.getCardNumberFromUserId(userId);
 	}
 	
+	/**
+	 * Updates the given user with the given Cashless number
+	 * 
+	 * @param userId ID of user
+	 * @param cardNo Cashless card number
+	 * @return true if successful update, else false
+	 */
 	public boolean updateCardNumber(int userId, long cardNo){
 		return data.updateCardNumber(userId, cardNo);
 	}
