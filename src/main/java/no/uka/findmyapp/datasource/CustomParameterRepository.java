@@ -67,15 +67,16 @@ public class CustomParameterRepository {
 			int numberOfelements, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
-					+ "CUSTOM_PARAMETER_VALUE AS CPV "
-					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "ON CPV.custom_parameter_id = CP.custom_parameter_id "
-					+ "JOIN USER AS U "
-					+ "ON CPV.user_id = U.user_id "
-					+ "WHERE parameter_name = ? "
-					+ "AND position_location_id=? "
-					+ "ORDER BY time DESC LIMIT 0,? ",
+			String sql = "SELECT CPV.*, CP.*, U.full_name FROM "
+				+ "CUSTOM_PARAMETER_VALUE AS CPV "
+				+ "JOIN CUSTOM_PARAMETER AS CP "
+				+ "ON CPV.custom_parameter_id = CP.custom_parameter_id "
+				+ "JOIN USER AS U "
+				+ "ON CPV.user_id = U.user_id "
+				+ "WHERE parameter_name = ? "
+				+ "AND position_location_id=? "
+				+ "ORDER BY time DESC LIMIT 0,? ";
+			return jdbcTemplate.query(sql,
 					new LocationReportRowMapper(), parName, locationId,
 					numberOfelements);
 
