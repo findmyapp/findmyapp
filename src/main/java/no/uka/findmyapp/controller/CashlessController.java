@@ -50,7 +50,12 @@ public class CashlessController {
 		
 		//long cardNo = 1628620850; // This must come from user object
 		
-		CashlessCard card = cashlessService.getCardTransactions(userId);
+		CashlessCard card;
+		if (userId != -1) {
+			card = cashlessService.getCardTransactions(userId);
+		} else {
+			throw new InvalidTokenException("Token not valid");
+		}
 		
 		return new ModelAndView("json", "card", card);
 	}
