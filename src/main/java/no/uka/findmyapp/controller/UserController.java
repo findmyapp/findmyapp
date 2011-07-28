@@ -140,6 +140,7 @@ public class UserController {
 	 * @return
 	 * @throws InvalidUserIdOrAccessTokenException
 	 */
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = String.class, isList = true)
 	public ModelAndView getPrivacy(@RequestParam(required = true) String token)throws ConsumerException {
