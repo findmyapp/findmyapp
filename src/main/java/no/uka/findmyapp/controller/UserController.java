@@ -193,7 +193,7 @@ public class UserController {
 	}
 	
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "me/friends/all/location", method = RequestMethod.GET)
+	@RequestMapping(value = "/me/friends/all/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getLocationOfFriends(@PathVariable int userId,
 			@RequestParam(required = true) String token) throws ConsumerException, TokenException {
