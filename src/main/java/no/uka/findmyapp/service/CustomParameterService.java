@@ -239,18 +239,18 @@ public class CustomParameterService {
 		return averageData;
 	}
 
-	public boolean addParameter(String parameterName,
-			String devId) throws DataAccessException {
+	public int addParameter(String parameterName,
+			int devId) throws DataAccessException {
 		return data.addParameter(parameterName, devId);
 	}
 
 	public boolean removeParameter(String parameterName,
-			String devId) throws DataAccessException {
+			int devId) throws DataAccessException {
 		return data.removeParameter(parameterName, devId);
 	}
 
 	public boolean cleanParameter(String parameterName,
-			String devId) throws DataAccessException {
+			int devId) throws DataAccessException {
 		return data.cleanParameter(parameterName, devId);
 	}
 

@@ -1,5 +1,6 @@
 package no.uka.findmyapp.datasource;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -42,8 +43,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -79,18 +83,19 @@ public class CustomParameterRepository {
 		} catch (Exception e) {
 			logger.error("Could not add data to the given parameter: " + e);
 		}
-
 	}
 
 	public List<LocationReport> getLastUserReportedData(int locationId,
 			int numberOfelements, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "ON CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? "
 					+ "ORDER BY time DESC LIMIT 0,? ",
 					new LocationReportRowMapper(), parName, locationId,
@@ -107,11 +112,13 @@ public class CustomParameterRepository {
 			Date from, Date to, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? "
 					+ "AND time >= ? AND time <= ?",
 					new LocationReportRowMapper(), parName, locationId, from,
@@ -128,11 +135,13 @@ public class CustomParameterRepository {
 			Date from, String parName) {
 		logger.info("Fetching data ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? " + "AND time >= ?",
 					new LocationReportRowMapper(), parName, locationId, from);
 
@@ -147,11 +156,13 @@ public class CustomParameterRepository {
 			String parName) {
 		logger.info("Fetching data HEHR ");
 		try {
-			return jdbcTemplate.query("SELECT * FROM "
+			return jdbcTemplate.query("SELECT CPV.*, CP.*, U.full_name FROM "
 					+ "CUSTOM_PARAMETER_VALUE AS CPV "
 					+ "JOIN CUSTOM_PARAMETER AS CP "
-					+ "on CPV.custom_parameter_id = "
-					+ "CP.custom_parameter_id " + "WHERE parameter_name = ? "
+					+ "on CPV.custom_parameter_id = CP.custom_parameter_id "
+					+ "JOIN USER AS U "
+					+ "ON CPV.user_id = U.user_id "
+					+ "WHERE parameter_name = ? "
 					+ "AND position_location_id=? ",
 					new LocationReportRowMapper(), parName, locationId);
 
@@ -159,19 +170,35 @@ public class CustomParameterRepository {
 			logger.error("Read API for what arguments are allowed " + e);
 			return null;
 		}
-
 	}
 
 	/*
 	 * ---------------------------ManageParameter--------------------------------
 	 * -----
 	 */
-	public boolean addParameter(String parName, String devId) throws DataAccessException,DuplicateKeyException,DataIntegrityViolationException  {
+	public int addParameter(final String parName, final int devId) throws DataAccessException,DuplicateKeyException,DataIntegrityViolationException  {
 		logger.debug("Adding Parameter:" + parName);
 		try {
-			jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER (parameter_name,appstore_developer_id)VALUES(?,?)", parName, devId);
-			logger.debug("here");
-			return true;
+			
+			final String sql = "INSERT INTO CUSTOM_PARAMETER (parameter_name,appstore_developer_id)VALUES(?,?)";
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			jdbcTemplate.update(
+			    new PreparedStatementCreator() {
+			        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+			            PreparedStatement ps =
+			                connection.prepareStatement(sql, new String[] {"custom_parameter_id"});
+			            ps.setString(1, parName);
+			            ps.setInt(2, devId);
+			            return ps;
+			        }
+
+			    },
+			    keyHolder);
+			Number n = keyHolder.getKey();
+			return (Integer) n.intValue();
+			//jdbcTemplate.update("INSERT INTO CUSTOM_PARAMETER (parameter_name,appstore_developer_id)VALUES(?,?)", parName, devId);
+			
+			//return true;
 		} catch (org.springframework.dao.DuplicateKeyException e) {
 			logger.error("Could not add the parameter: " + e);
 			throw new DuplicateKeyException("Parameter: " + parName + " could not be added. Dublicate entry");
@@ -186,7 +213,7 @@ public class CustomParameterRepository {
 
 	}
 
-	public boolean cleanParameter(String parName, String devId) throws DataAccessException{
+	public boolean cleanParameter(String parName, int devId) throws DataAccessException{
 		// Must have access check in service, add check if variables  exist!!
 		logger.debug("Cleaning Parameter:" + parName);
 		try {
@@ -204,7 +231,7 @@ public class CustomParameterRepository {
 		}
 	}
 
-	public boolean removeParameter(String parName, String devId) throws DataAccessException {
+	public boolean removeParameter(String parName, int devId) throws DataAccessException {
 		// Must have access check in service, add check if variables  exist!!
 		try {
 			jdbcTemplate.update("DELETE FROM CUSTOM_PARAMETER_VALUE"

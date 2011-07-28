@@ -4,6 +4,7 @@ import java.util.List;
 
 import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.DeveloperService;
 
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,59 +51,49 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
-	@RequestMapping(value = "/{developer_id}/update", method = RequestMethod.POST)
-	public ModelAndView updateDeveloper(@PathVariable int developer_id, @RequestBody Developer developer) {
+	@RequestMapping(value = "/{developerId}/update", method = RequestMethod.POST)
+	public ModelAndView updateDeveloper(@PathVariable int developerId, @RequestBody Developer developer) {
 		//TODO IMPLEMENT
 		int result = -1;
 		return new ModelAndView("json", "result", result);
 	}
 	
 
-	@RequestMapping(value = "/{developer_id}/apps", method = RequestMethod.GET)
-	public ModelAndView getAppsFromDeveloperId(@PathVariable int developer_id) {
-		List<App> list =  service.getAppsFromDeveloperId(developer_id);
+	@RequestMapping(value = "/{developerId}/apps", method = RequestMethod.GET)
+	public ModelAndView getAppsFromDeveloperId(@PathVariable int developerId) {
+		List<AppDetailed> list =  service.getAppsFromDeveloperId(developerId);
 		return new ModelAndView("json", "list", list);
 	}
 
-	@RequestMapping(value = "/{developer_id}/apps/add", method = RequestMethod.PUT)
-	public ModelAndView registerApp(@PathVariable int developer_id, @RequestBody App app) {
+	@RequestMapping(value = "/{developerId}/apps/{appId}", method = RequestMethod.GET)
+	public ModelAndView getDetailedApp(@PathVariable int developerId, @PathVariable int appId) {
+		AppDetailed app =  service.getDetailedApp(developerId, appId);
+		return new ModelAndView("json", "app", app);
+	}	
+	
+
+	@RequestMapping(value = "/{developerId}/apps/add", method = RequestMethod.PUT)
+	public ModelAndView registerApp(@PathVariable int developerId, @RequestBody AppDetailed app) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
-		int result = service.registerApp(developer_id, app);
+		int result = service.registerApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
-	
-	@RequestMapping(value = "/{developer_id}/apps/{appId}/update", method = RequestMethod.POST)
-	public ModelAndView updateApp(@PathVariable int developer_id, @PathVariable int appId, @RequestBody App app) {
-		//TODO IMPLEMENT
-		int result = -1;
+
+	@RequestMapping(value = "/{developerId}/apps/{appId}/update", method = RequestMethod.POST)
+	public ModelAndView updateApp(@PathVariable int developerId, @PathVariable int appId, @RequestBody AppDetailed app) {
+		
+		logger.info("updating app: " + developerId + " app: " + app.toString());
+		app.setId(appId);
+		int result = service.updateApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
-	
-	
-	@RequestMapping(value = "/demo", method = RequestMethod.POST)
-	public ModelAndView registerApp(@RequestBody Developer developer) {
-		
-		logger.info(developer.toString());
-		
-		return new ModelAndView("json", "result", "res");
-	}
 
-	@RequestMapping(value = "/demo2", method = RequestMethod.PUT)
-	public ModelAndView registerApp1(@RequestBody String str) {
-		
-		logger.info(str);
-		
-		return new ModelAndView("json", "registerApp", "res");
-	}
-	
-	@RequestMapping(value = "/demo3", method = RequestMethod.PUT)
-	public ModelAndView registerApp2(@RequestBody String str) {
-		Developer dev = new GsonBuilder().create().fromJson(str, Developer.class);
-		logger.info(str);
+	@RequestMapping(value = "/{developerId}/apps/{appId}/activation/update", method = RequestMethod.POST)
+	public ModelAndView updateAppActivation(@PathVariable int developerId, @PathVariable int appId, @RequestParam(required=true) boolean activated) {
 
-		logger.info(dev.toString());
-		
-		return new ModelAndView("json", "registerApp", "res");
+		logger.info("updating app activation: " + developerId + " app: " + appId + " act: " + activated);
+		int result = service.updateAppActivation(developerId, appId, activated);
+		return new ModelAndView("json", "result", result);
 	}
 
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)

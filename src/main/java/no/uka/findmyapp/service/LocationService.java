@@ -1,32 +1,22 @@
 package no.uka.findmyapp.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.datasource.SensorRepository;
 import no.uka.findmyapp.datasource.UkaProgramRepository;
 import no.uka.findmyapp.exception.LocationNotFoundException;
-import no.uka.findmyapp.model.CustomParameter;
 import no.uka.findmyapp.model.Fact;
-import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationCount;
-import no.uka.findmyapp.model.LocationReport;
-import no.uka.findmyapp.model.LocationStatus;
-import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
-import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.auth.ConsumerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,9 +29,20 @@ public class LocationService {
 	private LocationRepository data;
 	@Autowired
 	private SensorRepository sensor;
-
+	
+	private String bartenderString = "BartenderString";
+	
 	private static final Logger logger = LoggerFactory
 			.getLogger(UkaProgramRepository.class);
+	
+	public String getBartenderString() {
+		return bartenderString;
+	}
+
+	public boolean setBartenderString(String bartenderString) {
+		this.bartenderString = bartenderString;
+		return true;
+	}
 
 	public List<Location> getAllLocations() {
 		return data.getAllLocations();
@@ -69,10 +70,6 @@ public class LocationService {
 
 	public boolean registerSample(Sample sample) {
 		return data.registerSample(sample);
-	}
-
-	public boolean registerUserLocation(int userId, int locationId) {
-		return data.registerUserLocation(userId, locationId);
 	}
 
 	public Location getCurrentLocation(List<Signal> signals)

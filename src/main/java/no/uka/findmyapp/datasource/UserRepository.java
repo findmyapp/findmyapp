@@ -3,7 +3,9 @@ package no.uka.findmyapp.datasource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +14,14 @@ import javax.sql.DataSource;
 
 import no.uka.findmyapp.datasource.mapper.EventRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
+import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserPrivacyRowMapper;
 import no.uka.findmyapp.datasource.mapper.UserRowMapper;
-import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UkaEvent;
 import no.uka.findmyapp.model.User;
+import no.uka.findmyapp.model.UserPosition;
 import no.uka.findmyapp.model.UserPrivacy;
 
 import org.slf4j.Logger;
@@ -51,22 +54,17 @@ public class UserRepository {
 
 	public boolean addEvent(int userId, long eventId) {
 		try {
-			final long event_id = eventId;
-			final int user_id = userId;
 			jdbcTemplate.update(
-					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)",
-					new PreparedStatementSetter() {
-						public void setValues(PreparedStatement ps)
-								throws SQLException {
-							ps.setInt(1, user_id);
-							ps.setLong(2, event_id);
-						}
-					});
+					"INSERT into USER_EVENT(user_id, event_id) values (?, ?)", userId, eventId);
 			return true;
 		} catch (Exception e) {
-			logger.error("Could not register given location: " + e);
+			logger.error("Could not register event to user: " + e);
 			return false;
 		}
+	}
+	public boolean removeEvent(int userId, long eventId) {
+		int n = jdbcTemplate.update("DELETE from USER_EVENT WHERE user_id=? AND event_id=?", userId, eventId);
+		return n > 0;
 	}
 
 	public List<UkaEvent> getEvents(int userId) {
@@ -82,11 +80,36 @@ public class UserRepository {
 		return user;
 	}
 	
+	public boolean registerUserLocation(int userId, int locationId) {
+		try {
+			final int fUserId = userId;
+			final int fLocationId = locationId;
+			final Timestamp now = new Timestamp(new Date().getTime());
+			jdbcTemplate
+					.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) "
+							+ "ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
+							new PreparedStatementSetter() {
+								public void setValues(PreparedStatement ps)
+										throws SQLException {
+									ps.setInt(1, fUserId);
+									ps.setInt(2, fLocationId);
+									ps.setTimestamp(3, now);
+									ps.setInt(4, fLocationId);
+									ps.setTimestamp(5, now);
+								}
+							});
+			return true;
+		} catch (Exception e) {
+			logger.error("Could not register user position: " + e);
+			return false;
+		}
+	}
+	
 	public Location getUserLocation(int userId) {
 		try {
 			Location location = jdbcTemplate
 					.queryForObject(
-							"SELECT location.position_location_id, location.name "
+							"SELECT location.position_location_id, location.string_id "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
 									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
 							new LocationRowMapper(), userId);
@@ -109,18 +132,13 @@ public class UserRepository {
 
 	// Retrieving data
 	public UserPrivacy retrievePrivacy(int privacyId) {
-		try {
 			UserPrivacy privacy = jdbcTemplate
 					.queryForObject(
 							"SELECT USER_PRIVACY_SETTINGS.* FROM USER_PRIVACY_SETTINGS "
 									+ "WHERE USER_PRIVACY_SETTINGS.user_privacy_id = ? ",
 							new UserPrivacyRowMapper(), privacyId);
 			return privacy;
-		} catch (Exception e) {
-			return null;
 		}
-
-	}
 
 	// Updating data
 	public void updatePrivacy(int userPrivacyId, PrivacySetting newPosition,
@@ -160,8 +178,8 @@ public class UserRepository {
 		return users;
 	}
 
-	public List<User> getFacebookFriendsAtEvent(int eventId,
-			List<String> friendIds) {
+	public List<User> getFacebookFriendsAtEvent(int eventId, List<String> friendIds) {
+		
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
 		Map<String, Object> namedParameters = new HashMap<String, Object>();
@@ -180,6 +198,20 @@ public class UserRepository {
 						namedParameters, new UserRowMapper());
 		return users;
 	}
+	
+	public List<User> getFacebookFriendsWithCashless(List<String> friendIds) {
+		
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("ids", friendIds);
+		List<User> users = namedParameterJdbcTemplate
+				.query("SELECT u.* FROM USER u, USER_PRIVACY_SETTINGS p"
+						+ " WHERE u.facebook_id IN (:ids) AND u.cashless!=''"
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
+						namedParameters, new UserRowMapper());
+		return users;
+	}
 
 	/**
 	 * Adds a user with a Facebook Id. This is the only information added to DB.
@@ -187,9 +219,13 @@ public class UserRepository {
 	 * @param facebookId
 	 *            id of user in Facebook
 	 */
-	public int addUserWithFacebookId(final String facebookId) {
+	public int addUserWithFacebookId(final String facebookId, final String facebookName) {
 		
-		final String INSERT_SQL = "INSERT INTO USER (facebook_id) VALUES (?)";
+		//Add row in privacy_settings table
+		final int privacyId = createDefaultPrivacySettingsEntry();
+
+		//Add row in user table
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name, user_privacy_id) VALUES (?,?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
@@ -197,6 +233,8 @@ public class UserRepository {
 		            PreparedStatement ps =
 		                connection.prepareStatement(INSERT_SQL, new String[] {"user_id"});
 		            ps.setString(1, facebookId);
+		            ps.setString(2, facebookName);
+		            ps.setInt(3, privacyId);
 		            return ps;
 		        }
 
@@ -228,17 +266,11 @@ public class UserRepository {
 		return facebookId;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
-		try {
-			int userPrivacyId = jdbcTemplate.queryForInt(
+	public int findUserPrivacyId(int userId) {
+		int userPrivacyId = jdbcTemplate.queryForInt(
 					"SELECT USER.USER_PRIVACY_ID FROM USER "
 							+ "WHERE USER.user_id = ? ", userId);
-			return userPrivacyId;
-		} catch (Exception e) {
-			throw new InvalidUserIdOrAccessTokenException("Invalid user id ");
-		}
-
+		return userPrivacyId;
 	}
 
 	public int updateUserTokenIssueTime(long tokenIssued, int userId) {
@@ -249,6 +281,10 @@ public class UserRepository {
 
 	public long getUserTokenIssued(int userId) {
 		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER WHERE user_id=?", userId);
+	}
+
+	public List<UserPosition> getLocationOfAllUsers() {
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
 
 }

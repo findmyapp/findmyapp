@@ -2,11 +2,10 @@ package no.uka.findmyapp.service;
 
 //import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import no.uka.findmyapp.datasource.UserRepository;
-import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.UkaEvent;
@@ -67,6 +66,9 @@ public class UserService {
 
 	public boolean addEvent(int userId, long eventId) {
 		return data.addEvent(userId, eventId);
+	}
+	public boolean removeEvent(int userId, long eventId) {
+		return data.removeEvent(userId, eventId);
 	}
 
 	public List<UkaEvent> getEvents(int userId) {
@@ -185,6 +187,21 @@ public class UserService {
 		List<User> users = data.getFacebookFriendsAtEvent(eventId, friendIds);
 		return users;
 	}
+	
+	/**
+	 * Retreives all of the dudes friends that have registred their Cashless card
+	 * 
+	 * @param userId Id of the user in local datastore
+	 * @return list of the dudes friends
+	 * @throws ConsumerException
+	 */
+	public List<User> getFriendsWithCashless(int userId) throws ConsumerException {
+		
+		List<String> friendIds = getFacebookIdOfFriends(userId);
+		List<User> users = data.getFacebookFriendsWithCashless( friendIds );
+		return users;
+		
+	}
 
 	/**
 	 * Generic method to extract a users friends based on its user id in the FMA data store.
@@ -202,8 +219,7 @@ public class UserService {
 		return friendIds;
 	}
 
-	public int findUserPrivacyId(int userId)
-			throws InvalidUserIdOrAccessTokenException {
+	public int findUserPrivacyId(int userId) {
 		return data.findUserPrivacyId(userId);
 	}
 
@@ -239,15 +255,30 @@ public class UserService {
 		return facebook.getConsumerFacebookToken(auth.getConsumerDetails());
 	}
 	
-	//TODO
-	public Location getUserLocation(int userId, int tokenUserId) {
-		UserPrivacy up = getUserPrivacyForUserId(userId);
-		switch(up.getPositionPrivacySetting()) {
+	public boolean registerUserLocation(int userId, int locationId) {
+		return data.registerUserLocation(userId, locationId);
+	}
+	
+	/**
+	 * Retreives the most recent registered location of a user.
+	 * Only returns the position if the asking user has permission.
+	 * 
+	 * @param userId 
+	 * 				Id of the user you want the location of
+	 * @param tokenUserId
+	 * 				Id of the user who is asking for the location
+	 * @return The location of the user if the asking user has permission to
+	 * @throws ConsumerException
+	 */
+	public Location getUserLocation(int userId, int tokenUserId) throws ConsumerException {
+		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
+		switch(userPrivacy.getPositionPrivacySetting()) {
 			case ANYONE:
 				return data.getUserLocation(userId);
 			case FRIENDS:
-				// If they are friends
-				return data.getUserLocation(userId);
+				if(areFriends(userId, tokenUserId)) {
+					return data.getUserLocation(userId);
+				}
 			case ONLY_ME:
 				return null;
 			default:
@@ -255,18 +286,46 @@ public class UserService {
 		}
 	}
 
-	//TODO
+	/**
+	 * Retreives a list of all user positions.
+	 * 
+	 * @return A list of all userpositions found in database
+	 */
 	public List<UserPosition> getLocationOfAllUsers() {
-		return null;
-	}
-	
-	//TODO
-	public Location getLocationOfFriend(int friendId, int userId) {
-		return null;
+		return data.getLocationOfAllUsers();
 	}
 
-	//TODO
-	public Map<Integer, Integer> getLocationOfFriends(int userId) throws ConsumerException {
-		return null;
+	/**
+	 * Retreives a list of the user positions of users facebook friends.
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws ConsumerException
+	 */
+	public List<UserPosition> getLocationOfFriends(int userId) throws ConsumerException {
+		List<UserPosition> friendsPositions = new ArrayList<UserPosition>();
+		List<UserPosition> allUserPositions = getLocationOfAllUsers();
+		for(UserPosition userposition : allUserPositions) {
+			if(areFriends(userposition.getUserId(), userId)) {
+				friendsPositions.add(userposition);
+			}
+		}
+		return friendsPositions;
+	}
+
+	public List<UkaEvent> getEvents(int userId, int tokenUserId) throws ConsumerException {
+		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
+		switch(userPrivacy.getEventsPrivacySetting()) {
+			case ANYONE:
+				return data.getEvents(userId);
+			case FRIENDS:
+				if(areFriends(userId, tokenUserId)) {
+					return data.getEvents(userId);
+				}
+			case ONLY_ME:
+				return null;
+			default:
+				return null;
+		}
 	}
 }

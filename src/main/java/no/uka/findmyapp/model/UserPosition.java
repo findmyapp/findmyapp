@@ -2,23 +2,23 @@ package no.uka.findmyapp.model;
 
 public class UserPosition {
 
-		private String user;
-		private String location;
+		private int userId;
+		private int locationId;
 		
-		public String getUser() {
-			return user;
+		public int getUserId() {
+			return userId;
 		}
 		
-		public void setUser(String user) {
-			this.user = user;
+		public void setUserId(int user) {
+			this.userId = user;
 		}
 
-		public String getLocation() {
-			return location;
+		public int getLocationId() {
+			return locationId;
 		}
 
-		public void setLocation(String location) {
-			this.location = location;
+		public void setLocationId(int location) {
+			this.locationId = location;
 		}
 		
 }

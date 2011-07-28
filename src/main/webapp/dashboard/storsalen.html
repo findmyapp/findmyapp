@@ -13,14 +13,21 @@
 </head>
 
 <body>
-	<header>
-		<h1 id="findMyApp">FindMyApp</h1>
-	</header>
-
 	<section id="mainContent">
+		<a href="samfundet.html"> <img src="images/backbutton.jpg"
+			alt="Tilbake" id="back_button" />
+		</a>
+		<header id="header">
+			<h1 id="findMyApp">FindMyApp</h1>
+		</header>
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
+				<div id="people_counter_div">
+					<img id="people_icon" alt="Antall personer på Strossa: "
+						src="images/people_icon.gif" />
+					<p id="people_counter_paragraph"></p>
+				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
@@ -28,43 +35,58 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
-			<h1 id="room-heading">Storsalen</h1>
+			<img alt="Samfundetkart med Storsalen markert"
+				src="images/kartstorsalen.png" id="map-with-selection" />
 			<div id="room-info-div">
-			<p>Dette rommet er hjertet i studentmiljøet i Trondheim. Her velges lederen for Samfundet, UKEsjefen og ISFiT-presidenten, tre av de viktigste vervene i studentmiljøet. Storsalen er også stedet for de legendariske UKErevyene. </p>
-			<br>
-			<img alt="Samfundetkart med Storsalen markert" src="images/kartstorsalen.png" id="map-with-selection"/>
-			<h4>Visste du at?</h4>
-			
-			<br>
-			
-			<ul>
-			<li>Tribunene i Storsalen er delt opp i fire kvadranter, hver med 90 sitteplasser. Kvadrantene er nummerert fra en til fire, hvor første kvadrant ligger lengst mot sør. Da Samfundet holdt til i Cirkus ble tradisjonen med faste plasser startet. I første kvadrant satt gamle akademikere med fruer. Grunnen til at de satt her var mest sannsynlig at dette var den minst trekkfulle plassen i salen. I andre kvadrant satt studenter som hadde med seg dame. Det ble derfor kallt forloved-kvadranten. I tredje kvadrant satt de som var kommet for å få utbytte av foredraget, og i fjerde kvadrant de som ville være nærmest ølsalget. Men tidene har forandret seg, og nå er det fritt fram hvor man kan sitte.</li>
-			</ul>
+				<p>Dette rommet er hjertet i studentmiljøet i Trondheim. Her
+					velges lederen for Samfundet, UKEsjefen og ISFiT-presidenten, tre
+					av de viktigste vervene i studentmiljøet. Storsalen er også stedet
+					for de legendariske UKErevyene.</p>
 
-			 </div>
-			<div id="event-info-div" style="hidden"></div>
+				<br>
+
+				<h4>Visste du at?</h4>
+
+				<br>
+
+				<ul>
+					<li>Tribunene i Storsalen er delt opp i fire kvadranter, hver
+						med 90 sitteplasser. Kvadrantene er nummerert fra en til fire,
+						hvor første kvadrant ligger lengst mot sør. Da Samfundet holdt til
+						i Cirkus ble tradisjonen med faste plasser startet. I første
+						kvadrant satt gamle akademikere med fruer. Grunnen til at de satt
+						her var mest sannsynlig at dette var den minst trekkfulle plassen
+						i salen. I andre kvadrant satt studenter som hadde med seg dame.
+						Det ble derfor kallt forloved-kvadranten. I tredje kvadrant satt
+						de som var kommet for å få utbytte av foredraget, og i fjerde
+						kvadrant de som ville være nærmest ølsalget. Men tidene har
+						forandret seg, og nå er det fritt fram hvor man kan sitte.</li>
+				</ul>
+
+			</div>
+			<div id="event-info-div" style=""></div>
 		</div>
-
 		<aside id="left_aside">
 			<section>
 				<table class='event-table' id='event-table-today'>
 					<tr class='event-table-header'>
-						<th colspan="2">I dag</th>
+						<th colspan="2">Dagens arrangementer</th>
 					</tr>
 				</table>
 
 				<table class='event-table' id='event-table-tomorrow'>
 					<tr class='event-table-header'>
-						<th colspan="2">I morgen</th>
+						<th colspan="2">Morgendagens arrangementer</th>
 					</tr>
 				</table>
 			</section>
 		</aside>
 	</section>
-	
-	<footer>
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
+
+	<footer id="footer">
+		<FONT id="livefeed_font" face="futura medium" color="white"> <marquee
+				id="live_feed" direction="left" behavior="scroll" scrollamount="5"
+				bgcolor="#8F0000"></marquee> </FONT>
 	</footer>
 </body>
 

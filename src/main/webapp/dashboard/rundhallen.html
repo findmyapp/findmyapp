@@ -14,14 +14,19 @@
 </head>
 
 <body>
-	<header>
-		<h1 id="findMyApp">FindMyApp</h1>
-	</header>
-
 	<section id="mainContent">
+		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
+			id="back_button" /></a>
+		<header id="header">
+			<h1 id="findMyApp">FindMyApp</h1>
+		</header>
 		<!-- Sidebars / Aside -->
 		<aside id="right_aside">
 			<section>
+				<div id="people_counter_div">
+					<img id="people_icon" alt="Antall personer på Strossa: " src="images/people_icon.gif" />
+					<p id="people_counter_paragraph"></p>
+				</div>
 				<div id='temp_chart'></div>
 				<div id='humidity_chart'></div>
 			</section>
@@ -29,11 +34,11 @@
 
 		<div id="mcontent">
 			<!-- Content Section -->
-			<h1 id="room-heading">Rundhallen</h1>
+			<img alt="Samfundetkart med rundhallen markert" src="images/kartrundhallen.png" id="map-with-selection"/>
 			<div id="room-info-div">
 			<p>Rundhallen er det første som møter en etter å ha gått inn hovedinngangen på Samfundet. Her står garderobevaktene klare og du finner informasjon om hva som foregår på Huset til enhver tid. Rundhallen er myldreplassen på Samfundet, og dessuten det letteste stedet å avtale å møtes dersom man går seg bort. Rundhallen er det roligste lokalet på huset, så det er perfekt for å samle gjengen og kjøpe den første pilsen. Lokalet har selvfølgelig en egen bar, og under den flotte lysekronen i midten ligger Samfundets grunnstein, lagt ned av Kronprins Olav i 1927. Prøv å stå oppå glassplata over steinen og hør på den merkelige akustikken som er akkurat der. Rundhallen var byggeprosjektet til UKA-07, og ble i den anledningen pusset opp.</p>
 			<br>
-			<img alt="Samfundetkart med rundhallen markert" src="images/kartrundhallen.png" id="map-with-selection"/>
+			
 			<h4>Visste du at?</h4>
 			<br>
 			<ul>
@@ -48,22 +53,23 @@
 			<section>
 				<table class='event-table' id='event-table-today'>
 					<tr class='event-table-header'>
-						<th colspan="2">I dag</th>
+						<th colspan="2">Dagens arrangementer</th>
 					</tr>
 				</table>
 
 				<table class='event-table' id='event-table-tomorrow'>
 					<tr class='event-table-header'>
-						<th colspan="2">I morgen</th>
+						<th colspan="2">Morgensdagen arrangementer</th>
 					</tr>
 				</table>
 			</section>
 		</aside>
 	</section>
-	
-	<footer>
-		<a href="samfundet.html"> <img src="images/backbutton.jpg" alt="Tilbake"
-			id="back_button" /></a>
+
+	<footer id="footer">
+		<FONT id = "livefeed_font" face="futura medium" color="white">
+			<marquee id="live_feed" direction="left" behavior="scroll"	scrollamount="5" bgcolor= "#8F0000"></marquee>
+		</FONT>
 	</footer>
 </body>
 

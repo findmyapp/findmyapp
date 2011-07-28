@@ -1,12 +1,14 @@
-var info; // data from server
+var humidity;
+var temperature;
+var comments;
 var userCount;
 var todaysEvents;
 var tomorrowsEvents;
+//var server = 'http://localhost:8080/';
+var server = 'http://findmyapp.net/';
 
-function getData(locationID, locationName, datatype) {// get json data from server
-	var url;
-	var request;
 
+function getData(locationID, locationName) {// get json data from server
 	requestUsers(locationID);
 	requestLocationReports(locationID);
 	requestTemperature(locationID);
@@ -16,32 +18,34 @@ function getData(locationID, locationName, datatype) {// get json data from serv
 }
 
 function requestTodaysEvents(locationName){
-	var url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/today';
+	var url = server + 'findmyapp/program/uka11/places/'+ locationName + '/today';
 	var request = new ajaxObject(url, processTodaysEvents);
 	request.update();  // Server is contacted here
 }
 
 function requestTomorrowsEvents(locationName){
-	url = 'http://localhost:8080/findmyapp/program/uka11/places/'+ locationName + '/tomorrow';
-	request = new ajaxObject(url, processTomorrowsEvents);
+	var url = server + 'findmyapp/program/uka11/places/'+ locationName + '/tomorrow';
+	var request = new ajaxObject(url, processTomorrowsEvents);
 	request.update();  // Server is contacted here
 }
 
 function processTodaysEvents(responseText, responseStatus){
 	if (responseStatus==200) {
-		
-		//console.log(responseText);
+		console.log(responseText);
 		todaysEvents = eval(responseText);
 		updateEventList('today');  	
+	} else {
+		console.log(responseStatus + ' -- Error Processing Request for todays events');
 	}
 }
 
 function processTomorrowsEvents(responseText, responseStatus){
 	if (responseStatus==200) {
-		
-		//console.log(responseText);
+		console.log(responseText);
 		tomorrowsEvents = eval(responseText);
 		updateEventList('tomorrow');  	
+	} else {
+		console.log(responseStatus + ' -- Error Processing Request request for tomorrows events');
 	}
 }
 
@@ -60,24 +64,29 @@ function updateEventList(day){
 	var i=0;
 	var row;
 	var cell;
-	
-	//console.log('no of events: ' + list.length)
-	for(i = 0; i < list.length; i++) {
-		
+	if (list.length == 0) {
 		row = table.insertRow (-1);
-		
-		var arg = "showEvent(" + i +",'" + day + "');";
-        row.setAttribute("onClick",arg);
-        
         cell = row.insertCell (0);
-        var date = new Date(list[i].showingTime); 
-        //console.log(date);
-        cell.innerHTML = date.format("HH:MM"); 
-        
-        cell = row.insertCell (1);
-       	cell.innerHTML = list[i].title;
-       	
+        cell.innerHTML = 'Ingen arrangement';
+	} else {
+		for(i = 0; i < list.length; i++) {
+			if (i > 4){
+				break;
+			}
+			row = table.insertRow (-1);
+			var arg = "showEvent(" + i +",'" + day + "');";
+	        row.setAttribute("onClick",arg);
+	        
+	        cell = row.insertCell (0);
+	        var date = new Date(list[i].showingTime); 
+	        cell.innerHTML = date.format("HH:MM"); 
+	        
+	        cell = row.insertCell (1);
+	       	cell.innerHTML = list[i].title;
+	       	//console.log(date);	
+		}
 	}
+	
 }
 
 function showEvent(index, day) {
@@ -111,9 +120,8 @@ function showEvent(index, day) {
 }
 
 function requestUsers(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID + '/users/count';
-//	url = 'http://findmyapp.net/findmyapp/locations/usercount';
-	request = new ajaxObject(url, processUserData, locationID);
+	var url = server + 'findmyapp/locations/' + locationID + '/users/count';
+	var request = new ajaxObject(url, processUserData, locationID);
 	request.update();  // Server is contacted here.
 }
 
@@ -124,33 +132,30 @@ function processUserData(responseText, responseStatus, locationID) {
 		  userCount = eval(hax);
 		  drawUserDataChart();
 	  } else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Request for user count');
 	  }
 }
 
 function drawUserDataChart() {
-	document.getElementById('user_count').innerHTML = "[" + userCount[0].usercount + "]";
+	document.getElementById('people_counter_paragraph').innerHTML = userCount[0].usercount;
 	console.log("usercount is...: " + userCount[0].usercount);
-
 }
 
 // populate temperature chart
 function requestTemperature(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	var url = server + 'findmyapp/locations/' + locationID
 			+ '/temperature/latest';
-//	 url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
-//	 '/temperature/latest';
-	request = new ajaxObject(url, processTemperatureData);
+	var request = new ajaxObject(url, processTemperatureData);
 	request.update(); // Server is contacted here.
 }
 
 function processTemperatureData(responseText, responseStatus) {
 	if (responseStatus == 200) {
 		console.log(responseText);
-		info = eval(responseText);
+		temperature = eval(responseText);
 		drawTemperatureChart();
 	} else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Temperature Request');
 	}
 }
 
@@ -160,7 +165,7 @@ function drawTemperatureChart() {
 	data.addColumn('number', 'Value');
 	data.addRows(1);
 	data.setValue(0, 0, 'Temperatur');
-	data.setValue(0, 1, info[0].value);
+	data.setValue(0, 1, temperature[0].value);
 
 	var chart = new google.visualization.Gauge(document
 			.getElementById('temp_chart'));
@@ -181,30 +186,32 @@ function drawTemperatureChart() {
 
 // populate the livefeed
 function requestLocationReports(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	var url = server + 'findmyapp/locations/' + locationID
 	+ '/userreports';
-	request = new ajaxObject(url, processLocationReports);
+	var request = new ajaxObject(url, processLocationReports);
 	request.update('parname=comment');
 }
 
 function processLocationReports(responseText, responseStatus) {
 	if (responseStatus == 200) {
-		info = eval(responseText);
+		comments = eval(responseText);
 		console.log("responseText: "+responseText);
 		drawLocationReports();
 	} else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Request for comments (location reports)');
 	}
 }
 
 function drawLocationReports() {
 	var reportString = "";
 	var i = 0;
-	for (i = 0; i < info.length; i++) {
+	for (i = 0; i < comments.length; i++) {
 		if (i == 0) {
-			reportString += info[i].parameterTextValue;
+			reportString += comments[i].username+": ";
+			reportString += comments[i].parameterTextValue;
 		} else {
-			reportString += "                                                          " + info[i].parameterTextValue;
+			reportString += "                                                          " + comments[i].username+": ";
+			reportString += comments[i].parameterTextValue;
 			var blankCharacter = "&" + "nbsp";
 			reportString = reportString.replace(/ /gi, blankCharacter);
 		}
@@ -214,22 +221,20 @@ function drawLocationReports() {
 
 // populate humidity chart
 function requestHumidity(locationID) {
-	url = 'http://localhost:8080/findmyapp/locations/' + locationID
+	var url = server + 'findmyapp/locations/' + locationID
 			+ '/humidity/latest';
-//	 url = 'http://findmyapp.net/findmyapp/locations/' + locationID +
-//	 '/humidity/latest';
-	request = new ajaxObject(url, processHumidityData);
+	var request = new ajaxObject(url, processHumidityData);
 	request.update();
 }
 
 function processHumidityData(responseText, responseStatus) {
 	if (responseStatus == 200) {
 		//console.log(responseText);
-		info = eval(responseText);
-		// console.log("humidity info length: "+info.length);
+		humidity = eval(responseText);
+		// console.log("humidity length: " + humidity.length);
 		drawHumidityChart();
 	} else {
-		alert(responseStatus + ' -- Error Processing Request');
+		console.log(responseStatus + ' -- Error Processing Request for humidity data');
 	}
 }
 
@@ -239,7 +244,7 @@ function drawHumidityChart() {
 	data.addColumn('number', 'Luftfuktighet i prosent');
 	data.addRows(1);
 	data.setValue(0, 0, 'Luftfuktighet');
-	data.setValue(0, 1, info[0].value);
+	data.setValue(0, 1, humidity[0].value);
 
 	var chart = new google.visualization.Gauge(document
 			.getElementById('humidity_chart'));
