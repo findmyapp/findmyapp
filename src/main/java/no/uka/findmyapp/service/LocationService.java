@@ -36,9 +36,11 @@ public class LocationService {
 			.getLogger(UkaProgramRepository.class);
 	
 	public String getBartenderString() {
-		return bartenderString;
+		int numOfChars = bartenderString.length();
+		String newString = String.format("%s%"+(128-numOfChars)+"s", bartenderString,"~");   
+		return newString;
 	}
-
+	
 	public boolean setBartenderString(String bartenderString) {
 		this.bartenderString = bartenderString;
 		return true;

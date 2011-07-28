@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class UserRepository {
 		try {
 			Location location = jdbcTemplate
 					.queryForObject(
-							"SELECT location.position_location_id, location.string_id "
+							"SELECT location.position_location_id, location.string_id, location.name "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
 									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
 							new LocationRowMapper(), userId);
@@ -125,7 +126,7 @@ public class UserRepository {
 
 		UserPrivacy privacy = jdbcTemplate
 				.queryForObject(
-						"SELECT PRIV.* FROM USER_PRIVACY_SETTINGS AS PRIV JOIN USER ON user_privacy_id WHERE USER.user_id = ?",
+						"SELECT p.* FROM USER_PRIVACY_SETTINGS AS p, USER as u WHERE u.user_privacy_id=p.user_privacy_id AND u.user_id = ?",
 						new UserPrivacyRowMapper(), userId);
 		return privacy;
 	}
@@ -207,7 +208,7 @@ public class UserRepository {
 		namedParameters.put("ids", friendIds);
 		List<User> users = namedParameterJdbcTemplate
 				.query("SELECT u.* FROM USER u, USER_CASHLESS c, USER_PRIVACY_SETTINGS p"
-						+ " WHERE u.facebook_id IN (:ids) AND u.id=c.user_id"
+						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=c.user_id"
 						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
 						namedParameters, new UserRowMapper());
 		return users;
@@ -225,7 +226,7 @@ public class UserRepository {
 		final int privacyId = createDefaultPrivacySettingsEntry();
 
 		//Add row in user table
-		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name, user_privacy_id) VALUES (?,?,?)";
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name, user_privacy_id, registered_date) VALUES (?,?,?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
@@ -235,6 +236,7 @@ public class UserRepository {
 		            ps.setString(1, facebookId);
 		            ps.setString(2, facebookName);
 		            ps.setInt(3, privacyId);
+		            ps.setTimestamp(4, new Timestamp(new GregorianCalendar().getTimeInMillis()));
 		            return ps;
 		        }
 
