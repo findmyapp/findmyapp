@@ -76,6 +76,7 @@ public class CustomParameterRepository {
 				+ "WHERE parameter_name = ? "
 				+ "AND position_location_id=? "
 				+ "ORDER BY time DESC LIMIT 0,? ";
+			logger.info(sql);
 			return jdbcTemplate.query(sql,
 					new LocationReportRowMapper(), parName, locationId,
 					numberOfelements);
