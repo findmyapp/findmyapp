@@ -42,6 +42,25 @@ public class SensorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
+	/*
+	@RequestMapping(value="/{locationId}/sensor/all/latest",method = RequestMethod.GET)
+	public ModelAndView getSensorData(
+			@PathVariable int locationId,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
+			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to
+			) {
+		
+		temperatureList = service.getTemperatureData(from, to, locationId);
+		
+		if(temperatureList.isEmpty()){
+			return new ModelAndView("fail_respons");
+		}
+		else{
+			return new ModelAndView("json","temperature",temperatureList);
+		}
+	} 
+	*/
+	
 	@RequestMapping(value="/{locationId}/temperature",method = RequestMethod.GET)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,

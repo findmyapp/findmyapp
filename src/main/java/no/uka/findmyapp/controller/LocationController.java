@@ -88,7 +88,7 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN") //TODO dette maa fikses. Ingen privacy, tilgang eller dokumentasjon. Brukes ikke!
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = User.class)
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
@@ -169,7 +169,6 @@ public class LocationController {
 	@RequestMapping(value = "/screen/{text}", method = RequestMethod.PUT)
 	@ServiceModelMapping(returnType = Boolean.class)
 	public ModelAndView postBartenderString(@PathVariable("text") String text) {
-		System.out.println("postBartenderString");
 		boolean success = service.setBartenderString(text);
 		return new ModelAndView("json", "put_bartender_string", success);
 	}

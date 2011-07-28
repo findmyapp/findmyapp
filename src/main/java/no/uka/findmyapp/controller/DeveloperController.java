@@ -73,6 +73,7 @@ public class DeveloperController {
 
 	@RequestMapping(value = "/{developerId}/apps/add", method = RequestMethod.PUT)
 	public ModelAndView registerApp(@PathVariable int developerId, @RequestBody AppDetailed app) {
+		
 		//TODO FIX EXCEPTION IF INSERT FAILED
 		int result = service.registerApp(developerId, app);
 		return new ModelAndView("json", "result", result);
@@ -94,7 +95,6 @@ public class DeveloperController {
 		int result = service.updateAppActivation(developerId, appId, activated);
 		return new ModelAndView("json", "result", result);
 	}
-	
 
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
@@ -112,6 +112,22 @@ public class DeveloperController {
 		logger.info(temp.toString());
 		
 		return new ModelAndView("json", "registerApp", temp);
+	}
+	
+
+	@RequestMapping(value = "/demo2", method = RequestMethod.GET)
+	public ModelAndView demo2() {
+		
+		logger.info("JSON TEST");
+		
+		return new ModelAndView("json", "registerApp", "JSON TEST");
+	}
+	@RequestMapping(value = "/demo1", method = RequestMethod.GET)
+	public ModelAndView demo1() {
+		boolean b = true;
+		logger.info("JSON TEST");
+		
+		return new ModelAndView("json", "registerApp", b);
 	}
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

@@ -21,6 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -160,8 +161,7 @@ public class UkaProgramController {
 		return new ModelAndView("json", "ukaProgram", configs);
 	}
 
-	
-
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/events/{id}/friends", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=User.class, isList=true)
 	public ModelAndView getFriendsAttendingEvent(

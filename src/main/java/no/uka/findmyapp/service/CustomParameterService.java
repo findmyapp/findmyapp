@@ -8,19 +8,9 @@ import java.util.List;
 import no.uka.findmyapp.datasource.CustomParameterRepository;
 import no.uka.findmyapp.datasource.LocationRepository;
 import no.uka.findmyapp.datasource.SensorRepository;
-import no.uka.findmyapp.datasource.UkaProgramRepository;
-import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.model.CustomParameter;
-import no.uka.findmyapp.model.Fact;
-import no.uka.findmyapp.model.Humidity;
-import no.uka.findmyapp.model.Location;
-import no.uka.findmyapp.model.LocationCount;
+import no.uka.findmyapp.model.CustomParameterDetailed;
 import no.uka.findmyapp.model.LocationReport;
-import no.uka.findmyapp.model.Noise;
-import no.uka.findmyapp.model.Sample;
-import no.uka.findmyapp.model.Signal;
-import no.uka.findmyapp.model.Temperature;
-import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.service.auth.ConsumerException;
 
 import org.slf4j.Logger;
@@ -169,8 +159,8 @@ public class CustomParameterService {
 	public List<CustomParameter> listParameters() {
 		return data.findAllParameters();
 	}
-	public List<CustomParameter> listParameters(int developerId) {
-		return data.findAllParameters(developerId);
+	public List<CustomParameterDetailed> listParameters(int developerId) {
+		return data.findAllParametersDetaiedForDeveloperId(developerId);
 	}
 
 

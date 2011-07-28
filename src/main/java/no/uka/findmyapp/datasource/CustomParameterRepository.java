@@ -3,37 +3,17 @@ package no.uka.findmyapp.datasource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
+import no.uka.findmyapp.datasource.mapper.CustomParameterDetailedRowMapper;
 import no.uka.findmyapp.datasource.mapper.CustomParameterRowMapper;
-import no.uka.findmyapp.datasource.mapper.FactRowMapper;
-import no.uka.findmyapp.datasource.mapper.LocationCountRowMapper;
 import no.uka.findmyapp.datasource.mapper.LocationReportRowMapper;
-import no.uka.findmyapp.datasource.mapper.LocationRowMapper;
-import no.uka.findmyapp.datasource.mapper.SampleRowMapper;
-import no.uka.findmyapp.datasource.mapper.SampleSignalRowMapper;
-import no.uka.findmyapp.datasource.mapper.SignalRowMapper;
-import no.uka.findmyapp.datasource.mapper.UserLocationRowMapper;
-import no.uka.findmyapp.datasource.mapper.UserPositionRowMapper;
-import no.uka.findmyapp.datasource.mapper.UserRowMapper;
 import no.uka.findmyapp.model.CustomParameter;
-import no.uka.findmyapp.model.Fact;
-import no.uka.findmyapp.model.Location;
-import no.uka.findmyapp.model.LocationCount;
+import no.uka.findmyapp.model.CustomParameterDetailed;
 import no.uka.findmyapp.model.LocationReport;
-import no.uka.findmyapp.model.ManageParameterRespons;
-import no.uka.findmyapp.model.Sample;
-import no.uka.findmyapp.model.Signal;
-import no.uka.findmyapp.model.User;
-import no.uka.findmyapp.model.UserPosition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +24,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -256,7 +234,14 @@ public class CustomParameterRepository {
 		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER", new CustomParameterRowMapper());
 	}
 
-	public List<CustomParameter> findAllParameters(int developerId) {	
-		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER WHERE appstore_developer_id = ?", new CustomParameterRowMapper(), developerId);
+	public List<CustomParameterDetailed> findAllParametersDetaiedForDeveloperId(int developerId) {	
+		return jdbcTemplate.query(
+				"SELECT CP.*, CP.parameter_name, COUNT(CPV.custom_parameter_id) AS count " +
+				" FROM findmydb.CUSTOM_PARAMETER_VALUE AS CPV" +
+				" RIGHT OUTER JOIN findmydb.CUSTOM_PARAMETER AS CP" +
+				" ON CPV.custom_parameter_id = CP.custom_parameter_id" +
+				" WHERE CP.appstore_developer_id = ?" +
+				" GROUP BY CP.custom_parameter_id", 
+				new CustomParameterDetailedRowMapper(), developerId);
 	}
 }

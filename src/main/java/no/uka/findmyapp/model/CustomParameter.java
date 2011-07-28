@@ -1,9 +1,9 @@
 package no.uka.findmyapp.model;
 
 public class CustomParameter {
-	int customParameterId;
-	int appstoreDeveloperId;
-	String parameterName;
+	protected int customParameterId;
+	protected int appstoreDeveloperId;
+	protected String parameterName;
 	
 	public int getCustomParameterId() {
 		return customParameterId;

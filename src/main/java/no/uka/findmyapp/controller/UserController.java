@@ -62,6 +62,7 @@ public class UserController {
 		data.addObject("success", eventAdded);
 		return data;
 	}
+	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/events/{eventId}", method = RequestMethod.DELETE)
 	public ModelAndView removeEvent(@PathVariable long eventId, @RequestParam(required = true) String token) {
@@ -139,6 +140,7 @@ public class UserController {
 	 * @return
 	 * @throws InvalidUserIdOrAccessTokenException
 	 */
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/me/privacy", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = String.class, isList = true)
 	public ModelAndView getPrivacy(@RequestParam(required = true) String token)throws ConsumerException {
@@ -171,7 +173,7 @@ public class UserController {
 	}
 	
 
-	// @Secured("ROLE_CONSUMER")
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{id}/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getUserLocation(
@@ -193,7 +195,7 @@ public class UserController {
 	}
 	
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "me/friends/all/location", method = RequestMethod.GET)
+	@RequestMapping(value = "/me/friends/all/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getLocationOfFriends(@PathVariable int userId,
 			@RequestParam(required = true) String token) throws ConsumerException, TokenException {
