@@ -110,7 +110,7 @@ public class UserRepository {
 		try {
 			Location location = jdbcTemplate
 					.queryForObject(
-							"SELECT location.position_location_id, location.string_id "
+							"SELECT location.position_location_id, location.string_id, location.name "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
 									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
 							new LocationRowMapper(), userId);
@@ -126,7 +126,7 @@ public class UserRepository {
 
 		UserPrivacy privacy = jdbcTemplate
 				.queryForObject(
-						"SELECT PRIV.* FROM USER_PRIVACY_SETTINGS AS PRIV JOIN USER ON user_privacy_id WHERE USER.user_id = ?",
+						"SELECT p.* FROM USER_PRIVACY_SETTINGS AS p, USER as u WHERE u.user_privacy_id=p.user_privacy_id AND u.user_id = ?",
 						new UserPrivacyRowMapper(), userId);
 		return privacy;
 	}
@@ -207,8 +207,8 @@ public class UserRepository {
 		Map<String, Object> namedParameters = new HashMap<String, Object>();
 		namedParameters.put("ids", friendIds);
 		List<User> users = namedParameterJdbcTemplate
-				.query("SELECT u.* FROM USER u, USER_PRIVACY_SETTINGS p"
-						+ " WHERE u.facebook_id IN (:ids) AND u.cashless!=''"
+				.query("SELECT u.* FROM USER u, USER_CASHLESS c, USER_PRIVACY_SETTINGS p"
+						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=c.user_id"
 						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
 						namedParameters, new UserRowMapper());
 		return users;

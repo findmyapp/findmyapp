@@ -255,4 +255,8 @@ public class CustomParameterRepository {
 	public List<CustomParameter> findAllParameters() {	
 		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER", new CustomParameterRowMapper());
 	}
+
+	public List<CustomParameter> findAllParameters(int developerId) {	
+		return jdbcTemplate.query("SELECT * FROM CUSTOM_PARAMETER WHERE appstore_developer_id = ?", new CustomParameterRowMapper(), developerId);
+	}
 }

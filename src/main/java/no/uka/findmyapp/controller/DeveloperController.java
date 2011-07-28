@@ -94,6 +94,7 @@ public class DeveloperController {
 		int result = service.updateAppActivation(developerId, appId, activated);
 		return new ModelAndView("json", "result", result);
 	}
+	
 
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)

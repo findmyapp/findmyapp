@@ -18,18 +18,17 @@ public class CashlessInvoice {
 	/**
 	 * Location for the sale
 	 */
-	private String location; // should be changed to a Location object
+	private String saleLocation; // should be changed to a Location object
 	
 	/**
-	 * Card balance after the sale
+	 * Amount for sale
 	 */
-	private int cardBalanceAfter;
+	private int saleTotalAmount;
 	
 	/**
 	 * List of items bought
 	 */
 	private List<CashlessInvoiceItem> products;
-	
 	
 	public void setInvoiceNo(String invoiceNo) {
 		this.invoiceNo = invoiceNo;
@@ -44,16 +43,16 @@ public class CashlessInvoice {
 		return saleTime;
 	}
 	public void setLocation(String location) {
-		this.location = location;
+		this.saleLocation = location;
 	}
 	public String getLocation() {
-		return location;
+		return saleLocation;
 	}
-	public void setCardBalanceAfter(int cardBalanceAfter) {
-		this.cardBalanceAfter = cardBalanceAfter;
+	public void setAmount(int amount) {
+		this.saleTotalAmount = amount;
 	}
-	public int getCardBalanceAfter() {
-		return cardBalanceAfter;
+	public int getAmount() {
+		return saleTotalAmount;
 	}
 	public void setProducts(List<CashlessInvoiceItem> products) {
 		this.products = products;

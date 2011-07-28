@@ -182,7 +182,8 @@ public class UkaProgramController {
 	@RequestMapping(value = "/program/{ukaYear}/events/{id}", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=UkaEvent.class)
 	public ModelAndView getUkaEventById(
-			@PathVariable int id, @PathVariable String ukaYear) 
+			@PathVariable int id, 
+			@PathVariable String ukaYear) 
 			throws UkaYearNotFoundException {
 		UkaEvent event;
 		logger.debug("getUkaEventById");
