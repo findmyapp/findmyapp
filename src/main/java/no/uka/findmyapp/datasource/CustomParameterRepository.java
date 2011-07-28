@@ -76,10 +76,12 @@ public class CustomParameterRepository {
 				+ "WHERE parameter_name = ? "
 				+ "AND position_location_id=? "
 				+ "ORDER BY time DESC LIMIT 0,? ";
-			logger.info(sql);
-			return jdbcTemplate.query(sql,
+			List<LocationReport> list = jdbcTemplate.query(sql,
 					new LocationReportRowMapper(), parName, locationId,
 					numberOfelements);
+			logger.info(sql);
+			logger.info(list.size() + "");
+			return list;
 
 		} catch (Exception e) {
 			logger.error("Could get the last values of parameter: " + e);
