@@ -125,8 +125,7 @@ function requestUsers(locationID) {
 function processUserData(responseText, responseStatus, locationID) {
 	  if (responseStatus==200) {
 		  console.log(responseText);
-		  var hax = "[" +responseText+"]";
-		  userCount = eval(hax);
+		  userCount = responseText;
 		  drawUserDataChart();
 	  } else {
 		console.log(responseStatus + ' -- Error Processing Request for user count');
@@ -134,8 +133,7 @@ function processUserData(responseText, responseStatus, locationID) {
 }
 
 function drawUserDataChart() {
-	document.getElementById('people_counter_paragraph').innerHTML = userCount[0].usercount;
-	console.log("usercount is...: " + userCount[0].usercount);
+	document.getElementById('people_counter_paragraph').innerHTML = userCount;
 }
 
 // populate temperature chart

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -225,7 +226,7 @@ public class UserRepository {
 		final int privacyId = createDefaultPrivacySettingsEntry();
 
 		//Add row in user table
-		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name, user_privacy_id) VALUES (?,?,?)";
+		final String INSERT_SQL = "INSERT INTO USER (facebook_id, full_name, user_privacy_id, registered_date) VALUES (?,?,?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
 		    new PreparedStatementCreator() {
@@ -235,6 +236,7 @@ public class UserRepository {
 		            ps.setString(1, facebookId);
 		            ps.setString(2, facebookName);
 		            ps.setInt(3, privacyId);
+		            ps.setTimestamp(4, new Timestamp(new GregorianCalendar().getTimeInMillis()));
 		            return ps;
 		        }
 
