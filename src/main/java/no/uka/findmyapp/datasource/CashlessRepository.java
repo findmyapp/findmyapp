@@ -78,4 +78,13 @@ public class CashlessRepository {
 	public List<String> getCaslessLocations(){
 		return mssqlJdbcTemplate.queryForList("SELECT DISTINCT Location FROM Invoice", String.class);
 	}
+	
+	public int getCardBalance(long cardNo){
+		try{
+			return mssqlJdbcTemplate.queryForInt("SELECT TOP 1 EventCardBalance FROM Invoice WHERE EventCardSerialNo = ? ORDER BY [Invoice Date] DESC", cardNo);
+		}
+		catch (Exception e) {
+			return 0;
+		}
+	}
 }
