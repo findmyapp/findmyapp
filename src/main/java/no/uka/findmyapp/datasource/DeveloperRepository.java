@@ -129,7 +129,7 @@ public class DeveloperRepository {
 	public int updateAppActivation(int developerId, int appId, boolean activated) {
 
 		String sql = "UPDATE APPSTORE_APPLICATION SET " +
-		"activated = ?, " +
+		"activated = ? " +
 		"WHERE appstore_developer_id = ? " +
 		"AND appstore_application_id = ?";
 		logger.info("running sql : " + sql);
