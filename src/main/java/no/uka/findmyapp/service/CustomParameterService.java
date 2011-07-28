@@ -16,7 +16,6 @@ import no.uka.findmyapp.model.Humidity;
 import no.uka.findmyapp.model.Location;
 import no.uka.findmyapp.model.LocationCount;
 import no.uka.findmyapp.model.LocationReport;
-import no.uka.findmyapp.model.LocationStatus;
 import no.uka.findmyapp.model.Noise;
 import no.uka.findmyapp.model.Sample;
 import no.uka.findmyapp.model.Signal;
