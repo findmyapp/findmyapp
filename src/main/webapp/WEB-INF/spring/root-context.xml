@@ -98,12 +98,6 @@
 		<property name="service" ref="authenticationService" />
 	</bean>
 
-	<!-- <oauth:consumer-details-service id="consumerDetails"> -->
-	<!-- <oauth:consumer name="ukappsConsumer" key="key" secret="secret" -->
-	<!-- resourceName="ukappsServices" requiredToObtainAuthenticatedToken="false" -->
-	<!-- authorities="ROLE_CONSUMER" /> -->
-	<!-- </oauth:consumer-details-service> -->
-
 	<oauth:token-services id="tokenServices" />
 
 	<!-- Declare an authentication-manager to use a custom userDetailsService -->
@@ -133,7 +127,7 @@
 			password="758d61f26a44448384e5c4468a0dcb7a2abe456067b0f7b505bc28b9411fe931"
 			authorities="ROLE_PING" />
 		<security:user name="sampler"
-			password="4c75617abecff91a061ec30cf5e5047dbff001605df879b2d838280ad15aa0ce"
+			password="b58463791f10e42cd0b55c2326cf35170a753bf36112262af8364d3608330005"
 			authorities="ROLE_SAMPLER" />
 	</security:user-service>
 

@@ -3,7 +3,7 @@ package no.uka.findmyapp.controller;
 import java.util.List;
 
 import no.uka.findmyapp.exception.LocationNotFoundException;
-import no.uka.findmyapp.model.appstore.App;
+import no.uka.findmyapp.model.Temperature;
 import no.uka.findmyapp.model.appstore.AppDetailed;
 import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.DeveloperService;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.GsonBuilder;
 
 @Controller
 @RequestMapping("/developer")
@@ -96,12 +95,22 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
-	public ModelAndView registerApp3(@RequestBody Developer dev) {
+	public ModelAndView demo4(@RequestBody Temperature temp) {
 		
-		logger.info(dev.toString());
+		logger.info(temp.toString());
 		
-		return new ModelAndView("json", "registerApp", dev);
+		return new ModelAndView("json", "registerApp", temp);
+	}
+
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/demo3", method = RequestMethod.POST)
+	public ModelAndView demo3(@RequestBody Temperature temp) {
+		
+		logger.info(temp.toString());
+		
+		return new ModelAndView("json", "registerApp", temp);
 	}
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
