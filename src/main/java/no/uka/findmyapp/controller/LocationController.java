@@ -154,17 +154,18 @@ public class LocationController {
 	 */
 	
 	@RequestMapping(value = "/screen", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType = Fact.class)
+	@ServiceModelMapping(returnType = String.class)
 	public ModelAndView getBartenderString() {
 		String string = service.getBartenderString();
 		return new ModelAndView("json", "bartender_string", string);
 	}
 	
-	@RequestMapping(value = "/screen/{string}", method = RequestMethod.POST)
-	@ServiceModelMapping(returnType = Fact.class)
-	public ModelAndView postBartenderString(@PathVariable("string") String string) {
-		boolean post = service.setBartenderString(string);
-		return new ModelAndView("json", "post_string", post);
+	@RequestMapping(value = "/screen/{text}", method = RequestMethod.PUT)
+	@ServiceModelMapping(returnType = Boolean.class)
+	public ModelAndView postBartenderString(@PathVariable("text") String text) {
+		System.out.println("postBartenderString");
+		boolean success = service.setBartenderString(text);
+		return new ModelAndView("json", "put_bartender_string", success);
 	}
 
 	@SuppressWarnings("unused")

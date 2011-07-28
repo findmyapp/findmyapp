@@ -315,7 +315,7 @@ public class UserService {
 
 	public List<UkaEvent> getEvents(int userId, int tokenUserId) throws ConsumerException {
 		UserPrivacy userPrivacy = getUserPrivacyForUserId(userId);
-		switch(userPrivacy.getPositionPrivacySetting()) {
+		switch(userPrivacy.getEventsPrivacySetting()) {
 			case ANYONE:
 				return data.getEvents(userId);
 			case FRIENDS:
