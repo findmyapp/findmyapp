@@ -50,13 +50,7 @@ public class CustomParameterController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CustomParameterController.class);
 
-	
-	@RequestMapping(value = "/locations/{id}", method = RequestMethod.GET)
-	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
-		Location locale = service.getAllData(locationId);
-		logger.info("DEBUG",locale);
-		return new ModelAndView("json", "location_real_time", locale);
-	}
+
 	
 
 	/*
@@ -86,7 +80,7 @@ public class CustomParameterController {
 			@RequestParam(required = false, defaultValue = "-1") int noe,
 			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date from,
 			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to,
-			@RequestParam(required = false) String parname) {
+			@RequestParam(required = false) String parname){
 		try {
 			
 			List<LocationReport> reports = service.getReports(locationId, action, noe, from, to, parname);
@@ -98,15 +92,22 @@ public class CustomParameterController {
 			return null;
 		}
 	}
+	/*
+	 * -------------------------------ParameterManagement-------------------------------------------
+	 */
 	
 	@RequestMapping(value = "/parameters", method = RequestMethod.GET)
 	public ModelAndView listParameters() {
-
 		List<CustomParameter> respons = service.listParameters();
 		return new ModelAndView("json", "reponse", respons);
 	}
+	
+	@RequestMapping(value = "/parameters/developer/{developerId}", method = RequestMethod.GET)
+	public ModelAndView listParameters(@PathVariable("developerId") int developerId) {
+		List<CustomParameter> respons = service.listParameters(developerId);
+		return new ModelAndView("json", "reponse", respons);
+	}
 
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/add", method = RequestMethod.PUT)
 	public String addParameter(
 			@RequestParam String name, @RequestParam(required=true) int developerId, Model model) throws DataIntegrityViolationException{
@@ -117,7 +118,6 @@ public class CustomParameterController {
 		return "json";
 	}
 
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/remove", method = RequestMethod.DELETE)
 	public ModelAndView removeParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name, @RequestParam(required=true) int developerId) {
@@ -127,7 +127,6 @@ public class CustomParameterController {
 		return new ModelAndView("json", "json", respons);
 	}
 
-	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/clean", method = RequestMethod.DELETE)
 	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name, @RequestParam(required=true) int developerId) {
