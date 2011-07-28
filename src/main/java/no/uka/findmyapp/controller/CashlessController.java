@@ -40,9 +40,9 @@ public class CashlessController {
 	.getLogger(CashlessController.class);
 
 	/**
-	 * Gets the information from the users Cashless card
+	 * Gets the information from the user's Cashless card
 	 * 
-	 * @return
+	 * @return Cashless card with transaction info
 	 */
 	@RequestMapping(value = "/cashless/{ukaYear}/me", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=CashlessCard.class)
@@ -64,6 +64,8 @@ public class CashlessController {
 		} else {
 			throw new InvalidTokenException("Token not valid");
 		}
+		
+		card.setBalance(cashlessService.getCardBalance(card.getCardNo()));
 		
 		return new ModelAndView("json", "card", card);
 	}

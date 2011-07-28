@@ -55,6 +55,10 @@ public class CashlessService {
 		return data.getCardTransactions(cardNo, from, to, place);
 	}
 	
+	public int getCardBalance(long cardNo){
+		return data.getCardBalance(cardNo);
+	}
+	
 	/**
 	 * Get the Cashless card number from given userId
 	 * 
