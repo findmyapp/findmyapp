@@ -1,7 +1,9 @@
 package no.uka.findmyapp.controller;
 
+import java.util.Date;
 import java.util.List;
 
+import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.User;
 import no.uka.findmyapp.model.cashless.CashlessCard;
@@ -14,8 +16,11 @@ import no.uka.findmyapp.service.auth.ConsumerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,10 +44,15 @@ public class CashlessController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/cashless/me", method = RequestMethod.GET)
+	@RequestMapping(value = "/cashless/{ukaYear}/me", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType=CashlessCard.class)
-	public ModelAndView getMyCashless(
-			@RequestParam(required = true) String token) throws ConsumerException{ 
+	public ModelAndView getMyCashless (
+			@PathVariable String ukaYear,
+			@RequestParam(required = true) String token,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date date,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
+			@RequestParam(required=false) String location) throws ConsumerException, UkaYearNotFoundException{ 
 		
 		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
 		int userId = auth.verify( token );
@@ -50,7 +60,7 @@ public class CashlessController {
 		
 		CashlessCard card;
 		if (userId != -1) {
-			card = cashlessService.getCardTransactions(userId);
+			card = cashlessService.getCardTransactions(ukaYear, userId, date, from, to, location);
 		} else {
 			throw new InvalidTokenException("Token not valid");
 		}
@@ -72,8 +82,6 @@ public class CashlessController {
 		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
 		int userId = auth.verify( token );
 		
-		//cardNo = 1628620850;
-		
 		boolean success = false;
 		
 		if (userId != -1) {
@@ -86,7 +94,6 @@ public class CashlessController {
 	}
 	
 	@RequestMapping(value = "/cashless/friends", method = RequestMethod.GET)
-	@ServiceModelMapping(returnType=CashlessCard.class)
 	public ModelAndView getFriendsWithCashless(
 				@RequestParam(required = true) String token) 
 				throws ConsumerException{
@@ -101,5 +108,12 @@ public class CashlessController {
 			}
 			mav.addObject("users", friends);
 			return mav;
+	}
+	
+	
+	@RequestMapping(value = "/cashless/locations", method = RequestMethod.GET)
+	public ModelAndView getCashlessLocations() {
+			
+		return new ModelAndView("json", "status", cashlessService.getCashlessLocations());
 	}
 }

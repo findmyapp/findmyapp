@@ -1,5 +1,6 @@
 package no.uka.findmyapp.datasource;
 
+import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.mapper.CashlessInvoiceItemRowMapper;
@@ -8,8 +9,6 @@ import no.uka.findmyapp.model.cashless.CashlessCard;
 import no.uka.findmyapp.model.cashless.CashlessInvoice;
 import no.uka.findmyapp.model.cashless.CashlessInvoiceItem;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,22 +18,27 @@ public class CashlessRepository {
 
 	@Autowired
 	private JdbcTemplate mssqlJdbcTemplate;
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
-	private static final Logger logger = LoggerFactory
-	.getLogger(CashlessRepository.class);
 	
-	public CashlessCard getCardTransactions(long cardNo) {
-		//logger.debug("In the cashless dataSource");
-		System.out.println("In the cashless dataSource");
+	public CashlessCard getCardTransactions(long cardNo, Date from, Date to, String place) {
 		
 		CashlessCard card = new CashlessCard(cardNo);
+		List<CashlessInvoice> invoices;
 		
-		//return mssqlJdbcTemplate.queryForLong("select top 1 [Invoice No] from Invoice");
-		List<CashlessInvoice> invoices = mssqlJdbcTemplate.query(
-				"SELECT * FROM Invoice WHERE EventCardSerialNo=? ORDER BY [Invoice Date] DESC",
-				new CashlessInvoiceRowMapper(), cardNo);
+		// If no location provided
+		if(place == null) {
+			invoices = mssqlJdbcTemplate.query(
+					"SELECT * FROM Invoice WHERE EventCardSerialNo=? AND [Invoice Date]> ? AND [Invoice Date]< ? ORDER BY [Invoice Date] DESC",
+					new CashlessInvoiceRowMapper(), cardNo, from, to);
+		}
+		// Else specify location as well
+		else {
+			invoices = mssqlJdbcTemplate.query(
+					"SELECT * FROM Invoice WHERE EventCardSerialNo=? AND [Invoice Date]> ? AND [Invoice Date]< ? AND Location LIKE ? ORDER BY [Invoice Date] DESC",
+					new CashlessInvoiceRowMapper(), cardNo, from, to, place);
+		}
 		
 		for(CashlessInvoice i : invoices){
 			List<CashlessInvoiceItem> items = mssqlJdbcTemplate.query(
@@ -51,8 +55,10 @@ public class CashlessRepository {
 		try {
 			// Set old cards to be invalid
 			jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
+			
 			// Update/insert Cashless card number
 			jdbcTemplate.update("REPLACE INTO USER_CASHLESS(user_id, card_no, in_use) VALUES( ? , ?, 1 )", userId, cardNo);
+			
 			return true;
 		}
 		catch (Exception e) {
@@ -67,5 +73,9 @@ public class CashlessRepository {
 		catch (Exception e) {
 			return -1;
 		}
+	}
+	
+	public List<String> getCaslessLocations(){
+		return mssqlJdbcTemplate.queryForList("SELECT DISTINCT Location FROM Invoice", String.class);
 	}
 }
