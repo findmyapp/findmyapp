@@ -34,7 +34,7 @@ public class CashlessRepository {
 		//return mssqlJdbcTemplate.queryForLong("select top 1 [Invoice No] from Invoice");
 		List<CashlessInvoice> invoices = mssqlJdbcTemplate.query(
 				"SELECT * FROM Invoice WHERE EventCardSerialNo=? ORDER BY [Invoice Date] DESC",
-				new CashlessInvoiceRowMapper(),cardNo);
+				new CashlessInvoiceRowMapper(), cardNo);
 		
 		for(CashlessInvoice i : invoices){
 			List<CashlessInvoiceItem> items = mssqlJdbcTemplate.query(
