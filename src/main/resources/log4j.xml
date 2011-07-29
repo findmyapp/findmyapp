@@ -42,7 +42,7 @@
 	</logger>
 	
 	<logger name="org.springframework.security.oauth">
-		<level value="info" />
+		<level value="debug" />
 	</logger>
 	
 	<logger name="no.uka.findmyapp.service">
