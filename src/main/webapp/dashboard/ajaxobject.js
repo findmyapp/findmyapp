@@ -36,6 +36,9 @@ function ajaxObject(url, callbackFunction) {
   		  } else {
   			var uri=urlCall+'?'+passData+'&timestamp='+(that.updating.getTime()); 
   			that.AJAX.open("GET", uri, true);                             
+
+  			that.AJAX.setRequestHeader("Accept", "application/json");
+  			that.AJAX.setRequestHeader("Content-Type", "application/json");
   			that.AJAX.send(null);                                         
   		  }              
   		  return true;                                             
