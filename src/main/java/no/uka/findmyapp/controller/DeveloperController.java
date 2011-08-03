@@ -36,12 +36,14 @@ public class DeveloperController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(DeveloperController.class);
 
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView getDeveloperForWpId(@RequestParam(required = true) int wpId) {
 		Developer developer = service.getDeveloperForWpId(wpId);
 		return new ModelAndView("json", "developer", developer);
 	}
 
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/register", method = RequestMethod.PUT)
 	public ModelAndView registerDeveloper(@RequestBody Developer developer) {
 		//TODO FIX EXCEPTION IF INSERT FAILED
@@ -50,27 +52,29 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/{developerId}/update", method = RequestMethod.POST)
 	public ModelAndView updateDeveloper(@PathVariable int developerId, @RequestBody Developer developer) {
 		//TODO IMPLEMENT
 		int result = -1;
 		return new ModelAndView("json", "result", result);
 	}
-	
 
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/{developerId}/apps", method = RequestMethod.GET)
 	public ModelAndView getAppsFromDeveloperId(@PathVariable int developerId) {
 		List<AppDetailed> list =  service.getAppsFromDeveloperId(developerId);
 		return new ModelAndView("json", "list", list);
 	}
 
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/{developerId}/apps/{appId}", method = RequestMethod.GET)
 	public ModelAndView getDetailedApp(@PathVariable int developerId, @PathVariable int appId) {
 		AppDetailed app =  service.getDetailedApp(developerId, appId);
 		return new ModelAndView("json", "app", app);
 	}	
 	
-
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/{developerId}/apps/add", method = RequestMethod.PUT)
 	public ModelAndView registerApp(@PathVariable int developerId, @RequestBody AppDetailed app) {
 		
@@ -78,7 +82,8 @@ public class DeveloperController {
 		int result = service.registerApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
-
+	
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/{developerId}/apps/{appId}/update", method = RequestMethod.POST)
 	public ModelAndView updateApp(@PathVariable int developerId, @PathVariable int appId, @RequestBody AppDetailed app) {
 		
@@ -87,7 +92,8 @@ public class DeveloperController {
 		int result = service.updateApp(developerId, app);
 		return new ModelAndView("json", "result", result);
 	}
-
+	
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/{developerId}/apps/{appId}/activation/update", method = RequestMethod.POST)
 	public ModelAndView updateAppActivation(@PathVariable int developerId, @PathVariable int appId, @RequestParam(required=true) boolean activated) {
 
@@ -96,7 +102,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
-	@Secured("ROLE_CONSUMER")
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
 	public ModelAndView demo4(@RequestBody Temperature temp) {
 		
@@ -105,7 +111,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "registerApp", temp);
 	}
 
-	@Secured("ROLE_CONSUMER")
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/demo3", method = RequestMethod.POST)
 	public ModelAndView demo3(@RequestBody Temperature temp) {
 		
@@ -114,7 +120,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "registerApp", temp);
 	}
 	
-
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/demo2", method = RequestMethod.GET)
 	public ModelAndView demo2() {
 		
@@ -122,6 +128,8 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", "JSON TEST");
 	}
+	
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/demo1", method = RequestMethod.GET)
 	public ModelAndView demo1() {
 		boolean b = true;
