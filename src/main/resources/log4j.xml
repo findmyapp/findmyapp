@@ -8,8 +8,6 @@
 		<layout class="org.apache.log4j.PatternLayout">
 			<!-- <param name="ConversionPattern" value="%-5p: %c - %m%n" /> -->
 			<param name="ConversionPattern" value="%5p | %d | %F | %L | %m%n" />
-			
-			
 		</layout>
 	</appender>
 	
@@ -42,6 +40,9 @@
 	</logger>
 	
 	<logger name="org.springframework.security.oauth">
+		<level value="info" />
+	</logger>
+	<logger name="org.springframework.security">
 		<level value="debug" />
 	</logger>
 	
