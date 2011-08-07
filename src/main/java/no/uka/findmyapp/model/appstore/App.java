@@ -129,7 +129,8 @@ public class App {
 	}
 
 	public void setFacebookSecret(String facebookSecret) {
-		this.facebookSecret = facebookSecret;
+		//this.facebookSecret = facebookSecret;
+		this.facebookSecret = "Unavailable";//Due to security reasons, Aasmund Tokheim
 	}
 
 
