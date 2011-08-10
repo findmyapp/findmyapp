@@ -43,21 +43,8 @@
 		<level value="info" />
 	</logger>
 	<logger name="org.springframework.security">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
-	
-	<logger name="no.uka.findmyapp.service">
-		<level value="debug" />
-	</logger>
-	<logger name="no.uka.findmyapp.controller.DeveloperController">
-		<level value="debug" />
-	</logger>
-	
-	<logger name="no.uka.findmyapp.controller.CustomParameterController">
-		<level value="debug" />
-	</logger>
-	
-	
 
 	<!-- Root Logger -->
 	<root>
