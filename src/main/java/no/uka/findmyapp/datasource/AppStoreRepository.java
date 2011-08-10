@@ -77,7 +77,7 @@ public class AppStoreRepository {
 			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev " +
 					"ON app.appstore_developer_id = dev.appstore_developer_id " +
 					"WHERE platform=? AND activated=? LIMIT ?,?",
-					new AppRowMapper(), platform, true from, to);
+					new AppRowMapper(), platform, true, from, to);
 			logger.info(appList + "  DEFAULT!");
 			break;
 		}
