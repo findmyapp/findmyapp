@@ -137,6 +137,7 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", b);
 	}
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler(EmptyResultDataAccessException.class)
