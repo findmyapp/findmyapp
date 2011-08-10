@@ -36,7 +36,7 @@ public class AppStoreRepository {
 					"JOIN APPSTORE_DEVELOPER AS dev " +
 					"ON app.appstore_developer_id = dev.appstore_developer_id " +
 					"WHERE platform=? AND activated=? LIMIT ?,?",
-					new AppRowMapper(), platform, from, to, true);
+					new AppRowMapper(), platform, true, from, to);
 			logger.info(appList+ "");
 			logger.info("Listing 10 apps");
 			break;
