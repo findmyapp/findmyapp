@@ -31,8 +31,12 @@ public class AppStoreRepository {
 		List<App> appList;
 		switch (listType) {
 		case 1:
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? LIMIT ?,?",
-					new AppRowMapper(), platform, from, to);
+			appList =  jdbcTemplate.query("SELECT * " +
+					"FROM APPSTORE_APPLICATION AS app " +
+					"JOIN APPSTORE_DEVELOPER AS dev " +
+					"ON app.appstore_developer_id = dev.appstore_developer_id " +
+					"WHERE platform=? AND activated=? LIMIT ?,?",
+					new AppRowMapper(), platform, from, to, true);
 			logger.info(appList+ "");
 			logger.info("Listing 10 apps");
 			break;
