@@ -1,5 +1,6 @@
 package no.uka.findmyapp.service;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.DeveloperRepository;
@@ -81,10 +82,12 @@ public class DeveloperService {
 	
 	//TODO FIX GENERATION OF KEY/SECRET
 	private String generateConsumerKey(int developer_id) {
-		return DigestUtils.shaHex("key" + NumberUtils.generateRandomInteger(1000000, 9999999) + developer_id);
+		long time = + new GregorianCalendar().getTimeInMillis();
+		return DigestUtils.shaHex("key" + NumberUtils.generateRandomInteger(1000000, 9999999) + developer_id + time);
 	}
 	
 	private String generateConsumerSecret(int developer_id) {
-		return DigestUtils.shaHex("key" + NumberUtils.generateRandomInteger(1000000, 9999999) + developer_id);
+		long time = + new GregorianCalendar().getTimeInMillis();
+		return DigestUtils.shaHex("key" + NumberUtils.generateRandomInteger(1000000, 9999999) + developer_id + time);
 	}
 }
