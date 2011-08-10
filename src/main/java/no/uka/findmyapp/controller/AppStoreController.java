@@ -173,7 +173,7 @@ public class AppStoreController {
 		//TODO check values, throw exception
 		return new ModelAndView("json", "appstoreweb", appList);
 	} 
-
+/*
 	@RequestMapping(value = "/appstore/form/", method = RequestMethod.POST)
 	public ModelAndView registerApp(@RequestBody App newApp) {
 		ModelAndView mav = new ModelAndView("registerApp");
@@ -183,7 +183,7 @@ public class AppStoreController {
 		mav.addObject("appIsRegistered", regApp); // model name, model object
 		return mav;
 	}
-
+*/
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ExceptionHandler

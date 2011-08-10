@@ -10,6 +10,7 @@ import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.auth.AuthenticationService;
 import no.uka.findmyapp.utils.NumberUtils;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class DeveloperService {
 	
 	
 	public int registerApp(int developer_id, App app) {
-		return developerRepository.registerApp(developer_id, app, generateConsumerKey(), generateConsumerSecret());
+		return developerRepository.registerApp(developer_id, app, generateConsumerKey(developer_id), generateConsumerSecret(developer_id));
 	}
 	
 	public int updateApp(int developer_id, App app) {
@@ -79,11 +80,11 @@ public class DeveloperService {
 	}
 	
 	//TODO FIX GENERATION OF KEY/SECRET
-	private String generateConsumerKey() {
-		return "key" + NumberUtils.generateRandomInteger(1000000, 9999999);
+	private String generateConsumerKey(int developer_id) {
+		return DigestUtils.shaHex("key" + NumberUtils.generateRandomInteger(1000000, 9999999) + developer_id);
 	}
 	
-	private String generateConsumerSecret() {
-		return "secret" + NumberUtils.generateRandomInteger(1000000, 9999999);
+	private String generateConsumerSecret(int developer_id) {
+		return DigestUtils.shaHex("key" + NumberUtils.generateRandomInteger(1000000, 9999999) + developer_id);
 	}
 }
