@@ -38,34 +38,46 @@ public class AppStoreRepository {
 					"WHERE platform=? AND activated=? LIMIT ?,?",
 					new AppRowMapper(), platform, true, from, to);
 			logger.info(appList+ "");
-			logger.info("Listing 10 apps");
+			logger.info("Listing "+appList.size()+" apps");
 			break;
 
 		case 2:
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? ORDER BY times_downloaded DESC LIMIT ?,? ",
-					new AppRowMapper(), platform, from, to);
+			appList =  jdbcTemplate.query("SELECT * " +
+					"FROM APPSTORE_APPLICATION AS app " +
+					"JOIN APPSTORE_DEVELOPER AS dev " +
+					"ON app.appstore_developer_id = dev.appstore_developer_id " +
+					"WHERE platform=? AND activated=? ORDER BY times_downloaded DESC LIMIT ?,? ",
+					new AppRowMapper(), platform, true, from, to);
 			logger.info(appList+ "");
 			logger.info("Sorting after most downloaded");
 			break;
 
 		case 3:			
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? ORDER BY publish_date DESC LIMIT ?,?",
-					new AppRowMapper(), platform, from, to);
+			appList =  jdbcTemplate.query("SELECT * " +
+					"FROM APPSTORE_APPLICATION AS app " +
+					"JOIN APPSTORE_DEVELOPER AS dev " +
+					"ON app.appstore_developer_id = dev.appstore_developer_id " +
+					"WHERE platform=? AND activated=? ORDER BY publish_date DESC LIMIT ?,?",
+					new AppRowMapper(), platform, true, from, to);
 			logger.info(appList+ "");
 			logger.info("Sorting after publish date");
 			break;
 
 		case 4:			
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? AND category=? ORDER BY publish_date DESC LIMIT ?,?",
-					new AppRowMapper(), platform, app_category, from, to);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev " +
+					"ON app.appstore_developer_id = dev.appstore_developer_id " +
+					"WHERE platform=? AND activated=? AND category=? ORDER BY publish_date DESC LIMIT ?,?",
+					new AppRowMapper(), platform, true, app_category, from, to);
 			logger.info(appList+ "");
 			logger.info("Getting apps by category");
 			break;
 
 
 		default:
-			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE platform=? LIMIT ?,?",
-					new AppRowMapper(), platform, from, to);
+			appList =  jdbcTemplate.query("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev " +
+					"ON app.appstore_developer_id = dev.appstore_developer_id " +
+					"WHERE platform=? AND activated=? LIMIT ?,?",
+					new AppRowMapper(), platform, true from, to);
 			logger.info(appList + "  DEFAULT!");
 			break;
 		}
@@ -75,7 +87,10 @@ public class AppStoreRepository {
 
 	public App getAppDetails(int appId) {
 
-		App app = jdbcTemplate.queryForObject("SELECT * FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev ON app.appstore_developer_id = dev.appstore_developer_id WHERE appstore_application_id=?",
+		App app = jdbcTemplate.queryForObject("SELECT * " +
+				"FROM APPSTORE_APPLICATION AS app JOIN APPSTORE_DEVELOPER AS dev " +
+				"ON app.appstore_developer_id = dev.appstore_developer_id " +
+				"WHERE appstore_application_id=?",
 				new AppRowMapper(), appId);
 
 		logger.info(app.toString());
