@@ -303,14 +303,10 @@ public class UserService {
 	 * @throws ConsumerException
 	 */
 	public List<UserPosition> getLocationOfFriends(int userId) throws ConsumerException {
-		List<UserPosition> friendsPositions = new ArrayList<UserPosition>();
-		List<UserPosition> allUserPositions = getLocationOfAllUsers();
-		for(UserPosition userposition : allUserPositions) {
-			if(areFriends(userposition.getUserId(), userId)) {
-				friendsPositions.add(userposition);
-			}
-		}
-		return friendsPositions;
+		List<String> friendIds = getFacebookIdOfFriends(userId);
+		List<UserPosition> userPositions = data.getLocationOfFriends(friendIds);
+		
+		return userPositions;
 	}
 
 	public List<UkaEvent> getEvents(int userId, int tokenUserId) throws ConsumerException {

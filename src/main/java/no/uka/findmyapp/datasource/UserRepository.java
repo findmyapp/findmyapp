@@ -288,5 +288,18 @@ public class UserRepository {
 	public List<UserPosition> getLocationOfAllUsers() {
 		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
+	public List<UserPosition> getLocationOfFriends(List<String> friendIds) {
+		
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("ids", friendIds);
+		List<UserPosition> users = namedParameterJdbcTemplate
+				.query("SELECT * FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
+						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=pu.user_id"
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.position != 3",
+						namedParameters, new UserPositionRowMapper());
+		return users;
+	}
 
 }
