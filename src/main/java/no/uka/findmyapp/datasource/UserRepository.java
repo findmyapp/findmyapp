@@ -296,7 +296,7 @@ public class UserRepository {
 		namedParameters.put("ids", friendIds);
 		List<UserPosition> users = namedParameterJdbcTemplate
 				.query("SELECT * FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
-						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=pu.user_id"
+						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=up.user_id"
 						+ " AND u.user_privacy_id = p.user_privacy_id AND p.position != 3",
 						namedParameters, new UserPositionRowMapper());
 		return users;

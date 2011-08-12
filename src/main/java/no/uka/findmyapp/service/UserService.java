@@ -276,7 +276,7 @@ public class UserService {
 			case ANYONE:
 				return data.getUserLocation(userId);
 			case FRIENDS:
-				if(areFriends(userId, tokenUserId)) {
+				if(areFriends(tokenUserId, userId)) {
 					return data.getUserLocation(userId);
 				}
 			case ONLY_ME:
@@ -315,11 +315,9 @@ public class UserService {
 			case ANYONE:
 				return data.getEvents(userId);
 			case FRIENDS:
-				if(areFriends(userId, tokenUserId)) {
+				if(areFriends(tokenUserId, userId)) {
 					return data.getEvents(userId);
 				}
-			case ONLY_ME:
-				return null;
 			default:
 				return null;
 		}
