@@ -185,7 +185,7 @@ public class UserController {
 	public ModelAndView registerUserLocationWithPost(
 			@PathVariable int locationId,
 			@RequestParam(required = true) String token) throws TokenException {
-		registerUserLocation(locationId, token);
+		return registerUserLocation(locationId, token);
 	}
 	
 
