@@ -204,9 +204,9 @@ public class UserController {
 	@RequestMapping(value = "/all/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getAllUserLocations(
-			@RequestParam(required = true) String token) {
-		verifyToken(token);
-		List<UserPosition> pos = service.getLocationOfAllUsers();
+			@RequestParam(required = true) String token) throws ConsumerException {
+		int tokenUserId = verifyToken(token);
+		List<UserPosition> pos = service.getLocationOfAllUsers(tokenUserId);
 		return new ModelAndView("json", "user_position", pos);
 	}
 	
