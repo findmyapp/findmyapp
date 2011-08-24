@@ -94,13 +94,13 @@ public class LocationController {
 	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
 		List<User> users = service.getUsersAtLocation(locationId);
-		return new ModelAndView("json", "users_at_location", users);
+		return new ModelAndView("json", "usersAtLocation", users);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
 		Location locale = service.getLocation(locationId);
-		return new ModelAndView("json", "location_real_time",locale);
+		return new ModelAndView("json", "locationRealTime",locale);
 	}
 	
 	@RequestMapping(value = "/{id}/users/count", method = RequestMethod.GET)
@@ -151,7 +151,7 @@ public class LocationController {
 	@ServiceModelMapping(returnType = Fact.class)
 	public ModelAndView getRandomFact(@PathVariable("id") int locationId) {
 		Fact fact = service.getRandomFact(locationId);
-		return new ModelAndView("json", "random_fact", fact);
+		return new ModelAndView("json", "randomFact", fact);
 	}
 	
 	
@@ -163,14 +163,14 @@ public class LocationController {
 	@ServiceModelMapping(returnType = String.class)
 	public ModelAndView getBartenderString() {
 		String string = service.getBartenderString();
-		return new ModelAndView("json", "bartender_string", string);
+		return new ModelAndView("json", "bartenderString", string);
 	}
 	
 	@RequestMapping(value = "/screen/{text}", method = RequestMethod.PUT)
 	@ServiceModelMapping(returnType = Boolean.class)
 	public ModelAndView postBartenderString(@PathVariable("text") String text) {
 		boolean success = service.setBartenderString(text);
-		return new ModelAndView("json", "put_bartender_string", success);
+		return new ModelAndView("json", "putBartenderString", success);
 	}
 	
 	/*
