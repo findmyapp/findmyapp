@@ -87,7 +87,7 @@ public class CashlessController {
 	 * @return
 	 */
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "/cashless/me/update", method = RequestMethod.GET)//should maybe be changed to post @ /cashless/me or users/me/cashless
+	@RequestMapping(value = "/cashless/me/update", method = RequestMethod.POST)//should maybe be changed to post @ /cashless/me or users/me/cashless
 	@ServiceModelMapping(returnType=CashlessCard.class)
 	public ModelAndView updateMyCashless(
 			@RequestParam(required = true) long cardNo,
