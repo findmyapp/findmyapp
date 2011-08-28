@@ -116,7 +116,7 @@ public class LocationRepository {
 				dataSource);
 		Map<String, Object> namedParameters = new HashMap<String, Object>();
 		namedParameters.put("locationId", locationId);
-		namedParameters.put("Ids", friendIds);
+		namedParameters.put("ids", friendIds);
 		return namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
 				+ " WHERE u.user_id=up.user_id AND up.position_location_id=:locationId "
 				+ " AND u.user_privacy_id = p.user_privacy_id AND "
