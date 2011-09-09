@@ -111,7 +111,7 @@ public class DeveloperRepository {
 		"description = ?, " +
 		"market_identifier = ?, " +
 		"facebook_app_id = ?, " +
-		"facebook_secret = ?" +
+		"facebook_secret = ?, " +
 		"thumb_image = ? " +
 		"WHERE appstore_developer_id = ? " +
 		"AND appstore_application_id = ?";
