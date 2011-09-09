@@ -111,6 +111,7 @@ public class DeveloperRepository {
 		"description = ?, " +
 		"market_identifier = ?, " +
 		"facebook_app_id = ?, " +
+		"facebook_secret = ?" +
 		"thumb_image = ? " +
 		"WHERE appstore_developer_id = ? " +
 		"AND appstore_application_id = ?";
@@ -118,7 +119,7 @@ public class DeveloperRepository {
 		int res = 0;
 		try {
 			res = jdbcTemplate.update(sql, app.getName(), app.getPlatform(), app.getDescription(), app.getMarketID(), 
-					app.getFacebookAppID(), app.getThumbImage().toString(), developerId, app.getId());
+					app.getFacebookAppID(), app.getFacebookSecret(), app.getThumbImage().toString(), developerId, app.getId());
 			
 		} catch (Exception e) {
 			logger.info(e.getMessage());
