@@ -36,7 +36,9 @@ public class SpotifyRepository {
 	
 	private static final String songJoinString = "SELECT ti.banned, ti.spotify_id, ti.title, ti.artist, ti.length, th.last_played, "+
 			"th.times_played, SUM( num_of_requests )  AS total_requests, SUM( IF (active = 'true', 1, 0) ) AS active_requests "+
-			"FROM POSITION_LOCATION as l JOIN TRACK_INFO AS ti NATURAL LEFT JOIN TRACK_REQUEST AS tr NATURAL LEFT JOIN TRACK_PLAYHISTORY AS th ";
+			"FROM (SELECT * FROM POSITION_LOCATION WHERE position_location_id = :lId) AS l JOIN TRACK_INFO AS ti " +
+			"LEFT JOIN TRACK_REQUEST AS tr ON (tr.spotify_id=ti.spotify_id AND tr.position_location_id=l.position_location_id) " +
+			"LEFT JOIN TRACK_PLAYHISTORY AS th ON (th.spotify_id=ti.spotify_id AND th.position_location_id=l.position_location_id) ";
 	
 	
 	//"WHERE l.position_location_id = :lId GROUP BY ti.spotify_id %s %s";
@@ -44,21 +46,21 @@ public class SpotifyRepository {
 	public Track getSong(String spotifyId, int locationId) {
 		Map<String, Object> namedParams = getMap(locationId, spotifyId, -1, null, -1, -1, null);
 		NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
-		return jdbc.queryForObject(songJoinString + "WHERE l.position_location_id = :lId AND ti.spotifyId = :sId GROUP_BY ti.spotifyId", 
+		return jdbc.queryForObject(songJoinString + "WHERE ti.spotifyId = :sId GROUP_BY ti.spotifyId", 
 				namedParams, new TrackRowMapper());
 	}
 	
 	public List<Track> getSongs(List<String> spotifyIds, int locationId, String orderBy) {
 		Map<String, Object> namedParams = getMap(locationId, null, -1, spotifyIds, -1, -1, null);
 		NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
-		return jdbc.query(songJoinString + "WHERE l.position_location_id = :lId AND ti.spotify_id IN (:sIds) GROUP BY ti.spotify_id "+
+		return jdbc.query(songJoinString + "WHERE ti.spotify_id IN (:sIds) GROUP BY ti.spotify_id "+
 				getOrderString(orderBy), namedParams, new TrackRowMapper());
 	}
 	
 	public List<Track> getSongs(int locationId, int from, int to, String orderBy, Timestamp notPlayedSince) {
 		Map<String, Object> namedParams = getMap(locationId, null, -1, null, from, to, notPlayedSince);
 		NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
-		return jdbc.query(songJoinString + "WHERE l.position_location_id = :lId AND (th.last_played IS NULL OR th.last_played < :notSince)" +
+		return jdbc.query(songJoinString + "WHERE (th.last_played IS NULL OR th.last_played < :notSince)" +
 				" GROUP BY ti.spotify_id "+getOrderString(orderBy)+" LIMIT :from, :to", namedParams, new TrackRowMapper());
 	}
 	
