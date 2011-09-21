@@ -96,7 +96,7 @@ public class SpotifyController {
 	/**
 	 * Use spotify's metadata api to search for songs and order them by popularity
 	 * @param locationId
-	 * @param trackTitle - title to search for
+	 * @param query - query to search for
 	 * @param orderBy - how the songs should be ordered. Valid values are activeRequests, timesPlayed and totalRequests
 	 * @param page - For seeing worse matched results (see spotify search api)
 	 * @return
@@ -104,11 +104,11 @@ public class SpotifyController {
 	 */
 	@RequestMapping(value = "{locationId}/songs/search", method = RequestMethod.GET)
 	public ModelAndView searchForTrack(@PathVariable int locationId,
-			@RequestParam String trackTitle,
+			@RequestParam String query,
 			@RequestParam(required = false, defaultValue = "activeRequests") String orderBy,
 			@RequestParam(required = false, defaultValue = "1") int page) throws SpotifyApiException {
 		ModelAndView model = new ModelAndView("json");
-		model.addObject("tracks", service.searchForTrack(trackTitle, orderBy, page, locationId));
+		model.addObject("tracks", service.searchForTrack(query, orderBy, page, locationId));
 		return model;
 	}
 	

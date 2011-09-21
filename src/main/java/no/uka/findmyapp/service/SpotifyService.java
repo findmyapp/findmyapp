@@ -73,8 +73,8 @@ public class SpotifyService {
 		return success;
 	}
 	
-	public List<Track> searchForTrack(String trackName, String orderBy, int page, int locationId) throws SpotifyApiException {
-		SpotifyTrackSearchContainer tracks = searchSpotify(trackName, page);
+	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {
+		SpotifyTrackSearchContainer tracks = searchSpotify(query, page);
 		List<String> spotifyIds = new ArrayList<String>();
 		
 		for (SpotifyTrack track: tracks.getTracks()) {//Save tracks to db
