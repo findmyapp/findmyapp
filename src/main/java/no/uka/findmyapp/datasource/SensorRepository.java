@@ -21,11 +21,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
+import com.google.gson.Gson;
+
 @Repository
 public class SensorRepository {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	@Autowired
+	Gson gson;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(SensorRepository.class);
@@ -51,10 +55,10 @@ public class SensorRepository {
 		try{
 		List<Noise> noise = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC LIMIT 0,?",
-				new SensorNoiseRowMapper(), location, limit);
+				new SensorNoiseRowMapper(gson), location, limit);
 		logger.info("received noise list");
 		return noise;
-		}catch(Exception e){logger.info("Something went wrong when fetchind data from database");return null;}
+		}catch(Exception e){logger.info("Something went wrong when fetching data from database "+e.getMessage());return null;}
 	}
 	
 
@@ -98,7 +102,7 @@ public class SensorRepository {
 
 		List<Noise> noiseList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? ORDER BY date DESC",
-				new SensorNoiseRowMapper(), location);
+				new SensorNoiseRowMapper(gson), location);
 		logger.info("received noise list");
 		return noiseList;
 	}
@@ -107,7 +111,7 @@ public class SensorRepository {
 
 		List<Noise> noiseList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date >=? ORDER BY date DESC",
-				new SensorNoiseRowMapper(), location, from);
+				new SensorNoiseRowMapper(gson), location, from);
 		logger.info("received noise list");
 		return noiseList;
 	}
@@ -116,7 +120,7 @@ public class SensorRepository {
 
 		List<Noise> noiseList = jdbcTemplate.query(
 				"SELECT * FROM SENSOR_NOISE WHERE position_location_id  =? AND date <=? ORDER BY date DESC",
-				new SensorNoiseRowMapper(), location, to);
+				new SensorNoiseRowMapper(gson), location, to);
 		logger.info("received noise list");
 		return noiseList;
 	}
@@ -125,7 +129,7 @@ public class SensorRepository {
 
 		List<Noise> noiseList = jdbcTemplate
 				.query("SELECT * FROM SENSOR_NOISE WHERE position_location_id  = ? AND date <=? AND date >=? ORDER BY date DESC",
-						new SensorNoiseRowMapper(), location, from, to);
+						new SensorNoiseRowMapper(gson), location, from, to);
 		logger.info("received noise list");
 		return noiseList;
 	}
@@ -280,7 +284,7 @@ public class SensorRepository {
 						ps.setInt(3, noise.getMax());
 						ps.setInt(4, noise.getMin());
 						ps.setDouble(5, noise.getStandardDeviation());
-						ps.setString(6, noise.getJsonSamples());
+						ps.setString(6, gson.toJson(noise.getSamples()));
 					}
 				});
 		
