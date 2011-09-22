@@ -83,7 +83,11 @@ public class SpotifyService {
 			logger.debug("Found - "+track.getName()+" id: "+track.getHref());
 			spotifyIds.add(track.getHref());
 		}
-		return data.getSongs(spotifyIds, locationId, orderBy);
+		if (spotifyIds.size() > 0) {
+			return data.getSongs(spotifyIds, locationId, orderBy);
+		} else {//to prevent sql-error when there are no ids.
+			return new ArrayList<Track>();
+		}
 	}
 	
 	public Track setSongAsPlaying(String spotifyId, int locationId) {
