@@ -195,7 +195,7 @@ public class UserRepository {
 		List<User> users = namedParameterJdbcTemplate
 				.query("SELECT u.* FROM USER u, USER_EVENT e, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)"
-						+ " AND u.user_privacy_id = p.user_privacy_id AND p.events != 3",
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.events != 3 ORDER BY u.user_id ASC",
 						namedParameters, new UserRowMapper());
 		return users;
 	}
@@ -209,7 +209,7 @@ public class UserRepository {
 		List<User> users = namedParameterJdbcTemplate
 				.query("SELECT u.* FROM USER u, USER_CASHLESS c, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=c.user_id"
-						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3 ORDER BY u.user_id ASC",
 						namedParameters, new UserRowMapper());
 		return users;
 	}
