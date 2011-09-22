@@ -148,7 +148,7 @@ public class SensorController {
 		}
 			
 	}
-	
+	/*
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
@@ -181,7 +181,7 @@ public class SensorController {
 		}
 			
 	}
-
+*/
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */
