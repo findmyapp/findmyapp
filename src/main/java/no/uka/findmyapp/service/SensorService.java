@@ -25,18 +25,12 @@ public class SensorService {
 		return (float) 111.111;// Dummy method, will calculate decibel
 	}
 	
-	public List<Temperature> getLatestTemperatureData(int location, String limit) {
-		if (limit == null) {
-			return data.getLatestTemperatureData(location, 1);
-		}
-		return data.getLatestTemperatureData(location, Integer.parseInt(limit));
+	public List<Temperature> getLatestTemperatureData(int location, int limit) {
+		return data.getLatestTemperatureData(location, limit);
 	}
 	
-	public List<Noise> getLatestNoiseData(int location, String limit) {
-		if (limit == null) {
-			return data.getLatestNoiseData(location, 1);
-		}
-		return data.getLatestNoiseData(location, Integer.parseInt(limit));
+	public List<Noise> getLatestNoiseData(int location, int limit) {
+		return data.getLatestNoiseData(location, limit);
 	}
 
 
@@ -97,11 +91,8 @@ public class SensorService {
 		return hum;
 	}
 	
-	public List<Humidity> getLatestHumidityData(int location, String limit) {	
-		if (limit == null) {
-			return data.getLatestHumidityData(location, 1);
-		}
-		return data.getLatestHumidityData(location, Integer.parseInt(limit));
+	public List<Humidity> getLatestHumidityData(int location, int limit) {	
+		return data.getLatestHumidityData(location, limit);
 	}
 	
 
@@ -114,11 +105,8 @@ public class SensorService {
 		}
 	}
 	
-	public List<BeerTap> getLatestBeerTapData(int location, int tapNr, String limit) {	
-		if (limit == null) {
-			return data.getLatestBeerTapData(location, tapNr, 1);
-		}
-		return data.getLatestBeerTapData(location, tapNr, Integer.parseInt(limit));
+	public List<BeerTap> getLatestBeerTapData(int location, int tapNr, int limit) {	
+		return data.getLatestBeerTapData(location, tapNr, limit);
 	}
 
 	public int getBeertapSum(int locationId, int tapnr, Date from, Date to) {
@@ -190,7 +178,7 @@ public class SensorService {
 			sum += Math.pow((samples[i] - average), 2);
 		}
 			
-		deviation = Math.sqrt(sum /10); 
+		deviation = Math.sqrt(sum / (samples.length - 1)); 
 			
 		return deviation;
 	}

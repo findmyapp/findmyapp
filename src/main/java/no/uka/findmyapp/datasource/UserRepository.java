@@ -195,7 +195,7 @@ public class UserRepository {
 		List<User> users = namedParameterJdbcTemplate
 				.query("SELECT u.* FROM USER u, USER_EVENT e, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.user_id=e.user_id AND e.event_id=:eventid AND u.facebook_id IN (:ids)"
-						+ " AND u.user_privacy_id = p.user_privacy_id AND p.events != 3",
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.events != 3 ORDER BY u.user_id ASC",
 						namedParameters, new UserRowMapper());
 		return users;
 	}
@@ -209,7 +209,7 @@ public class UserRepository {
 		List<User> users = namedParameterJdbcTemplate
 				.query("SELECT u.* FROM USER u, USER_CASHLESS c, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=c.user_id"
-						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3",
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.money != 3 ORDER BY u.user_id ASC",
 						namedParameters, new UserRowMapper());
 		return users;
 	}
@@ -288,6 +288,20 @@ public class UserRepository {
 	public List<UserPosition> getLocationOfAllUsers() {
 		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
 	}
+	
+	public List<UserPosition> getLocationOfAllUsers(List<String> friendIds) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("ids", friendIds);
+		
+		List<UserPosition> users = namedParameterJdbcTemplate.query(
+				"SELECT * FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p" +
+				" WHERE u.user_id=up.user_id AND u.user_privacy_id = p.user_privacy_id" +
+				" AND ((u.facebook_id IN (:ids) AND p.position != 3) OR p.position = 1)",
+				namedParameters, new UserPositionRowMapper());
+		return users;
+	}
+	
 	public List<UserPosition> getLocationOfFriends(List<String> friendIds) {
 		
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(

@@ -172,6 +172,22 @@ public class UserController {
 		return new ModelAndView("json", "regUserPos", regUserPos);
 	}
 	
+	/**
+	 * Added posting positions since signpost doesn't handle puts
+	 * @param locationId
+	 * @param token
+	 * @return
+	 * @throws TokenException
+	 */
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/me/location/{locationId}", method = RequestMethod.POST)
+	@ServiceModelMapping(returnType = boolean.class)
+	public ModelAndView registerUserLocationWithPost(
+			@PathVariable int locationId,
+			@RequestParam(required = true) String token) throws TokenException {
+		return registerUserLocation(locationId, token);
+	}
+	
 
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{id}/location", method = RequestMethod.GET)
@@ -188,9 +204,9 @@ public class UserController {
 	@RequestMapping(value = "/all/location", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = UserPosition.class)
 	public ModelAndView getAllUserLocations(
-			@RequestParam(required = true) String token) {
-		verifyToken(token);
-		List<UserPosition> pos = service.getLocationOfAllUsers();
+			@RequestParam(required = true) String token) throws ConsumerException {
+		int tokenUserId = verifyToken(token);
+		List<UserPosition> pos = service.getLocationOfAllUsers(tokenUserId);
 		return new ModelAndView("json", "user_position", pos);
 	}
 	

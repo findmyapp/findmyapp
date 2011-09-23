@@ -294,6 +294,13 @@ public class UserService {
 	public List<UserPosition> getLocationOfAllUsers() {
 		return data.getLocationOfAllUsers();
 	}
+	/**
+	 * Get list of all positions this user has access to
+	 */
+	public List<UserPosition> getLocationOfAllUsers(int userId) throws ConsumerException {
+		List<String> friendIds = getFacebookIdOfFriends(userId);
+		return data.getLocationOfAllUsers(friendIds);
+	}
 
 	/**
 	 * Retreives a list of the user positions of users facebook friends.

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -38,9 +39,11 @@ public class LocationRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 	@Autowired
 	@Qualifier("dataSource")
 	DataSource dataSource;
+	
 	private static final Logger logger = LoggerFactory
 			.getLogger(LocationRepository.class);
 
@@ -95,6 +98,29 @@ public class LocationRepository {
 						+ "AND p.position_location_id=?", new UserRowMapper(),
 				locationId);
 		return users;
+	}
+	
+	public List<User> getUsersAtLocation(int locationId, List<String> friendIds) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("locationId", locationId);
+		namedParameters.put("ids", friendIds);
+		return namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
+						+ " WHERE u.user_id=up.user_id AND up.position_location_id=:locationId "
+						+ " AND u.user_privacy_id = p.user_privacy_id AND ("
+						+ "(p.position != 3 AND u.facebook_id IN (:ids)) OR p.position=1)", namedParameters, new UserRowMapper());
+	}
+	public List<User> getFriendsAtLocation(int locationId, List<String> friendIds) {
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+				dataSource);
+		Map<String, Object> namedParameters = new HashMap<String, Object>();
+		namedParameters.put("locationId", locationId);
+		namedParameters.put("ids", friendIds);
+		return namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
+				+ " WHERE u.user_id=up.user_id AND up.position_location_id=:locationId "
+				+ " AND u.user_privacy_id = p.user_privacy_id AND "
+				+ "p.position != 3 AND u.facebook_id IN (:ids)", namedParameters, new UserRowMapper());
 	}
 
 	public int getUserCountAtLocation(int locationId) {

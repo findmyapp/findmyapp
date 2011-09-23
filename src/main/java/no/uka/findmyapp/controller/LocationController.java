@@ -22,6 +22,7 @@ import no.uka.findmyapp.model.appstore.Developer;
 import no.uka.findmyapp.service.DeveloperService;
 import no.uka.findmyapp.service.LocationService;
 import no.uka.findmyapp.service.auth.AuthenticationService;
+import no.uka.findmyapp.service.auth.ConsumerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,19 +89,36 @@ public class LocationController {
 		return new ModelAndView("json", "location", location);
 	}
 
-	@Secured("ROLE_ADMIN") //TODO dette maa fikses. Ingen privacy, tilgang eller dokumentasjon. Brukes ikke!
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
 	@ServiceModelMapping(returnType = User.class)
-	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId) {
+	public ModelAndView getUsersAtLocation(@PathVariable("id") int locationId, 
+			@RequestParam(required = true) String token) 
+			throws ConsumerException {
+		
+		int tokenId = verifyToken(token);
 		logger.debug("getUsersAtLocation ( " + locationId + ")");
-		List<User> users = service.getUsersAtLocation(locationId);
-		return new ModelAndView("json", "users_at_location", users);
+		List<User> users = service.getUsersAtLocation(locationId, tokenId);
+		return new ModelAndView("json", "usersAtLocation", users);
+	}
+	
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/{id}/friends", method = RequestMethod.GET)
+	@ServiceModelMapping(returnType = User.class)
+	public ModelAndView getFriendsAtLocation(@PathVariable("id") int locationId, 
+			@RequestParam(required = true) String token) 
+			throws ConsumerException {
+		
+		int tokenId = verifyToken(token);
+		logger.debug("getFriendsAtLocation ( " + locationId + ")");
+		List<User> users = service.getFriendsAtLocation(locationId, tokenId);
+		return new ModelAndView("json", "friendsAtLocation", users);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView getLocationData(@PathVariable("id") int locationId) {
 		Location locale = service.getLocation(locationId);
-		return new ModelAndView("json", "location_real_time",locale);
+		return new ModelAndView("json", "locationRealTime",locale);
 	}
 	
 	@RequestMapping(value = "/{id}/users/count", method = RequestMethod.GET)
@@ -151,7 +169,7 @@ public class LocationController {
 	@ServiceModelMapping(returnType = Fact.class)
 	public ModelAndView getRandomFact(@PathVariable("id") int locationId) {
 		Fact fact = service.getRandomFact(locationId);
-		return new ModelAndView("json", "random_fact", fact);
+		return new ModelAndView("json", "randomFact", fact);
 	}
 	
 	
@@ -163,14 +181,14 @@ public class LocationController {
 	@ServiceModelMapping(returnType = String.class)
 	public ModelAndView getBartenderString() {
 		String string = service.getBartenderString();
-		return new ModelAndView("json", "bartender_string", string);
+		return new ModelAndView("json", "bartenderString", string);
 	}
 	
 	@RequestMapping(value = "/screen/{text}", method = RequestMethod.PUT)
 	@ServiceModelMapping(returnType = Boolean.class)
-	public ModelAndView postBartenderString(@PathVariable("text") String text) {
+	public ModelAndView postBartenderString(@RequestParam(required = true) String text) {
 		boolean success = service.setBartenderString(text);
-		return new ModelAndView("json", "put_bartender_string", success);
+		return new ModelAndView("json", "putBartenderString", success);
 	}
 	
 	/*
@@ -206,6 +224,13 @@ public class LocationController {
 	@ExceptionHandler(LocationNotFoundException.class)
 	private void handleLocationNotFoundException(LocationNotFoundException ex) {
 		logger.error(ex.getLocalizedMessage());
+	}
+	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(ConsumerException.class)
+	private void handleConsumerException(ConsumerException e) {
+		logger.debug(e.getMessage());
 	}
 
 
