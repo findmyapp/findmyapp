@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import no.uka.findmyapp.exception.InvalidUserIdOrAccessTokenException;
+import no.uka.findmyapp.exception.PrivacyException;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.model.User;
@@ -60,7 +61,7 @@ public class CashlessController {
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date from,
 			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) Date to,
 			@RequestParam(required=false) String location,
-			@RequestParam(required=false) String orderBy) throws ConsumerException, UkaYearNotFoundException{ 
+			@RequestParam(required=false) String orderBy) throws ConsumerException, UkaYearNotFoundException, PrivacyException { 
 		
 		//int userId = auth.verify("b7049efc1ccf2eaf829c5cef9ddd186a8c5f8f50i25t1311839388431");
 		int tokenUserId = auth.verify( token );
@@ -75,9 +76,11 @@ public class CashlessController {
 			throw new InvalidTokenException("Token not valid");
 		}
 		
-		card.setBalance(cashlessService.getCardBalance(card.getCardNo()));
+		
 		if (!idOrMe.equalsIgnoreCase("me")) {//don't show card number to others
 			card.setCardNo(-1);
+		} else {
+			card.setBalance(cashlessService.getCardBalance(card.getCardNo()));
 		}
 		return new ModelAndView("json", "card", card);
 	}
@@ -153,5 +156,13 @@ public class CashlessController {
 	private void handleNumberFormatException(NumberFormatException e) {
 		logger.debug(e.getMessage());
 	}
+	
+	@SuppressWarnings("unused")
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	@ExceptionHandler(PrivacyException.class)
+	private void handlePrivacyException(PrivacyException e) {
+		logger.debug(e.getMessage());
+	}
+	
 
 }
