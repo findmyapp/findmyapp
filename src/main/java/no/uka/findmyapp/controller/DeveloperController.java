@@ -102,7 +102,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
-	@Secured("ROLE_WORDPRESS")
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
 	public ModelAndView demo4(@RequestBody Temperature temp) {
 		
@@ -111,7 +111,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "registerApp", temp);
 	}
 
-	@Secured("ROLE_WORDPRESS")
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo3", method = RequestMethod.POST)
 	public ModelAndView demo3(@RequestBody Temperature temp) {
 		
@@ -138,7 +138,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "registerApp",s);
 	}
 	
-	@RequestMapping(value = "/demo1", method = RequestMethod.GET)
+	@RequestMapping(value = "/demo11", method = RequestMethod.GET)
 	public ModelAndView demo11() {
 		String s = "JSON TEST demo11";
 		logger.info(s);
