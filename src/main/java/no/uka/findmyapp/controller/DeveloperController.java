@@ -129,7 +129,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "registerApp", "JSON TEST");
 	}
 	
-	@Secured("ROLE_WORDPRESS")
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo1", method = RequestMethod.GET)
 	public ModelAndView demo1() {
 		boolean b = true;
@@ -146,6 +146,9 @@ public class DeveloperController {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
+	
+	
+	
 
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
