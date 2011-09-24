@@ -123,7 +123,7 @@ public class CustomParameterController {
 		return new ModelAndView("json", "json", respons);
 	}
 
-	//@Secured("ROLE_WORDPRESS")
+	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/parameters/clean", method = RequestMethod.DELETE)
 	public ModelAndView cleanParameter(// ADD ERROR HANDLING, max elem
 			@RequestParam String name, @RequestParam(required=true) int developerId) {
