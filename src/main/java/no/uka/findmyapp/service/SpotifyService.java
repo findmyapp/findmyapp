@@ -76,7 +76,7 @@ public class SpotifyService {
 			
 		}
 		
-		return data.getSong(spotifyId, locationId);;
+		return data.getSong(spotifyId, locationId);
 	}
 	
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {
