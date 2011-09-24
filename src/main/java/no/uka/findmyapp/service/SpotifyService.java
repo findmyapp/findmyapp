@@ -51,7 +51,12 @@ public class SpotifyService {
 		return data.getSongs(locationId, from, to, orderBy, notPlayedSince);
 	}
 	
-	public boolean requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, MusicSessionNotOpenException {
+	public List<Track> getPlayedSongs(int from, int num, int locationId) {
+		int to = from + Math.abs(num);
+		return data.getPlayedTracks(locationId, from, to);
+	}
+	
+	public Track requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, MusicSessionNotOpenException {
 		boolean success = false;
 		//check if code exists
 		if (!data.hasSong(spotifyId)) {
@@ -68,9 +73,10 @@ public class SpotifyService {
 			if (success) {
 				//set code as used
 			}
+			
 		}
 		
-		return success;
+		return data.getSong(spotifyId, locationId);;
 	}
 	
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {

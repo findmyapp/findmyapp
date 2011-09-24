@@ -93,6 +93,17 @@ public class SpotifyController {
 		return model;
 	}
 	
+	
+	@RequestMapping(value = "/{locationId}/songs/played", method = RequestMethod.GET)
+	public ModelAndView getPastSongs(@PathVariable int locationId,
+			@RequestParam(required = false, defaultValue = "0") int fromIndex,
+			@RequestParam(required = false, defaultValue = "10") int num) {
+		
+		ModelAndView model = new ModelAndView("json");
+		model.addObject("songs", service.getPlayedSongs(fromIndex, num, locationId));
+		return model;
+	}
+	
 	/**
 	 * Use spotify's metadata api to search for songs and order them by popularity
 	 * @param locationId
@@ -133,7 +144,7 @@ public class SpotifyController {
 		int tokenUserId = verifyToken(token);
 		
 		ModelAndView model = new ModelAndView("json");
-		model.addObject("success", service.requestSong(spotifyId, tokenUserId, locationId, code));
+		model.addObject("song", service.requestSong(spotifyId, tokenUserId, locationId, code));
 		return model;
 	}
 	

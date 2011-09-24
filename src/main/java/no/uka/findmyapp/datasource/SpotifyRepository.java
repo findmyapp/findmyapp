@@ -64,6 +64,12 @@ public class SpotifyRepository {
 				" GROUP BY ti.spotify_id "+getOrderString(orderBy)+" LIMIT :from, :to", namedParams, new TrackRowMapper());
 	}
 	
+	public List<Track> getPlayedTracks(int locationId, int from, int to) {
+		Map<String, Object> namedParams = getMap(locationId, null, -1, null, from, to, null);
+		NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
+		return jdbc.query(songJoinString + "ORDER BY last_played DESC LIMIT :from, :to", namedParams, new TrackRowMapper());
+	}
+	
 	public boolean hasSong(String spotifyId) {
 		int n = jdbcTemplate.queryForInt("SELECT COUNT(*) FROM TRACK_INFO WHERE spotify_id = ?", spotifyId);
 		return (n > 0);
