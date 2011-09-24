@@ -6,6 +6,7 @@ import java.util.List;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.CashlessRepository;
+import no.uka.findmyapp.exception.PrivacyException;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
 import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.cashless.CashlessCard;
@@ -47,10 +48,10 @@ public class CashlessService {
 	 * @param place
 	 * @return
 	 */
-	public CashlessCard getCardTransactions(String ukaYear, int tokenUserId, int userId, Date date, Date from, Date to, String place) throws UkaYearNotFoundException, ConsumerException {
+	public CashlessCard getCardTransactions(String ukaYear, int tokenUserId, int userId, Date date, Date from, Date to, String place) throws UkaYearNotFoundException, ConsumerException, PrivacyException {
 		PrivacySetting pSet = usrService.getPrivacySettingForUserId(userId, "money");
 		if (pSet == PrivacySetting.ONLY_ME || (pSet == PrivacySetting.FRIENDS && !usrService.areFriends(tokenUserId, userId))) {
-			return null;//no access
+			throw new PrivacyException("You cannot see this users privacy");
 		} else {
 			return getCardTransactions(ukaYear, userId, date, from, to, place);
 		}
