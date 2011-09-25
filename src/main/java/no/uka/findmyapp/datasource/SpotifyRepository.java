@@ -46,7 +46,7 @@ public class SpotifyRepository {
 	public Track getSong(String spotifyId, int locationId) {
 		Map<String, Object> namedParams = getMap(locationId, spotifyId, -1, null, -1, -1, null);
 		NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
-		return jdbc.queryForObject(songJoinString + "WHERE ti.spotifyId = :sId", 
+		return jdbc.queryForObject(songJoinString + "WHERE ti.spotify_id = :sId", 
 				namedParams, new TrackRowMapper());
 	}
 	
