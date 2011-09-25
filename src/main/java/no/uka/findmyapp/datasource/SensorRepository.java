@@ -92,7 +92,7 @@ public class SensorRepository {
 	public List<Temperature> getTemperatureData(Date from, Date to,
 			int location) {
 		List<Temperature> temperatureList = jdbcTemplate.query(
-				"SELECT * FROM SENSOR_TEMPERATURE WHERE date>=? AND date<=? AND position_location_id =? ORDER BY date DESC",
+				"SELECT * FROM SENSOR_TEMPERATURE WHERE date BETWEEN ? AND ? AND position_location_id =? ORDER BY date DESC",
 				new SensorTemperatureRowMapper(), from, to, location);
 		return temperatureList;
 	}
