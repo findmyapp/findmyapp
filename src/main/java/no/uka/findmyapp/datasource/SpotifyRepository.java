@@ -67,7 +67,7 @@ public class SpotifyRepository {
 	public List<Track> getPlayedTracks(int locationId, int from, int to) {
 		Map<String, Object> namedParams = getMap(locationId, null, -1, null, from, to, null);
 		NamedParameterJdbcTemplate jdbc = new NamedParameterJdbcTemplate(dataSource);
-		return jdbc.query(songJoinString + "ORDER BY last_played DESC LIMIT :from, :to", namedParams, new TrackRowMapper());
+		return jdbc.query(songJoinString + "GROUP BY ti.spotify_id ORDER BY last_played DESC LIMIT :from, :to", namedParams, new TrackRowMapper());
 	}
 	
 	public boolean hasSong(String spotifyId) {
