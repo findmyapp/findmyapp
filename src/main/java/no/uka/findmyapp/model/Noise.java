@@ -21,7 +21,7 @@ public class Noise {
 	private Date date; 
 	private Date time;
 	
-	private Gson gson = new Gson();
+	//private Gson gson = new Gson();
 	
 	
 	
@@ -92,13 +92,13 @@ public class Noise {
 		this.samples = samples;
 	}
 	
-	public void setJsonSamples(String samples){
+	/*public void setJsonSamples(String samples){
 		Type typeToken = new TypeToken<Integer[]>(){}.getType();
 		this.samples = (int[])gson.fromJson(samples,typeToken);
 	}
 	public String getJsonSamples(){
 		return gson.toJson(this.samples);
-	}
+	}*/
 
 	public void setTime(Date time) {
 		this.time = time;

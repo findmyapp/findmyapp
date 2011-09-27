@@ -5,3 +5,4 @@ target/
 .settings/
 global-groovy.log
 credentials.properties
+.DS_Store

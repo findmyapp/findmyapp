@@ -178,7 +178,7 @@ public class SensorService {
 			sum += Math.pow((samples[i] - average), 2);
 		}
 			
-		deviation = Math.sqrt(sum /10); 
+		deviation = Math.sqrt(sum / (samples.length - 1)); 
 			
 		return deviation;
 	}
