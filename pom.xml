@@ -407,7 +407,7 @@
 					<plugin>
 						<groupId>eviware</groupId>
 						<artifactId>maven-soapui-plugin</artifactId>
-						<version>4.0.0-SNAPSHOT</version>
+						<version>4.5.0-SNAPSHOT</version>
 						<configuration>
 							<projectFile>${basedir}/src/test/soapui/findmyapp-soapui-project.xml</projectFile>
 							<outputFolder>${project.build.directory}/soapui-logs</outputFolder>
