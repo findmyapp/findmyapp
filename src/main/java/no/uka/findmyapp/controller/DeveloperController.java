@@ -122,21 +122,19 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", temp);
 	}
+	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo5", method = RequestMethod.DELETE)
-	public ModelAndView demo5(@RequestBody Temperature temp) {
+	public ModelAndView demo5() {
 
-		logger.info("Debug: demo5");
-		logger.info(temp.toString());
-		logger.info(temp.getId() + "");
-		logger.info(temp.getLocation() + "");
+		logger.info("Debug: demo5 DELETE");
 		
-		return new ModelAndView("json", "registerApp", temp);
+		return new ModelAndView("json", "registerApp", null);
 	}
 	
 	@Secured("ROLE_CONSUMER")
-	@RequestMapping(value = "/demo5", method = RequestMethod.POST)
-	public ModelAndView demo5(@RequestBody String temp) {
+	@RequestMapping(value = "/demo6", method = RequestMethod.POST)
+	public ModelAndView demo6(@RequestBody String temp) {
 		
 		logger.info(temp.toString());
 		
@@ -178,9 +176,6 @@ public class DeveloperController {
 				+ ex.getLocalizedMessage() + " )");
 	}
 	
-	
-	
-
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(IncorrectResultSizeDataAccessException.class)
