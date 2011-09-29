@@ -1,7 +1,9 @@
 package no.uka.findmyapp.controller;
 
 import no.uka.findmyapp.exception.MusicSessionNotOpenException;
+import no.uka.findmyapp.exception.QRCodeNotValidException;
 import no.uka.findmyapp.exception.SpotifyApiException;
+import no.uka.findmyapp.exception.UpdateQRCodeException;
 import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.service.SpotifyService;
 import no.uka.findmyapp.service.auth.AuthenticationService;
@@ -132,6 +134,8 @@ public class SpotifyController {
 	 * @return
 	 * @throws SpotifyApiException - Error while contacting spotify
 	 * @throws MusicSessionNotOpenException - Thrown when the music session isn't open
+	 * @throws QRCodeNotValidException 
+	 * @throws UpdateQRCodeException 
 	 */
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/{locationId}/songs/{spotifyId}", method = RequestMethod.POST)
@@ -139,10 +143,9 @@ public class SpotifyController {
 			@PathVariable int locationId, 
 			@PathVariable String spotifyId,
 			@RequestParam(required=true) String code,
-			@RequestParam(required=true) String token) throws SpotifyApiException, MusicSessionNotOpenException {
+			@RequestParam(required=true) String token) throws SpotifyApiException, MusicSessionNotOpenException, QRCodeNotValidException, UpdateQRCodeException {
 		
 		int tokenUserId = verifyToken(token);
-		
 		ModelAndView model = new ModelAndView("json");
 		model.addObject("song", service.requestSong(spotifyId, tokenUserId, locationId, code));
 		return model;

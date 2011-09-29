@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.uka.findmyapp.datasource.SpotifyRepository;
-import no.uka.findmyapp.exception.LocationNotFoundException;
 import no.uka.findmyapp.exception.MusicSessionNotOpenException;
+import no.uka.findmyapp.exception.QRCodeNotValidException;
 import no.uka.findmyapp.exception.SpotifyApiException;
+import no.uka.findmyapp.exception.UpdateQRCodeException;
 import no.uka.findmyapp.model.spotify.SpotifyTrack;
 import no.uka.findmyapp.model.spotify.SpotifyTrackSearchContainer;
 import no.uka.findmyapp.model.spotify.Track;
 import no.uka.findmyapp.model.spotify.MusicSession;
 import no.uka.findmyapp.model.spotify.SpotifyLookupContainer;
+import no.uka.findmyapp.service.auth.QRService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,60 +31,75 @@ public class SpotifyService {
 			.getLogger(FacebookService.class);
 	@Autowired
 	private SpotifyRepository data;
-	
+
+	@Autowired
+	private QRService qrService;
+
 	@Autowired
 	private Gson gson;
-	
+
 	public List<MusicSession> getSessions() {
 		return data.getSessions();
 	}
-	
+
 	public MusicSession getSession(int locationId) {
 		return data.getSession(locationId);
 	}
-	
+
 	public Track getSong(String spotifyId, int locationId) {
 		return data.getSong(spotifyId, locationId);
 	}
-	
+
 	public List<Track> getSongs(int from, int num, String orderBy, long notPlayedIn, int locationId) {
 		int to = from + Math.abs(num);
 		Timestamp notPlayedSince = new Timestamp(System.currentTimeMillis()-notPlayedIn);
 		return data.getSongs(locationId, from, to, orderBy, notPlayedSince);
 	}
-	
+
 	public List<Track> getPlayedSongs(int from, int num, int locationId) {
 		int to = from + Math.abs(num);
 		return data.getPlayedTracks(locationId, from, to);
 	}
-	
-	public Track requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, MusicSessionNotOpenException {
+
+	public Track requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, MusicSessionNotOpenException, QRCodeNotValidException, UpdateQRCodeException {
 		boolean success = false;
-		//check if code exists
-		if (!data.hasSong(spotifyId)) {
-			SpotifyLookupContainer song = requestSpotifySong(spotifyId);
-			logger.debug(song.getTrack().getName()+ " - Fetched from spotify, length: "+song.getTrack().getLength());
-			long length = (long) song.getTrack().getLength()*1000;
-			data.saveSong(spotifyId, song.getTrack().getName(), song.getTrack().concatArtistNames(), length);
-		}
-		
-		if (!data.getSession(locationId).isOpen()) {
-			throw new MusicSessionNotOpenException("Session is not open");
+		if (qrService.verify(code, locationId)==-1){
+			throw new QRCodeNotValidException("QRCode is not valid");
 		} else {
-			success = data.requestSong(spotifyId, locationId, userId);
-			if (success) {
-				//set code as used
+			if (!data.hasSong(spotifyId)) {
+				SpotifyLookupContainer song = requestSpotifySong(spotifyId);
+				logger.debug(song.getTrack().getName()+ " - Fetched from spotify, length: "+song.getTrack().getLength());
+				long length = (long) song.getTrack().getLength()*1000;
+				data.saveSong(spotifyId, song.getTrack().getName(), song.getTrack().concatArtistNames(), length);
 			}
-			
+			if (!data.getSession(locationId).isOpen()) {
+				throw new MusicSessionNotOpenException("Session is not open");
+			} else {
+				//Have to check number of request before and after request to check if the user could vote for this song. Check is included so uses of a QRcode is not decremented if the user could not vote.
+				//This should be done in another way. The sql of SpotifyRepository.requestSong could maybe be divided into two queries.
+				int requestsBeforeNewRequest = data.getSong(spotifyId, locationId).getActiveRequests();
+				success = data.requestSong(spotifyId, locationId, userId);
+				int requestsAfterNewRequest = data.getSong(spotifyId, locationId).getActiveRequests();
+				if (success) {
+					if (requestsAfterNewRequest>requestsBeforeNewRequest){
+						if (!qrService.codeIsUsed(code)){
+							throw new UpdateQRCodeException("Could not update QRCode status");
+						}
+					} else {
+						logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
+					}
+				}
+
+			}
 		}
-		
+
 		return data.getSong(spotifyId, locationId);
 	}
-	
+
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {
 		SpotifyTrackSearchContainer tracks = searchSpotify(query, page);
 		List<String> spotifyIds = new ArrayList<String>();
-		
+
 		for (SpotifyTrack track: tracks.getTracks()) {//Save tracks to db
 			long length = (long) track.getLength() * 1000;
 			data.saveSong(track.getHref(), track.getName(), track.concatArtistNames(), length);
@@ -95,16 +112,16 @@ public class SpotifyService {
 			return new ArrayList<Track>();
 		}
 	}
-	
+
 	public Track setSongAsPlaying(String spotifyId, int locationId) {
 		data.setSongAsPlayed(spotifyId, locationId);
 		return data.getSong(spotifyId, locationId);
 	}
-	
+
 	public boolean removeRequests(int locationId) {
 		return data.removeRequests(locationId);
 	}
-	
+
 	public boolean createOrUpdateSession(int locationId, boolean open, String sessionName, boolean resetVotes) {
 		if (resetVotes) {
 			removeRequests(locationId);
@@ -115,8 +132,8 @@ public class SpotifyService {
 			return data.createOrUpdateSession(locationId, sessionName, open);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Adapter for spotify's search api
 	 * @param query - to match tracks
@@ -127,7 +144,7 @@ public class SpotifyService {
 	private SpotifyTrackSearchContainer searchSpotify(String query, int page) throws SpotifyApiException {
 		RestTemplate rest = new RestTemplate();
 		SpotifyTrackSearchContainer response = null;
-		
+
 		try {
 			logger.debug("Searching for spotify-songs with query "+query);
 			String jsonResponse = rest.getForObject("http://ws.spotify.com/search/1/track.json?q="+query+"&page="+page, String.class);
@@ -138,7 +155,7 @@ public class SpotifyService {
 		}
 		return response;
 	}
-	
+
 	/**
 	 * Adapter for spotify's lookup api
 	 * @param spotifyId - id of track, has to start with "spotify:track:"
@@ -153,17 +170,17 @@ public class SpotifyService {
 		if (spotifyId.indexOf("spotify:track:") != 0) {//trying to look up something that isn't a track
 			throw new IllegalArgumentException();
 		}
-		
+
 		try {
 			logger.debug("Fetching spotifysong with uri: "+spotifyId);
 			String jsonResponse = rest.getForObject("http://ws.spotify.com/lookup/1/.json?uri="+spotifyId, String.class);
 			response = gson.fromJson(jsonResponse, SpotifyLookupContainer.class);//use gson rather than built in spring deserializer which needs the object to match all fields
-			
+
 		} catch (RestClientException e) {
 			logger.error("Exception while fetching spotifySong "+spotifyId+" error: "+e.getMessage());
 			throw new SpotifyApiException(e.getMessage());
 		}
 		return response;
 	}
-	
+
 }
