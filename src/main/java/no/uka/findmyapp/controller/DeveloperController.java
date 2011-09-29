@@ -122,6 +122,17 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", temp);
 	}
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/demo5", method = RequestMethod.DELETE)
+	public ModelAndView demo5(@RequestBody Temperature temp) {
+
+		logger.info("Debug: demo5");
+		logger.info(temp.toString());
+		logger.info(temp.getId() + "");
+		logger.info(temp.getLocation() + "");
+		
+		return new ModelAndView("json", "registerApp", temp);
+	}
 	
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo5", method = RequestMethod.POST)
