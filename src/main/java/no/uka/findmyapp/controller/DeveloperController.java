@@ -119,6 +119,14 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", temp);
 	}
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/demo5", method = RequestMethod.POST)
+	public ModelAndView demo5(@RequestBody String temp) {
+		
+		logger.info(temp.toString());
+		
+		return new ModelAndView("json", "registerApp", temp);
+	}
 	
 	@Secured("ROLE_WORDPRESS")
 	@RequestMapping(value = "/demo2", method = RequestMethod.GET)
