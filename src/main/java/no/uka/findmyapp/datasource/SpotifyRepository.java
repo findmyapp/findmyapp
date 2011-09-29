@@ -92,6 +92,11 @@ public class SpotifyRepository {
 		return num > 0;
 	}
 	
+	public boolean userCanRequestSong(String spotifyId, int locationId, int userId){
+		int num=jdbcTemplate.queryForInt("SELECT count(*) FROM TRACK_REQUEST WHERE active='true' and spotify_id=? and position_location_id=? and user_id=?", spotifyId, locationId, userId);
+		return num==0;
+	}
+	
 	public boolean removeRequests(int locationId) {
 		int num = jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 'false' WHERE position_location_id = ?", locationId);
 		return (num > 0);

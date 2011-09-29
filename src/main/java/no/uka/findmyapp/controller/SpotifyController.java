@@ -143,7 +143,7 @@ public class SpotifyController {
 			@PathVariable int locationId, 
 			@PathVariable String spotifyId,
 			@RequestParam(required=true) String code,
-			@RequestParam(required=true) String token) throws SpotifyApiException, MusicSessionNotOpenException, QRCodeNotValidException, UpdateQRCodeException {
+			@RequestParam(required=true) String token) throws SpotifyApiException, UpdateQRCodeException {
 		
 		int tokenUserId = verifyToken(token);
 		ModelAndView model = new ModelAndView("json");

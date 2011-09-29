@@ -9,6 +9,7 @@ import no.uka.findmyapp.exception.MusicSessionNotOpenException;
 import no.uka.findmyapp.exception.QRCodeNotValidException;
 import no.uka.findmyapp.exception.SpotifyApiException;
 import no.uka.findmyapp.exception.UpdateQRCodeException;
+import no.uka.findmyapp.model.spotify.RequestResponse;
 import no.uka.findmyapp.model.spotify.SpotifyTrack;
 import no.uka.findmyapp.model.spotify.SpotifyTrackSearchContainer;
 import no.uka.findmyapp.model.spotify.Track;
@@ -61,10 +62,10 @@ public class SpotifyService {
 		return data.getPlayedTracks(locationId, from, to);
 	}
 
-	public Track requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, MusicSessionNotOpenException, QRCodeNotValidException, UpdateQRCodeException {
+	public RequestResponse requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, UpdateQRCodeException {
 		boolean success = false;
 		if (qrService.verify(code, locationId)==-1){
-			throw new QRCodeNotValidException("QRCode is not valid");
+			return new RequestResponse("QRCode is not valid", false);
 		} else {
 			if (!data.hasSong(spotifyId)) {
 				SpotifyLookupContainer song = requestSpotifySong(spotifyId);
@@ -73,27 +74,23 @@ public class SpotifyService {
 				data.saveSong(spotifyId, song.getTrack().getName(), song.getTrack().concatArtistNames(), length);
 			}
 			if (!data.getSession(locationId).isOpen()) {
-				throw new MusicSessionNotOpenException("Session is not open");
+				return new RequestResponse("Session is not open", false);
 			} else {
-				//Have to check number of request before and after request to check if the user could vote for this song. Check is included so uses of a QRcode is not decremented if the user could not vote.
-				//This should be done in another way. The sql of SpotifyRepository.requestSong could maybe be divided into two queries.
-				int requestsBeforeNewRequest = data.getSong(spotifyId, locationId).getActiveRequests();
-				success = data.requestSong(spotifyId, locationId, userId);
-				int requestsAfterNewRequest = data.getSong(spotifyId, locationId).getActiveRequests();
-				if (success) {
-					if (requestsAfterNewRequest>requestsBeforeNewRequest){
+				if (data.userCanRequestSong(spotifyId, locationId, userId)){
+					success = data.requestSong(spotifyId, locationId, userId);
+					if (success) {
 						if (!qrService.codeIsUsed(code)){
 							throw new UpdateQRCodeException("Could not update QRCode status");
 						}
-					} else {
-						logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
 					}
+				}else {
+					logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
+					return new RequestResponse("Already voted for this song", false);
 				}
-
 			}
 		}
 
-		return data.getSong(spotifyId, locationId);
+		return new RequestResponse("Vote ok", true);
 	}
 
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {
