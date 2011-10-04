@@ -24,6 +24,11 @@
 	<logger name="no.uka.findmyapp.controller.SensorController">
 		<level value="error" />
 	</logger>
+	<logger name="no.uka.findmyapp.controller.AuthenticationService">
+		<level value="info" />
+	</logger>
+	
+	
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">

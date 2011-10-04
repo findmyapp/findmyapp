@@ -46,7 +46,7 @@ public class AuthenticationService {
 		String token = null;
 		
 		if (facebookId != null) {
-			logger.debug("Find userId of user with facebookId " + facebookId);
+			logger.info("Find userId of user with facebookId " + facebookId);
 			int userId = userRepo.getUserIdByFacebookId(facebookId);
 
 			if (userId == -1) {

@@ -13,7 +13,7 @@ public class UserRowMapper implements RowMapper<User> {
 	private static final Logger logger = LoggerFactory.getLogger(UserRowMapper.class); 
 	
 	public User mapRow(ResultSet rs, int arg1) throws SQLException {
-		logger.info("inside UserRowMapper");
+		logger.debug("inside UserRowMapper");
 		User user = new User(); 
 		user.setLocalUserId(rs.getInt("user_id"));
 		user.setFacebookUserId(rs.getInt("facebook_id"));
