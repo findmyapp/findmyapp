@@ -22,7 +22,7 @@
 		<level value="debug" />
 	</logger>
 	<logger name="no.uka.findmyapp.controller.SensorController">
-		<level value="info" />
+		<level value="error" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
