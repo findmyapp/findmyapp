@@ -24,7 +24,7 @@
 	<logger name="no.uka.findmyapp.controller.SensorController">
 		<level value="error" />
 	</logger>
-	<logger name="no.uka.findmyapp.controller.AuthenticationService">
+	<logger name="no.uka.findmyapp.service.auth.AuthenticationService">
 		<level value="info" />
 	</logger>
 	
