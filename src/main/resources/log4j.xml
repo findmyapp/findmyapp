@@ -21,6 +21,9 @@
 	<logger name="no.uka.findmyapp.controller">
 		<level value="debug" />
 	</logger>
+	<logger name="no.uka.findmyapp.controller.SensorController">
+		<level value="info" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
