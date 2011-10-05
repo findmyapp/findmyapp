@@ -35,10 +35,6 @@ public class SensorController {
 	@Autowired
 	private SensorService service;
 	
-	List <Temperature> temperatureList;
-	List<Noise> noiseList;
-	List<Humidity> humidityList;
-	List<BeerTap> beertapList;
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorController.class);
 
@@ -68,7 +64,7 @@ public class SensorController {
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to
 			) {
 		
-		temperatureList = service.getTemperatureData(from, to, locationId);
+		List <Temperature> temperatureList = service.getTemperatureData(from, to, locationId);
 		
 		if(temperatureList.isEmpty()){
 			return new ModelAndView("fail_respons");
@@ -82,7 +78,7 @@ public class SensorController {
 	@ServiceModelMapping(returnType=Temperature.class)
 	public ModelAndView getTemperatureData(
 			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
+			@RequestParam (defaultValue = "1") int limit) {
 		
 		List<Temperature> temp = service.getLatestTemperatureData(locationId, limit);
 		
@@ -101,7 +97,7 @@ public class SensorController {
 			@RequestParam (required = false) @DateTimeFormat(iso = ISO.DATE_TIME) Date to){
 
 		
-		noiseList = service.getNoiseData(from, to, locationId);
+		List<Noise> noiseList = service.getNoiseData(from, to, locationId);
 		return new ModelAndView("json","noise",noiseList);
 	}
 	
@@ -109,7 +105,7 @@ public class SensorController {
 	@ServiceModelMapping(returnType=Noise.class)
 	public ModelAndView getNoiseData(
 			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
+			@RequestParam (defaultValue = "1") int limit) {
 		
 		List<Noise> noise = service.getLatestNoiseData(locationId, limit);
 		
@@ -129,7 +125,7 @@ public class SensorController {
 
 		logger.info("Humidity data request received for location: " + locationId);
 		logger.info("Trying to fetch humidity data");
-		humidityList = service.getHumidityData(from, to, locationId);
+		List<Humidity> humidityList = service.getHumidityData(from, to, locationId);
 		logger.info("Got humidity data");
 		
 		return new ModelAndView("json","humidity",humidityList);
@@ -140,7 +136,7 @@ public class SensorController {
 	@ServiceModelMapping(returnType=Humidity.class)
 	public ModelAndView getHumidityData(
 			@PathVariable int locationId,
-			@RequestParam (required = false) String limit) {
+			@RequestParam (defaultValue = "1") int limit) {
 		
 		List<Humidity> humidity = service.getLatestHumidityData(locationId, limit);
 		
@@ -152,7 +148,7 @@ public class SensorController {
 		}
 			
 	}
-	
+	/*
 	@RequestMapping(value="/{locationId}/beertap/{tapNr}",method = RequestMethod.GET)
 	public ModelAndView getBeertapData(
 			@PathVariable int locationId,
@@ -164,7 +160,7 @@ public class SensorController {
 			int total = service.getBeertapSum(locationId,tapNr, from, to);
 			return new ModelAndView("json","beers", total);
 		} else {
-			beertapList = service.getBeertapData(locationId,tapNr, from, to);
+			List<BeerTap> beertapList = service.getBeertapData(locationId,tapNr, from, to);
 			return new ModelAndView("json","beers", beertapList);
 		}
 	}
@@ -173,7 +169,7 @@ public class SensorController {
 	public ModelAndView getBeerTapData(
 			@PathVariable int locationId,
 			@PathVariable int tapNr,
-			@RequestParam (required = false) String limit) {
+			@RequestParam (defaultValue = "1") int limit) {
 		
 		List<BeerTap> beertap = service.getLatestBeerTapData(locationId, tapNr, limit);
 		
@@ -185,7 +181,7 @@ public class SensorController {
 		}
 			
 	}
-
+*/
 	/**
 	 * Simply selects the sensor view to return a confirmation.
 	 */

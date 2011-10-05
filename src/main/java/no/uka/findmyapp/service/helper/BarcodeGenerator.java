@@ -35,7 +35,6 @@ public class BarcodeGenerator {
 		  
 		// (ImageIO.getWriterFormatNames() returns a list of supported formats)  
 		String imageFormat = "png"; // could be "gif", "tiff", "jpeg"   
-		  
 		BitMatrix bitMatrix = new QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, width, height);
 		MatrixToImageWriter.writeToStream(bitMatrix, imageFormat, new FileOutputStream(new File("qrcode.png"))); 
 	}

@@ -42,21 +42,21 @@
 		</property>
 	</bean>
 
-	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" autowire="byName">
-		<property name="driverClassName">
-			<value>${mssql.driver}</value>
-		</property>
-		<property name="url">
-			<value>${mssql.url}</value>
-		</property>
-		<property name="username">
-			<value>${mssql.user}</value>
-		</property>
-		<property name="password">
-			<value>${mssql.password}</value>
-		</property>
-	</bean>
+ 	<bean name="dataSourceMSSQL" id="dataSourceMSSQL" class="org.apache.commons.dbcp.BasicDataSource" 
+ 		destroy-method="close" autowire="byName"> 
+ 		<property name="driverClassName"> 
+ 			<value>${mssql.driver}</value>
+ 		</property> 
+ 		<property name="url"> 
+ 			<value>${mssql.url}</value> 
+ 		</property> 
+ 		<property name="username"> 
+ 			<value>${mssql.user}</value> 
+ 		</property> 
+ 		<property name="password"> 
+ 			<value>${mssql.password}</value> 
+ 		</property>
+ 	</bean> 
 
 	<bean id="searchConfiguration" class="no.uka.findmyapp.configuration.SearchConfiguration">
 		<property name="minLength">
@@ -80,9 +80,9 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<bean id="mssqlJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSourceMSSQL" />
-	</bean>
+ 	<bean id="mssqlJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+ 		<property name="dataSource" ref="dataSourceMSSQL" /> 
+ 	</bean> 
 
 	<security:http auto-config='true'>
 		<security:http-basic />
@@ -131,6 +131,9 @@
 		<security:user name="sampler"
 			password="b58463791f10e42cd0b55c2326cf35170a753bf36112262af8364d3608330005"
 			authorities="ROLE_SAMPLER" />
+		<security:user name="spotifydj"
+			password="0​a​e​f​9​4​c​8​0​b​6​1​4​a​9​7​a​0​7​a​4​b​7​7​3​a​6​8​3​9​8​3​8​5​1​a​9​1​3​8​2​3​1​c​e​8​9​8​c​5​3​6​6​4​1​d​a​e​3​d​3​4​8​6"
+			authorities="ROLE_DJ" />
 	</security:user-service>
 
 </beans>

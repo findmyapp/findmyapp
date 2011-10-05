@@ -102,7 +102,7 @@ public class DeveloperController {
 		return new ModelAndView("json", "result", result);
 	}
 
-	@Secured("ROLE_WORDPRESS")
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo4", method = RequestMethod.PUT)
 	public ModelAndView demo4(@RequestBody Temperature temp) {
 		
@@ -111,9 +111,30 @@ public class DeveloperController {
 		return new ModelAndView("json", "registerApp", temp);
 	}
 
-	@Secured("ROLE_WORDPRESS")
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo3", method = RequestMethod.POST)
 	public ModelAndView demo3(@RequestBody Temperature temp) {
+
+		logger.info("Debug: demo3");
+		logger.info(temp.toString());
+		logger.info(temp.getId() + "");
+		logger.info(temp.getLocation() + "");
+		
+		return new ModelAndView("json", "registerApp", temp);
+	}
+	
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/demo5", method = RequestMethod.DELETE)
+	public ModelAndView demo5() {
+
+		logger.info("Debug: demo5 DELETE");
+		
+		return new ModelAndView("json", "registerApp", null);
+	}
+	
+	@Secured("ROLE_CONSUMER")
+	@RequestMapping(value = "/demo6", method = RequestMethod.POST)
+	public ModelAndView demo6(@RequestBody String temp) {
 		
 		logger.info(temp.toString());
 		
@@ -128,14 +149,22 @@ public class DeveloperController {
 		
 		return new ModelAndView("json", "registerApp", "JSON TEST");
 	}
-	
-	@Secured("ROLE_WORDPRESS")
+
+	@Secured("ROLE_CONSUMER")
 	@RequestMapping(value = "/demo1", method = RequestMethod.GET)
 	public ModelAndView demo1() {
-		boolean b = true;
-		logger.info("JSON TEST");
+		String s = "JSON TEST demo1";
+		logger.info(s);
 		
-		return new ModelAndView("json", "registerApp", b);
+		return new ModelAndView("json", "registerApp",s);
+	}
+	
+	@RequestMapping(value = "/demo11", method = RequestMethod.GET)
+	public ModelAndView demo11() {
+		String s = "JSON TEST demo11";
+		logger.info(s);
+		
+		return new ModelAndView("json", "registerApp", s);
 	}
 	
 	@SuppressWarnings("unused")
@@ -146,7 +175,7 @@ public class DeveloperController {
 		logger.info("handleEmptyResultDataAccessException ( "
 				+ ex.getLocalizedMessage() + " )");
 	}
-
+	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(IncorrectResultSizeDataAccessException.class)

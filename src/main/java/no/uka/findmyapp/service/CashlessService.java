@@ -6,8 +6,11 @@ import java.util.List;
 import no.uka.findmyapp.configuration.UkaProgramConfiguration;
 import no.uka.findmyapp.configuration.UkaProgramConfigurationList;
 import no.uka.findmyapp.datasource.CashlessRepository;
+import no.uka.findmyapp.exception.PrivacyException;
 import no.uka.findmyapp.exception.UkaYearNotFoundException;
+import no.uka.findmyapp.model.PrivacySetting;
 import no.uka.findmyapp.model.cashless.CashlessCard;
+import no.uka.findmyapp.service.auth.ConsumerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +28,39 @@ public class CashlessService {
 	private CashlessRepository data;
 	
 	@Autowired
+	private UserService usrService;
+	
+	@Autowired
 	private	UkaProgramConfigurationList ukaProgramConfigurationList;
 	
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory
 	.getLogger(CashlessService.class);
 	
-	public CashlessCard getCardTransactions(String ukaYear, int userId, Date date, Date from, Date to, String place) 
+	/**
+	 * Gets transactions for a specified user
+	 * @param ukaYear
+	 * @param tokenUserId - Id of user requesting
+	 * @param userId - Id of cardholders user (the information that is returned)
+	 * @param date
+	 * @param from
+	 * @param to
+	 * @param place
+	 * @return
+	 */
+	public CashlessCard getCardTransactions(String ukaYear, int tokenUserId, int userId, Date date, Date from, Date to, String place) throws UkaYearNotFoundException, ConsumerException, PrivacyException {
+		PrivacySetting pSet = usrService.getPrivacySettingForUserId(userId, "money");
+		if (pSet == PrivacySetting.ONLY_ME || (pSet == PrivacySetting.FRIENDS && !usrService.areFriends(tokenUserId, userId))) {
+			throw new PrivacyException("You cannot see this users privacy");
+		} else {
+			return getCardTransactions(ukaYear, userId, date, from, to, place);
+		}
+	}
+	
+	public CashlessCard getCardTransactions(String ukaYear, int tokenUserId, Date date, Date from, Date to, String place) 
 				throws UkaYearNotFoundException {
 		
-		long cardNo = getCardNumberFromUserId(userId);
+		long cardNo = getCardNumberFromUserId(tokenUserId);
 		
 		// If user don't have a Cashless card, return null
 		if(cardNo == -1)

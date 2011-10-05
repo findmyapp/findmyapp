@@ -29,6 +29,8 @@ public class LocationService {
 	private LocationRepository data;
 	@Autowired
 	private SensorRepository sensor;
+	@Autowired
+	private UserService usrService;
 	
 	private String bartenderString = "BartenderString";
 	
@@ -60,6 +62,14 @@ public class LocationService {
 
 	public List<User> getUsersAtLocation(int locationId) {
 		return data.getUsersAtLocation(locationId);
+	}
+	public List<User> getUsersAtLocation(int locationId, int tokenId) throws ConsumerException {
+		List<String> friendIds = usrService.getFacebookIdOfFriends(tokenId);
+		return data.getUsersAtLocation(locationId, friendIds);
+	}
+	public List<User> getFriendsAtLocation(int locationId, int tokenId) throws ConsumerException {
+		List<String> friendIds = usrService.getFacebookIdOfFriends(tokenId);
+		return data.getFriendsAtLocation(locationId, friendIds);
 	}
 
 	public int getUserCountAtLocation(int locationId) {
@@ -147,14 +157,5 @@ public class LocationService {
 
 	public Fact getRandomFact(int locationId) {
 		return data.getRandomFact(locationId);
-	}
-
-
-
-	@SuppressWarnings("unused")
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler(ConsumerException.class)
-	private void handleConsumerException(ConsumerException e) {
-		logger.debug(e.getMessage());
 	}
 }

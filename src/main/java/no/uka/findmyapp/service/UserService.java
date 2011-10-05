@@ -56,10 +56,10 @@ public class UserService {
 		return data.getUserPrivacyForUserId(userId);
 	}
 
-	public boolean areFriends(int userId1, int userId2) throws ConsumerException {
-		List<User> friends = getRegisteredFacebookFriends(userId1);
+	public boolean areFriends(int tokenUserId, int localFriendUserId) throws ConsumerException {
+		List<User> friends = getRegisteredFacebookFriends(tokenUserId);
 		for (User friend : friends) {
-			if (friend.getFacebookUserId() == userId2) return true;
+			if (friend.getLocalUserId() == localFriendUserId) return true;
 		}
 		return false;
 	}
