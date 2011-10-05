@@ -25,6 +25,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 @Service
 public class SpotifyService {
@@ -148,6 +149,9 @@ public class SpotifyService {
 			response = gson.fromJson(jsonResponse, SpotifyTrackSearchContainer.class);
 		} catch (RestClientException e) {
 			logger.error("Exception while searching for spotifysongs matching "+query+" error: "+e.getMessage());
+			throw new SpotifyApiException(e.getMessage());
+		} catch (JsonSyntaxException e) {
+			logger.error("Error reading response from spotify: "+response+" error: "+e.getMessage());
 			throw new SpotifyApiException(e.getMessage());
 		}
 		return response;

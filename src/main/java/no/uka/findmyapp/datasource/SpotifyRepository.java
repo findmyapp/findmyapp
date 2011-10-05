@@ -83,7 +83,7 @@ public class SpotifyRepository {
 	public void setSongAsPlayed(String spotifyId, int locationId) {
 		jdbcTemplate.update("INSERT INTO TRACK_PLAYHISTORY VALUES ( ?, ?, NOW(), 1) " +
 				"ON DUPLICATE KEY UPDATE times_played = times_played + 1, last_played = NOW()", spotifyId, locationId);
-		jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 'false'");
+		jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 'false' WHERE spotify_id = ? AND position_location_id = ?", spotifyId, locationId);
 	}
 	
 	public boolean requestSong(String spotifyId, int locationId, int userId) {

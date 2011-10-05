@@ -8,15 +8,20 @@ import no.uka.findmyapp.helpers.ServiceModelMapping;
 import no.uka.findmyapp.service.SpotifyService;
 import no.uka.findmyapp.service.auth.AuthenticationService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -27,6 +32,9 @@ public class SpotifyController {
 	
 	@Autowired
 	private SpotifyService service;
+	
+	private static final Logger logger = LoggerFactory
+			.getLogger(LocationController.class);
 	
 	/**
 	 * Method just to check if you entered a valid password
@@ -203,5 +211,33 @@ public class SpotifyController {
 		if (tokenUserId == -1)
 			throw new InvalidTokenException("Invalid access token");
 		return tokenUserId;
+	}
+	
+	@SuppressWarnings("unused")
+	@ExceptionHandler(InvalidTokenException.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Provided token is not valid")
+	private void handleInvalidTokenException(InvalidTokenException e) {
+		logger.debug(e.getMessage());
+	}
+	
+	@SuppressWarnings("unused")
+	@ExceptionHandler(SpotifyApiException.class)
+	@ResponseStatus(value = HttpStatus.BAD_GATEWAY, reason = "Error while contacting spotify")
+	private void handleInvalidSpotifyApiException(SpotifyApiException e) {
+		logger.debug(e.getMessage());
+	}
+	
+	@SuppressWarnings("unused")
+	@ExceptionHandler(MusicSessionNotOpenException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "The music session is not currently open")
+	private void handleMusicSessionNotOpenException(MusicSessionNotOpenException e) {
+		logger.debug(e.getMessage());
+	}
+	
+	@SuppressWarnings("unused")
+	@ExceptionHandler(QRCodeNotValidException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "The provided qr-code is not valid")
+	private void handleQRCodeNotValidException(QRCodeNotValidException e) {
+		logger.debug(e.getMessage());
 	}
 }
