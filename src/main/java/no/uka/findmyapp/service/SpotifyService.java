@@ -98,7 +98,7 @@ public class SpotifyService {
 				success = data.requestSongOneActiveVote(spotifyId, locationId, userId);
 				if (success) {
 					if (!qrService.codeIsUsed(code)){
-						throw new UpdateQRCodeException("Could not update QRCode status");//Er denne nødvendig? Holder det ikke å logge? Er ikke brukerens problem om vi ikke klarer å oppdatere en qrkode vi sjekket var gyldig
+						throw new UpdateQRCodeException("Could not update QRCode status");//Er denne noedvendig? Holder det ikke aa logge? Er ikke brukerens problem om vi ikke klarer aa oppdatere en qrkode vi sjekket var gyldig
 					}
 				}else {
 					logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
