@@ -23,14 +23,14 @@ public class UkaProgramRepository {
 	
 	public List<UkaEvent> getUkaProgram(Date startDate, Date endDate) {
 		List<UkaEvent> eventList = jdbcTemplate.query(
-				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=? ORDER BY showingTime ASC",
+				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=? ORDER BY showing_time ASC",
 				new EventRowMapper(),startDate, endDate  );
 
 		return eventList;
 	}
 	public List<UkaEvent> getUkaProgram(Date startDate, Date endDate, String place) {
 		List<UkaEvent> eventList = jdbcTemplate.query(
-				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=? AND place =? ORDER BY showingTime ASC",
+				"SELECT * FROM UKA_EVENTS WHERE showing_time>=? AND showing_time<=? AND place =? ORDER BY showing_time ASC",
 				new EventRowMapper(),startDate, endDate , place );
 
 		return eventList;
@@ -38,7 +38,7 @@ public class UkaProgramRepository {
 
 	public List<UkaEvent> getUkaProgram(){
 		List<UkaEvent> eventList = jdbcTemplate.query(
-				"SELECT * FROM UKA_EVENTS ORDER BY showingTime ASC",
+				"SELECT * FROM UKA_EVENTS ORDER BY showing_time ASC",
 				new EventRowMapper());
 		return eventList;
 	}
