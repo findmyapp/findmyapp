@@ -152,6 +152,8 @@ public class SpotifyController {
 			@RequestParam(required=false) String token) throws SpotifyApiException, UpdateQRCodeException {
 		
 		//int tokenUserId = verifyToken(token);
+		logger.debug("user token: " + token);
+
 		ModelAndView model = new ModelAndView("json");
 		model.addObject("song", service.requestSong(spotifyId, token, locationId, code));
 		return model;
