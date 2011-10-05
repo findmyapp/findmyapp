@@ -35,7 +35,7 @@ public class SpotifyRepository {
 	
 	
 	private static final String songJoinString = "SELECT ti.banned, ti.spotify_id, ti.title, ti.artist, ti.length, th.last_played, "+
-			"th.times_played, SUM( num_of_requests )  AS total_requests, SUM( IF (active = 'true', 1, 0) ) AS active_requests "+
+			"th.times_played, SUM( num_of_requests )  AS total_requests, SUM( active ) AS active_requests "+
 			"FROM (SELECT * FROM POSITION_LOCATION WHERE position_location_id = :lId) AS l JOIN TRACK_INFO AS ti " +
 			"LEFT JOIN TRACK_REQUEST AS tr ON (tr.spotify_id=ti.spotify_id AND tr.position_location_id=l.position_location_id) " +
 			"LEFT JOIN TRACK_PLAYHISTORY AS th ON (th.spotify_id=ti.spotify_id AND th.position_location_id=l.position_location_id) ";
@@ -83,22 +83,27 @@ public class SpotifyRepository {
 	public void setSongAsPlayed(String spotifyId, int locationId) {
 		jdbcTemplate.update("INSERT INTO TRACK_PLAYHISTORY VALUES ( ?, ?, NOW(), 1) " +
 				"ON DUPLICATE KEY UPDATE times_played = times_played + 1, last_played = NOW()", spotifyId, locationId);
-		jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 'false' WHERE spotify_id = ? AND position_location_id = ?", spotifyId, locationId);
+		jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 0 WHERE spotify_id = ? AND position_location_id = ?", spotifyId, locationId);
 	}
 	
-	public boolean requestSong(String spotifyId, int locationId, int userId) {
-		int num = jdbcTemplate.update("INSERT INTO TRACK_REQUEST VALUES ( ?, ?, ?, 'true', 1 ) ON DUPLICATE KEY " +
-				"UPDATE num_of_requests = IF ( active = 'false', num_of_requests + 1, num_of_requests ), active = 'true'", spotifyId, locationId, userId);
+	public boolean requestSongOneActiveVote(String spotifyId, int locationId, int userId) {
+		int num = jdbcTemplate.update("INSERT INTO TRACK_REQUEST VALUES ( ?, ?, ?, 1, 1 ) ON DUPLICATE KEY " +
+				"UPDATE num_of_requests = IF ( active = 0, num_of_requests + 1, num_of_requests ), active = IF (active = 0, 1, active )", spotifyId, locationId, userId);
+		return num > 0;
+	}
+	public boolean requestSongManyActiveVotes(String spotifyId, int locationId, int userId) {
+		int num = jdbcTemplate.update("INSERT INTO TRACK_REQUEST VALUES ( ?, ?, ?, 1, 1 ) ON DUPLICATE KEY " +
+				"UPDATE num_of_requests = num_of_requests + 1, active = active + 1", spotifyId, locationId, userId);
 		return num > 0;
 	}
 	
 	public boolean userCanRequestSong(String spotifyId, int locationId, int userId){
-		int num=jdbcTemplate.queryForInt("SELECT count(*) FROM TRACK_REQUEST WHERE active='true' and spotify_id=? and position_location_id=? and user_id=?", spotifyId, locationId, userId);
+		int num=jdbcTemplate.queryForInt("SELECT count(*) FROM TRACK_REQUEST WHERE active > 0 and spotify_id=? and position_location_id=? and user_id=?", spotifyId, locationId, userId);
 		return num==0;
 	}
 	
 	public boolean removeRequests(int locationId) {
-		int num = jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 'false' WHERE position_location_id = ?", locationId);
+		int num = jdbcTemplate.update("UPDATE TRACK_REQUEST SET active = 0 WHERE position_location_id = ?", locationId);
 		return (num > 0);
 	}
 	
@@ -145,7 +150,7 @@ public class SpotifyRepository {
 			return "ORDER BY times_played DESC, total_requests DESC, last_played ASC";
 		}
 		else {//active requests
-			return "ORDER BY active_requests DESC, times_played DESC, last_played ASC";
+			return "ORDER BY active_requests DESC, last_played ASC, times_played DESC";
 		}
 	}	
 }

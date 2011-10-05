@@ -15,11 +15,13 @@ import no.uka.findmyapp.model.spotify.SpotifyTrackSearchContainer;
 import no.uka.findmyapp.model.spotify.Track;
 import no.uka.findmyapp.model.spotify.MusicSession;
 import no.uka.findmyapp.model.spotify.SpotifyLookupContainer;
+import no.uka.findmyapp.service.auth.AuthenticationService;
 import no.uka.findmyapp.service.auth.QRService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -39,6 +41,10 @@ public class SpotifyService {
 
 	@Autowired
 	private Gson gson;
+	
+	@Autowired
+	private AuthenticationService authService;
+	
 
 	public List<MusicSession> getSessions() {
 		return data.getSessions();
@@ -63,35 +69,52 @@ public class SpotifyService {
 		return data.getPlayedTracks(locationId, from, to);
 	}
 
-	public RequestResponse requestSong(String spotifyId, int userId, int locationId, String code) throws SpotifyApiException, UpdateQRCodeException {
+	public RequestResponse requestSong(String spotifyId, String token, int locationId, String code) throws SpotifyApiException, UpdateQRCodeException {
 		boolean success = false;
-		if (qrService.verify(code, locationId)==-1){
+		
+		if (!data.hasSong(spotifyId)) {//Fetch song info from spotify if neccessary
+			SpotifyLookupContainer song = requestSpotifySong(spotifyId);
+			logger.debug(song.getTrack().getName()+ " - Fetched from spotify, length: "+song.getTrack().getLength());
+			long length = (long) song.getTrack().getLength()*1000;
+			data.saveSong(spotifyId, song.getTrack().getName(), song.getTrack().concatArtistNames(), length);
+		}
+			
+		
+		
+		if (!data.getSession(locationId).isOpen()) {//session is not open
+			return new RequestResponse("Session is not open", false);
+		} 
+		else if (qrService.verify(code, locationId)==-1){//Code is not valid
 			return new RequestResponse("QRCode is not valid", false);
-		} else {
-			if (!data.hasSong(spotifyId)) {
-				SpotifyLookupContainer song = requestSpotifySong(spotifyId);
-				logger.debug(song.getTrack().getName()+ " - Fetched from spotify, length: "+song.getTrack().getLength());
-				long length = (long) song.getTrack().getLength()*1000;
-				data.saveSong(spotifyId, song.getTrack().getName(), song.getTrack().concatArtistNames(), length);
-			}
-			if (!data.getSession(locationId).isOpen()) {
-				return new RequestResponse("Session is not open", false);
-			} else {
-				if (data.userCanRequestSong(spotifyId, locationId, userId)){
-					success = data.requestSong(spotifyId, locationId, userId);
-					if (success) {
-						if (!qrService.codeIsUsed(code)){
-							throw new UpdateQRCodeException("Could not update QRCode status");
-						}
+		} 
+		else if (token == null && code == "unlimited") {//Unlimited votes so requires token
+			throw new InvalidTokenException("This QRcode requires login");
+		} 
+		else if (code == "unlimited") {//Unlimited votes so check token
+			int userId = verifyToken(token);//throws exception if code is not valid
+			
+			if (data.userCanRequestSong(spotifyId, locationId, userId)){
+				
+				success = data.requestSongOneActiveVote(spotifyId, locationId, userId);
+				if (success) {
+					if (!qrService.codeIsUsed(code)){
+						throw new UpdateQRCodeException("Could not update QRCode status");//Er denne nødvendig? Holder det ikke å logge? Er ikke brukerens problem om vi ikke klarer å oppdatere en qrkode vi sjekket var gyldig
 					}
 				}else {
 					logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
 					return new RequestResponse("Already voted for this song", false);
 				}
 			}
+		} 
+		else if (code == "limited") {//Limited votes, so token not neccessary
+			int userId = authService.verify(token);
+			if (userId == -1) {//Token null or not valid
+				userId = -1337;//The fake spotify user
+			}
+			success = data.requestSongManyActiveVotes(spotifyId, locationId, userId);//No need to update qrcodes and such
 		}
 
-		return new RequestResponse("Vote ok", true);
+		return new RequestResponse("Vote ok", success);
 	}
 
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {
@@ -182,6 +205,13 @@ public class SpotifyService {
 			throw new SpotifyApiException(e.getMessage());
 		}
 		return response;
+	}
+	
+	private int verifyToken(String token) throws InvalidTokenException {
+		int tokenUserId = authService.verify(token);
+		if (tokenUserId == -1)
+			throw new InvalidTokenException("Invalid access token");
+		return tokenUserId;
 	}
 
 }

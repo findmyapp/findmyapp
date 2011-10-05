@@ -27,8 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/spotify")
 public class SpotifyController {
-	@Autowired
-	private AuthenticationService authService;
 	
 	@Autowired
 	private SpotifyService service;
@@ -151,11 +149,11 @@ public class SpotifyController {
 			@PathVariable int locationId, 
 			@PathVariable String spotifyId,
 			@RequestParam(required=true) String code,
-			@RequestParam(required=true) String token) throws SpotifyApiException, UpdateQRCodeException {
+			@RequestParam(required=false) String token) throws SpotifyApiException, UpdateQRCodeException {
 		
-		int tokenUserId = verifyToken(token);
+		//int tokenUserId = verifyToken(token);
 		ModelAndView model = new ModelAndView("json");
-		model.addObject("song", service.requestSong(spotifyId, tokenUserId, locationId, code));
+		model.addObject("song", service.requestSong(spotifyId, token, locationId, code));
 		return model;
 	}
 	
@@ -203,14 +201,6 @@ public class SpotifyController {
 		ModelAndView model = new ModelAndView("json");
 		model.addObject("success", service.createOrUpdateSession(locationId, open, sessionName, resetVotes));
 		return model;
-	}
-	
-	
-	private int verifyToken(String token) throws InvalidTokenException {
-		int tokenUserId = authService.verify(token);
-		if (tokenUserId == -1)
-			throw new InvalidTokenException("Invalid access token");
-		return tokenUserId;
 	}
 	
 	@SuppressWarnings("unused")
