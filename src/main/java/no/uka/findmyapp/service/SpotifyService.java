@@ -123,7 +123,7 @@ public class SpotifyService {
 			}
 		}
 
-		return new RequestResponse("Stemme registrert", success, qrValidationCode);
+		return new RequestResponse("Stemmen ble registrert", success, qrValidationCode);
 	}
 
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {
