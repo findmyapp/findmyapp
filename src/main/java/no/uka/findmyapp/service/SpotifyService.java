@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import static no.uka.findmyapp.constants.QRConstants.*;
 
 @Service
 public class SpotifyService {
@@ -80,41 +81,49 @@ public class SpotifyService {
 		}
 			
 		
-		
+		int qrValidationCode = qrService.verify(code, locationId);
 		if (!data.getSession(locationId).isOpen()) {//session is not open
-			return new RequestResponse("Session is not open", false);
+			return new RequestResponse("Stemming er ikke mulig. Sesjonen er ikke aktiv", false, qrValidationCode);
+		}
+		
+		else if (qrValidationCode==QR_IS_NOT_VALID){//Code is not valid
+			return new RequestResponse("QR-koden er ikke gyldig", false, qrValidationCode);
 		} 
-		else if (qrService.verify(code, locationId)==-1){//Code is not valid
-			return new RequestResponse("QRCode is not valid", false);
+		else if (token == null && qrValidationCode == QR_HAS_UNLIMITED_USES) {//Unlimited votes so requires token
+			throw new InvalidTokenException("This QRcode requires login");//Det her burde kanskje bare returnere at man trenger token og ikke kaste exception?
 		} 
-		else if (token == null && code == "unlimited") {//Unlimited votes so requires token
-			throw new InvalidTokenException("This QRcode requires login");
-		} 
-		else if (code == "unlimited") {//Unlimited votes so check token
+		else if (qrValidationCode == QR_HAS_UNLIMITED_USES) {//Unlimited votes so check token
 			int userId = verifyToken(token);//throws exception if code is not valid
 			
 			if (data.userCanRequestSong(spotifyId, locationId, userId)){
-				
 				success = data.requestSongOneActiveVote(spotifyId, locationId, userId);
 				if (success) {
 					if (!qrService.codeIsUsed(code)){
-						throw new UpdateQRCodeException("Could not update QRCode status");//Er denne noedvendig? Holder det ikke aa logge? Er ikke brukerens problem om vi ikke klarer aa oppdatere en qrkode vi sjekket var gyldig
+						//throw new UpdateQRCodeException("Could not update QRCode status");//Er denne noedvendig? Holder det ikke aa logge? Er ikke brukerens problem om vi ikke klarer aa oppdatere en qrkode vi sjekket var gyldig
+						logger.debug("Could not update QRcode");
 					}
 				}else {
 					logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
-					return new RequestResponse("Already voted for this song", false);
+					return new RequestResponse("Denne brukeren har allerede stemt på denne sangen", false, qrValidationCode);
 				}
 			}
 		} 
-		else if (code == "limited") {//Limited votes, so token not neccessary
+		else if (qrValidationCode == QR_HAS_LIMITED_USES) {//Limited votes, so token not neccessary
 			int userId = authService.verify(token);
 			if (userId == -1) {//Token null or not valid
 				userId = -1337;//The fake spotify user
 			}
-			success = data.requestSongManyActiveVotes(spotifyId, locationId, userId);//No need to update qrcodes and such
+			success = data.requestSongManyActiveVotes(spotifyId, locationId, userId);//No need to update qrcodes and such.//Jo? Have to decrement the uses.
+			if (success){
+				if (!qrService.codeIsUsed(code)){
+					logger.debug("Could not update QRcode");
+				}
+			} else {
+				return new RequestResponse("Kunne ikke oppdatere databasen", false, qrValidationCode);
+			}
 		}
 
-		return new RequestResponse("Vote ok", success);
+		return new RequestResponse("Stemme registrert", success, qrValidationCode);
 	}
 
 	public List<Track> searchForTrack(String query, String orderBy, int page, int locationId) throws SpotifyApiException {

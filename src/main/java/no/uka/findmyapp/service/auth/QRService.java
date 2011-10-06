@@ -1,6 +1,7 @@
 package no.uka.findmyapp.service.auth;
 
 import java.sql.Timestamp;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import no.uka.findmyapp.datasource.QRCodeRepository;
 import no.uka.findmyapp.model.QRCode;
 import no.uka.findmyapp.service.FacebookService;
+import static no.uka.findmyapp.constants.QRConstants.*;
 
 @Service
 public class QRService {
@@ -21,7 +23,7 @@ public class QRService {
 	public int verify(String code, int sessionID){
 		if (!qrCodeRepository.hasQRCode(code)){
 			logger.debug(code + " does not exist in the database");
-			return -1;
+			return QR_IS_NOT_VALID;
 		}
 		QRCode qr = qrCodeRepository.getQRCode(code);
 		logger.debug("QRCode data: "+ qr.getCode() +" "+qr.getSessionID()+ " " +qr.getUses()+ " "+qr.getFromDate()+ " " + qr.getToDate() + " "+qr.getUnlimited());
@@ -30,18 +32,21 @@ public class QRService {
 		if (qr.getSessionID()!=-1){
 			if (!(qr.getSessionID()==sessionID)){
 				logger.debug("QRCode: "+code + " is not is not for session: "+sessionID);
-				return -1;
+				return QR_IS_NOT_VALID;
 			}
 		} else {
 			logger.debug("QRCode: "+code + " have no specific session");
 		}
 		if (!isQRCodeValidAtCurrentTime(qr)){
-			return -1;
+			return QR_IS_NOT_VALID;
 		}
-		if (!qr.getUnlimited() && qr.getUses()<=0){
-			return -1;
+		if (qr.getUnlimited()){
+			return QR_HAS_UNLIMITED_USES;
 		}
-		return 1;
+		if (qr.getUses()>0){
+			return QR_HAS_LIMITED_USES;
+		}
+		return QR_IS_NOT_VALID;
 	}
 
 	public boolean codeIsUsed(String code){
