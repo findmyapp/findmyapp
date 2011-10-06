@@ -104,7 +104,7 @@ public class SpotifyService {
 					}
 				}else {
 					logger.debug("User "+ userId+ " could not vote for song "+spotifyId+ " at location "+ locationId);
-					return new RequestResponse("Denne brukeren har allerede stemt på denne sangen", false, qrValidationCode);
+					return new RequestResponse("Denne brukeren har allerede stemt opp denne sangen", false, qrValidationCode);
 				}
 			}
 		} 
