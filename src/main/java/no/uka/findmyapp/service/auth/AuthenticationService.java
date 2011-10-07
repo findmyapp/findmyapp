@@ -77,7 +77,6 @@ public class AuthenticationService {
 
 		logger.debug("Updating user profile for user " + userId);
 		int updated = userRepo.updateUserTokenIssueTime(tokenIssued, userId, getConsumerDetails().getConsumerKey());//NEW
-		logger.debug("UPDATED: "+updated);
 		if (updated == 0)
 			token = null;
 
