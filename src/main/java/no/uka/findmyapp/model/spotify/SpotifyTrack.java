@@ -10,6 +10,7 @@ public class SpotifyTrack {
 	private String href;//URI or id of song
 	private List<SpotifyArtist> artists;//artists of song
 	private String name;//name of track
+	private SpotifyAlbum album;
 	
 	public double getLength() {
 		return length;
@@ -34,6 +35,12 @@ public class SpotifyTrack {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public SpotifyAlbum getAlbum() {
+		return album;
+	}
+	public void setAlbum(SpotifyAlbum album) {
+		this.album = album;
 	}
 	
 	public String concatArtistNames() {

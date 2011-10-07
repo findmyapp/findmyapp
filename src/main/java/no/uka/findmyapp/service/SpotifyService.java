@@ -125,7 +125,7 @@ public class SpotifyService {
 		for (SpotifyTrack track: tracks.getTracks()) {//Save tracks to db
 			long length = (long) track.getLength() * 1000;
 			data.saveSong(track.getHref(), track.getName(), track.concatArtistNames(), length);
-			logger.debug("Found - "+track.getName()+" id: "+track.getHref());
+			//logger.debug("Found - "+track.getName()+" id: "+track.getHref());
 			spotifyIds.add(track.getHref());
 		}
 		if (spotifyIds.size() > 0) {
@@ -171,6 +171,13 @@ public class SpotifyService {
 			logger.debug("Searching for spotify-songs with query "+query);
 			String jsonResponse = rest.getForObject("http://ws.spotify.com/search/1/track.json?q="+query+"&page="+page, String.class);
 			response = gson.fromJson(jsonResponse, SpotifyTrackSearchContainer.class);
+			
+			for (int i = response.getTracks().size()-1; i >= 0; i--) {//remove songs from result that cannot be played in norway
+				if (!isPlayable(response.getTracks().get(i))) {
+					logger.debug("Song "+response.getTracks().get(i).getName()+" is not playable in Norway, ignoring");
+					response.getTracks().remove(i);
+				}
+			}
 		} catch (RestClientException e) {
 			logger.error("Exception while searching for spotifysongs matching "+query+" error: "+e.getMessage());
 			throw new SpotifyApiException(e.getMessage());
@@ -185,7 +192,7 @@ public class SpotifyService {
 	 * Adapter for spotify's lookup api
 	 * @param spotifyId - id of track, has to start with "spotify:track:"
 	 * @return Track with given id
-	 * @throws SpotifyApiException - Error contacting spotify
+	 * @throws SpotifyApiException - Error contacting spotify, 
 	 * @throws IllegalArgumentException - Is thrown when trying to fetch data that isn't a track
 	 */
 	private SpotifyLookupContainer requestSpotifySong(String spotifyId) throws SpotifyApiException {
@@ -200,7 +207,11 @@ public class SpotifyService {
 			logger.debug("Fetching spotifysong with uri: "+spotifyId);
 			String jsonResponse = rest.getForObject("http://ws.spotify.com/lookup/1/.json?uri="+spotifyId, String.class);
 			response = gson.fromJson(jsonResponse, SpotifyLookupContainer.class);//use gson rather than built in spring deserializer which needs the object to match all fields
-
+			if (!isPlayable(response.getTrack())) {
+				logger.debug("Song "+response.getTrack().getName()+" is not playable in Norway, ignoring");
+				throw new IllegalArgumentException("Song not playable in Norway");
+			}
+			
 		} catch (RestClientException e) {
 			logger.error("Exception while fetching spotifySong "+spotifyId+" error: "+e.getMessage());
 			throw new SpotifyApiException(e.getMessage());
@@ -213,6 +224,15 @@ public class SpotifyService {
 		if (tokenUserId == -1)
 			throw new InvalidTokenException("Invalid access token");
 		return tokenUserId;
+	}
+	
+	/**
+	 * Check if the given track is available in Norway
+	 * @param track - The track to check availability to
+	 * @return true if available in Norway, false otherwise;
+	 */
+	private boolean isPlayable(SpotifyTrack track) {
+		return track.getAlbum().getAvailability().getTerritories().indexOf("NO") >= 0 || track.getAlbum().getAvailability().getTerritories().indexOf("worldwide") >= 0;
 	}
 
 }
