@@ -76,8 +76,9 @@ public class AuthenticationService {
 		String token = hash + base;
 
 		logger.debug("Updating user profile for user " + userId);
-		int updated = userRepo.updateUserTokenIssueTime(tokenIssued, userId);
-		if (updated != 1)
+		int updated = userRepo.updateUserTokenIssueTime(tokenIssued, userId, getConsumerDetails().getConsumerKey());//NEW
+		logger.debug("UPDATED: "+updated);
+		if (updated == 0)
 			token = null;
 
 		logger.debug("Profile updated. Token generated: " + token);
@@ -116,7 +117,7 @@ public class AuthenticationService {
 				+ authConfig.getTokenSecret());
 		if (hash.equals(calculatedHash)) {
 			logger.debug("Token structure verified. Verifying token timestamp");
-			long storedTimestamp = userRepo.getUserTokenIssued(userId);
+			long storedTimestamp = userRepo.getUserTokenIssued(userId, getConsumerDetails().getConsumerKey());//NEW
 			try {
 				long tokenTimestamp = Long.parseLong(timestamp);
 				if (tokenTimestamp == storedTimestamp) {

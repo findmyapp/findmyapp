@@ -1,5 +1,10 @@
 package no.uka.findmyapp.controller.auth;
 
+import java.util.Enumeration;
+
+import javax.naming.Context;
+import javax.servlet.http.HttpServletRequest;
+
 import no.uka.findmyapp.service.auth.AuthenticationService;
 
 import org.slf4j.Logger;
@@ -27,9 +32,13 @@ public class TokenController {
 	@Secured("ROLE_CONSUMER")
 	@RequestMapping("/login")
 	public ModelAndView login(
-			@RequestParam(required = true) String facebookToken)
+			@RequestParam(required=true) String facebookToken)
 			throws TokenException {
+		
 		ModelAndView mav = new ModelAndView("json");
+		
+		//logger.debug(request.getUserPrincipal().getName()+" token "+facebookToken);
+		
 		String token = service.login(facebookToken);
 		if (token == null)
 			throw new TokenException("Unable to obtain token for user.");

@@ -275,14 +275,14 @@ public class UserRepository {
 		return userPrivacyId;
 	}
 
-	public int updateUserTokenIssueTime(long tokenIssued, int userId) {
-		return jdbcTemplate.update(
-				"UPDATE USER SET token_issued=? WHERE user_id=?",
-				tokenIssued, userId);
+	public int updateUserTokenIssueTime(long tokenIssued, int userId, String consumerKey) {
+		return jdbcTemplate.update("INSERT INTO USER_TOKEN VALUES ( ?, ?, ? ) ON DUPLICATE KEY "+
+				"UPDATE token_issued=?",
+				userId, consumerKey, tokenIssued, tokenIssued);
 	}
 
-	public long getUserTokenIssued(int userId) {
-		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER WHERE user_id=?", userId);
+	public long getUserTokenIssued(int userId, String consumerKey) {
+		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER_TOKEN WHERE user_id=? AND consumer_key=?", userId, consumerKey);
 	}
 
 	public List<UserPosition> getLocationOfAllUsers() {
