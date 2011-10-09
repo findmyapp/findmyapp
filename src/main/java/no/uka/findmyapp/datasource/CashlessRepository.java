@@ -53,7 +53,7 @@ public class CashlessRepository {
 	
 	public boolean updateCardNumber(int userId, long cardNo){
 		try {
-			// If cardNo equals 0 set all cards as not in use and return true
+			// If cardNo equals 0 set all cards as invalid, and return true
 			if(cardNo==0){
 				jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
 				return true;
