@@ -53,6 +53,11 @@ public class CashlessRepository {
 	
 	public boolean updateCardNumber(int userId, long cardNo){
 		try {
+			// Check if number has 3 or more cards registred already
+			if(jdbcTemplate.queryForInt("SELECT COUNT(*) AS antall FROM USER_CASHLESS WHERE user_id=?", userId) >= 3){
+				return false;
+			}
+			
 			// Set old cards to be invalid
 			jdbcTemplate.update("UPDATE USER_CASHLESS SET in_use=0 WHERE user_id=?", userId);
 			
