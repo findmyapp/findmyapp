@@ -14,6 +14,7 @@ public class UserPositionRowMapper implements RowMapper<UserPosition> {
 		userPosition.setUserId(rs.getInt("user_id"));
 		userPosition.setLocationId(rs.getInt("position_location_id"));
 		userPosition.setTimestamp(rs.getTimestamp("registered_time"));
+		//userPosition.setCheckOutTimestamp(rs.getTimestamp("checkout_time"));
 		return userPosition; 
 	}
 }

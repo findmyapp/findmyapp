@@ -7,6 +7,7 @@ public class UserPosition {
 	private int userId;
 	private int locationId;
 	private Timestamp timestamp;
+	//private Timestamp checkOutTimestamp;
 	
 	public int getUserId() {
 		return userId;
@@ -31,4 +32,13 @@ public class UserPosition {
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
+/*
+	public Timestamp getCheckOutTimestamp() {
+		return checkOutTimestamp;
+	}
+
+	public void setCheckOutTimestamp(Timestamp checkOutTimestamp) {
+		this.checkOutTimestamp = checkOutTimestamp;
+	}
+	*/
 }

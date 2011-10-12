@@ -255,8 +255,8 @@ public class UserService {
 		return facebook.getConsumerFacebookToken(auth.getConsumerDetails());
 	}
 	
-	public boolean registerUserLocation(int userId, int locationId) {
-		return data.registerUserLocation(userId, locationId);
+	public boolean registerUserLocation(int userId, int locationId, int checkoutMinutes) {
+		return data.registerUserLocation(userId, locationId, checkoutMinutes);
 	}
 	
 	/**

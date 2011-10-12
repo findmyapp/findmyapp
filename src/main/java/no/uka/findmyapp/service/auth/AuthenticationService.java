@@ -60,6 +60,7 @@ public class AuthenticationService {
 				logger.debug("User with userId " + userId + " found.");
 			}
 			token = generateToken(userId);
+			userRepo.updateUserLogonTime(userId);
 		}
 		return token;
 	}

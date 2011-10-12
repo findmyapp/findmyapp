@@ -81,22 +81,23 @@ public class UserRepository {
 		return user;
 	}
 	
-	public boolean registerUserLocation(int userId, int locationId) {
+	public boolean registerUserLocation(int userId, int locationId, int checkoutMinutes) {
 		try {
 			final int fUserId = userId;
 			final int fLocationId = locationId;
-			final Timestamp now = new Timestamp(new Date().getTime());
+			final int fcheckoutMinutes = checkoutMinutes;
 			jdbcTemplate
-					.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time) VALUES(?, ?, ?) "
-							+ "ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = ?;",
+					.update("INSERT INTO POSITION_USER_POSITION(user_id, position_location_id, registered_time, checkout_time) " +
+							"VALUES(?, ?, CURRENT_TIMESTAMP, (CURRENT_TIMESTAMP + INTERVAL ? MINUTE)) "
+							+ "ON DUPLICATE KEY UPDATE position_location_id = ?, registered_time = CURRENT_TIMESTAMP, checkout_time = (CURRENT_TIMESTAMP + INTERVAL ? MINUTE);",
 							new PreparedStatementSetter() {
 								public void setValues(PreparedStatement ps)
 										throws SQLException {
 									ps.setInt(1, fUserId);
 									ps.setInt(2, fLocationId);
-									ps.setTimestamp(3, now);
+									ps.setInt(3, fcheckoutMinutes);
 									ps.setInt(4, fLocationId);
-									ps.setTimestamp(5, now);
+									ps.setInt(5, fcheckoutMinutes);
 								}
 							});
 			return true;
@@ -112,11 +113,12 @@ public class UserRepository {
 					.queryForObject(
 							"SELECT location.position_location_id, location.string_id, location.name "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
-									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
+									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ? " 
+									+ "AND (up.checkout_time > CURRENT_TIMESTAMP OR up.checkout_time IS NULL)",
 							new LocationRowMapper(), userId);
 			return location;
 		} catch (Exception e) {
-			logger.error("Could not get user position: " + e);
+			logger.error("Could not get user (" + userId + ") position: " + e);
 			return null;
 		}
 	}
@@ -280,25 +282,31 @@ public class UserRepository {
 				"UPDATE token_issued=?",
 				userId, consumerKey, tokenIssued, tokenIssued);
 	}
+	
+	public int updateUserLogonTime(int userId) {
+		return jdbcTemplate.update("UPDATE USER SET last_logon = CURRENT_TIMESTAMP WHERE user_id=?", userId);
+	}
 
 	public long getUserTokenIssued(int userId, String consumerKey) {
 		return jdbcTemplate.queryForLong("SELECT token_issued FROM USER_TOKEN WHERE user_id=? AND consumer_key=?", userId, consumerKey);
 	}
 
 	public List<UserPosition> getLocationOfAllUsers() {
-		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION", new UserPositionRowMapper());
+		return jdbcTemplate.query("SELECT * FROM POSITION_USER_POSITION WHERE checkout_time > CURRENT_TIMESTAMP OR checkout_time IS NULL", new UserPositionRowMapper());
 	}
 	
 	public List<UserPosition> getLocationOfAllUsers(List<String> friendIds) {
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		Map<String, Object> namedParameters = new HashMap<String, Object>();
 		namedParameters.put("ids", friendIds);
-		
+		logger.info("getLoc 1");
 		List<UserPosition> users = namedParameterJdbcTemplate.query(
 				"SELECT * FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p" +
 				" WHERE u.user_id=up.user_id AND u.user_privacy_id = p.user_privacy_id" +
-				" AND ((u.facebook_id IN (:ids) AND p.position != 3) OR p.position = 1)",
+				" AND ((u.facebook_id IN (:ids) AND p.position != 3) OR p.position = 1) " +
+				" ",
 				namedParameters, new UserPositionRowMapper());
+		//AND (up.checkout_time > CURRENT_TIMESTAMP OR up.checkout_time IS NULL)
 		return users;
 	}
 	
@@ -311,7 +319,8 @@ public class UserRepository {
 		List<UserPosition> users = namedParameterJdbcTemplate
 				.query("SELECT * FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.facebook_id IN (:ids) AND u.user_id=up.user_id"
-						+ " AND u.user_privacy_id = p.user_privacy_id AND p.position != 3",
+						+ " AND u.user_privacy_id = p.user_privacy_id AND p.position != 3 " 
+						+ " AND (up.checkout_time > CURRENT_TIMESTAMP OR up.checkout_time IS NULL)",
 						namedParameters, new UserPositionRowMapper());
 		return users;
 	}

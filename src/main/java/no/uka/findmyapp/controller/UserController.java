@@ -158,12 +158,14 @@ public class UserController {
 	@ServiceModelMapping(returnType = boolean.class)
 	public ModelAndView registerUserLocation(
 			@PathVariable int locationId,
-			@RequestParam(required = true) String token) throws TokenException {
+			@RequestParam(required = true) String token,
+			@RequestParam(required = false, defaultValue = "720") int checkoutMinutes) throws TokenException {
 		int tokenUserId = verifyToken(token);
+		
 		boolean regUserPos = false;
 		if(tokenUserId != -1) {
-			regUserPos = service.registerUserLocation(tokenUserId, locationId);
-			logger.debug("Registering user postition for user " + tokenUserId);
+			regUserPos = service.registerUserLocation(tokenUserId, locationId, checkoutMinutes);
+			logger.info("Registering user postition for user " + tokenUserId + " with checkout " + checkoutMinutes);
 			regUserPos = true;
 		}
 		else {
@@ -184,8 +186,9 @@ public class UserController {
 	@ServiceModelMapping(returnType = boolean.class)
 	public ModelAndView registerUserLocationWithPost(
 			@PathVariable int locationId,
-			@RequestParam(required = true) String token) throws TokenException {
-		return registerUserLocation(locationId, token);
+			@RequestParam(required = true) String token,
+			@RequestParam(required = false, defaultValue = "720") int checkoutMinutes) throws TokenException {
+		return registerUserLocation(locationId, token, checkoutMinutes);
 	}
 	
 
