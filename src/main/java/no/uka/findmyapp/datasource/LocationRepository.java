@@ -95,7 +95,8 @@ public class LocationRepository {
 		List<User> users = jdbcTemplate.query(
 				"SELECT u.* " + "FROM USER u, POSITION_USER_POSITION p "
 						+ "WHERE u.user_id=p.user_id "
-						+ "AND p.position_location_id=?", new UserRowMapper(),
+						+ "AND p.position_location_id=? " 
+						+ "AND (p.checkout_time > CURRENT_TIMESTAMP OR p.checkout_time IS NULL)", new UserRowMapper(),
 				locationId);
 		return users;
 	}
