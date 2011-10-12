@@ -109,7 +109,8 @@ public class LocationRepository {
 		return namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
 						+ " WHERE u.user_id=up.user_id AND up.position_location_id=:locationId "
 						+ " AND u.user_privacy_id = p.user_privacy_id AND ("
-						+ "(p.position != 3 AND u.facebook_id IN (:ids)) OR p.position=1)", namedParameters, new UserRowMapper());
+						+ "(p.position != 3 AND u.facebook_id IN (:ids)) OR p.position=1) " 
+						+ " AND (up.checkout_time > CURRENT_TIMESTAMP OR up.checkout_time IS NULL)", namedParameters, new UserRowMapper());
 	}
 	public List<User> getFriendsAtLocation(int locationId, List<String> friendIds) {
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
@@ -120,7 +121,8 @@ public class LocationRepository {
 		return namedParameterJdbcTemplate.query("SELECT u.* FROM USER u, POSITION_USER_POSITION up, USER_PRIVACY_SETTINGS p"
 				+ " WHERE u.user_id=up.user_id AND up.position_location_id=:locationId "
 				+ " AND u.user_privacy_id = p.user_privacy_id AND "
-				+ "p.position != 3 AND u.facebook_id IN (:ids)", namedParameters, new UserRowMapper());
+				+ "p.position != 3 AND u.facebook_id IN (:ids) " 
+				+ " AND (up.checkout_time > CURRENT_TIMESTAMP OR up.checkout_time IS NULL)", namedParameters, new UserRowMapper());
 	}
 
 	public int getUserCountAtLocation(int locationId) {
@@ -129,8 +131,8 @@ public class LocationRepository {
 			int count = jdbcTemplate
 					.queryForInt(
 							"SELECT COUNT(*) FROM POSITION_USER_POSITION WHERE position_location_id = ? " +
-							"AND TIMESTAMPDIFF(HOUR, registered_time, ?) < 2",
-							locationId, now);
+							"AND (checkout_time > CURRENT_TIMESTAMP OR checkout_time IS NULL)",
+							locationId);
 			return count;
 		} catch (Exception e) {
 			logger.info("Something went wrong when fetching data from database");
@@ -144,7 +146,7 @@ public class LocationRepository {
 				.query("SELECT l.string_id, COUNT(up.position_location_id) AS count "
 						+ "FROM POSITION_LOCATION l, POSITION_USER_POSITION up "
 						+ "WHERE l.position_location_id = up.position_location_id "
-						+ "AND TIMESTAMPDIFF(HOUR, up.registered_time, NOW()) < 2 "		
+						+ "AND (up.checkout_time > CURRENT_TIMESTAMP OR checkout_time IS NULL) "		
 						+ "GROUP BY l.string_id",
 						new LocationCountRowMapper());
 		//Christian and Haakon changed this so it dint give 500-error
@@ -172,9 +174,10 @@ public class LocationRepository {
 		try {
 			Location location = jdbcTemplate
 					.queryForObject(
-							"SELECT location.position_location_id, location.string_id "
+							"SELECT location.position_location_id, location.string_id, location.name "
 									+ "FROM POSITION_LOCATION location, POSITION_USER_POSITION up "
-									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ?",
+									+ "WHERE location.position_location_id=up.position_location_id AND up.user_id = ? " 
+									+ "AND (up.checkout_time > CURRENT_TIMESTAMP OR checkout_time IS NULL) ",
 							new LocationRowMapper(), userId);
 			return location;
 		} catch (Exception e) {
