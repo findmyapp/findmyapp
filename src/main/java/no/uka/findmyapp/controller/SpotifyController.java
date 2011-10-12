@@ -209,27 +209,27 @@ public class SpotifyController {
 	@ExceptionHandler(InvalidTokenException.class)
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Provided token is not valid")
 	private void handleInvalidTokenException(InvalidTokenException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 	@SuppressWarnings("unused")
 	@ExceptionHandler(SpotifyApiException.class)
 	@ResponseStatus(value = HttpStatus.BAD_GATEWAY, reason = "Error while contacting spotify")
 	private void handleInvalidSpotifyApiException(SpotifyApiException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 	@SuppressWarnings("unused")
 	@ExceptionHandler(MusicSessionNotOpenException.class)
 	@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "The music session is not currently open")
 	private void handleMusicSessionNotOpenException(MusicSessionNotOpenException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 	@SuppressWarnings("unused")
 	@ExceptionHandler(QRCodeNotValidException.class)
 	@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "The provided qr-code is not valid")
 	private void handleQRCodeNotValidException(QRCodeNotValidException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 }

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class User {
 
-	private int facebookUserId; 
+	private String facebookUserId; 
 	private int localUserId; 
 	private Timestamp userRegistered; 
 	private Timestamp lastLogon;
@@ -14,11 +14,11 @@ public class User {
 	
 	public User() {}
 	
-	public User(int facebookId) {
+	public User(String facebookId) {
 		this.facebookUserId = facebookId; 
 	}
 	
-	public User(int facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, UserPrivacy userPrivacy ) {
+	public User(String facebookId, int localId, Timestamp registerTimestamp, Timestamp lastLogon, UserPrivacy userPrivacy ) {
 		this.facebookUserId = facebookId; 
 		this.localUserId = localId; 
 		this.userRegistered = registerTimestamp; 
@@ -46,11 +46,11 @@ public class User {
 //	}
 	
 
-	public int getFacebookUserId() {
+	public String getFacebookUserId() {
 		return facebookUserId;
 	}
 
-	public void setFacebookUserId(int facebookUserId) {
+	public void setFacebookUserId(String facebookUserId) {
 		this.facebookUserId = facebookUserId;
 	}
 

@@ -140,28 +140,28 @@ public class CashlessController {
 	@ExceptionHandler(InvalidUserIdOrAccessTokenException.class)
 	private void handleInvalidUserIdOrAccessTokenException(
 			InvalidUserIdOrAccessTokenException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(ConsumerException.class)
 	private void handleConsumerException(ConsumerException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(NumberFormatException.class)
 	private void handleNumberFormatException(NumberFormatException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 	@SuppressWarnings("unused")
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	@ExceptionHandler(PrivacyException.class)
 	private void handlePrivacyException(PrivacyException e) {
-		logger.debug(e.getMessage());
+		logger.info(e.getMessage());
 	}
 	
 

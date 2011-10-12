@@ -80,7 +80,7 @@ public class LocationController {
 	@ServiceModelMapping(returnType = Location.class)
 	public ModelAndView getPositionBasedOnWLANSignals(
 			@RequestBody Signal[] signals) throws LocationNotFoundException {
-		logger.debug("getCurrentLocation ( " + signals.length + " )");
+		logger.info("getCurrentLocation ( " + signals.length + " )");
 		
 		List<Signal> signalList = Arrays.asList(signals);
 		Location location = service.getCurrentLocation(signalList);
@@ -110,7 +110,7 @@ public class LocationController {
 			throws ConsumerException {
 		
 		int tokenId = verifyToken(token);
-		logger.debug("getFriendsAtLocation ( " + locationId + ")");
+		logger.info("getFriendsAtLocation ( " + locationId + ")");
 		List<User> users = service.getFriendsAtLocation(locationId, tokenId);
 		return new ModelAndView("json", "friendsAtLocation", users);
 	}

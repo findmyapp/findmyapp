@@ -24,6 +24,15 @@
 	<logger name="no.uka.findmyapp.controller.SensorController">
 		<level value="error" />
 	</logger>
+	<logger name="no.uka.findmyapp.controller.LocationController">
+		<level value="info" />
+	</logger>
+	<logger name="no.uka.findmyapp.controller.SpotifyController">
+		<level value="info" />
+	</logger>
+	<logger name="no.uka.findmyapp.controller.CashlessController">
+		<level value="info" />
+	</logger>
 	<logger name="no.uka.findmyapp.service.auth.AuthenticationService">
 		<level value="info" />
 	</logger>

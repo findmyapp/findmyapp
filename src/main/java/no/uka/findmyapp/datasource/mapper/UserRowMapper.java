@@ -14,9 +14,9 @@ public class UserRowMapper implements RowMapper<User> {
 	
 	public User mapRow(ResultSet rs, int arg1) throws SQLException {
 		logger.debug("inside UserRowMapper");
-		User user = new User(); 
+		User user = new User();
 		user.setLocalUserId(rs.getInt("user_id"));
-		user.setFacebookUserId(rs.getInt("facebook_id"));
+		user.setFacebookUserId(rs.getString("facebook_id"));
 		user.setUserRegistered(rs.getTimestamp("registered_date"));
 		user.setLastLogon(rs.getTimestamp("last_logon"));
 		user.setUserPrivacy( null );
